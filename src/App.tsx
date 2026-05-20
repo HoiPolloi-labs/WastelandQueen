@@ -1,10 +1,20 @@
+import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes, Navigate, useLocation } from 'react-router'
-import { Crown, Plus, ClipboardList } from 'lucide-react'
+import { Crown, Plus, ClipboardList, Loader2 } from 'lucide-react'
 import { cn } from './lib/cn'
-import { EventSetupPage } from './features/event/EventSetupPage'
-import { SignupPage } from './features/signup/SignupPage'
-import { PlanPage } from './features/plan/PlanPage'
-import { BoardPage } from './features/board/BoardPage'
+
+const EventSetupPage = lazy(() =>
+  import('./features/event/EventSetupPage').then((m) => ({ default: m.EventSetupPage })),
+)
+const SignupPage = lazy(() =>
+  import('./features/signup/SignupPage').then((m) => ({ default: m.SignupPage })),
+)
+const PlanPage = lazy(() =>
+  import('./features/plan/PlanPage').then((m) => ({ default: m.PlanPage })),
+)
+const BoardPage = lazy(() =>
+  import('./features/board/BoardPage').then((m) => ({ default: m.BoardPage })),
+)
 
 function HomeNav() {
   return (
@@ -23,6 +33,14 @@ function HomeNav() {
           Neues Event
         </NavLink>
       </div>
+    </div>
+  )
+}
+
+function RouteFallback() {
+  return (
+    <div className="flex items-center justify-center py-12 text-zinc-500">
+      <Loader2 className="h-6 w-6 animate-spin" />
     </div>
   )
 }
@@ -82,22 +100,24 @@ export default function App() {
           isPublic ? 'mx-auto w-full' : 'mx-auto w-full max-w-7xl px-4 py-6',
         )}
       >
-        <Routes>
-          <Route path="/" element={<HomeNav />} />
-          <Route path="/plan/new" element={<EventSetupPage />} />
-          <Route path="/plan" element={<Navigate to="/plan/new" replace />} />
-          <Route path="/plan/:eventId" element={<PlanPage />} />
-          <Route path="/signup/:eventId" element={<SignupPage />} />
-          <Route path="/board/:eventId" element={<BoardPage />} />
-          <Route
-            path="*"
-            element={
-              <div className="mx-auto max-w-md py-12 text-center text-zinc-500">
-                Nicht gefunden.
-              </div>
-            }
-          />
-        </Routes>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<HomeNav />} />
+            <Route path="/plan/new" element={<EventSetupPage />} />
+            <Route path="/plan" element={<Navigate to="/plan/new" replace />} />
+            <Route path="/plan/:eventId" element={<PlanPage />} />
+            <Route path="/signup/:eventId" element={<SignupPage />} />
+            <Route path="/board/:eventId" element={<BoardPage />} />
+            <Route
+              path="*"
+              element={
+                <div className="mx-auto max-w-md py-12 text-center text-zinc-500">
+                  Nicht gefunden.
+                </div>
+              }
+            />
+          </Routes>
+        </Suspense>
       </main>
     </div>
   )

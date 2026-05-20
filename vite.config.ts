@@ -14,4 +14,16 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router'],
+          dnd: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+          supabase: ['@supabase/supabase-js'],
+          export: ['html-to-image', 'qrcode'],
+        },
+      },
+    },
+  },
 })

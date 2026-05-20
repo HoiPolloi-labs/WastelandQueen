@@ -32,6 +32,8 @@ import { PlayerChip } from './PlayerChip'
 import { ConflictBanner } from './ConflictBanner'
 import { StatsSidebar } from './StatsSidebar'
 import { OtherShiftDropzone } from './OtherShiftDropzone'
+import { NotesProvider } from './NotesContext'
+import { NoteEditor } from './NoteEditor'
 
 export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
@@ -42,6 +44,7 @@ export function PlanPage() {
   const [shift, setShift] = useState<ShiftNumber>(1)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }))
 
@@ -142,7 +145,12 @@ export function PlanPage() {
     ? signupById.get(draggingId.split(':')[1] ?? '')
     : null
 
+  const editingSignup = editingNoteId
+    ? signups.find((s) => s.id === editingNoteId) ?? null
+    : null
+
   return (
+    <NotesProvider value={{ openNote: setEditingNoteId }}>
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <PageHeader title={`Planner · ${event.id}`} subtitle={`Modus: ${event.turret_mode} · Server ${event.home_server}`}>
         <Button variant="secondary" size="sm" onClick={copySignupUrl} title={signupUrl}>
@@ -205,5 +213,9 @@ export function PlanPage() {
         ) : null}
       </DragOverlay>
     </DndContext>
+    {editingSignup && (
+      <NoteEditor signup={editingSignup} onClose={() => setEditingNoteId(null)} />
+    )}
+    </NotesProvider>
   )
 }

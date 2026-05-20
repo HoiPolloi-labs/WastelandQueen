@@ -57,6 +57,7 @@ export interface Signup {
   rally_size: number | null
   willing_captain: boolean
   shift_pref: ShiftPref
+  planner_notes: string | null
   submitted_at: string
 }
 

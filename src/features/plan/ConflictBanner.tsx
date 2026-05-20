@@ -1,6 +1,7 @@
-import { AlertTriangle } from 'lucide-react'
-import type { Assignment, Signup } from '@/types/wk'
+import { AlertTriangle, Lightbulb } from 'lucide-react'
+import type { Assignment, Signup, TroopType } from '@/types/wk'
 import { TURRETS } from '@/types/wk'
+import { captainScore } from './auto-sort'
 
 interface ConflictBannerProps {
   shift: 1 | 2
@@ -8,7 +9,7 @@ interface ConflictBannerProps {
   assignments: Assignment[]
 }
 
-type Conflict = { kind: 'error' | 'warn'; msg: string }
+type Conflict = { kind: 'error' | 'warn' | 'hint'; msg: string }
 
 function detectConflicts(
   shift: 1 | 2,
@@ -17,26 +18,72 @@ function detectConflicts(
 ): Conflict[] {
   const out: Conflict[] = []
   const shiftAssigns = assignments.filter((a) => a.shift === shift)
+  const assignedIds = new Set(shiftAssigns.map((a) => a.signup_id))
+  const shiftPool = signups.filter((s) => {
+    if (s.shift_pref === 'both') return true
+    if (s.shift_pref === 'first') return shift === 1
+    return shift === 2
+  })
+  const idToSignup = new Map(signups.map((s) => [s.id, s]))
 
-  // Hub captain?
+  // --- Hub ---
   const hubAssigns = shiftAssigns.filter((a) => a.building === 'hub')
+  const hubCaptainId = hubAssigns.find((a) => a.is_captain)?.signup_id
+  const hubCaptain = hubCaptainId ? idToSignup.get(hubCaptainId) : null
+
   if (hubAssigns.length === 0) {
     out.push({ kind: 'warn', msg: 'Hub leer — kein Captain' })
-  } else if (!hubAssigns.some((a) => a.is_captain)) {
+  } else if (!hubCaptain) {
     out.push({ kind: 'error', msg: 'Hub hat keinen Captain markiert' })
+  } else {
+    // Hint: gibt es einen stärkeren willing-captain im Pool, der noch nicht Hub-Cap ist?
+    const stronger = shiftPool
+      .filter((s) => s.willing_captain && s.id !== hubCaptain.id)
+      .filter((s) => captainScore(s) > captainScore(hubCaptain) + 5) // 5 = Schwelle gegen Rauschen
+      .sort((a, b) => captainScore(b) - captainScore(a))[0]
+    if (stronger) {
+      const where = assignedIds.has(stronger.id)
+        ? (shiftAssigns.find((a) => a.signup_id === stronger.id)?.building ?? 'pool')
+        : 'pool'
+      out.push({
+        kind: 'hint',
+        msg: `Hub-Captain ${hubCaptain.ign} (${Math.round(captainScore(hubCaptain))}). Stärker wäre ${stronger.ign} (${Math.round(captainScore(stronger))}, ${where === 'pool' ? 'noch unassigned' : `aktuell auf ${where}`}).`,
+      })
+    }
   }
 
-  // Pro Turm: Captain + Typ-Reinheit
+  // --- Türme: Captain + Typ-Reinheit ---
   for (const turret of TURRETS) {
     const list = shiftAssigns.filter((a) => a.building === turret)
     if (list.length === 0) continue
     const members = list
-      .map((a) => signups.find((s) => s.id === a.signup_id))
+      .map((a) => idToSignup.get(a.signup_id))
       .filter((s): s is Signup => Boolean(s))
-    if (!list.some((a) => a.is_captain)) {
+    const captainId = list.find((a) => a.is_captain)?.signup_id
+    const captain = captainId ? idToSignup.get(captainId) : null
+
+    if (!captain) {
       out.push({ kind: 'warn', msg: `${turret.toUpperCase()}: kein Captain` })
+    } else {
+      // Hint: stärkerer willing-captain im selben Typ?
+      const stronger = shiftPool
+        .filter(
+          (s) =>
+            s.willing_captain &&
+            s.troop_type === captain.troop_type &&
+            s.id !== captain.id,
+        )
+        .filter((s) => captainScore(s) > captainScore(captain) + 5)
+        .sort((a, b) => captainScore(b) - captainScore(a))[0]
+      if (stronger && !assignedIds.has(stronger.id)) {
+        out.push({
+          kind: 'hint',
+          msg: `${turret.toUpperCase()}: ${stronger.ign} (${Math.round(captainScore(stronger))}) wäre besser als ${captain.ign} (${Math.round(captainScore(captain))}).`,
+        })
+      }
     }
-    const types = new Set(members.map((m) => m.troop_type))
+
+    const types = new Set(members.map((m) => m.troop_type as TroopType))
     if (types.size > 1) {
       out.push({
         kind: 'warn',
@@ -59,20 +106,24 @@ export function ConflictBanner({ shift, signups, assignments }: ConflictBannerPr
   }
   return (
     <ul className="flex flex-col gap-1.5">
-      {conflicts.map((c, i) => (
-        <li
-          key={i}
-          className={
-            'flex items-center gap-2 rounded border px-3 py-1.5 text-xs ' +
-            (c.kind === 'error'
-              ? 'border-red-500/40 bg-red-500/5 text-red-300'
-              : 'border-amber-500/40 bg-amber-500/5 text-amber-300')
-          }
-        >
-          <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" />
-          {c.msg}
-        </li>
-      ))}
+      {conflicts.map((c, i) => {
+        const tone =
+          c.kind === 'error'
+            ? 'border-red-500/40 bg-red-500/5 text-red-300'
+            : c.kind === 'warn'
+              ? 'border-amber-500/40 bg-amber-500/5 text-amber-300'
+              : 'border-sky-500/40 bg-sky-500/5 text-sky-200'
+        const Icon = c.kind === 'hint' ? Lightbulb : AlertTriangle
+        return (
+          <li
+            key={i}
+            className={`flex items-start gap-2 rounded border px-3 py-1.5 text-xs ${tone}`}
+          >
+            <Icon className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+            <span>{c.msg}</span>
+          </li>
+        )
+      })}
     </ul>
   )
 }

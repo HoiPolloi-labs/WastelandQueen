@@ -1,9 +1,10 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import { Crown, Swords, Crosshair, Zap } from 'lucide-react'
+import { Crown, Swords, Crosshair, Zap, StickyNote } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { Signup, TroopType } from '@/types/wk'
 import { captainScore } from './auto-sort'
+import { useOpenNote } from './NotesContext'
 
 const TYPE_META: Record<
   TroopType,
@@ -80,6 +81,8 @@ export function PlayerChip({
     id,
     data: { signupId: signup.id, shift },
   })
+  const openNote = useOpenNote()
+  const hasNote = Boolean(signup.planner_notes?.trim())
 
   const style = transform ? { transform: CSS.Translate.toString(transform) } : undefined
 
@@ -99,7 +102,7 @@ export function PlayerChip({
       )}
       title={`${signup.ign} · ${signup.troop_type} · T${signup.tier} · Lair ${signup.max_solo_lair} · score ${Math.round(
         captainScore(signup),
-      )}`}
+      )}${hasNote ? `\n📝 ${signup.planner_notes}` : ''}`}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-1.5">
@@ -112,6 +115,23 @@ export function PlayerChip({
           {signup.willing_captain && !isCaptain && (
             <Crown className="h-3 w-3 text-zinc-600" />
           )}
+          <button
+            type="button"
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation()
+              openNote(signup.id)
+            }}
+            className={cn(
+              'rounded p-0.5 transition',
+              hasNote
+                ? 'text-amber-300 hover:bg-amber-500/20'
+                : 'text-zinc-600 opacity-0 hover:bg-zinc-800 hover:text-zinc-300 group-hover:opacity-100',
+            )}
+            title={hasNote ? signup.planner_notes ?? '' : 'Notiz hinzufügen'}
+          >
+            <StickyNote className="h-3 w-3" />
+          </button>
           <ScoreBadge score={captainScore(signup)} willing={signup.willing_captain} />
           <span className="font-mono">T{signup.tier}</span>
         </div>
