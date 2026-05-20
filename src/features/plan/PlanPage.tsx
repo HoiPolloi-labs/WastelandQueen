@@ -37,6 +37,7 @@ import { OtherShiftDropzone } from './OtherShiftDropzone'
 import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
 import { NapPanel } from '@/features/nap/NapPanel'
+import { shiftWindowLabel } from '@/features/event/shift-window'
 
 export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
@@ -133,7 +134,7 @@ export function PlanPage() {
     const drafts = autoSort({
       signups,
       turretMode: event.turret_mode,
-      shiftCount: event.shift_count >= 2 ? 2 : 1,
+      shiftCount: Math.max(1, Math.min(4, event.shift_count)) as 1 | 2 | 3 | 4,
     })
     await applyDraft(drafts)
     setBusy(false)
@@ -174,20 +175,22 @@ export function PlanPage() {
       </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Segmented<ShiftNumber>
-            options={
-              event.shift_count >= 2
-                ? [
-                    { value: 1, label: 'Shift 1' },
-                    { value: 2, label: 'Shift 2' },
-                  ]
-                : [{ value: 1, label: 'Shift 1' }]
-            }
+            options={Array.from({ length: event.shift_count }, (_, i) => ({
+              value: (i + 1) as ShiftNumber,
+              label: `Shift ${i + 1}`,
+              hint: shiftWindowLabel(event.starts_at_utc, event.shift_count, (i + 1) as ShiftNumber),
+            }))}
             value={shift}
             onChange={setShift}
           />
-          {event.shift_count >= 2 && <OtherShiftDropzone currentShift={shift} />}
+          <span className="text-[11px] text-zinc-500">
+            {shiftWindowLabel(event.starts_at_utc, event.shift_count, shift)}
+          </span>
+          {event.shift_count >= 2 && (
+            <OtherShiftDropzone currentShift={shift} shiftCount={event.shift_count} />
+          )}
         </div>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={refreshSignups} title="Sign-ups neu laden">

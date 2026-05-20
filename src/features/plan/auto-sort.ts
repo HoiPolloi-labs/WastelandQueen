@@ -6,12 +6,12 @@ import type {
   TurretMode,
   Turret,
 } from '@/types/wk'
-import { TURRETS } from '@/types/wk'
+import { TURRETS, parseShiftPref } from '@/types/wk'
 
 export interface AutoSortInput {
   signups: Signup[]
   turretMode: TurretMode
-  shiftCount: 1 | 2
+  shiftCount: 1 | 2 | 3 | 4
 }
 
 export type DraftAssignment = Pick<
@@ -31,17 +31,8 @@ export function captainScore(s: Signup): number {
 
 const strongestFirst = (a: Signup, b: Signup) => captainScore(b) - captainScore(a)
 
-function shiftPoolFor(
-  signups: Signup[],
-  shift: ShiftNumber,
-  shiftCount: 1 | 2,
-): Signup[] {
-  if (shiftCount === 1) return [...signups]
-  return signups.filter((s) => {
-    if (s.shift_pref === 'both') return true
-    if (s.shift_pref === 'first') return shift === 1
-    return shift === 2
-  })
+function shiftPoolFor(signups: Signup[], shift: ShiftNumber): Signup[] {
+  return signups.filter((s) => parseShiftPref(s.shift_pref).includes(shift))
 }
 
 function dominantType(pool: Signup[]): TroopType {
@@ -100,10 +91,13 @@ function turretLayout(mode: TurretMode, pool: Signup[]): TurretLayout {
  */
 export function autoSort(input: AutoSortInput): DraftAssignment[] {
   const out: DraftAssignment[] = []
-  const shifts: ShiftNumber[] = input.shiftCount === 1 ? [1] : [1, 2]
+  const shifts: ShiftNumber[] = Array.from(
+    { length: input.shiftCount },
+    (_, i) => (i + 1) as ShiftNumber,
+  )
 
   for (const shift of shifts) {
-    const pool = shiftPoolFor(input.signups, shift, input.shiftCount).sort(strongestFirst)
+    const pool = shiftPoolFor(input.signups, shift).sort(strongestFirst)
 
     if (input.turretMode === 'manual') {
       pool.forEach((s, i) => {

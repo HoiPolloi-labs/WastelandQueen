@@ -2,7 +2,7 @@ import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { Crown, Swords, Crosshair, Zap, StickyNote } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import type { Signup, TroopType } from '@/types/wk'
+import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { captainScore } from './auto-sort'
 import { useOpenNote } from './NotesContext'
 
@@ -61,7 +61,7 @@ function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
 interface PlayerChipProps {
   signup: Signup
   isCaptain?: boolean
-  shift: 1 | 2
+  shift: ShiftNumber
   compact?: boolean
   dragId?: string
   highlight?: boolean

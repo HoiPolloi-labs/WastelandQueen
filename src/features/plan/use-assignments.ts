@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { Assignment } from '@/types/wk'
+import type { Assignment, ShiftNumber } from '@/types/wk'
 import type { DraftAssignment } from './auto-sort'
 
 export function useAssignments(eventId: string | undefined) {
@@ -50,7 +50,7 @@ export function useAssignments(eventId: string | undefined) {
   const moveOne = useCallback(
     async (
       signupId: string,
-      shift: 1 | 2,
+      shift: ShiftNumber,
       patch: Partial<
         Pick<Assignment, 'building' | 'is_captain' | 'position'>
       >,
@@ -148,8 +148,8 @@ export function useAssignments(eventId: string | undefined) {
   const moveAcrossShifts = useCallback(
     async (
       signupId: string,
-      fromShift: 1 | 2,
-      toShift: 1 | 2,
+      fromShift: ShiftNumber,
+      toShift: ShiftNumber,
       patch: Partial<Pick<Assignment, 'building' | 'is_captain' | 'position'>>,
     ) => {
       if (!eventId) return

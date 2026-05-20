@@ -3,13 +3,22 @@ import { useParams } from 'react-router'
 import { Crown, Check, AlertCircle, Loader2, Info } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
+import { shiftWindowLabel } from '@/features/event/shift-window'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Segmented } from '@/components/ui/Segmented'
 import { Toggle } from '@/components/ui/Toggle'
+import { cn } from '@/lib/cn'
 import { TypeCard } from './TypeCard'
 import { signupSchema, type SignupInput } from './signup-schema'
-import type { ShiftPref, Signup, TroopTier, TroopType } from '@/types/wk'
+import {
+  parseShiftPref,
+  serializeShiftPref,
+  type ShiftNumber,
+  type Signup,
+  type TroopTier,
+  type TroopType,
+} from '@/types/wk'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -17,12 +26,6 @@ const TIER_OPTIONS = Array.from({ length: 12 }, (_, i) => ({
   value: (i + 1) as TroopTier,
   label: `T${i + 1}`,
 }))
-
-const SHIFT_OPTIONS: { value: ShiftPref; label: string; hint: string }[] = [
-  { value: 'first', label: 'Shift 1', hint: '0-12h UTC' },
-  { value: 'second', label: 'Shift 2', hint: '12-24h UTC' },
-  { value: 'both', label: 'Beides', hint: 'Flexibel' },
-]
 
 export function SignupPage() {
   const { eventId } = useParams<{ eventId: string }>()
@@ -39,7 +42,7 @@ export function SignupPage() {
   const [maxSoloLair, setMaxSoloLair] = useState<number | ''>('')
   const [rallySize, setRallySize] = useState<string>('')
   const [willingCaptain, setWillingCaptain] = useState(false)
-  const [shiftPref, setShiftPref] = useState<ShiftPref | null>(null)
+  const [shifts, setShifts] = useState<ShiftNumber[]>([])
   const [existing, setExisting] = useState<Signup | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
 
@@ -52,7 +55,7 @@ export function SignupPage() {
     setMaxSoloLair(s.max_solo_lair)
     setRallySize(s.rally_size == null ? '' : String(s.rally_size))
     setWillingCaptain(s.willing_captain)
-    setShiftPref(s.shift_pref)
+    setShifts(parseShiftPref(s.shift_pref))
   }
 
   const lookupExisting = async () => {
@@ -117,7 +120,7 @@ export function SignupPage() {
             setMaxSoloLair('')
             setRallySize('')
             setWillingCaptain(false)
-            setShiftPref(null)
+            setShifts([])
           }}
         >
           Noch einen Spieler eintragen
@@ -150,7 +153,7 @@ export function SignupPage() {
       max_solo_lair: typeof maxSoloLair === 'number' ? maxSoloLair : Number.NaN,
       rally_size: rallySize ? Number(rallySize.replace(/[.\s,]/g, '')) : null,
       willing_captain: willingCaptain,
-      shift_pref: shiftPref,
+      shift_pref: shifts.length > 0 ? serializeShiftPref(shifts) : '',
     })
 
     if (!parsed.success) {
@@ -326,8 +329,37 @@ export function SignupPage() {
         />
 
         <div>
-          <span className="mb-1 block text-sm font-medium text-zinc-300">Shift</span>
-          <Segmented options={SHIFT_OPTIONS} value={shiftPref} onChange={setShiftPref} />
+          <span className="mb-1 block text-sm font-medium text-zinc-300">
+            Verfügbare Shifts {event.shift_count > 1 && <span className="text-zinc-500">(mehrere möglich)</span>}
+          </span>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {Array.from({ length: event.shift_count }, (_, i) => {
+              const n = (i + 1) as ShiftNumber
+              const checked = shifts.includes(n)
+              const label = shiftWindowLabel(event.starts_at_utc, event.shift_count, n)
+              return (
+                <button
+                  type="button"
+                  key={n}
+                  onClick={() => {
+                    setFieldError('shift_pref')
+                    setShifts((cur) =>
+                      checked ? cur.filter((s) => s !== n) : [...cur, n].sort((a, b) => a - b),
+                    )
+                  }}
+                  className={cn(
+                    'flex flex-col items-center gap-0.5 rounded border px-2 py-2 text-sm transition',
+                    checked
+                      ? 'border-yellow-500 bg-yellow-500/10 text-yellow-100'
+                      : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200',
+                  )}
+                >
+                  <span className="font-semibold">Shift {n}</span>
+                  <span className="text-[10px] text-zinc-500">{label}</span>
+                </button>
+              )
+            })}
+          </div>
           {errors.shift_pref && <p className="mt-1 text-xs text-red-400">{errors.shift_pref}</p>}
         </div>
 

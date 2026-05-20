@@ -4,11 +4,12 @@ import { Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Input } from '@/components/ui/Input'
 import { Segmented } from '@/components/ui/Segmented'
-import type { Assignment, Signup, TroopType } from '@/types/wk'
+import type { Assignment, ShiftNumber, Signup, TroopType } from '@/types/wk'
+import { parseShiftPref } from '@/types/wk'
 import { PlayerChip } from './PlayerChip'
 
 interface UnassignedPoolProps {
-  shift: 1 | 2
+  shift: ShiftNumber
   signups: Signup[]
   assignments: Assignment[]
 }
@@ -30,11 +31,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
   }, [assignments, shift])
 
   const unassigned = useMemo(() => {
-    const matchesShift = (s: Signup) => {
-      if (s.shift_pref === 'both') return true
-      if (s.shift_pref === 'first') return shift === 1
-      return shift === 2
-    }
+    const matchesShift = (s: Signup) => parseShiftPref(s.shift_pref).includes(shift)
     const q = query.trim().toLowerCase()
     return signups
       .filter(matchesShift)

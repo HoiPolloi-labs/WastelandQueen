@@ -1,10 +1,10 @@
 import { AlertTriangle, Lightbulb } from 'lucide-react'
-import type { Assignment, Signup, TroopType } from '@/types/wk'
-import { TURRETS } from '@/types/wk'
+import type { Assignment, ShiftNumber, Signup, TroopType } from '@/types/wk'
+import { TURRETS, parseShiftPref } from '@/types/wk'
 import { captainScore } from './auto-sort'
 
 interface ConflictBannerProps {
-  shift: 1 | 2
+  shift: ShiftNumber
   signups: Signup[]
   assignments: Assignment[]
 }
@@ -12,18 +12,14 @@ interface ConflictBannerProps {
 type Conflict = { kind: 'error' | 'warn' | 'hint'; msg: string }
 
 function detectConflicts(
-  shift: 1 | 2,
+  shift: ShiftNumber,
   signups: Signup[],
   assignments: Assignment[],
 ): Conflict[] {
   const out: Conflict[] = []
   const shiftAssigns = assignments.filter((a) => a.shift === shift)
   const assignedIds = new Set(shiftAssigns.map((a) => a.signup_id))
-  const shiftPool = signups.filter((s) => {
-    if (s.shift_pref === 'both') return true
-    if (s.shift_pref === 'first') return shift === 1
-    return shift === 2
-  })
+  const shiftPool = signups.filter((s) => parseShiftPref(s.shift_pref).includes(shift))
   const idToSignup = new Map(signups.map((s) => [s.id, s]))
 
   // --- Hub ---

@@ -1,6 +1,6 @@
 import { useDroppable } from '@dnd-kit/core'
 import { cn } from '@/lib/cn'
-import type { Building as BuildingType, Signup, TroopType } from '@/types/wk'
+import type { Building as BuildingType, ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { PlayerChip } from './PlayerChip'
 
 const BUILDING_LABELS: Record<BuildingType, string> = {
@@ -30,7 +30,7 @@ const TYPE_RING: Record<TroopType, string> = {
 
 interface BuildingProps {
   building: BuildingType
-  shift: 1 | 2
+  shift: ShiftNumber
   members: Signup[]
   captainId: string | null
   className?: string

@@ -31,8 +31,20 @@ export type Building =
 export const TURRETS = ['turret-n', 'turret-s', 'turret-e', 'turret-w'] as const
 export type Turret = (typeof TURRETS)[number]
 
-export type ShiftPref = 'first' | 'second' | 'both'
-export type ShiftNumber = 1 | 2
+/** Comma-separated shift numbers, e.g. "1", "1,2", "1,3,4". */
+export type ShiftPref = string
+export type ShiftNumber = 1 | 2 | 3 | 4
+
+export function parseShiftPref(pref: string): ShiftNumber[] {
+  return pref
+    .split(',')
+    .map((s) => Number(s.trim()) as ShiftNumber)
+    .filter((n): n is ShiftNumber => n >= 1 && n <= 4)
+}
+
+export function serializeShiftPref(shifts: ShiftNumber[]): string {
+  return [...new Set(shifts)].sort((a, b) => a - b).join(',')
+}
 
 export type TurretMode = 'duplicate-strongest' | 'mixed-4th' | 'manual'
 

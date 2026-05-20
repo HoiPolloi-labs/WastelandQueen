@@ -1,16 +1,16 @@
-import type { Assignment, Building as BuildingType, Signup } from '@/types/wk'
+import type { Assignment, Building as BuildingType, ShiftNumber, Signup } from '@/types/wk'
 import { TURRETS } from '@/types/wk'
 import { Building } from './Building'
 
 interface PlazaProps {
-  shift: 1 | 2
+  shift: ShiftNumber
   signups: Signup[]
   assignments: Assignment[]
 }
 
 function membersOf(
   building: BuildingType,
-  shift: 1 | 2,
+  shift: ShiftNumber,
   assignments: Assignment[],
   signups: Signup[],
 ): { members: Signup[]; captainId: string | null } {

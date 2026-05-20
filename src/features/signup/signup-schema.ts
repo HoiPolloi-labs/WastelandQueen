@@ -28,7 +28,9 @@ export const signupSchema = z.object({
     .optional()
     .transform((v) => (v == null ? null : v)),
   willing_captain: z.boolean(),
-  shift_pref: z.enum(['first', 'second', 'both']),
+  shift_pref: z
+    .string()
+    .regex(/^[1-4](,[1-4]){0,3}$/, 'Mindestens eine Shift wählen'),
 })
 
 export type SignupInput = z.infer<typeof signupSchema>

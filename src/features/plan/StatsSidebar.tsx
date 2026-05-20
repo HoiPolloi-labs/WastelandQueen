@@ -1,8 +1,9 @@
 import { Users, Crown, Activity } from 'lucide-react'
-import type { Signup, TroopType } from '@/types/wk'
+import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
+import { parseShiftPref } from '@/types/wk'
 
 interface StatsSidebarProps {
-  shift: 1 | 2
+  shift: ShiftNumber
   signups: Signup[]
 }
 
@@ -13,11 +14,7 @@ const TYPE_COLOR: Record<TroopType, string> = {
 }
 
 export function StatsSidebar({ shift, signups }: StatsSidebarProps) {
-  const pool = signups.filter((s) => {
-    if (s.shift_pref === 'both') return true
-    if (s.shift_pref === 'first') return shift === 1
-    return shift === 2
-  })
+  const pool = signups.filter((s) => parseShiftPref(s.shift_pref).includes(shift))
 
   const total = pool.length
   const captains = pool.filter((s) => s.willing_captain).length

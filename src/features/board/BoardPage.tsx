@@ -13,6 +13,7 @@ import { Qr } from './Qr'
 import { useNapTerms } from '@/features/nap/use-nap-terms'
 import { NapList } from '@/features/nap/NapList'
 import { Handshake } from 'lucide-react'
+import { shiftWindowLabel } from '@/features/event/shift-window'
 
 export function BoardPage() {
   const { eventId } = useParams<{ eventId: string }>()
@@ -71,10 +72,11 @@ export function BoardPage() {
         <div className="flex flex-wrap items-center gap-2">
           {event.shift_count >= 2 && (
             <Segmented<ShiftNumber>
-              options={[
-                { value: 1, label: 'Shift 1' },
-                { value: 2, label: 'Shift 2' },
-              ]}
+              options={Array.from({ length: event.shift_count }, (_, i) => ({
+                value: (i + 1) as ShiftNumber,
+                label: `Shift ${i + 1}`,
+                hint: shiftWindowLabel(event.starts_at_utc, event.shift_count, (i + 1) as ShiftNumber),
+              }))}
               value={shift}
               onChange={setShift}
             />
