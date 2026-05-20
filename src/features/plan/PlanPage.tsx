@@ -38,6 +38,7 @@ import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
+import { EventPicker } from '@/features/event/EventPicker'
 
 export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
@@ -168,6 +169,7 @@ export function PlanPage() {
             : ''
         }`}
       >
+        <EventPicker currentEventId={event.id} />
         <Button variant="secondary" size="sm" onClick={copySignupUrl} title={signupUrl}>
           <ClipboardCopy className="h-3.5 w-3.5" />
           Sign-up URL

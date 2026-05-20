@@ -43,6 +43,7 @@ export function SignupPage() {
   const [rallySize, setRallySize] = useState<string>('')
   const [willingCaptain, setWillingCaptain] = useState(false)
   const [shifts, setShifts] = useState<ShiftNumber[]>([])
+  const [stateAllianceJoined, setStateAllianceJoined] = useState(false)
   const [existing, setExisting] = useState<Signup | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
 
@@ -56,6 +57,7 @@ export function SignupPage() {
     setRallySize(s.rally_size == null ? '' : String(s.rally_size))
     setWillingCaptain(s.willing_captain)
     setShifts(parseShiftPref(s.shift_pref))
+    setStateAllianceJoined(s.state_alliance_joined)
   }
 
   const lookupExisting = async () => {
@@ -188,6 +190,9 @@ export function SignupPage() {
       shift_pref: shifts.length > 0 ? serializeShiftPref(shifts) : '',
     })
 
+    // Note: state_alliance_joined isn't in the zod schema (it's optional metadata)
+    // — set it directly on the row after validation passes.
+
     if (!parsed.success) {
       const fieldErrors: Partial<Record<keyof SignupInput, string>> = {}
       for (const issue of parsed.error.issues) {
@@ -199,7 +204,11 @@ export function SignupPage() {
       return
     }
 
-    const payload = { event_id: event.id, ...parsed.data }
+    const payload = {
+      event_id: event.id,
+      ...parsed.data,
+      state_alliance_joined: stateAllianceJoined,
+    }
     const { error } = existing
       ? await supabase.from('signups').update(payload).eq('id', existing.id)
       : await supabase.from('signups').insert(payload)
@@ -358,6 +367,13 @@ export function SignupPage() {
           onChange={setWillingCaptain}
           label="Captain möglich"
           hint="Bereit, einen Hub/Turm-Captain zu übernehmen (Super Reinforcement)"
+        />
+
+        <Toggle
+          checked={stateAllianceJoined}
+          onChange={setStateAllianceJoined}
+          label="State Alliance beigetreten"
+          hint="Hak ab wenn du in der temporären State-Alliance bist (gleiches Flag = keine Friendly-Fire vom Turm)"
         />
 
         <div>

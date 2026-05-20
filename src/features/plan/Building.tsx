@@ -16,6 +16,11 @@ const BUILDING_LABELS: Record<BuildingType, string> = {
 }
 
 const BUILDING_HINTS: Partial<Record<BuildingType, string>> = {
+  hub: 'Captain: enter first, activate Super Reinforcement, hold the spot, call reinforcements in chat. Captain-Rally = Building-Capacity, Captain-Stats = jede einlaufende March bekommt sie.',
+  'turret-n': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
+  'turret-s': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
+  'turret-e': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
+  'turret-w': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
   'hit-squad':
     'Offensive captains für Foreign-Hub-Angriff. Auto-Sort lässt diesen Bucket leer; Belegung ist manuelle Entscheidung.',
   mud: 'Mudsitter: shielded sanctuaries clogging the mud. Schild-Stack (8h+1d) Pflicht, sonst Troops weg.',

@@ -19,6 +19,7 @@ type Filter = 'all' | TroopType
 export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolProps) {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
+  const [tagFilter, setTagFilter] = useState<string | null>(null)
 
   const assignedIds = useMemo(() => {
     const set = new Set<string>()
@@ -30,6 +31,12 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
     return set
   }, [assignments, shift])
 
+  const allianceTags = useMemo(() => {
+    const tags = new Set<string>()
+    for (const s of signups) tags.add(s.alliance_tag)
+    return [...tags].sort()
+  }, [signups])
+
   const unassigned = useMemo(() => {
     const matchesShift = (s: Signup) => parseShiftPref(s.shift_pref).includes(shift)
     const q = query.trim().toLowerCase()
@@ -37,13 +44,14 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
       .filter(matchesShift)
       .filter((s) => !assignedIds.has(s.id))
       .filter((s) => filter === 'all' || s.troop_type === filter)
+      .filter((s) => !tagFilter || s.alliance_tag === tagFilter)
       .filter(
         (s) =>
           !q ||
           s.ign.toLowerCase().includes(q) ||
           s.alliance_tag.toLowerCase().includes(q),
       )
-  }, [signups, assignedIds, shift, query, filter])
+  }, [signups, assignedIds, shift, query, filter, tagFilter])
 
   const { setNodeRef, isOver } = useDroppable({
     id: `drop:unassigned:${shift}`,
@@ -85,6 +93,37 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
         value={filter}
         onChange={(v: Filter) => setFilter(v)}
       />
+      {allianceTags.length > 1 && (
+        <div className="mb-2 flex flex-wrap gap-1">
+          <button
+            type="button"
+            onClick={() => setTagFilter(null)}
+            className={cn(
+              'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
+              tagFilter === null
+                ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
+                : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300',
+            )}
+          >
+            ALL
+          </button>
+          {allianceTags.map((t) => (
+            <button
+              type="button"
+              key={t}
+              onClick={() => setTagFilter(t === tagFilter ? null : t)}
+              className={cn(
+                'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
+                tagFilter === t
+                  ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
+                  : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300',
+              )}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto pr-0.5">
         {unassigned.length === 0 && (
           <div className="mt-6 text-center text-xs italic text-zinc-600">

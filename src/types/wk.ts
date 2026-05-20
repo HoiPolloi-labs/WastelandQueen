@@ -78,6 +78,7 @@ export interface Signup {
   willing_captain: boolean
   shift_pref: ShiftPref
   planner_notes: string | null
+  state_alliance_joined: boolean
   submitted_at: string
 }
 

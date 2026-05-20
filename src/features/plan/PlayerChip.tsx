@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import { Crown, Swords, Crosshair, Zap, StickyNote } from 'lucide-react'
+import { Crown, Swords, Crosshair, Zap, StickyNote, ShieldOff } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { captainScore } from './auto-sort'
@@ -111,6 +111,12 @@ export function PlayerChip({
           <span className="font-mono text-[10px] text-zinc-500">[{signup.alliance_tag}]</span>
         </div>
         <div className="flex flex-shrink-0 items-center gap-1.5 text-[11px] text-zinc-400">
+          {!signup.state_alliance_joined && (
+            <ShieldOff
+              className="h-3 w-3 text-amber-400"
+              aria-label="Noch nicht in State Alliance"
+            />
+          )}
           {isCaptain && <Crown className="h-3.5 w-3.5 text-yellow-400" />}
           {signup.willing_captain && !isCaptain && (
             <Crown className="h-3 w-3 text-zinc-600" />
