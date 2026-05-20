@@ -18,6 +18,9 @@ const PlanIndex = lazy(() =>
 const BoardPage = lazy(() =>
   import('./features/board/BoardPage').then((m) => ({ default: m.BoardPage })),
 )
+const AwardsPage = lazy(() =>
+  import('./features/awards/AwardsPage').then((m) => ({ default: m.AwardsPage })),
+)
 
 function HomeNav() {
   return (
@@ -111,6 +114,7 @@ export default function App() {
             <Route path="/plan/:eventId" element={<PlanPage />} />
             <Route path="/signup/:eventId" element={<SignupPage />} />
             <Route path="/board/:eventId" element={<BoardPage />} />
+            <Route path="/awards/:eventId" element={<AwardsPage />} />
             <Route
               path="*"
               element={

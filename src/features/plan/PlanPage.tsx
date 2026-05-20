@@ -19,6 +19,7 @@ import {
   ClipboardCopy,
   Eye,
   RefreshCcw,
+  Trophy,
 } from 'lucide-react'
 import { useEvent } from '@/features/event/use-event'
 import { Button } from '@/components/ui/Button'
@@ -223,6 +224,12 @@ export function PlanPage() {
             <Eye className="h-3.5 w-3.5" />
             Board
             <ExternalLink className="h-3 w-3" />
+          </Button>
+        </Link>
+        <Link to={`/awards/${event.id}`}>
+          <Button variant="secondary" size="sm">
+            <Trophy className="h-3.5 w-3.5" />
+            Awards
           </Button>
         </Link>
       </PageHeader>

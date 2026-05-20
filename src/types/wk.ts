@@ -85,7 +85,24 @@ export interface Signup {
   shift_pref: ShiftPref
   planner_notes: string | null
   state_alliance_joined: boolean
+  /** Post-event capture, set by governor */
+  attended: boolean | null
+  kill_points: number
+  death_points: number
+  occupation_points: number
+  might_lost: number
+  box_tier: BoxTier | null
   submitted_at: string
+}
+
+/** Governor's Award Box tiers per WK guide */
+export type BoxTier = 'king' | 'rulers' | 'loyalty' | 'contribution'
+
+export const BOX_TIER_LABELS: Record<BoxTier, string> = {
+  king: "King's Award",
+  rulers: "Rulers' Award",
+  loyalty: 'Loyalty Award',
+  contribution: 'Contribution Award',
 }
 
 export interface Assignment {
