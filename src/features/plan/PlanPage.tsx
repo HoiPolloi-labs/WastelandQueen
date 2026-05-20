@@ -268,7 +268,7 @@ export function PlanPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-[280px_1fr_280px] gap-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[280px_1fr_280px]">
         <UnassignedPool shift={shift} signups={signups} assignments={assignments} />
         <Plaza
           shift={shift}

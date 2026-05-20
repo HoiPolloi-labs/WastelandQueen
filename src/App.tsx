@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes, useLocation } from 'react-router'
-import { Crown, Plus, ClipboardList, Loader2 } from 'lucide-react'
+import { Crown, Plus, ClipboardList, Loader2, BookOpen } from 'lucide-react'
 import { cn } from './lib/cn'
 
 const EventSetupPage = lazy(() =>
@@ -20,6 +20,11 @@ const BoardPage = lazy(() =>
 )
 const AwardsPage = lazy(() =>
   import('./features/awards/AwardsPage').then((m) => ({ default: m.AwardsPage })),
+)
+const CheatSheetPage = lazy(() =>
+  import('./features/cheatsheet/CheatSheetPage').then((m) => ({
+    default: m.CheatSheetPage,
+  })),
 )
 
 function HomeNav() {
@@ -95,6 +100,20 @@ export default function App() {
                 <ClipboardList className="h-4 w-4" />
                 Planner
               </NavLink>
+              <NavLink
+                to="/cheat-sheet"
+                className={({ isActive }) =>
+                  cn(
+                    'flex items-center gap-2 rounded px-3 py-1.5 text-sm transition',
+                    isActive
+                      ? 'bg-zinc-800 text-zinc-50'
+                      : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
+                  )
+                }
+              >
+                <BookOpen className="h-4 w-4" />
+                Cheat-Sheet
+              </NavLink>
             </nav>
           </div>
         </header>
@@ -115,6 +134,7 @@ export default function App() {
             <Route path="/signup/:eventId" element={<SignupPage />} />
             <Route path="/board/:eventId" element={<BoardPage />} />
             <Route path="/awards/:eventId" element={<AwardsPage />} />
+            <Route path="/cheat-sheet" element={<CheatSheetPage />} />
             <Route
               path="*"
               element={
