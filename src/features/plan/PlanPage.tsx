@@ -31,12 +31,14 @@ import { UnassignedPool } from './UnassignedPool'
 import { PlayerChip } from './PlayerChip'
 import { ConflictBanner } from './ConflictBanner'
 import { StatsSidebar } from './StatsSidebar'
+import { OtherShiftDropzone } from './OtherShiftDropzone'
 
 export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading: eventLoading } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
-  const { assignments, moveOne, applyDraft, removeAll } = useAssignments(eventId)
+  const { assignments, moveOne, moveAcrossShifts, applyDraft, removeAll } =
+    useAssignments(eventId)
   const [shift, setShift] = useState<ShiftNumber>(1)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -84,22 +86,30 @@ export function PlanPage() {
       building: BuildingType
       shift: ShiftNumber
     }
-    if (sourceShift !== targetShift) return // restrict cross-shift moves for now
 
-    // determine current captain in target — if dropping into empty captain-slot of hub, suggest captain
     const targetMembers = assignments.filter(
       (a) => a.building === building && a.shift === targetShift,
     )
     const wasCaptain = assignments.find(
       (a) => a.signup_id === signupId && a.shift === sourceShift,
     )?.is_captain
-    const isCaptain = building === 'hub' && targetMembers.length === 0 ? true : Boolean(wasCaptain)
+    const isCaptain =
+      building === 'hub' && targetMembers.length === 0 ? true : Boolean(wasCaptain)
 
-    await moveOne(signupId, targetShift, {
-      building,
-      is_captain: isCaptain,
-      position: targetMembers.length,
-    })
+    if (sourceShift === targetShift) {
+      await moveOne(signupId, targetShift, {
+        building,
+        is_captain: isCaptain,
+        position: targetMembers.length,
+      })
+    } else {
+      await moveAcrossShifts(signupId, sourceShift, targetShift, {
+        building,
+        // captain status doesn't carry across shifts — different building, fresh slate
+        is_captain: building === 'hub' && targetMembers.length === 0,
+        position: targetMembers.length,
+      })
+    }
   }
 
   const runAutoSort = async () => {
@@ -149,18 +159,21 @@ export function PlanPage() {
       </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <Segmented<ShiftNumber>
-          options={
-            event.shift_count >= 2
-              ? [
-                  { value: 1, label: 'Shift 1' },
-                  { value: 2, label: 'Shift 2' },
-                ]
-              : [{ value: 1, label: 'Shift 1' }]
-          }
-          value={shift}
-          onChange={setShift}
-        />
+        <div className="flex items-center gap-3">
+          <Segmented<ShiftNumber>
+            options={
+              event.shift_count >= 2
+                ? [
+                    { value: 1, label: 'Shift 1' },
+                    { value: 2, label: 'Shift 2' },
+                  ]
+                : [{ value: 1, label: 'Shift 1' }]
+            }
+            value={shift}
+            onChange={setShift}
+          />
+          {event.shift_count >= 2 && <OtherShiftDropzone currentShift={shift} />}
+        </div>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={refreshSignups} title="Sign-ups neu laden">
             <RefreshCcw className="h-3.5 w-3.5" />

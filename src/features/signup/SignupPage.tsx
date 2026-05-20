@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
-import { Crown, Check, AlertCircle, Loader2 } from 'lucide-react'
+import { Crown, Check, AlertCircle, Loader2, Info } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
 import { Input } from '@/components/ui/Input'
@@ -9,7 +9,7 @@ import { Segmented } from '@/components/ui/Segmented'
 import { Toggle } from '@/components/ui/Toggle'
 import { TypeCard } from './TypeCard'
 import { signupSchema, type SignupInput } from './signup-schema'
-import type { ShiftPref, TroopTier, TroopType } from '@/types/wk'
+import type { ShiftPref, Signup, TroopTier, TroopType } from '@/types/wk'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -40,6 +40,37 @@ export function SignupPage() {
   const [rallySize, setRallySize] = useState<string>('')
   const [willingCaptain, setWillingCaptain] = useState(false)
   const [shiftPref, setShiftPref] = useState<ShiftPref | null>(null)
+  const [existing, setExisting] = useState<Signup | null>(null)
+  const [lookingUp, setLookingUp] = useState(false)
+
+  const prefillFrom = (s: Signup) => {
+    setExisting(s)
+    setAllianceTag(s.alliance_tag)
+    setServer(s.server)
+    setTier(s.tier)
+    setTroopType(s.troop_type)
+    setMaxSoloLair(s.max_solo_lair)
+    setRallySize(s.rally_size == null ? '' : String(s.rally_size))
+    setWillingCaptain(s.willing_captain)
+    setShiftPref(s.shift_pref)
+  }
+
+  const lookupExisting = async () => {
+    if (!event) return
+    const trimmed = ign.trim()
+    if (!trimmed) return
+    if (existing && existing.ign.toLowerCase() === trimmed.toLowerCase()) return
+    setLookingUp(true)
+    const { data } = await supabase
+      .from('signups')
+      .select('*')
+      .eq('event_id', event.id)
+      .ilike('ign', trimmed)
+      .maybeSingle()
+    setLookingUp(false)
+    if (data) prefillFrom(data as Signup)
+    else setExisting(null)
+  }
 
   if (loading) {
     return (
@@ -60,20 +91,25 @@ export function SignupPage() {
     )
   }
   if (status === 'success') {
+    const wasUpdate = Boolean(existing)
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
           <Check className="h-8 w-8" />
         </div>
-        <h1 className="mt-4 text-xl font-semibold">Eingetragen!</h1>
+        <h1 className="mt-4 text-xl font-semibold">
+          {wasUpdate ? 'Aktualisiert!' : 'Eingetragen!'}
+        </h1>
         <p className="mt-2 text-sm text-zinc-400">
-          Danke {ign} — deine Daten sind bei uns. Falls du dich vertippt hast, einfach nochmal absenden.
+          Danke {ign} — {wasUpdate ? 'deine Daten sind aktualisiert' : 'deine Daten sind bei uns'}.
+          Du kannst jederzeit zurückkommen und mit derselben IGN anpassen.
         </p>
         <Button
           variant="secondary"
           className="mt-6"
           onClick={() => {
             setStatus('idle')
+            setExisting(null)
             setIgn('')
             setAllianceTag('')
             setTier(null)
@@ -128,12 +164,31 @@ export function SignupPage() {
       return
     }
 
-    const { error } = await supabase.from('signups').insert({
-      event_id: event.id,
-      ...parsed.data,
-    })
+    const payload = { event_id: event.id, ...parsed.data }
+    const { error } = existing
+      ? await supabase.from('signups').update(payload).eq('id', existing.id)
+      : await supabase.from('signups').insert(payload)
 
     if (error) {
+      // Race: another tab inserted between our lookup and submit. Retry as update.
+      if (error.code === '23505') {
+        const { data: race } = await supabase
+          .from('signups')
+          .select('id')
+          .eq('event_id', event.id)
+          .ilike('ign', parsed.data.ign)
+          .maybeSingle()
+        if (race) {
+          const { error: updErr } = await supabase
+            .from('signups')
+            .update(payload)
+            .eq('id', (race as { id: string }).id)
+          if (!updErr) {
+            setStatus('success')
+            return
+          }
+        }
+      }
       setStatus('error')
       setErrorMsg(error.message)
       return
@@ -153,6 +208,15 @@ export function SignupPage() {
       </p>
 
       <form onSubmit={submit} className="flex flex-col gap-4">
+        {existing && (
+          <div className="flex items-start gap-2 rounded border border-yellow-500/40 bg-yellow-500/5 px-3 py-2 text-xs text-yellow-200">
+            <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+            <span>
+              Du bist schon eingetragen — Felder sind vorausgefüllt. Anpassungen aktualisieren
+              deinen Eintrag, statt einen neuen anzulegen.
+            </span>
+          </div>
+        )}
         <Input
           label="IGN"
           placeholder="Dein In-Game-Name"
@@ -160,7 +224,12 @@ export function SignupPage() {
           onChange={(e) => {
             setIgn(e.target.value)
             setFieldError('ign')
+            if (existing && e.target.value.toLowerCase() !== existing.ign.toLowerCase()) {
+              setExisting(null)
+            }
           }}
+          onBlur={lookupExisting}
+          hint={lookingUp ? 'Schaue ob du schon eingetragen bist…' : undefined}
           error={errors.ign}
           autoComplete="off"
           required

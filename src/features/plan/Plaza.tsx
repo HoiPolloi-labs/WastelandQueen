@@ -1,4 +1,4 @@
-import type { Assignment, Signup } from '@/types/wk'
+import type { Assignment, Building as BuildingType, Signup } from '@/types/wk'
 import { TURRETS } from '@/types/wk'
 import { Building } from './Building'
 
@@ -9,7 +9,7 @@ interface PlazaProps {
 }
 
 function membersOf(
-  building: Assignment['building'],
+  building: BuildingType,
   shift: 1 | 2,
   assignments: Assignment[],
   signups: Signup[],
@@ -29,6 +29,8 @@ export function Plaza({ shift, signups, assignments }: PlazaProps) {
     turret: t,
     ...membersOf(t, shift, assignments, signups),
   }))
+  const mud = membersOf('mud', shift, assignments, signups)
+  const reserve = membersOf('reserve', shift, assignments, signups)
 
   const grid: Record<string, (typeof turretData)[number] | undefined> = {}
   for (const t of turretData) {
@@ -39,44 +41,56 @@ export function Plaza({ shift, signups, assignments }: PlazaProps) {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_1.6fr_1fr] grid-rows-[1fr_1.4fr_1fr] gap-3">
-      <div />
-      <Building
-        building="turret-n"
-        shift={shift}
-        members={grid.n?.members ?? []}
-        captainId={grid.n?.captainId ?? null}
-      />
-      <div />
+    <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-[1fr_1.6fr_1fr] grid-rows-[1fr_1.4fr_1fr] gap-3">
+        <div />
+        <Building
+          building="turret-n"
+          shift={shift}
+          members={grid.n?.members ?? []}
+          captainId={grid.n?.captainId ?? null}
+        />
+        <div />
 
-      <Building
-        building="turret-w"
-        shift={shift}
-        members={grid.w?.members ?? []}
-        captainId={grid.w?.captainId ?? null}
-      />
-      <Building
-        building="hub"
-        shift={shift}
-        members={hub.members}
-        captainId={hub.captainId}
-        large
-      />
-      <Building
-        building="turret-e"
-        shift={shift}
-        members={grid.e?.members ?? []}
-        captainId={grid.e?.captainId ?? null}
-      />
+        <Building
+          building="turret-w"
+          shift={shift}
+          members={grid.w?.members ?? []}
+          captainId={grid.w?.captainId ?? null}
+        />
+        <Building
+          building="hub"
+          shift={shift}
+          members={hub.members}
+          captainId={hub.captainId}
+          large
+        />
+        <Building
+          building="turret-e"
+          shift={shift}
+          members={grid.e?.members ?? []}
+          captainId={grid.e?.captainId ?? null}
+        />
 
-      <div />
-      <Building
-        building="turret-s"
-        shift={shift}
-        members={grid.s?.members ?? []}
-        captainId={grid.s?.captainId ?? null}
-      />
-      <div />
+        <div />
+        <Building
+          building="turret-s"
+          shift={shift}
+          members={grid.s?.members ?? []}
+          captainId={grid.s?.captainId ?? null}
+        />
+        <div />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <Building building="mud" shift={shift} members={mud.members} captainId={null} />
+        <Building
+          building="reserve"
+          shift={shift}
+          members={reserve.members}
+          captainId={null}
+        />
+      </div>
     </div>
   )
 }

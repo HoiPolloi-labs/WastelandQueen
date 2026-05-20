@@ -36,6 +36,27 @@ function formatRally(n: number | null): string {
   return String(n)
 }
 
+function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
+  const rounded = Math.round(score)
+  // T10 lair-6 0-rally → ~28; T11 lair-7 1.5M → ~122; T12 lair-8 3M → ~216
+  const tone =
+    rounded >= 150
+      ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
+      : rounded >= 80
+        ? 'border-sky-500/40 bg-sky-500/10 text-sky-200'
+        : rounded >= 40
+          ? 'border-zinc-600 bg-zinc-800 text-zinc-300'
+          : 'border-zinc-700 bg-zinc-900 text-zinc-500'
+  return (
+    <span
+      className={`rounded border px-1 py-px font-mono text-[10px] ${tone} ${willing ? '' : 'opacity-60'}`}
+      title={`Captain-Score ${rounded} — rally/100k×6 + lair×3 + tier${willing ? '' : ' (nicht als Captain verfügbar)'}`}
+    >
+      {rounded}
+    </span>
+  )
+}
+
 interface PlayerChipProps {
   signup: Signup
   isCaptain?: boolean
@@ -91,6 +112,7 @@ export function PlayerChip({
           {signup.willing_captain && !isCaptain && (
             <Crown className="h-3 w-3 text-zinc-600" />
           )}
+          <ScoreBadge score={captainScore(signup)} willing={signup.willing_captain} />
           <span className="font-mono">T{signup.tier}</span>
         </div>
       </div>

@@ -26,6 +26,21 @@ export function useAssignments(eventId: string | undefined) {
     }
     setLoading(true)
     refresh().finally(() => setLoading(false))
+
+    const channel = supabase
+      .channel(`assignments:${eventId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'assignments', filter: `event_id=eq.${eventId}` },
+        () => {
+          void refresh()
+        },
+      )
+      .subscribe()
+
+    return () => {
+      void supabase.removeChannel(channel)
+    }
   }, [eventId, refresh])
 
   /**
@@ -126,5 +141,87 @@ export function useAssignments(eventId: string | undefined) {
     setAssignments([])
   }, [eventId])
 
-  return { assignments, loading, error, refresh, moveOne, applyDraft, removeAll }
+  /**
+   * Move a signup from one shift to another. Deletes the source row and inserts/updates
+   * the target shift's row. Use moveOne() if the shift isn't changing.
+   */
+  const moveAcrossShifts = useCallback(
+    async (
+      signupId: string,
+      fromShift: 1 | 2,
+      toShift: 1 | 2,
+      patch: Partial<Pick<Assignment, 'building' | 'is_captain' | 'position'>>,
+    ) => {
+      if (!eventId) return
+      // Optimistic local update
+      setAssignments((prev) => {
+        const withoutSource = prev.filter(
+          (a) => !(a.signup_id === signupId && a.shift === fromShift),
+        )
+        const existingTarget = withoutSource.findIndex(
+          (a) => a.signup_id === signupId && a.shift === toShift,
+        )
+        const targetRow: Assignment = {
+          id: `tmp-${signupId}-${toShift}`,
+          event_id: eventId,
+          signup_id: signupId,
+          building: patch.building ?? 'unassigned',
+          shift: toShift,
+          is_captain: patch.is_captain ?? false,
+          position: patch.position ?? 0,
+          updated_at: new Date().toISOString(),
+        }
+        if (existingTarget === -1) return [...withoutSource, targetRow]
+        const next = [...withoutSource]
+        next[existingTarget] = { ...next[existingTarget]!, ...targetRow }
+        return next
+      })
+
+      // Persist: delete source row, then upsert target
+      await supabase
+        .from('assignments')
+        .delete()
+        .eq('event_id', eventId)
+        .eq('signup_id', signupId)
+        .eq('shift', fromShift)
+
+      const existing = await supabase
+        .from('assignments')
+        .select('id')
+        .eq('event_id', eventId)
+        .eq('signup_id', signupId)
+        .eq('shift', toShift)
+        .maybeSingle()
+
+      if (existing.data) {
+        const { error } = await supabase
+          .from('assignments')
+          .update({ ...patch, updated_at: new Date().toISOString() })
+          .eq('id', (existing.data as { id: string }).id)
+        if (error) setError(error.message)
+      } else {
+        const { error } = await supabase.from('assignments').insert({
+          event_id: eventId,
+          signup_id: signupId,
+          shift: toShift,
+          building: patch.building ?? 'unassigned',
+          is_captain: patch.is_captain ?? false,
+          position: patch.position ?? 0,
+        })
+        if (error) setError(error.message)
+      }
+    },
+    [eventId],
+  )
+
+  return {
+    assignments,
+    loading,
+    error,
+    refresh,
+    moveOne,
+    moveAcrossShifts,
+    applyDraft,
+    removeAll,
+  }
 }

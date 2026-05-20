@@ -35,6 +35,36 @@ function pureType(members: Signup[]): TroopType | null {
   return members.every((m) => m.troop_type === first) ? first : null
 }
 
+/**
+ * Heatmap-style strip showing total tier power for the building.
+ * Scale is roughly "5 members × T10 ≈ full bar". Color goes cold→hot.
+ */
+function TierHeat({ members }: { members: Signup[] }) {
+  if (members.length === 0) return <div className="mb-2 h-1 rounded bg-zinc-900" />
+  const total = members.reduce((sum, m) => sum + m.tier, 0)
+  const lair = members.reduce((sum, m) => sum + m.max_solo_lair, 0)
+  const heat = Math.min(1, total / 50) // 50 = 5×T10 baseline
+  const pct = Math.round(heat * 100)
+  const color =
+    heat >= 0.8
+      ? 'from-orange-500 to-red-500'
+      : heat >= 0.5
+        ? 'from-yellow-500 to-orange-500'
+        : heat >= 0.25
+          ? 'from-sky-500 to-yellow-500'
+          : 'from-zinc-700 to-sky-500'
+  return (
+    <div className="mb-2" title={`Σ Tier ${total} · Σ Lair ${lair}`}>
+      <div className="relative h-1 overflow-hidden rounded bg-zinc-900">
+        <div
+          className={`absolute inset-y-0 left-0 rounded bg-gradient-to-r ${color} transition-all`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
 export function Building({
   building,
   shift,
@@ -73,6 +103,8 @@ export function Building({
         </span>
         <span className="text-[10px] text-zinc-500">{members.length}</span>
       </header>
+      <TierHeat members={members} />
+
       <div
         className={cn(
           'flex flex-col gap-1 overflow-y-auto pr-0.5',

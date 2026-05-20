@@ -49,15 +49,16 @@ src/
       TypeCard.tsx               # Fighter/Shooter/Rider picker
     plan/
       PlanPage.tsx               # /plan/:eventId — Plaza + DnD + sidebar
-      Plaza.tsx                  # 5-dropzone Hub-centric layout
-      Building.tsx               # Hub/turret slot, type-synergy ring
-      PlayerChip.tsx             # draggable card with captain crown
+      Plaza.tsx                  # 5-dropzone Hub-centric layout + Mud/Reserve row
+      Building.tsx               # Hub/turret slot, type-synergy ring, tier heat bar
+      PlayerChip.tsx             # draggable card with captain crown + score badge
+      OtherShiftDropzone.tsx     # cross-shift DnD target ("→ Shift X")
       UnassignedPool.tsx         # left column with filter/search
       ConflictBanner.tsx         # warnings (no captain, mixed types)
       StatsSidebar.tsx           # type-dist bars + counters
       auto-sort.ts               # pure algorithm — captainScore, autoSort
-      use-signups.ts             # fetch signups
-      use-assignments.ts         # CRUD + applyDraft
+      use-signups.ts             # fetch signups + realtime subscription
+      use-assignments.ts         # CRUD + applyDraft + moveAcrossShifts + realtime
     board/
       BoardPage.tsx              # /board/:eventId — read-only + PNG/QR
       Qr.tsx                     # qrcode → data URL
@@ -90,12 +91,18 @@ Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KE
 ## Backend / Supabase
 
 - **Project**: `wasteland-queen` (ref `ecxuvcuvuawxriucarmh`) in `eu-central-1`.
-- **Tables**: `events`, `signups`, `assignments` (see [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql)).
+- **Tables**: `events`, `signups`, `assignments` (see [`supabase/migrations/`](supabase/migrations/)).
 - **RLS**: pragmatic — anon can read/write all three tables (security by URL obscurity).
   Acceptable for a 30–50 player alliance tool where the planner URL is shared on Discord.
   If you ever need to harden, add per-event tokens and tighten the policies.
+- **Realtime**: `signups` + `assignments` are in the `supabase_realtime` publication.
+  `use-signups` / `use-assignments` subscribe via `supabase.channel()` so the planner
+  reflects sign-ups and DnD edits across tabs without F5.
 - **Migrations**: managed via Supabase MCP `apply_migration` (no local supabase CLI in scope).
   Mirror every applied migration in `supabase/migrations/NNNN_name.sql` for the repo record.
+- **Duplicate sign-ups**: unique index on `(event_id, lower(ign))` enforces one signup per
+  IGN per event (case-insensitive). The form looks up on IGN-blur and switches to
+  update-mode if a match is found.
 
 ## Auto-sort algorithm
 
