@@ -26,27 +26,10 @@ const CheatSheetPage = lazy(() =>
     default: m.CheatSheetPage,
   })),
 )
+const HeroScene = lazy(() =>
+  import('./features/home/HeroScene').then((m) => ({ default: m.HeroScene })),
+)
 
-function HomeNav() {
-  return (
-    <div className="mx-auto max-w-md px-4 py-12 text-center">
-      <Crown className="mx-auto h-12 w-12 text-yellow-400" />
-      <h1 className="mt-4 text-2xl font-semibold">Wasteland Queen</h1>
-      <p className="mt-2 text-sm text-zinc-400">
-        WK-Koordination — leg ein Event an oder öffne den Planner per URL.
-      </p>
-      <div className="mt-6 flex flex-col gap-2">
-        <NavLink
-          to="/plan/new"
-          className="inline-flex items-center justify-center gap-2 rounded bg-yellow-500 px-4 py-2 font-medium text-zinc-950 transition hover:bg-yellow-400"
-        >
-          <Plus className="h-4 w-4" />
-          Neues Event
-        </NavLink>
-      </div>
-    </div>
-  )
-}
 
 function RouteFallback() {
   return (
@@ -59,7 +42,9 @@ function RouteFallback() {
 export default function App() {
   const location = useLocation()
   const isPublic =
-    location.pathname.startsWith('/signup/') || location.pathname.startsWith('/board/')
+    location.pathname === '/' ||
+    location.pathname.startsWith('/signup/') ||
+    location.pathname.startsWith('/board/')
 
   return (
     <div className="flex h-full flex-col">
@@ -127,7 +112,7 @@ export default function App() {
       >
         <Suspense fallback={<RouteFallback />}>
           <Routes>
-            <Route path="/" element={<HomeNav />} />
+            <Route path="/" element={<HeroScene />} />
             <Route path="/plan/new" element={<EventSetupPage />} />
             <Route path="/plan" element={<PlanIndex />} />
             <Route path="/plan/:eventId" element={<PlanPage />} />
