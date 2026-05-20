@@ -81,13 +81,34 @@ docs/                            # WK guide reference (do not edit casually)
 
 ```
 pnpm install
-pnpm dev          # vite on http://localhost:5173
+pnpm dev            # vite on http://localhost:5173
 pnpm typecheck
 pnpm lint
 pnpm format
 pnpm build
 pnpm preview
+pnpm test           # vitest watch mode
+pnpm test:run       # one-shot
+pnpm test:coverage  # v8 coverage report
 ```
+
+## Tests
+
+Vitest + happy-dom. Pure-function coverage only — UI is verified manually via
+the Claude Preview MCP. Component / DnD tests would be high cost for low ROI
+given the visual nature of the planner.
+
+Suites:
+
+- `src/types/wk.test.ts` — `parseShiftPref` / `serializeShiftPref` roundtrip
+- `src/features/event/shift-window.test.ts` — UTC time-window math for 1–4 shifts
+- `src/features/event/event-id.test.ts` — next-Saturday + id roundtrip
+- `src/features/signup/signup-schema.test.ts` — zod boundaries
+- `src/features/awards/contribution.test.ts` — score-weighting + attendance + early-signup
+- `src/features/plan/auto-sort.test.ts` — all 3 turret modes, captain selection,
+  cross-shift, invariants (no double-assign, never auto-route to `hit-squad`)
+
+Coverage on tested files is 96%/91%/97%/97% (stmts/branch/funcs/lines).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
 (see `.env.example`).

@@ -56,6 +56,10 @@ interface TurretLayout {
 
 function turretLayout(mode: TurretMode, pool: Signup[]): TurretLayout {
   if (mode === 'mixed-4th') {
+    // Each type has its own type-pure turret. turret-w is intentionally left empty
+    // by auto-sort — the planner uses it as a manual overflow / "captain's choice" bucket.
+    // Players whose type already has a turret never end up in mixedBucket because
+    // typeToTurrets[type].length is 1, not 0.
     return {
       typeToTurrets: {
         fighter: ['turret-n'],
