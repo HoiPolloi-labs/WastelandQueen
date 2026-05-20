@@ -1,0 +1,40 @@
+{
+  "name": "wasteland-queen",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Coordination tool for the Wasteland King event in Puzzles & Survival",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "typecheck": "tsc -b --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.1",
+    "zod": "^3.24.1",
+    "lucide-react": "^0.469.0",
+    "clsx": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "tailwindcss": "^4.0.0-beta.8",
+    "@tailwindcss/vite": "^4.0.0-beta.8",
+    "eslint": "^9.17.0",
+    "@eslint/js": "^9.17.0",
+    "typescript-eslint": "^8.19.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "prettier": "^3.4.2"
+  },
+  "packageManager": "pnpm@10.28.2"
+}

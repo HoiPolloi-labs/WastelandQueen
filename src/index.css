@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-wk-hub: #facc15;
+  --color-wk-turret-n: #38bdf8;
+  --color-wk-turret-s: #f87171;
+  --color-wk-turret-e: #34d399;
+  --color-wk-turret-w: #c084fc;
+  --color-wk-mud: #78716c;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}

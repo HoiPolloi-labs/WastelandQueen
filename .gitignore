@@ -1,0 +1,19 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# vite
+*.log
+.vite/
+
+# claude
+.claude/settings.json
