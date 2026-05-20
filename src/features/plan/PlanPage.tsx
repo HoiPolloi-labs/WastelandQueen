@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router'
+import { save } from '@/lib/storage'
+import { LAST_EVENT_KEY } from './PlanIndex'
 import {
   DndContext,
   DragOverlay,
@@ -47,6 +49,10 @@ export function PlanPage() {
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }))
+
+  useEffect(() => {
+    if (event?.id) save(LAST_EVENT_KEY, event.id)
+  }, [event?.id])
 
   const signupById = useMemo(() => {
     const m = new Map<string, Signup>()

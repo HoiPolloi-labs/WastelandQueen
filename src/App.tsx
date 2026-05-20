@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { NavLink, Route, Routes, Navigate, useLocation } from 'react-router'
+import { NavLink, Route, Routes, useLocation } from 'react-router'
 import { Crown, Plus, ClipboardList, Loader2 } from 'lucide-react'
 import { cn } from './lib/cn'
 
@@ -11,6 +11,9 @@ const SignupPage = lazy(() =>
 )
 const PlanPage = lazy(() =>
   import('./features/plan/PlanPage').then((m) => ({ default: m.PlanPage })),
+)
+const PlanIndex = lazy(() =>
+  import('./features/plan/PlanIndex').then((m) => ({ default: m.PlanIndex })),
 )
 const BoardPage = lazy(() =>
   import('./features/board/BoardPage').then((m) => ({ default: m.BoardPage })),
@@ -104,7 +107,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomeNav />} />
             <Route path="/plan/new" element={<EventSetupPage />} />
-            <Route path="/plan" element={<Navigate to="/plan/new" replace />} />
+            <Route path="/plan" element={<PlanIndex />} />
             <Route path="/plan/:eventId" element={<PlanPage />} />
             <Route path="/signup/:eventId" element={<SignupPage />} />
             <Route path="/board/:eventId" element={<BoardPage />} />
