@@ -27,7 +27,8 @@
       "Bash(pnpm --version)",
       "PowerShell(Get-ChildItem:*)",
       "PowerShell(Test-Path:*)",
-      "PowerShell(New-Item:*)"
+      "PowerShell(New-Item:*)",
+      "mcp__991f15fa-7733-419b-97d1-60130f93834d__list_projects"
     ],
     "ask": [
       "Bash(git push:*)",

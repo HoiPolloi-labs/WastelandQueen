@@ -16,55 +16,59 @@ export type StateGrade =
   | 'diamond'
   | 'legend'
 
-export type Turret = 'north' | 'south' | 'east' | 'west'
-export type Building = Turret | 'hub'
+/** Buildings on the Zenith Plaza. 'unassigned' is the planner-side pool. */
+export type Building =
+  | 'hub'
+  | 'turret-n'
+  | 'turret-s'
+  | 'turret-e'
+  | 'turret-w'
+  | 'mud'
+  | 'reserve'
+  | 'unassigned'
 
-export interface Player {
+export const TURRETS = ['turret-n', 'turret-s', 'turret-e', 'turret-w'] as const
+export type Turret = (typeof TURRETS)[number]
+
+export type ShiftPref = 'first' | 'second' | 'both'
+export type ShiftNumber = 1 | 2
+
+export type TurretMode = 'duplicate-strongest' | 'mixed-4th' | 'manual'
+
+export interface EventConfig {
   id: string
+  starts_at_utc: string
+  shift_count: number
+  turret_mode: TurretMode
+  home_server: string
+  notes: string | null
+  created_at: string
+}
+
+export interface Signup {
+  id: string
+  event_id: string
   ign: string
-  discordHandle?: string
-  mightTrue?: number
-  rallySize?: number
-  mainTroopType?: TroopType
-  highestTier?: TroopTier
-  hasAgentX?: boolean
-  agentXRedStars?: number
-  hasDrJ?: boolean
-  natalyLevel?: number
-  notes?: string
-  createdAt: string
-  updatedAt: string
+  alliance_tag: string
+  server: string
+  tier: TroopTier
+  troop_type: TroopType
+  max_solo_lair: number
+  rally_size: number | null
+  willing_captain: boolean
+  shift_pref: ShiftPref
+  submitted_at: string
 }
 
-export type ShiftRole = 'captain' | 'defender' | 'mudsitter' | 'hit-squad' | 'reserve'
-
-export interface Shift {
+export interface Assignment {
   id: string
-  building: Building | 'mud' | 'foreign-hub'
-  startUtc: string
-  endUtc: string
-  playerIds: string[]
-  captainPlayerId?: string
-  role: ShiftRole
-  notes?: string
-}
-
-export interface NapTerm {
-  id: string
-  withState: string
-  text: string
-  startsAtUtc?: string
-  endsAtUtc?: string
-  status: 'proposed' | 'agreed' | 'broken' | 'expired'
-}
-
-export interface ScoreEntry {
-  id: string
-  playerId: string
-  source: 'kill' | 'death' | 'occupation'
-  points: number
-  recordedAt: string
-  note?: string
+  event_id: string
+  signup_id: string
+  building: Building
+  shift: ShiftNumber
+  is_captain: boolean
+  position: number
+  updated_at: string
 }
 
 /**
