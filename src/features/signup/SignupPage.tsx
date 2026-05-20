@@ -12,6 +12,7 @@ import { cn } from '@/lib/cn'
 import { TypeCard } from './TypeCard'
 import { signupSchema, type SignupInput } from './signup-schema'
 import { rememberToken, recallToken, forgetToken } from './edit-token'
+import { notifyDiscord } from './notify'
 import {
   parseShiftPref,
   serializeShiftPref,
@@ -226,7 +227,7 @@ export function SignupPage() {
         setErrorMsg(error.message)
         return
       }
-      // refresh local edit_token reference (it doesn't change on update)
+      notifyDiscord(event.id, existing.id, 'updated')
       setStatus('success')
       return
     }
@@ -266,6 +267,9 @@ export function SignupPage() {
     const row = inserted as Signup | null
     if (row?.edit_token) {
       rememberToken(event.id, parsed.data.ign, row.edit_token)
+    }
+    if (row?.id) {
+      notifyDiscord(event.id, row.id, 'inserted')
     }
     setStatus('success')
   }
@@ -484,6 +488,7 @@ export function SignupPage() {
                 setErrorMsg(error.message)
                 return
               }
+              notifyDiscord(event.id, existing.id, 'withdrawn')
               forgetToken(event.id, existing.ign)
               setStatus('withdrawn')
             }}

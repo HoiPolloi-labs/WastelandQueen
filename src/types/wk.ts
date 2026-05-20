@@ -66,6 +66,8 @@ export interface EventConfig {
   negotiator_ign: string | null
   /** S-codes of the up-to-3 opposing states currently targeted by hit-squad */
   foreign_targets: string[] | null
+  /** Discord channel webhook URL — secret, only readable by edge function */
+  discord_webhook_url: string | null
   created_at: string
 }
 

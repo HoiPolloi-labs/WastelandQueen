@@ -35,6 +35,7 @@ export function EventSetupPage() {
   const [assessorIgn, setAssessorIgn] = useState('')
   const [negotiatorIgn, setNegotiatorIgn] = useState('')
   const [foreignTargets, setForeignTargets] = useState('')
+  const [discordWebhookUrl, setDiscordWebhookUrl] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>('')
 
@@ -61,6 +62,7 @@ export function EventSetupPage() {
         .filter((s) => /^S\d+$/.test(s))
         .slice(0, 3) // doc: up to 3 opposing states
         .reduce<string[] | null>((acc, s) => (acc ? [...acc, s] : [s]), null),
+      discord_webhook_url: discordWebhookUrl.trim() || null,
     })
     if (error) {
       if (error.code === '23505') {
@@ -194,6 +196,15 @@ export function EventSetupPage() {
           placeholder="S850, S612"
           className="font-mono uppercase"
           hint="Bis zu 3 gegnerische States für Hit-Squad-Ziele. Komma- oder Space-getrennt."
+        />
+
+        <Input
+          label="Discord Webhook URL (optional)"
+          type="url"
+          value={discordWebhookUrl}
+          onChange={(e) => setDiscordWebhookUrl(e.target.value)}
+          placeholder="https://discord.com/api/webhooks/..."
+          hint="Bei jedem Sign-up/Update/Withdraw geht ein Embed an diesen Channel. URL bleibt server-seitig."
         />
 
         <Textarea
