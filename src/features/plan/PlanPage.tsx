@@ -36,6 +36,7 @@ import { StatsSidebar } from './StatsSidebar'
 import { OtherShiftDropzone } from './OtherShiftDropzone'
 import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
+import { NapPanel } from '@/features/nap/NapPanel'
 
 export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
@@ -210,6 +211,7 @@ export function PlanPage() {
         <div className="flex flex-col gap-3">
           <ConflictBanner shift={shift} signups={signups} assignments={assignments} />
           <StatsSidebar shift={shift} signups={signups} />
+          <NapPanel eventId={event.id} />
         </div>
       </div>
 

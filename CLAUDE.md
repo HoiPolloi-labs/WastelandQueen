@@ -49,7 +49,7 @@ src/
       TypeCard.tsx               # Fighter/Shooter/Rider picker
     plan/
       PlanPage.tsx               # /plan/:eventId — Plaza + DnD + sidebar
-      Plaza.tsx                  # 5-dropzone Hub-centric layout + Mud/Reserve row
+      Plaza.tsx                  # 5-dropzone Hub-centric layout + Mud/Reserve/Hit-Squad row
       Building.tsx               # Hub/turret slot, type-synergy ring, tier heat bar
       PlayerChip.tsx             # draggable card with captain crown + score badge
       OtherShiftDropzone.tsx     # cross-shift DnD target ("→ Shift X")
@@ -59,6 +59,10 @@ src/
       auto-sort.ts               # pure algorithm — captainScore, autoSort
       use-signups.ts             # fetch signups + realtime subscription
       use-assignments.ts         # CRUD + applyDraft + moveAcrossShifts + realtime
+    nap/
+      use-nap-terms.ts           # fetch/add/update/remove + realtime
+      NapList.tsx                # read-only or interactive list of terms
+      NapPanel.tsx               # planner sidebar variant with add-form
     board/
       BoardPage.tsx              # /board/:eventId — read-only + PNG/QR
       Qr.tsx                     # qrcode → data URL
@@ -128,6 +132,10 @@ unique constraint columns aren't in the conflict-target spec by default).
 
 - **3 troop types, 4 turrets** — the algorithm respects `turret_mode`; don't hard-code.
 - **Hub is the 5th building** and captain'd separately (not part of turret rotation).
+- **Hit Squad** (foreign-hub offensive captains) is a manual-only bucket. Auto-sort
+  never routes to `hit-squad` — it's always a deliberate R5/whale decision.
+- **NAP terms** are anon-write — anyone with the planner URL can edit. Acceptable for
+  the alliance trust model; harden later if needed.
 - **"Both"-shift players** show up in both shift pools; auto-sort prefers the shift where
   their type is thinner. Drag-edits are scoped to one shift; cross-shift moves are blocked
   (a player can be assigned in shift 1 AND shift 2 via separate auto-sort runs).

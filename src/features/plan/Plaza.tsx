@@ -31,6 +31,7 @@ export function Plaza({ shift, signups, assignments }: PlazaProps) {
   }))
   const mud = membersOf('mud', shift, assignments, signups)
   const reserve = membersOf('reserve', shift, assignments, signups)
+  const hitSquad = membersOf('hit-squad', shift, assignments, signups)
 
   const grid: Record<string, (typeof turretData)[number] | undefined> = {}
   for (const t of turretData) {
@@ -82,12 +83,18 @@ export function Plaza({ shift, signups, assignments }: PlazaProps) {
         <div />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         <Building building="mud" shift={shift} members={mud.members} captainId={null} />
         <Building
           building="reserve"
           shift={shift}
           members={reserve.members}
+          captainId={null}
+        />
+        <Building
+          building="hit-squad"
+          shift={shift}
+          members={hitSquad.members}
           captainId={null}
         />
       </div>

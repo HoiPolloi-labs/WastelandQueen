@@ -11,7 +11,15 @@ const BUILDING_LABELS: Record<BuildingType, string> = {
   'turret-w': 'West',
   mud: 'Mud',
   reserve: 'Reserve',
+  'hit-squad': 'Hit Squad',
   unassigned: 'Unassigned',
+}
+
+const BUILDING_HINTS: Partial<Record<BuildingType, string>> = {
+  'hit-squad':
+    'Offensive captains für Foreign-Hub-Angriff. Auto-Sort lässt diesen Bucket leer; Belegung ist manuelle Entscheidung.',
+  mud: 'Mudsitter: shielded sanctuaries clogging the mud. Schild-Stack (8h+1d) Pflicht, sonst Troops weg.',
+  reserve: 'Fill-ins, die einspringen wenn ein Defender ausfällt.',
 }
 
 const TYPE_RING: Record<TroopType, string> = {
@@ -88,15 +96,23 @@ export function Building({
         'flex flex-col rounded-lg border bg-zinc-900/60 p-2 transition',
         isOver ? 'border-yellow-500 bg-yellow-500/10' : 'border-zinc-800',
         isHub && 'border-yellow-600/60 bg-yellow-500/5 shadow-inner shadow-yellow-500/10',
+        building === 'hit-squad' && 'border-orange-700/50 bg-orange-500/5',
         synergy && `shadow-lg ring-2 ${TYPE_RING[synergy]}`,
         className,
       )}
     >
-      <header className="mb-2 flex items-center justify-between px-1">
+      <header
+        className="mb-2 flex items-center justify-between px-1"
+        title={BUILDING_HINTS[building]}
+      >
         <span
           className={cn(
             'text-xs font-semibold uppercase tracking-wider',
-            isHub ? 'text-yellow-400' : 'text-zinc-400',
+            isHub
+              ? 'text-yellow-400'
+              : building === 'hit-squad'
+                ? 'text-orange-400'
+                : 'text-zinc-400',
           )}
         >
           {BUILDING_LABELS[building]}

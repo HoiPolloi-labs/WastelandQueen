@@ -25,6 +25,7 @@ export type Building =
   | 'turret-w'
   | 'mud'
   | 'reserve'
+  | 'hit-squad'
   | 'unassigned'
 
 export const TURRETS = ['turret-n', 'turret-s', 'turret-e', 'turret-w'] as const
@@ -69,6 +70,18 @@ export interface Assignment {
   shift: ShiftNumber
   is_captain: boolean
   position: number
+  updated_at: string
+}
+
+export type NapStatus = 'proposed' | 'agreed' | 'broken' | 'expired'
+
+export interface NapTerm {
+  id: string
+  event_id: string
+  with_state: string
+  terms: string
+  status: NapStatus
+  created_at: string
   updated_at: string
 }
 

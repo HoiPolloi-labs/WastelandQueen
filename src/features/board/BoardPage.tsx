@@ -10,12 +10,16 @@ import { Segmented } from '@/components/ui/Segmented'
 import { downloadAsPng } from '@/lib/capture'
 import type { ShiftNumber } from '@/types/wk'
 import { Qr } from './Qr'
+import { useNapTerms } from '@/features/nap/use-nap-terms'
+import { NapList } from '@/features/nap/NapList'
+import { Handshake } from 'lucide-react'
 
 export function BoardPage() {
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading } = useEvent(eventId)
   const { signups } = useSignups(eventId)
   const { assignments } = useAssignments(eventId)
+  const { terms: napTerms } = useNapTerms(eventId)
   const [shift, setShift] = useState<ShiftNumber>(1)
   const captureRef = useRef<HTMLDivElement>(null)
   const [exporting, setExporting] = useState(false)
@@ -88,6 +92,15 @@ export function BoardPage() {
           <span>Drag-frei · nur Anzeige</span>
         </div>
         <Plaza shift={shift} signups={signups} assignments={assignments} />
+        {napTerms.length > 0 && (
+          <div className="mt-6 border-t border-zinc-800 pt-4">
+            <h3 className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+              <Handshake className="h-3.5 w-3.5" />
+              NAP-Terms
+            </h3>
+            <NapList terms={napTerms} />
+          </div>
+        )}
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
