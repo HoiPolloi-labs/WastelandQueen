@@ -11,6 +11,7 @@ import { Toggle } from '@/components/ui/Toggle'
 import { cn } from '@/lib/cn'
 import { TypeCard } from './TypeCard'
 import { signupSchema, type SignupInput } from './signup-schema'
+import { rememberToken, recallToken, forgetToken } from './edit-token'
 import {
   parseShiftPref,
   serializeShiftPref,
@@ -47,6 +48,9 @@ export function SignupPage() {
   const [stateAllianceJoined, setStateAllianceJoined] = useState(false)
   const [existing, setExisting] = useState<Signup | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
+  const isOwner = Boolean(
+    existing && eventId && recallToken(eventId, existing.ign) === existing.edit_token,
+  )
 
   const prefillFrom = (s: Signup) => {
     setExisting(s)
@@ -214,9 +218,24 @@ export function SignupPage() {
       ...parsed.data,
       state_alliance_joined: stateAllianceJoined,
     }
-    const { error } = existing
-      ? await supabase.from('signups').update(payload).eq('id', existing.id)
-      : await supabase.from('signups').insert(payload)
+
+    if (existing) {
+      const { error } = await supabase.from('signups').update(payload).eq('id', existing.id)
+      if (error) {
+        setStatus('error')
+        setErrorMsg(error.message)
+        return
+      }
+      // refresh local edit_token reference (it doesn't change on update)
+      setStatus('success')
+      return
+    }
+
+    const { data: inserted, error } = await supabase
+      .from('signups')
+      .insert(payload)
+      .select()
+      .single()
 
     if (error) {
       // Race: another tab inserted between our lookup and submit. Retry as update.
@@ -243,6 +262,11 @@ export function SignupPage() {
       return
     }
 
+    // Remember token for this device so the withdraw button appears next visit
+    const row = inserted as Signup | null
+    if (row?.edit_token) {
+      rememberToken(event.id, parsed.data.ign, row.edit_token)
+    }
     setStatus('success')
   }
 
@@ -446,7 +470,7 @@ export function SignupPage() {
           )}
         </Button>
 
-        {existing && (
+        {existing && isOwner && (
           <button
             type="button"
             onClick={async () => {
@@ -460,12 +484,18 @@ export function SignupPage() {
                 setErrorMsg(error.message)
                 return
               }
+              forgetToken(event.id, existing.ign)
               setStatus('withdrawn')
             }}
             className="mx-auto mt-1 text-xs text-red-400 underline hover:text-red-300"
           >
             Mich aus dem Event abmelden
           </button>
+        )}
+        {existing && !isOwner && (
+          <p className="mt-1 text-center text-[11px] text-zinc-500">
+            Abmelden geht nur vom Gerät auf dem die Eintragung gemacht wurde.
+          </p>
         )}
       </form>
     </div>

@@ -92,6 +92,8 @@ export interface Signup {
   occupation_points: number
   might_lost: number
   box_tier: BoxTier | null
+  /** UUID returned on insert, client stores in localStorage to gate Withdraw */
+  edit_token: string
   submitted_at: string
 }
 
