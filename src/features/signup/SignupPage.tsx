@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
-import { Crown, Check, AlertCircle, Loader2, Info } from 'lucide-react'
+import { Crown, Check, AlertCircle, Loader2, Info, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
 import { shiftWindowLabel } from '@/features/event/shift-window'
@@ -20,7 +20,7 @@ import {
   type TroopType,
 } from '@/types/wk'
 
-type Status = 'idle' | 'submitting' | 'success' | 'error'
+type Status = 'idle' | 'submitting' | 'success' | 'error' | 'withdrawn'
 
 const TIER_OPTIONS = Array.from({ length: 12 }, (_, i) => ({
   value: (i + 1) as TroopTier,
@@ -93,6 +93,30 @@ export function SignupPage() {
       </div>
     )
   }
+  if (status === 'withdrawn') {
+    return (
+      <div className="mx-auto max-w-md px-4 py-12 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-zinc-800 text-zinc-400">
+          <X className="h-8 w-8" />
+        </div>
+        <h1 className="mt-4 text-xl font-semibold">Abgemeldet</h1>
+        <p className="mt-2 text-sm text-zinc-400">
+          {ign} ist aus dem Event raus. Du kannst dich jederzeit wieder eintragen.
+        </p>
+        <Button
+          variant="secondary"
+          className="mt-6"
+          onClick={() => {
+            setStatus('idle')
+            setExisting(null)
+            setIgn('')
+          }}
+        >
+          Zurück zum Formular
+        </Button>
+      </div>
+    )
+  }
   if (status === 'success') {
     const wasUpdate = Boolean(existing)
     return (
@@ -107,6 +131,14 @@ export function SignupPage() {
           Danke {ign} — {wasUpdate ? 'deine Daten sind aktualisiert' : 'deine Daten sind bei uns'}.
           Du kannst jederzeit zurückkommen und mit derselben IGN anpassen.
         </p>
+        <ul className="mx-auto mt-6 max-w-sm space-y-2 rounded border border-zinc-800 bg-zinc-900/40 p-4 text-left text-xs text-zinc-300">
+          <li className="font-semibold uppercase tracking-wider text-zinc-500">Pre-Event Checklist</li>
+          <li>☐ Infirmary mit T1-Taxis vollfüllen (Casualties → Deep Healing)</li>
+          <li>☐ Miraculous Survival in Nova/Research auf Max</li>
+          <li>☐ First Aid + Instant Heal Talents geladen</li>
+          <li>☐ Trainings-Speedups + Ressourcen für Fast Comeback</li>
+          <li>☐ Drei-Tage-Schild stacken falls Mudsitter</li>
+        </ul>
         <Button
           variant="secondary"
           className="mt-6"
@@ -371,8 +403,36 @@ export function SignupPage() {
         )}
 
         <Button type="submit" size="lg" disabled={status === 'submitting'} className="mt-2">
-          {status === 'submitting' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Eintragen'}
+          {status === 'submitting' ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : existing ? (
+            'Aktualisieren'
+          ) : (
+            'Eintragen'
+          )}
         </Button>
+
+        {existing && (
+          <button
+            type="button"
+            onClick={async () => {
+              if (!confirm(`${existing.ign} wirklich aus dem Event nehmen?`)) return
+              const { error } = await supabase
+                .from('signups')
+                .delete()
+                .eq('id', existing.id)
+              if (error) {
+                setStatus('error')
+                setErrorMsg(error.message)
+                return
+              }
+              setStatus('withdrawn')
+            }}
+            className="mx-auto mt-1 text-xs text-red-400 underline hover:text-red-300"
+          >
+            Mich aus dem Event abmelden
+          </button>
+        )}
       </form>
     </div>
   )

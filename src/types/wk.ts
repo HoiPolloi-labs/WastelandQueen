@@ -7,6 +7,11 @@ export type TroopTier = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 export type TroopType = 'fighter' | 'shooter' | 'rider'
 
+/**
+ * State-Grade gates rewards (per WK guide):
+ * - Nataly frags only unlock at Gold+ (Gold=5, Platinum=8, Diamond=12)
+ * - Gold+ states LOSE trophies if they only defend; they must take a foreign hub
+ */
 export type StateGrade =
   | 'starter'
   | 'bronze'
@@ -55,8 +60,10 @@ export interface EventConfig {
   turret_mode: TurretMode
   home_server: string
   notes: string | null
+  state_grade: StateGrade | null
   created_at: string
 }
+
 
 export interface Signup {
   id: string

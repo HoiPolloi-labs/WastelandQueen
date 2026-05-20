@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Segmented } from '@/components/ui/Segmented'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { nextSaturdayIso, eventIdFromIso } from './event-id'
-import type { TurretMode } from '@/types/wk'
+import type { StateGrade, TurretMode } from '@/types/wk'
 
 const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
   {
@@ -30,6 +30,7 @@ export function EventSetupPage() {
   const [homeServer, setHomeServer] = useState('S724')
   const [notes, setNotes] = useState('')
   const [shiftCount, setShiftCount] = useState<number>(2)
+  const [stateGrade, setStateGrade] = useState<StateGrade | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>('')
 
@@ -46,6 +47,7 @@ export function EventSetupPage() {
       turret_mode: turretMode,
       home_server: homeServer.toUpperCase(),
       notes: notes || null,
+      state_grade: stateGrade,
     })
     if (error) {
       if (error.code === '23505') {
@@ -124,6 +126,29 @@ export function EventSetupPage() {
           onChange={(e) => setHomeServer(e.target.value.toUpperCase())}
           className="font-mono uppercase"
         />
+
+        <div>
+          <span className="mb-1 block text-sm font-medium text-zinc-300">
+            State Grade <span className="text-zinc-500">(optional)</span>
+          </span>
+          <Segmented
+            options={[
+              { value: '', label: '—' },
+              { value: 'starter', label: 'Starter' },
+              { value: 'bronze', label: 'Bronze' },
+              { value: 'silver', label: 'Silver' },
+              { value: 'gold', label: 'Gold' },
+              { value: 'platinum', label: 'Platinum' },
+              { value: 'diamond', label: 'Diamond' },
+              { value: 'legend', label: 'Legend' },
+            ]}
+            value={stateGrade ?? ''}
+            onChange={(v) => setStateGrade(v === '' ? null : (v as StateGrade))}
+          />
+          <p className="mt-1 text-xs text-zinc-500">
+            Gold+ schaltet Nataly-Frags frei und erzwingt offensive Strategie (Trophy-Verlust ohne foreign-Hub-Capture).
+          </p>
+        </div>
 
         <Textarea
           label="Notes (optional)"

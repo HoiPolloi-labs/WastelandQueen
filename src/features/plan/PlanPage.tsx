@@ -160,7 +160,14 @@ export function PlanPage() {
   return (
     <NotesProvider value={{ openNote: setEditingNoteId }}>
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-      <PageHeader title={`Planner · ${event.id}`} subtitle={`Modus: ${event.turret_mode} · Server ${event.home_server}`}>
+      <PageHeader
+        title={`Planner · ${event.id}`}
+        subtitle={`${event.state_grade ? `${event.state_grade.toUpperCase()} · ` : ''}Modus: ${event.turret_mode} · Server ${event.home_server}${
+          event.state_grade && ['gold', 'platinum', 'diamond', 'legend'].includes(event.state_grade)
+            ? ' · Trophy-Verlust ohne foreign-Hub-Capture'
+            : ''
+        }`}
+      >
         <Button variant="secondary" size="sm" onClick={copySignupUrl} title={signupUrl}>
           <ClipboardCopy className="h-3.5 w-3.5" />
           Sign-up URL
