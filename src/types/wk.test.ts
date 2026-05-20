@@ -28,6 +28,17 @@ describe('parseShiftPref', () => {
   it('handles empty string as empty array', () => {
     expect(parseShiftPref('')).toEqual([])
   })
+
+  it('backwards-compat: parses legacy "first" / "second" / "both"', () => {
+    expect(parseShiftPref('first')).toEqual([1])
+    expect(parseShiftPref('second')).toEqual([2])
+    expect(parseShiftPref('both')).toEqual([1, 2])
+  })
+
+  it('backwards-compat is case-insensitive and trims', () => {
+    expect(parseShiftPref('FIRST')).toEqual([1])
+    expect(parseShiftPref(' both ')).toEqual([1, 2])
+  })
 })
 
 describe('serializeShiftPref', () => {

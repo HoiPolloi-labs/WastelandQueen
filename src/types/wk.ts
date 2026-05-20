@@ -40,7 +40,16 @@ export type Turret = (typeof TURRETS)[number]
 export type ShiftPref = string
 export type ShiftNumber = 1 | 2 | 3 | 4
 
+/**
+ * Parses both the current comma-separated format AND the pre-Pass-A legacy
+ * enum values ('first'/'second'/'both'). Defensive against old browser tabs
+ * still running pre-migration bundles, or stray DB rows from outside the app.
+ */
 export function parseShiftPref(pref: string): ShiftNumber[] {
+  const trimmed = pref.trim().toLowerCase()
+  if (trimmed === 'first') return [1]
+  if (trimmed === 'second') return [2]
+  if (trimmed === 'both') return [1, 2]
   return pref
     .split(',')
     .map((s) => Number(s.trim()) as ShiftNumber)
