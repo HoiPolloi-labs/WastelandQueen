@@ -20,6 +20,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
   const [tagFilter, setTagFilter] = useState<string | null>(null)
+  const [serverFilter, setServerFilter] = useState<string | null>(null)
 
   const assignedIds = useMemo(() => {
     const set = new Set<string>()
@@ -37,6 +38,12 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
     return [...tags].sort()
   }, [signups])
 
+  const servers = useMemo(() => {
+    const out = new Set<string>()
+    for (const s of signups) out.add(s.server)
+    return [...out].sort()
+  }, [signups])
+
   const unassigned = useMemo(() => {
     const matchesShift = (s: Signup) => parseShiftPref(s.shift_pref).includes(shift)
     const q = query.trim().toLowerCase()
@@ -45,13 +52,14 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
       .filter((s) => !assignedIds.has(s.id))
       .filter((s) => filter === 'all' || s.troop_type === filter)
       .filter((s) => !tagFilter || s.alliance_tag === tagFilter)
+      .filter((s) => !serverFilter || s.server === serverFilter)
       .filter(
         (s) =>
           !q ||
           s.ign.toLowerCase().includes(q) ||
           s.alliance_tag.toLowerCase().includes(q),
       )
-  }, [signups, assignedIds, shift, query, filter, tagFilter])
+  }, [signups, assignedIds, shift, query, filter, tagFilter, serverFilter])
 
   const { setNodeRef, isOver } = useDroppable({
     id: `drop:unassigned:${shift}`,
@@ -120,6 +128,25 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
               )}
             >
               {t}
+            </button>
+          ))}
+        </div>
+      )}
+      {servers.length > 1 && (
+        <div className="mb-2 flex flex-wrap gap-1">
+          {servers.map((s) => (
+            <button
+              type="button"
+              key={s}
+              onClick={() => setServerFilter(s === serverFilter ? null : s)}
+              className={cn(
+                'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
+                serverFilter === s
+                  ? 'border-sky-500/60 bg-sky-500/15 text-sky-200'
+                  : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300',
+              )}
+            >
+              {s}
             </button>
           ))}
         </div>

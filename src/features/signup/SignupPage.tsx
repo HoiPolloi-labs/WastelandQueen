@@ -41,6 +41,7 @@ export function SignupPage() {
   const [troopType, setTroopType] = useState<TroopType | null>(null)
   const [maxSoloLair, setMaxSoloLair] = useState<number | ''>('')
   const [rallySize, setRallySize] = useState<string>('')
+  const [trueMight, setTrueMight] = useState<string>('')
   const [willingCaptain, setWillingCaptain] = useState(false)
   const [shifts, setShifts] = useState<ShiftNumber[]>([])
   const [stateAllianceJoined, setStateAllianceJoined] = useState(false)
@@ -55,6 +56,7 @@ export function SignupPage() {
     setTroopType(s.troop_type)
     setMaxSoloLair(s.max_solo_lair)
     setRallySize(s.rally_size == null ? '' : String(s.rally_size))
+    setTrueMight(s.true_might == null ? '' : String(s.true_might))
     setWillingCaptain(s.willing_captain)
     setShifts(parseShiftPref(s.shift_pref))
     setStateAllianceJoined(s.state_alliance_joined)
@@ -153,8 +155,10 @@ export function SignupPage() {
             setTroopType(null)
             setMaxSoloLair('')
             setRallySize('')
+            setTrueMight('')
             setWillingCaptain(false)
             setShifts([])
+            setStateAllianceJoined(false)
           }}
         >
           Noch einen Spieler eintragen
@@ -186,6 +190,7 @@ export function SignupPage() {
       troop_type: troopType,
       max_solo_lair: typeof maxSoloLair === 'number' ? maxSoloLair : Number.NaN,
       rally_size: rallySize ? Number(rallySize.replace(/[.\s,]/g, '')) : null,
+      true_might: trueMight ? Number(trueMight.replace(/[.\s,]/g, '')) : null,
       willing_captain: willingCaptain,
       shift_pref: shifts.length > 0 ? serializeShiftPref(shifts) : '',
     })
@@ -350,17 +355,30 @@ export function SignupPage() {
           required
         />
 
-        <Input
-          label="Rally Size (optional)"
-          type="number"
-          inputMode="numeric"
-          min={0}
-          step={50000}
-          placeholder="1500000"
-          value={rallySize}
-          onChange={(e) => setRallySize(e.target.value)}
-          hint="Ungefähr ist OK. Wichtig für Captain-Auswahl."
-        />
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            label="Rally Size (optional)"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            step={50000}
+            placeholder="1500000"
+            value={rallySize}
+            onChange={(e) => setRallySize(e.target.value)}
+            hint="Captain-Capacity"
+          />
+          <Input
+            label="True Might (optional)"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            step={1000000}
+            placeholder="80000000"
+            value={trueMight}
+            onChange={(e) => setTrueMight(e.target.value)}
+            hint="Whale-Strategy-Signal"
+          />
+        </div>
 
         <Toggle
           checked={willingCaptain}

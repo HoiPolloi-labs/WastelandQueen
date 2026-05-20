@@ -31,6 +31,10 @@ export function EventSetupPage() {
   const [notes, setNotes] = useState('')
   const [shiftCount, setShiftCount] = useState<number>(2)
   const [stateGrade, setStateGrade] = useState<StateGrade | null>(null)
+  const [governorIgn, setGovernorIgn] = useState('')
+  const [assessorIgn, setAssessorIgn] = useState('')
+  const [negotiatorIgn, setNegotiatorIgn] = useState('')
+  const [foreignTargets, setForeignTargets] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>('')
 
@@ -48,6 +52,15 @@ export function EventSetupPage() {
       home_server: homeServer.toUpperCase(),
       notes: notes || null,
       state_grade: stateGrade,
+      governor_ign: governorIgn.trim() || null,
+      assessor_ign: assessorIgn.trim() || null,
+      negotiator_ign: negotiatorIgn.trim() || null,
+      foreign_targets: foreignTargets
+        .split(/[,\s]+/)
+        .map((s) => s.trim().toUpperCase())
+        .filter((s) => /^S\d+$/.test(s))
+        .slice(0, 3) // doc: up to 3 opposing states
+        .reduce<string[] | null>((acc, s) => (acc ? [...acc, s] : [s]), null),
     })
     if (error) {
       if (error.code === '23505') {
@@ -149,6 +162,39 @@ export function EventSetupPage() {
             Gold+ schaltet Nataly-Frags frei und erzwingt offensive Strategie (Trophy-Verlust ohne foreign-Hub-Capture).
           </p>
         </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <Input
+            label="Governor"
+            value={governorIgn}
+            onChange={(e) => setGovernorIgn(e.target.value)}
+            placeholder="IGN"
+            hint="Erbt Award-Boxes"
+          />
+          <Input
+            label="Assessor"
+            value={assessorIgn}
+            onChange={(e) => setAssessorIgn(e.target.value)}
+            placeholder="IGN"
+            hint="Entscheidet NAP vs War"
+          />
+          <Input
+            label="Negotiator"
+            value={negotiatorIgn}
+            onChange={(e) => setNegotiatorIgn(e.target.value)}
+            placeholder="IGN"
+            hint="Battle-Division-Chat"
+          />
+        </div>
+
+        <Input
+          label="Foreign Targets (optional)"
+          value={foreignTargets}
+          onChange={(e) => setForeignTargets(e.target.value.toUpperCase())}
+          placeholder="S850, S612"
+          className="font-mono uppercase"
+          hint="Bis zu 3 gegnerische States für Hit-Squad-Ziele. Komma- oder Space-getrennt."
+        />
 
         <Textarea
           label="Notes (optional)"

@@ -40,6 +40,8 @@ interface BuildingProps {
   captainId: string | null
   className?: string
   large?: boolean
+  /** Override the default tooltip — e.g. Hit Squad gets foreign-target list */
+  hintOverride?: string
 }
 
 function pureType(members: Signup[]): TroopType | null {
@@ -85,6 +87,7 @@ export function Building({
   captainId,
   className,
   large,
+  hintOverride,
 }: BuildingProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: `drop:${building}:${shift}`,
@@ -108,7 +111,7 @@ export function Building({
     >
       <header
         className="mb-2 flex items-center justify-between px-1"
-        title={BUILDING_HINTS[building]}
+        title={hintOverride ?? BUILDING_HINTS[building]}
       >
         <span
           className={cn(

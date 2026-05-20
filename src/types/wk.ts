@@ -61,6 +61,11 @@ export interface EventConfig {
   home_server: string
   notes: string | null
   state_grade: StateGrade | null
+  governor_ign: string | null
+  assessor_ign: string | null
+  negotiator_ign: string | null
+  /** S-codes of the up-to-3 opposing states currently targeted by hit-squad */
+  foreign_targets: string[] | null
   created_at: string
 }
 
@@ -75,6 +80,7 @@ export interface Signup {
   troop_type: TroopType
   max_solo_lair: number
   rally_size: number | null
+  true_might: number | null
   willing_captain: boolean
   shift_pref: ShiftPref
   planner_notes: string | null

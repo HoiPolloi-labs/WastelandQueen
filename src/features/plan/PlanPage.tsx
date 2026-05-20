@@ -163,11 +163,55 @@ export function PlanPage() {
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <PageHeader
         title={`Planner · ${event.id}`}
-        subtitle={`${event.state_grade ? `${event.state_grade.toUpperCase()} · ` : ''}Modus: ${event.turret_mode} · Server ${event.home_server}${
-          event.state_grade && ['gold', 'platinum', 'diamond', 'legend'].includes(event.state_grade)
-            ? ' · Trophy-Verlust ohne foreign-Hub-Capture'
-            : ''
-        }`}
+        subtitle={
+          <>
+            {event.state_grade && (
+              <span className="font-semibold text-yellow-400">
+                {event.state_grade.toUpperCase()} ·{' '}
+              </span>
+            )}
+            <span>Modus: {event.turret_mode} · Server {event.home_server}</span>
+            {event.state_grade &&
+              ['gold', 'platinum', 'diamond', 'legend'].includes(event.state_grade) && (
+                <span> · Trophy-Verlust ohne foreign-Hub-Capture</span>
+              )}
+            {(event.governor_ign || event.assessor_ign || event.negotiator_ign) && (
+              <span className="mt-1 block text-[11px]">
+                {event.governor_ign && (
+                  <span className="mr-3">
+                    <span className="text-zinc-500">Gov</span>{' '}
+                    <span className="text-yellow-300">{event.governor_ign}</span>
+                  </span>
+                )}
+                {event.assessor_ign && (
+                  <span className="mr-3">
+                    <span className="text-zinc-500">Ass</span>{' '}
+                    <span className="text-zinc-300">{event.assessor_ign}</span>
+                  </span>
+                )}
+                {event.negotiator_ign && (
+                  <span className="mr-3">
+                    <span className="text-zinc-500">Neg</span>{' '}
+                    <span className="text-zinc-300">{event.negotiator_ign}</span>
+                  </span>
+                )}
+              </span>
+            )}
+            {event.foreign_targets && event.foreign_targets.length > 0 && (
+              <span className="mt-1 block text-[11px]">
+                <span className="text-zinc-500">Hit-Squad-Ziele:</span>{' '}
+                {event.foreign_targets.map((t) => (
+                  <span
+                    key={t}
+                    className="ml-1 inline-block rounded border border-orange-500/40 bg-orange-500/10 px-1.5 py-0.5 font-mono text-orange-300"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </span>
+            )}
+          </>
+        }
       >
         <EventPicker currentEventId={event.id} />
         <Button variant="secondary" size="sm" onClick={copySignupUrl} title={signupUrl}>
@@ -219,7 +263,12 @@ export function PlanPage() {
 
       <div className="grid grid-cols-[280px_1fr_280px] gap-4">
         <UnassignedPool shift={shift} signups={signups} assignments={assignments} />
-        <Plaza shift={shift} signups={signups} assignments={assignments} />
+        <Plaza
+          shift={shift}
+          signups={signups}
+          assignments={assignments}
+          foreignTargets={event.foreign_targets}
+        />
         <div className="flex flex-col gap-3">
           <ConflictBanner shift={shift} signups={signups} assignments={assignments} />
           <StatsSidebar shift={shift} signups={signups} />

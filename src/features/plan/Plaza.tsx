@@ -6,6 +6,8 @@ interface PlazaProps {
   shift: ShiftNumber
   signups: Signup[]
   assignments: Assignment[]
+  /** Optional foreign-state targets, surfaced on the Hit-Squad bucket */
+  foreignTargets?: string[] | null
 }
 
 function membersOf(
@@ -23,7 +25,7 @@ function membersOf(
   return { members, captainId: captain }
 }
 
-export function Plaza({ shift, signups, assignments }: PlazaProps) {
+export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProps) {
   const hub = membersOf('hub', shift, assignments, signups)
   const turretData = TURRETS.map((t) => ({
     turret: t,
@@ -96,6 +98,11 @@ export function Plaza({ shift, signups, assignments }: PlazaProps) {
           shift={shift}
           members={hitSquad.members}
           captainId={null}
+          hintOverride={
+            foreignTargets && foreignTargets.length > 0
+              ? `Offensive captains → ${foreignTargets.join(', ')}. Auto-Sort lässt diesen Bucket leer.`
+              : undefined
+          }
         />
       </div>
     </div>

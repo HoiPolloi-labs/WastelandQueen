@@ -27,6 +27,13 @@ export const signupSchema = z.object({
     .nullable()
     .optional()
     .transform((v) => (v == null ? null : v)),
+  true_might: z
+    .number()
+    .int()
+    .nonnegative()
+    .nullable()
+    .optional()
+    .transform((v) => (v == null ? null : v)),
   willing_captain: z.boolean(),
   shift_pref: z
     .string()

@@ -93,7 +93,12 @@ export function BoardPage() {
           <span>Shift {shift} · WK Setup</span>
           <span>Drag-frei · nur Anzeige</span>
         </div>
-        <Plaza shift={shift} signups={signups} assignments={assignments} />
+        <Plaza
+          shift={shift}
+          signups={signups}
+          assignments={assignments}
+          foreignTargets={event.foreign_targets}
+        />
         {napTerms.length > 0 && (
           <div className="mt-6 border-t border-zinc-800 pt-4">
             <h3 className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
