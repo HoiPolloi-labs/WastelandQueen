@@ -17,6 +17,7 @@ const baseEvent: EventConfig = {
   negotiator_ign: null,
   foreign_targets: null,
   discord_webhook_url: null,
+  hub_defender_target: 4,
   created_at: EVENT_START,
 }
 
