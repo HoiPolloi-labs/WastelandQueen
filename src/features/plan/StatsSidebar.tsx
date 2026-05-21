@@ -29,7 +29,7 @@ export function StatsSidebar({ shift, signups }: StatsSidebarProps) {
       <div className="grid grid-cols-3 gap-2">
         <Stat icon={Users} label="Spieler" value={total} />
         <Stat icon={Crown} label="Captains" value={captains} />
-        <Stat icon={Activity} label="Ø Lair" value={avgLair.toFixed(1)} />
+        <Stat icon={Activity} label="Ø Lair" value={Math.round(avgLair)} />
       </div>
       <div>
         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">
