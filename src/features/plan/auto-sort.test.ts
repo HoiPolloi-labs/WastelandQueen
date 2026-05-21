@@ -85,11 +85,50 @@ describe('autoSort — duplicate-strongest mode', () => {
       ],
       turretMode: 'duplicate-strongest',
       shiftCount: 1,
+      hubDefenderTarget: 0, // captain-only
     })
     const hub = at(result, 'hub', 1)
     expect(hub).toHaveLength(1)
     expect(hub[0]!.signup_id).toBe('whale')
     expect(hub[0]!.is_captain).toBe(true)
+  })
+
+  it('parks N defenders of the captain-type on the Hub when hubDefenderTarget is set', () => {
+    const result = autoSort({
+      signups: [
+        s({ id: 'whale', type: 'rider', rally: 3_000_000, captain: true, tier: 12 }),
+        s({ id: 'r2', type: 'rider' }),
+        s({ id: 'r3', type: 'rider' }),
+        s({ id: 'r4', type: 'rider' }),
+        s({ id: 's1', type: 'shooter', captain: true }),
+        s({ id: 'f1', type: 'fighter', captain: true }),
+      ],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      hubDefenderTarget: 2,
+    })
+    const hub = at(result, 'hub', 1)
+    // 1 captain + 2 rider defenders
+    expect(hub).toHaveLength(3)
+    expect(hub[0]!.signup_id).toBe('whale')
+    expect(hub[0]!.is_captain).toBe(true)
+    expect(hub.slice(1).every((a) => !a.is_captain)).toBe(true)
+    // Defender IDs are pulled from rider pool, top-scored first (r2, r3, r4 are equal)
+    expect(hub.slice(1).map((a) => a.signup_id).sort()).toEqual(['r2', 'r3'])
+  })
+
+  it('hubDefenderTarget caps at the available pool (no over-fill)', () => {
+    const result = autoSort({
+      signups: [
+        s({ id: 'cap', type: 'rider', captain: true, rally: 3_000_000 }),
+        s({ id: 'r2', type: 'rider' }),
+      ],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      hubDefenderTarget: 10,
+    })
+    const hub = at(result, 'hub', 1)
+    expect(hub).toHaveLength(2) // captain + only 1 other rider available
   })
 
   it('dominant type gets 2 turrets, others get 1', () => {
@@ -104,6 +143,7 @@ describe('autoSort — duplicate-strongest mode', () => {
       ],
       turretMode: 'duplicate-strongest',
       shiftCount: 1,
+      hubDefenderTarget: 0,
     })
     // hub gets r1 (strongest willing). Rider remaining = 2, gets turret-n + turret-s.
     expect(at(result, 'hub', 1)[0]!.signup_id).toBe('r1')
@@ -128,6 +168,7 @@ describe('autoSort — duplicate-strongest mode', () => {
       ],
       turretMode: 'duplicate-strongest',
       shiftCount: 1,
+      hubDefenderTarget: 0,
     })
     // extraF (fighter) should land on a fighter turret (the dominant type since 2 fighters)
     // hub is 'cap'. fighter is dominant (2 fighters: cap+extraF), so fighter gets 2 turrets.

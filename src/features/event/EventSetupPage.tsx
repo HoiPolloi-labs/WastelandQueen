@@ -30,6 +30,7 @@ export function EventSetupPage() {
   const [homeServer, setHomeServer] = useState('S724')
   const [notes, setNotes] = useState('')
   const [shiftCount, setShiftCount] = useState<number>(2)
+  const [hubDefenderTarget, setHubDefenderTarget] = useState<number>(4)
   const [stateGrade, setStateGrade] = useState<StateGrade | null>(null)
   const [governorIgn, setGovernorIgn] = useState('')
   const [assessorIgn, setAssessorIgn] = useState('')
@@ -49,6 +50,7 @@ export function EventSetupPage() {
       id: eventId,
       starts_at_utc: new Date(startsAt).toISOString(),
       shift_count: shiftCount,
+      hub_defender_target: hubDefenderTarget,
       turret_mode: turretMode,
       home_server: homeServer.toUpperCase(),
       notes: notes || null,
@@ -90,17 +92,31 @@ export function EventSetupPage() {
           required
         />
 
-        <div>
-          <span className="mb-1 block text-sm font-medium text-zinc-300">Shifts</span>
-          <Segmented
-            options={[
-              { value: 1, label: '1 Shift' },
-              { value: 2, label: '2 Shifts' },
-              { value: 3, label: '3 Shifts' },
-              { value: 4, label: '4 Shifts' },
-            ]}
-            value={shiftCount}
-            onChange={setShiftCount}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div>
+            <span className="mb-1 block text-sm font-medium text-zinc-300">Shifts</span>
+            <Segmented
+              options={[
+                { value: 1, label: '1' },
+                { value: 2, label: '2' },
+                { value: 3, label: '3' },
+                { value: 4, label: '4' },
+              ]}
+              value={shiftCount}
+              onChange={setShiftCount}
+            />
+          </div>
+          <Input
+            label="Hub-Defender (zusätzlich zum Captain)"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={20}
+            value={hubDefenderTarget}
+            onChange={(e) =>
+              setHubDefenderTarget(Math.max(0, Math.min(20, Number(e.target.value) || 0)))
+            }
+            hint="Auto-Sort parkt N Defender vom Captain-Typ auf dem Hub"
           />
         </div>
 

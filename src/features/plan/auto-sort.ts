@@ -12,6 +12,9 @@ export interface AutoSortInput {
   signups: Signup[]
   turretMode: TurretMode
   shiftCount: 1 | 2 | 3 | 4
+  /** Number of defenders to park on the Hub alongside the captain (same
+   *  troop type for Super-Reinforcement synergy). Default 4. */
+  hubDefenderTarget?: number
 }
 
 export type DraftAssignment = Pick<
@@ -117,10 +120,25 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
     }
 
     const used = new Set<string>()
+    const hubDefenders: Signup[] = []
 
     // Hub: stärkster willing-captain, typunabhängig
     const hubCaptain = pool.find((s) => s.willing_captain)
     if (hubCaptain) used.add(hubCaptain.id)
+
+    // Hub-Defender: nächste K Spieler vom Captain-Typ (Super-Reinforcement-Synergy).
+    // Wenn kein Hub-Captain existiert, kein Hub-Defender-Sense — skip.
+    const hubTarget = Math.max(0, input.hubDefenderTarget ?? 4)
+    if (hubCaptain && hubTarget > 0) {
+      const captainType = hubCaptain.troop_type
+      for (const s of pool) {
+        if (hubDefenders.length >= hubTarget) break
+        if (used.has(s.id)) continue
+        if (s.troop_type !== captainType) continue
+        used.add(s.id)
+        hubDefenders.push(s)
+      }
+    }
 
     // Türme: Captain pro Typ, dann Füllung
     const layout = turretLayout(input.turretMode, pool.filter((s) => !used.has(s.id)))
@@ -168,7 +186,7 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
       turretMembers[layout.mixedTurret].push(...mixedBucket)
     }
 
-    // Output: Hub captain, Turret members, Reserves
+    // Output: Hub captain + Hub defenders, Turret members, Reserves
     if (hubCaptain) {
       out.push({
         signup_id: hubCaptain.id,
@@ -176,6 +194,15 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
         shift,
         is_captain: true,
         position: 0,
+      })
+      hubDefenders.forEach((s, i) => {
+        out.push({
+          signup_id: s.id,
+          building: 'hub',
+          shift,
+          is_captain: false,
+          position: i + 1,
+        })
       })
     }
     for (const turret of TURRETS) {

@@ -137,6 +137,7 @@ export function PlanPage() {
       signups,
       turretMode: event.turret_mode,
       shiftCount: Math.max(1, Math.min(4, event.shift_count)) as 1 | 2 | 3 | 4,
+      hubDefenderTarget: event.hub_defender_target,
     })
     await applyDraft(drafts)
     setBusy(false)

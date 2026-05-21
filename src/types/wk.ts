@@ -77,6 +77,9 @@ export interface EventConfig {
   foreign_targets: string[] | null
   /** Discord channel webhook URL — secret, only readable by edge function */
   discord_webhook_url: string | null
+  /** How many defenders auto-sort should park on the Hub alongside the captain.
+   *  Same troop type as the captain (Super Reinforcement synergy). 0 = captain-only. */
+  hub_defender_target: number
   created_at: string
 }
 
