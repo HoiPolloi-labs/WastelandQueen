@@ -39,9 +39,14 @@ describe('signupSchema', () => {
     expect(r.success).toBe(false)
   })
 
-  it('rejects tier out of 1..12', () => {
+  it('accepts tier 1..13', () => {
+    expect(signupSchema.safeParse({ ...baseValid, tier: 1 }).success).toBe(true)
+    expect(signupSchema.safeParse({ ...baseValid, tier: 13 }).success).toBe(true)
+  })
+
+  it('rejects tier out of 1..13', () => {
     expect(signupSchema.safeParse({ ...baseValid, tier: 0 }).success).toBe(false)
-    expect(signupSchema.safeParse({ ...baseValid, tier: 13 }).success).toBe(false)
+    expect(signupSchema.safeParse({ ...baseValid, tier: 14 }).success).toBe(false)
   })
 
   it('rejects unknown troop_type', () => {

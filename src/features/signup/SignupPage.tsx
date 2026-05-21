@@ -24,7 +24,7 @@ import {
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'withdrawn'
 
-const TIER_OPTIONS = Array.from({ length: 12 }, (_, i) => ({
+const TIER_OPTIONS = Array.from({ length: 13 }, (_, i) => ({
   value: (i + 1) as TroopTier,
   label: `T${i + 1}`,
 }))

@@ -50,13 +50,19 @@ describe('captainScore', () => {
 
   it('handles null rally as zero', () => {
     const noRally = s({ id: 'a', rally: null, lair: 5, tier: 10 })
-    expect(captainScore(noRally)).toBe(5 * 3 + 10)
+    expect(captainScore(noRally)).toBe(10 * 20 + 5)
   })
 
-  it('tier and lair are tiebreakers', () => {
+  it('tier dominates over rally within ~1 tier gap', () => {
     const t11 = s({ id: 'a', rally: 1_000_000, lair: 6, tier: 11 })
     const t10 = s({ id: 'b', rally: 1_000_000, lair: 6, tier: 10 })
-    expect(captainScore(t11)).toBe(captainScore(t10) + 1)
+    expect(captainScore(t11)).toBe(captainScore(t10) + 20)
+  })
+
+  it('lair is the final tiebreaker', () => {
+    const hi = s({ id: 'a', rally: 1_000_000, lair: 10, tier: 10 })
+    const lo = s({ id: 'b', rally: 1_000_000, lair: 6, tier: 10 })
+    expect(captainScore(hi)).toBe(captainScore(lo) + 4)
   })
 })
 

@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes, useLocation } from 'react-router'
 import { Crown, Plus, ClipboardList, Loader2, BookOpen } from 'lucide-react'
 import { cn } from './lib/cn'
+import { BuildInfo } from './components/ui/BuildInfo'
 
 const EventSetupPage = lazy(() =>
   import('./features/event/EventSetupPage').then((m) => ({ default: m.EventSetupPage })),
@@ -131,6 +132,10 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
+      {/* Hide build-info on hero/signup/board where it'd visually intrude */}
+      {location.pathname !== '/' &&
+        !location.pathname.startsWith('/signup/') &&
+        !location.pathname.startsWith('/board/') && <BuildInfo />}
     </div>
   )
 }

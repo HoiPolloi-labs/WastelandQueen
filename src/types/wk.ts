@@ -3,7 +3,7 @@
  * See docs/wasteland-king-guide.md for mechanics background.
  */
 
-export type TroopTier = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+export type TroopTier = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
 
 export type TroopType = 'fighter' | 'shooter' | 'rider'
 
@@ -162,6 +162,7 @@ export const KILL_POINTS: Record<TroopTier, number> = {
   10: 60,
   11: 80,
   12: 100,
+  13: 125, // extrapolated — pnsdme chart only goes to T12; adjust when official figure surfaces
 }
 
 export const DEATH_POINTS: Record<TroopTier, number> = {
@@ -177,6 +178,7 @@ export const DEATH_POINTS: Record<TroopTier, number> = {
   10: 60,
   11: 80,
   12: 100,
+  13: 125, // extrapolated — same caveat as KILL_POINTS[13]
 }
 
 export const OCCUPATION_CAP_POINTS = 2000

@@ -25,11 +25,24 @@ export type DraftAssignment = Pick<
 const ALL_TYPES = ['fighter', 'shooter', 'rider'] as const
 
 /**
- * Higher = better captain. Rally dominates per WK guide; lair + tier as tiebreakers.
+ * Higher = better captain. Per Marcel's observation in his state:
+ *   Tier is the primary signal (T13 = top), Rally is the second (Captain-
+ *   Capacity = Rally Size, so a high-rally lower-tier can still beat a
+ *   weak-rally higher-tier), Lair is the tiebreaker.
+ *
+ *   tier × 20 + rally/100k × 4 + lair × 1
+ *
+ * Example distribution:
+ *   T13 whale  4M / 80  → 500
+ *   T12 strong 3M / 60  → 420
+ *   T11 mid    2M / 50  → 350
+ *   T13 weak   1M / 30  → 330  (rally lets T12 beat T13 within ~2M gap)
+ *   T10        1M / 30  → 270
+ *   T8 newer  250k / 10 → 178
  */
 export function captainScore(s: Signup): number {
-  const rallyUnits = (s.rally_size ?? 0) / 100_000 // 1M → 10
-  return rallyUnits * 6 + s.max_solo_lair * 3 + s.tier
+  const rallyUnits = (s.rally_size ?? 0) / 100_000
+  return s.tier * 20 + rallyUnits * 4 + s.max_solo_lair
 }
 
 const strongestFirst = (a: Signup, b: Signup) => captainScore(b) - captainScore(a)

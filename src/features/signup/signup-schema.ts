@@ -17,7 +17,7 @@ export const signupSchema = z.object({
     .trim()
     .regex(/^S\d+$/i, 'Format: S724')
     .transform((s) => s.toUpperCase()),
-  tier: z.number().int().min(1).max(12),
+  tier: z.number().int().min(1).max(13),
   troop_type: z.enum(['fighter', 'shooter', 'rider']),
   max_solo_lair: z.number().int().min(1).max(200),
   rally_size: z

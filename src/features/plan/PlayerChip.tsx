@@ -39,22 +39,24 @@ function formatRally(n: number | null): string {
 
 function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
   const rounded = Math.round(score)
-  // Realistic distribution with lair up to 50-60+:
-  //   T8 rally 200k lair 12  → ~52   (low / zinc)
-  //   T10 rally 1M lair 30   → ~158  (mid / sky)
-  //   T12 rally 3.5M lair 60 → ~402  (whale / yellow)
+  // Distribution under the tier-dominant formula (tier × 20 + rally/100k × 4 + lair):
+  //   T8  newer 250k/10  → 178   (zinc / low)
+  //   T10 mid   1M/30    → 270   (zinc)
+  //   T11 strong 2M/50   → 350   (sky)
+  //   T12 solid 3M/60    → 420   (yellow)
+  //   T13 whale 4M/80    → 500   (yellow)
   const tone =
-    rounded >= 250
+    rounded >= 400
       ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
-      : rounded >= 120
+      : rounded >= 300
         ? 'border-sky-500/40 bg-sky-500/10 text-sky-200'
-        : rounded >= 50
+        : rounded >= 200
           ? 'border-zinc-600 bg-zinc-800 text-zinc-300'
           : 'border-zinc-700 bg-zinc-900 text-zinc-300'
   return (
     <span
       className={`rounded border px-1 py-px font-mono text-[10px] ${tone} ${willing ? '' : 'opacity-60'}`}
-      title={`Captain-Score ${rounded} — rally/100k×6 + lair×3 + tier${willing ? '' : ' (nicht als Captain verfügbar)'}`}
+      title={`Captain-Score ${rounded} — tier×20 + rally/100k×4 + lair${willing ? '' : ' (nicht als Captain verfügbar)'}`}
     >
       {rounded}
     </span>
