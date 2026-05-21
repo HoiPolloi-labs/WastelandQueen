@@ -211,6 +211,22 @@
   text-align: center;
   color: #1d160f;
   pointer-events: auto;
+  /* Cream backdrop with blur lifts typography off the busy figure detail
+     underneath (dress patterns, gears) so text stays legible regardless. */
+  padding: 1.1em clamp(1.4em, 3vw, 2.6em) 1em;
+  background: linear-gradient(
+    180deg,
+    rgba(244, 232, 213, 0.78) 0%,
+    rgba(232, 217, 192, 0.88) 100%
+  );
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+  backdrop-filter: blur(12px) saturate(1.05);
+  border: 1px solid rgba(120, 90, 55, 0.18);
+  border-radius: 8px;
+  box-shadow:
+    0 10px 30px rgba(60, 40, 20, 0.22),
+    inset 0 1px 0 rgba(255, 250, 240, 0.5);
+  max-width: min(92vw, 720px);
 }
 .hero-scene .plate .eyebrow {
   font-size: clamp(10px, 1.1vw, 13px);

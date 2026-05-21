@@ -29,7 +29,8 @@
       "PowerShell(Test-Path:*)",
       "PowerShell(New-Item:*)",
       "mcp__991f15fa-7733-419b-97d1-60130f93834d__list_projects",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(pnpm test:run)"
     ],
     "deny": [],
     "ask": [
