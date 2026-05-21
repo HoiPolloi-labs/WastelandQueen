@@ -59,16 +59,14 @@ export function HeroScene() {
         <h1>
           <b>Wasteland</b> Queen
         </h1>
-        <div>
-          <span className="rule" />
-          <span className="sub">
+        <div className="nav">
+          <hr className="rule" aria-hidden="true" />
+          <div className="nav-links">
             <Link to="/plan/new">Sign-ups</Link>
-            <span className="dot">·</span>
             <Link to="/plan">Plaza Planner</Link>
-            <span className="dot">·</span>
             <Link to="/cheat-sheet">Cheat-Sheet</Link>
-          </span>
-          <span className="rule" />
+          </div>
+          <hr className="rule" aria-hidden="true" />
         </div>
       </div>
 

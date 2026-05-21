@@ -251,34 +251,66 @@
   font-weight: 700;
   font-style: normal;
 }
-.hero-scene .plate .rule {
-  display: inline-block;
-  width: clamp(60px, 8vw, 120px);
+.hero-scene .plate .nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  margin-top: 0.9em;
+  font-size: clamp(11px, 1.05vw, 13px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.hero-scene .plate .nav .rule {
+  flex: 0 0 auto;
+  width: clamp(40px, 6vw, 100px);
   height: 1px;
   background: currentColor;
   opacity: 0.45;
-  margin: 0.8em 0.6em 0.2em;
-  vertical-align: middle;
+  border: 0;
+  margin: 0;
 }
-.hero-scene .plate .sub {
-  font-size: clamp(11px, 1.05vw, 13px);
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  opacity: 0.7;
+.hero-scene .plate .nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.7em, 2.2vw, 1.4em);
 }
-.hero-scene .plate .sub a {
+.hero-scene .plate .nav-links a {
   color: inherit;
   text-decoration: none;
+  opacity: 0.78;
   transition: opacity 0.2s ease;
+  white-space: nowrap;
 }
-.hero-scene .plate .sub a:hover {
+.hero-scene .plate .nav-links a:hover {
   opacity: 1;
   text-decoration: underline;
 }
-.hero-scene .plate .sub .dot {
-  display: inline-block;
-  opacity: 0.4;
-  margin: 0 0.4em;
+
+/* Narrow viewports: stack everything vertically so links don't wrap into
+   broken halves and the rules stay decorative above/below the link group. */
+@media (max-width: 540px) {
+  .hero-scene .plate {
+    padding: 0.9em 1.1em 0.8em;
+    max-width: 92vw;
+  }
+  .hero-scene .plate .eyebrow {
+    letter-spacing: 0.2em;
+  }
+  .hero-scene .plate .nav,
+  .hero-scene .plate .nav-links {
+    flex-direction: column;
+  }
+  .hero-scene .plate .nav {
+    gap: 0.55em;
+  }
+  .hero-scene .plate .nav-links {
+    gap: 0.45em;
+    letter-spacing: 0.18em;
+  }
+  .hero-scene .plate .nav .rule {
+    width: clamp(80px, 30vw, 160px);
+  }
 }
 
 /* atmospheric vignette */

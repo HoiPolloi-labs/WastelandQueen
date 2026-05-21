@@ -43,17 +43,25 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
     if (t.turret === 'turret-w') grid.w = t
   }
 
+  const hitSquadHint =
+    foreignTargets && foreignTargets.length > 0
+      ? `Offensive captains → ${foreignTargets.join(', ')}. Auto-Sort lässt diesen Bucket leer.`
+      : undefined
+
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-[1fr_1.6fr_1fr] grid-rows-[1fr_1.4fr_1fr] gap-3">
-        <div />
+      {/* Geometric 3×3 Plaza on ≥sm. On mobile the corner spacers are hidden
+          and all 5 dropzones stack vertically so each building stays usable
+          without horizontal cramping. */}
+      <div className="flex flex-col gap-3 sm:grid sm:grid-cols-[1fr_1.6fr_1fr] sm:grid-rows-[1fr_1.4fr_1fr]">
+        <div className="hidden sm:block" />
         <Building
           building="turret-n"
           shift={shift}
           members={grid.n?.members ?? []}
           captainId={grid.n?.captainId ?? null}
         />
-        <div />
+        <div className="hidden sm:block" />
 
         <Building
           building="turret-w"
@@ -75,17 +83,17 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
           captainId={grid.e?.captainId ?? null}
         />
 
-        <div />
+        <div className="hidden sm:block" />
         <Building
           building="turret-s"
           shift={shift}
           members={grid.s?.members ?? []}
           captainId={grid.s?.captainId ?? null}
         />
-        <div />
+        <div className="hidden sm:block" />
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Building building="mud" shift={shift} members={mud.members} captainId={null} />
         <Building
           building="reserve"
@@ -98,11 +106,7 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
           shift={shift}
           members={hitSquad.members}
           captainId={null}
-          hintOverride={
-            foreignTargets && foreignTargets.length > 0
-              ? `Offensive captains → ${foreignTargets.join(', ')}. Auto-Sort lässt diesen Bucket leer.`
-              : undefined
-          }
+          hintOverride={hitSquadHint}
         />
       </div>
     </div>
