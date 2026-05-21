@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { EventConfig } from '@/types/wk'
 
@@ -7,6 +7,17 @@ export function useEvent(eventId: string | undefined) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const refresh = useCallback(async () => {
+    if (!eventId) return
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('id', eventId)
+      .maybeSingle()
+    if (error) setError(error.message)
+    setEvent((data as EventConfig | null) ?? null)
+  }, [eventId])
+
   useEffect(() => {
     if (!eventId) {
       setLoading(false)
@@ -14,21 +25,13 @@ export function useEvent(eventId: string | undefined) {
     }
     let cancelled = false
     setLoading(true)
-    supabase
-      .from('events')
-      .select('*')
-      .eq('id', eventId)
-      .maybeSingle()
-      .then(({ data, error }) => {
-        if (cancelled) return
-        if (error) setError(error.message)
-        setEvent((data as EventConfig | null) ?? null)
-        setLoading(false)
-      })
+    refresh().finally(() => {
+      if (!cancelled) setLoading(false)
+    })
     return () => {
       cancelled = true
     }
-  }, [eventId])
+  }, [eventId, refresh])
 
-  return { event, loading, error }
+  return { event, loading, error, refresh }
 }

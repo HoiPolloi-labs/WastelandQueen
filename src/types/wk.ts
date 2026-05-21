@@ -80,6 +80,14 @@ export interface EventConfig {
   /** How many defenders auto-sort should park on the Hub alongside the captain.
    *  Same troop type as the captain (Super Reinforcement synergy). 0 = captain-only. */
   hub_defender_target: number
+  /** Single IGN that received the high-rarity King's-Sword Box (governor's call). */
+  king_sword_recipient_ign: string | null
+  /** Frozen state grade for King's-Sword box value: Gold=10, Platinum=16, Diamond=20 Nataly frags. */
+  king_sword_grade: 'gold' | 'platinum' | 'diamond' | null
+  /** When the governor drained the Coffer tax stream. null = not yet collected. */
+  coffer_collected_at: string | null
+  /** Governor's log: who got Coffer-funded retraining etc. */
+  coffer_notes: string | null
   created_at: string
 }
 

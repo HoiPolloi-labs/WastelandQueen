@@ -8,6 +8,8 @@ import {
   Eraser,
   Download,
   ArrowLeft,
+  Sword,
+  Coins,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
@@ -15,9 +17,9 @@ import { useSignups } from '@/features/plan/use-signups'
 import { useAssignments } from '@/features/plan/use-assignments'
 import { Button } from '@/components/ui/Button'
 import { PageHeader } from '@/components/ui/PageHeader'
-import { Input } from '@/components/ui/Input'
+import { Input, Textarea } from '@/components/ui/Input'
 import { cn } from '@/lib/cn'
-import type { BoxTier, Signup } from '@/types/wk'
+import type { BoxTier, EventConfig, Signup } from '@/types/wk'
 import { BOX_TIER_LABELS } from '@/types/wk'
 import { computeAwardCandidates } from './contribution'
 import { useBoxCounts } from './use-box-counts'
@@ -33,7 +35,7 @@ const TIER_TONE: Record<BoxTier, string> = {
 
 export function AwardsPage() {
   const { eventId } = useParams<{ eventId: string }>()
-  const { event, loading: eventLoading } = useEvent(eventId)
+  const { event, loading: eventLoading, refresh: refreshEvent } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
   const { assignments } = useAssignments(eventId)
   const { counts, update: updateBoxCount } = useBoxCounts(eventId)
@@ -66,6 +68,14 @@ export function AwardsPage() {
     setBusy(true)
     await supabase.from('signups').update(patch).eq('id', id)
     await refreshSignups()
+    setBusy(false)
+  }
+
+  const updateEvent = async (patch: Partial<EventConfig>) => {
+    if (!event) return
+    setBusy(true)
+    await supabase.from('events').update(patch).eq('id', event.id)
+    await refreshEvent()
     setBusy(false)
   }
 
@@ -193,6 +203,8 @@ export function AwardsPage() {
           </div>
         ))}
       </div>
+
+      <GovernorPanel event={event} signups={signups} onChange={updateEvent} />
 
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-zinc-400">
@@ -376,4 +388,130 @@ function formatMight(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${Math.round(n / 1_000)}k`
   return String(Math.round(n))
+}
+
+const KING_SWORD_FRAGS: Record<'gold' | 'platinum' | 'diamond', number> = {
+  gold: 10,
+  platinum: 16,
+  diamond: 20,
+}
+
+/**
+ * Post-event Governor cockpit:
+ *   - King's-Sword recipient + grade (single high-rarity box, value frozen at
+ *     award-time so re-grading the state later doesn't rewrite history)
+ *   - Coffer collection toggle + free-text log
+ *
+ * Only shown when the event has a captured governor IGN — pre-event there's
+ * no chest pool yet so the panel would just be empty placeholders.
+ */
+function GovernorPanel({
+  event,
+  signups,
+  onChange,
+}: {
+  event: EventConfig
+  signups: Signup[]
+  onChange: (patch: Partial<EventConfig>) => void | Promise<void>
+}) {
+  if (!event.governor_ign) return null
+
+  const igns = [...new Set(signups.map((s) => s.ign))].sort((a, b) => a.localeCompare(b))
+  const grade = event.king_sword_grade
+  const frags = grade ? KING_SWORD_FRAGS[grade] : null
+
+  return (
+    <section className="mb-4 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-3">
+      <header className="mb-3 flex items-center gap-1.5">
+        <Crown className="h-4 w-4 text-yellow-400" />
+        <h2 className="text-sm font-semibold text-yellow-200">Governor — {event.governor_ign}</h2>
+      </header>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded border border-zinc-800 bg-zinc-900/60 p-3">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              <Sword className="h-3.5 w-3.5 text-amber-400" />
+              King's-Sword Box
+            </span>
+            {frags !== null && (
+              <span className="text-[10px] text-amber-300">{frags} Nataly</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-[11px] text-zinc-400">
+              Empfänger
+              <select
+                value={event.king_sword_recipient_ign ?? ''}
+                onChange={(e) =>
+                  void onChange({ king_sword_recipient_ign: e.target.value || null })
+                }
+                className="mt-0.5 w-full rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-100"
+              >
+                <option value="">— niemand —</option>
+                {igns.map((ign) => (
+                  <option key={ign} value={ign}>
+                    {ign}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="text-[11px] text-zinc-400">
+              Grade (Wert friert ein)
+              <select
+                value={event.king_sword_grade ?? ''}
+                onChange={(e) =>
+                  void onChange({
+                    king_sword_grade:
+                      (e.target.value as 'gold' | 'platinum' | 'diamond') || null,
+                  })
+                }
+                className="mt-0.5 w-full rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-100"
+              >
+                <option value="">— ungesetzt —</option>
+                <option value="gold">Gold · 10 Frags</option>
+                <option value="platinum">Platinum · 16 Frags</option>
+                <option value="diamond">Diamond · 20 Frags</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div className="rounded border border-zinc-800 bg-zinc-900/60 p-3">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              <Coins className="h-3.5 w-3.5 text-emerald-400" />
+              Coffer Tax-Stream
+            </span>
+            <label className="flex cursor-pointer items-center gap-1.5 text-[11px] text-zinc-300">
+              <input
+                type="checkbox"
+                checked={Boolean(event.coffer_collected_at)}
+                onChange={(e) =>
+                  void onChange({
+                    coffer_collected_at: e.target.checked
+                      ? new Date().toISOString()
+                      : null,
+                  })
+                }
+                className="accent-emerald-500"
+              />
+              eingesammelt
+            </label>
+          </div>
+          {event.coffer_collected_at && (
+            <p className="mb-2 text-[10px] text-emerald-300">
+              {new Date(event.coffer_collected_at).toLocaleString('de-DE')}
+            </p>
+          )}
+          <Textarea
+            value={event.coffer_notes ?? ''}
+            onChange={(e) => void onChange({ coffer_notes: e.target.value || null })}
+            rows={3}
+            placeholder="Verteilung: WhalerKing 5M food + 2M iron, …"
+          />
+        </div>
+      </div>
+    </section>
+  )
 }

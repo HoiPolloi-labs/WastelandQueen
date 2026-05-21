@@ -77,6 +77,10 @@ const baseEvent: EventConfig = {
   foreign_targets: null,
   discord_webhook_url: null,
   hub_defender_target: 0,
+  king_sword_recipient_ign: null,
+  king_sword_grade: null,
+  coffer_collected_at: null,
+  coffer_notes: null,
   created_at: '',
 }
 
