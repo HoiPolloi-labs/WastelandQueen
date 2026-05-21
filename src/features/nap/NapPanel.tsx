@@ -14,14 +14,21 @@ export function NapPanel({ eventId }: NapPanelProps) {
   const [adding, setAdding] = useState(false)
   const [withState, setWithState] = useState('')
   const [text, setText] = useState('')
+  const [startsLocal, setStartsLocal] = useState('')
+  const [endsLocal, setEndsLocal] = useState('')
 
   const submitNew = async () => {
     const ws = withState.trim().toUpperCase()
     const tx = text.trim()
     if (!ws || !tx) return
-    await add(ws, tx)
+    await add(ws, tx, {
+      starts_at_utc: localToIso(startsLocal),
+      ends_at_utc: localToIso(endsLocal),
+    })
     setWithState('')
     setText('')
+    setStartsLocal('')
+    setEndsLocal('')
     setAdding(false)
   }
 
@@ -70,6 +77,22 @@ export function NapPanel({ eventId }: NapPanelProps) {
             rows={3}
             placeholder="No T11+ marches into Hub, mud-sit RSS allowed both sides…"
           />
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              label="Start (UTC)"
+              type="datetime-local"
+              value={startsLocal}
+              onChange={(e) => setStartsLocal(e.target.value)}
+              hint="Optional"
+            />
+            <Input
+              label="Ende (UTC)"
+              type="datetime-local"
+              value={endsLocal}
+              onChange={(e) => setEndsLocal(e.target.value)}
+              hint="Optional"
+            />
+          </div>
           <div className="flex justify-end gap-2">
             <Button
               variant="primary"
@@ -92,4 +115,11 @@ export function NapPanel({ eventId }: NapPanelProps) {
       />
     </section>
   )
+}
+
+/** datetime-local fields emit "2026-06-06T18:00" (naive local). We treat the
+ *  string as UTC because the NAP-window labels are explicitly UTC throughout. */
+function localToIso(local: string): string | null {
+  if (!local.trim()) return null
+  return new Date(`${local}:00Z`).toISOString()
 }

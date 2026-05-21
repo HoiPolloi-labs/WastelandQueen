@@ -43,12 +43,18 @@ export function useNapTerms(eventId: string | undefined) {
   }, [eventId, refresh])
 
   const add = useCallback(
-    async (withState: string, text: string) => {
+    async (
+      withState: string,
+      text: string,
+      timing?: { starts_at_utc: string | null; ends_at_utc: string | null },
+    ) => {
       if (!eventId) return
       const { error } = await supabase.from('nap_terms').insert({
         event_id: eventId,
         with_state: withState.trim().toUpperCase(),
         terms: text.trim(),
+        starts_at_utc: timing?.starts_at_utc ?? null,
+        ends_at_utc: timing?.ends_at_utc ?? null,
       })
       if (error) setError(error.message)
     },
@@ -56,7 +62,12 @@ export function useNapTerms(eventId: string | undefined) {
   )
 
   const update = useCallback(
-    async (id: string, patch: Partial<Pick<NapTerm, 'with_state' | 'terms' | 'status'>>) => {
+    async (
+      id: string,
+      patch: Partial<
+        Pick<NapTerm, 'with_state' | 'terms' | 'status' | 'starts_at_utc' | 'ends_at_utc'>
+      >,
+    ) => {
       const { error } = await supabase
         .from('nap_terms')
         .update({ ...patch, updated_at: new Date().toISOString() })

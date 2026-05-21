@@ -140,6 +140,9 @@ export interface NapTerm {
   with_state: string
   terms: string
   status: NapStatus
+  /** Optional NAP window — null = "until further notice". Both UTC ISO strings. */
+  starts_at_utc: string | null
+  ends_at_utc: string | null
   created_at: string
   updated_at: string
 }

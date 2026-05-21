@@ -14,9 +14,16 @@ const STATUS_TONE: Record<NapStatus, string> = {
   expired: 'border-zinc-700 bg-zinc-900 text-zinc-400',
 }
 
+interface NapEditPatch {
+  with_state: string
+  terms: string
+  starts_at_utc: string | null
+  ends_at_utc: string | null
+}
+
 interface NapListProps {
   terms: NapTerm[]
-  onEdit?: (id: string, patch: { with_state: string; terms: string }) => Promise<void> | void
+  onEdit?: (id: string, patch: NapEditPatch) => Promise<void> | void
   onDelete?: (id: string) => Promise<void> | void
   onStatusChange?: (id: string, status: NapStatus) => Promise<void> | void
   empty?: React.ReactNode
@@ -41,7 +48,12 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
           return (
             <NapEditForm
               key={t.id}
-              initial={{ with_state: t.with_state, terms: t.terms }}
+              initial={{
+                with_state: t.with_state,
+                terms: t.terms,
+                starts_at_utc: t.starts_at_utc,
+                ends_at_utc: t.ends_at_utc,
+              }}
               onCancel={() => setEditingId(null)}
               onSave={async (patch) => {
                 await onEdit(t.id, patch)
@@ -50,6 +62,7 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
             />
           )
         }
+        const window = formatNapWindow(t.starts_at_utc, t.ends_at_utc)
         return (
           <li
             key={t.id}
@@ -98,6 +111,9 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
               )}
             </div>
             <p className="whitespace-pre-wrap break-words text-zinc-300">{t.terms}</p>
+            {window && (
+              <p className="mt-1.5 font-mono text-[10px] text-zinc-400">{window}</p>
+            )}
             {onStatusChange && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {STATUSES.map((s) => (
@@ -127,14 +143,21 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
 }
 
 interface NapEditFormProps {
-  initial: { with_state: string; terms: string }
-  onSave: (patch: { with_state: string; terms: string }) => Promise<void> | void
+  initial: {
+    with_state: string
+    terms: string
+    starts_at_utc: string | null
+    ends_at_utc: string | null
+  }
+  onSave: (patch: NapEditPatch) => Promise<void> | void
   onCancel: () => void
 }
 
 function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
   const [withState, setWithState] = useState(initial.with_state)
   const [text, setText] = useState(initial.terms)
+  const [startsLocal, setStartsLocal] = useState(isoToLocal(initial.starts_at_utc))
+  const [endsLocal, setEndsLocal] = useState(isoToLocal(initial.ends_at_utc))
 
   return (
     <li className="flex flex-col gap-2 rounded border border-yellow-500/40 bg-zinc-900/60 p-2.5">
@@ -152,6 +175,22 @@ function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
         rows={3}
         placeholder="No T11+ marches into Hub, mud-sit RSS allowed both sides…"
       />
+      <div className="grid grid-cols-2 gap-2">
+        <Input
+          label="Start (UTC)"
+          type="datetime-local"
+          value={startsLocal}
+          onChange={(e) => setStartsLocal(e.target.value)}
+          hint="Optional"
+        />
+        <Input
+          label="Ende (UTC)"
+          type="datetime-local"
+          value={endsLocal}
+          onChange={(e) => setEndsLocal(e.target.value)}
+          hint="Optional"
+        />
+      </div>
       <div className="flex justify-end gap-2">
         <Button variant="ghost" size="sm" onClick={onCancel}>
           Abbrechen
@@ -163,7 +202,12 @@ function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
             const ws = withState.trim().toUpperCase()
             const tx = text.trim()
             if (!ws || !tx) return
-            void onSave({ with_state: ws, terms: tx })
+            void onSave({
+              with_state: ws,
+              terms: tx,
+              starts_at_utc: localToIso(startsLocal),
+              ends_at_utc: localToIso(endsLocal),
+            })
           }}
         >
           Speichern
@@ -171,4 +215,28 @@ function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
       </div>
     </li>
   )
+}
+
+function localToIso(local: string): string | null {
+  if (!local.trim()) return null
+  return new Date(`${local}:00Z`).toISOString()
+}
+
+function isoToLocal(iso: string | null): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return ''
+  return d.toISOString().slice(0, 16)
+}
+
+function formatNapWindow(starts: string | null, ends: string | null): string | null {
+  if (!starts && !ends) return null
+  const fmt = (iso: string) => {
+    const d = new Date(iso)
+    if (isNaN(d.getTime())) return iso
+    return `${d.toISOString().slice(0, 10)} ${d.toISOString().slice(11, 16)}`
+  }
+  if (starts && ends) return `${fmt(starts)} → ${fmt(ends)} UTC`
+  if (starts) return `ab ${fmt(starts)} UTC`
+  return `bis ${fmt(ends!)} UTC`
 }
