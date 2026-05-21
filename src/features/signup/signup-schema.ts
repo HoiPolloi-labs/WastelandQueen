@@ -19,7 +19,7 @@ export const signupSchema = z.object({
     .transform((s) => s.toUpperCase()),
   tier: z.number().int().min(1).max(12),
   troop_type: z.enum(['fighter', 'shooter', 'rider']),
-  max_solo_lair: z.number().int().min(1).max(10),
+  max_solo_lair: z.number().int().min(1).max(200),
   rally_size: z
     .number()
     .int()

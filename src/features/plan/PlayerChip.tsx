@@ -39,13 +39,16 @@ function formatRally(n: number | null): string {
 
 function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
   const rounded = Math.round(score)
-  // T10 lair-6 0-rally → ~28; T11 lair-7 1.5M → ~122; T12 lair-8 3M → ~216
+  // Realistic distribution with lair up to 50-60+:
+  //   T8 rally 200k lair 12  → ~52   (low / zinc)
+  //   T10 rally 1M lair 30   → ~158  (mid / sky)
+  //   T12 rally 3.5M lair 60 → ~402  (whale / yellow)
   const tone =
-    rounded >= 150
+    rounded >= 250
       ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
-      : rounded >= 80
+      : rounded >= 120
         ? 'border-sky-500/40 bg-sky-500/10 text-sky-200'
-        : rounded >= 40
+        : rounded >= 50
           ? 'border-zinc-600 bg-zinc-800 text-zinc-300'
           : 'border-zinc-700 bg-zinc-900 text-zinc-300'
   return (

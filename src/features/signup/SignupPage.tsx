@@ -370,15 +370,15 @@ export function SignupPage() {
           type="number"
           inputMode="numeric"
           min={1}
-          max={10}
-          placeholder="6"
+          max={200}
+          placeholder="50"
           value={maxSoloLair}
           onChange={(e) => {
             const n = e.target.value === '' ? '' : Number(e.target.value)
             setMaxSoloLair(n as number | '')
             setFieldError('max_solo_lair')
           }}
-          hint="Höchstes Zombie-Lair, das du solo schaffst"
+          hint="Höchstes Zombie-Lair-Level, das du solo schaffst"
           error={errors.max_solo_lair}
           required
         />
