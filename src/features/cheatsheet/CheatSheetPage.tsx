@@ -37,7 +37,7 @@ export function CheatSheetPage() {
             <strong>Mud</strong> = brauner Ring drumrum (angreifbar während WK).{' '}
             <strong>Green</strong> = normaler Map-Teil, in fremdem State unattackable.
           </p>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             Türme die nicht der gleichen Alliance gehören wie der Hub <em>feuern auf den
             Hub</em> → permanente Truppenverluste. Deshalb: alle in <em>eine</em>
             temporäre State-Alliance.
@@ -66,7 +66,7 @@ export function CheatSheetPage() {
             <li>Position halten</li>
             <li>Reinforcements im Alliance-Chat callen</li>
           </ol>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             Captain-Rally = Building-Capacity. Captain-Truppen-Stats = jede einlaufende
             March bekommt sie. Stärkster verfügbarer Spieler captained den Hub.
           </p>
@@ -81,7 +81,7 @@ export function CheatSheetPage() {
             title="Death Points (NUR Hub oder Türme — Mud-Deaths zählen NICHT)"
             data={DEATH_POINTS}
           />
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             <strong>Occupation</strong>: bis zu 2.000 Punkte für kumulative 120 Min auf
             Hub/Turm. Kein Reset wenn du runtergeschmissen wirst.
           </p>
@@ -205,7 +205,7 @@ function PointTable({
             key={tier}
             className="rounded border border-zinc-800 bg-zinc-900 px-1 py-1 font-mono"
           >
-            <div className="text-zinc-500">T{tier}</div>
+            <div className="text-zinc-400">T{tier}</div>
             <div className="text-zinc-200">{pts}</div>
           </div>
         ))}

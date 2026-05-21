@@ -180,19 +180,19 @@ export function PlanPage() {
               <span className="mt-1 block text-[11px]">
                 {event.governor_ign && (
                   <span className="mr-3">
-                    <span className="text-zinc-500">Gov</span>{' '}
+                    <span className="text-zinc-400">Gov</span>{' '}
                     <span className="text-yellow-300">{event.governor_ign}</span>
                   </span>
                 )}
                 {event.assessor_ign && (
                   <span className="mr-3">
-                    <span className="text-zinc-500">Ass</span>{' '}
+                    <span className="text-zinc-400">Ass</span>{' '}
                     <span className="text-zinc-300">{event.assessor_ign}</span>
                   </span>
                 )}
                 {event.negotiator_ign && (
                   <span className="mr-3">
-                    <span className="text-zinc-500">Neg</span>{' '}
+                    <span className="text-zinc-400">Neg</span>{' '}
                     <span className="text-zinc-300">{event.negotiator_ign}</span>
                   </span>
                 )}
@@ -200,7 +200,7 @@ export function PlanPage() {
             )}
             {event.foreign_targets && event.foreign_targets.length > 0 && (
               <span className="mt-1 block text-[11px]">
-                <span className="text-zinc-500">Hit-Squad-Ziele:</span>{' '}
+                <span className="text-zinc-400">Hit-Squad-Ziele:</span>{' '}
                 {event.foreign_targets.map((t) => (
                   <span
                     key={t}
@@ -245,7 +245,7 @@ export function PlanPage() {
             value={shift}
             onChange={setShift}
           />
-          <span className="text-[11px] text-zinc-500">
+          <span className="text-[11px] text-zinc-400">
             {shiftWindowLabel(event.starts_at_utc, event.shift_count, shift)}
           </span>
           {event.shift_count >= 2 && (

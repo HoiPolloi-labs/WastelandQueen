@@ -195,7 +195,7 @@ export function AwardsPage() {
       </div>
 
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           {candidates.length} Spieler · {candidates.filter((c) => c.signup.attended === true).length} attended ·{' '}
           {candidates.filter((c) => c.signup.box_tier).length} Boxes verteilt
         </p>
@@ -217,7 +217,7 @@ export function AwardsPage() {
 
       <div className="overflow-x-auto rounded-lg border border-zinc-800">
         <table className="min-w-full text-xs">
-          <thead className="bg-zinc-900 text-left text-zinc-500">
+          <thead className="bg-zinc-900 text-left text-zinc-300">
             <tr>
               <th className="px-2 py-2">#</th>
               <th className="px-2 py-2">IGN</th>
@@ -237,10 +237,10 @@ export function AwardsPage() {
               const s = c.signup
               return (
                 <tr key={s.id} className="border-t border-zinc-800 hover:bg-zinc-900/40">
-                  <td className="px-2 py-1.5 text-zinc-500">{i + 1}</td>
+                  <td className="px-2 py-1.5 text-zinc-400">{i + 1}</td>
                   <td className="px-2 py-1.5">
                     <span className="font-medium text-zinc-100">{s.ign}</span>
-                    <span className="ml-1 font-mono text-[10px] text-zinc-500">
+                    <span className="ml-1 font-mono text-[10px] text-zinc-400">
                       [{s.alliance_tag}]
                     </span>
                   </td>
@@ -286,7 +286,7 @@ export function AwardsPage() {
                     {c.personalPoints >= 10000 ? (
                       <span className="text-emerald-300">{c.personalPoints}</span>
                     ) : (
-                      <span className="text-zinc-500">{c.personalPoints}</span>
+                      <span className="text-zinc-300">{c.personalPoints}</span>
                     )}
                   </td>
                   <td className="px-2 py-1.5">
@@ -301,7 +301,7 @@ export function AwardsPage() {
                         'rounded border bg-zinc-900 px-1.5 py-0.5 text-[11px]',
                         s.box_tier
                           ? TIER_TONE[s.box_tier]
-                          : 'border-zinc-800 text-zinc-500',
+                          : 'border-zinc-800 text-zinc-400',
                       )}
                     >
                       <option value="">—</option>

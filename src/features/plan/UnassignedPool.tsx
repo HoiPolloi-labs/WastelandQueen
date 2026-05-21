@@ -76,7 +76,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
     >
       <h2 className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-400">
         <span>Unassigned · Shift {shift}</span>
-        <span className="text-zinc-500">{unassigned.length}</span>
+        <span className="text-zinc-400">{unassigned.length}</span>
       </h2>
       <div className="mb-2 flex items-center gap-2">
         <div className="relative flex-1">
@@ -110,7 +110,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
               'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
               tagFilter === null
                 ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
-                : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300',
+                : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
             )}
           >
             ALL
@@ -124,7 +124,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
                 'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
                 tagFilter === t
                   ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
-                  : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300',
+                  : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
               )}
             >
               {t}
@@ -143,7 +143,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
                 'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
                 serverFilter === s
                   ? 'border-sky-500/60 bg-sky-500/15 text-sky-200'
-                  : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300',
+                  : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
               )}
             >
               {s}
@@ -153,7 +153,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
       )}
       <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto pr-0.5">
         {unassigned.length === 0 && (
-          <div className="mt-6 text-center text-xs italic text-zinc-600">
+          <div className="mt-6 text-center text-xs italic text-zinc-400">
             Alle Spieler verteilt
           </div>
         )}

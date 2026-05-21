@@ -47,7 +47,7 @@ function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
         ? 'border-sky-500/40 bg-sky-500/10 text-sky-200'
         : rounded >= 40
           ? 'border-zinc-600 bg-zinc-800 text-zinc-300'
-          : 'border-zinc-700 bg-zinc-900 text-zinc-500'
+          : 'border-zinc-700 bg-zinc-900 text-zinc-300'
   return (
     <span
       className={`rounded border px-1 py-px font-mono text-[10px] ${tone} ${willing ? '' : 'opacity-60'}`}
@@ -108,7 +108,7 @@ export function PlayerChip({
         <div className="flex min-w-0 items-center gap-1.5">
           <meta.Icon className="h-3.5 w-3.5 flex-shrink-0 text-zinc-400" />
           <span className="truncate text-sm font-medium text-zinc-100">{signup.ign}</span>
-          <span className="font-mono text-[10px] text-zinc-500">[{signup.alliance_tag}]</span>
+          <span className="font-mono text-[10px] text-zinc-400">[{signup.alliance_tag}]</span>
         </div>
         <div className="flex flex-shrink-0 items-center gap-1.5 text-[11px] text-zinc-400">
           {!signup.state_alliance_joined && (
@@ -143,7 +143,7 @@ export function PlayerChip({
         </div>
       </div>
       {!compact && (
-        <div className="mt-0.5 flex items-center gap-2 text-[11px] text-zinc-500">
+        <div className="mt-0.5 flex items-center gap-2 text-[11px] text-zinc-400">
           <span>Lair {signup.max_solo_lair}</span>
           <span>·</span>
           <span>{formatRally(signup.rally_size)} rally</span>

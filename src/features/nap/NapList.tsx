@@ -8,10 +8,10 @@ import type { NapStatus, NapTerm } from '@/types/wk'
 const STATUSES: NapStatus[] = ['proposed', 'agreed', 'broken', 'expired']
 
 const STATUS_TONE: Record<NapStatus, string> = {
-  proposed: 'border-zinc-600 bg-zinc-800 text-zinc-300',
+  proposed: 'border-zinc-600 bg-zinc-800 text-zinc-100',
   agreed: 'border-emerald-500/50 bg-emerald-500/10 text-emerald-300',
   broken: 'border-red-500/50 bg-red-500/10 text-red-300',
-  expired: 'border-zinc-700 bg-zinc-900 text-zinc-500',
+  expired: 'border-zinc-700 bg-zinc-900 text-zinc-400',
 }
 
 interface NapListProps {
@@ -28,7 +28,7 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
 
   if (terms.length === 0) {
     return (
-      <div className="rounded border border-dashed border-zinc-800 bg-zinc-900/40 px-3 py-4 text-center text-xs text-zinc-500">
+      <div className="rounded border border-dashed border-zinc-800 bg-zinc-900/40 px-3 py-4 text-center text-xs text-zinc-400">
         {empty ?? 'Keine NAP-Terms erfasst.'}
       </div>
     )
@@ -111,7 +111,7 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
                       'rounded border px-1.5 py-px text-[10px] uppercase tracking-wider transition',
                       s === t.status
                         ? STATUS_TONE[s]
-                        : 'border-zinc-800 bg-zinc-900 text-zinc-600 hover:border-zinc-700 hover:text-zinc-300',
+                        : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
                     )}
                   >
                     {s}

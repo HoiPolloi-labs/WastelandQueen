@@ -128,7 +128,7 @@ export function EventSetupPage() {
                 />
                 <span>
                   <span className="block text-sm font-medium text-zinc-100">{mode.label}</span>
-                  <span className="mt-0.5 block text-xs text-zinc-500">{mode.hint}</span>
+                  <span className="mt-0.5 block text-xs text-zinc-400">{mode.hint}</span>
                 </span>
               </label>
             ))}
@@ -144,7 +144,7 @@ export function EventSetupPage() {
 
         <div>
           <span className="mb-1 block text-sm font-medium text-zinc-300">
-            State Grade <span className="text-zinc-500">(optional)</span>
+            State Grade <span className="text-zinc-400">(optional)</span>
           </span>
           <Segmented
             options={[
@@ -160,7 +160,7 @@ export function EventSetupPage() {
             value={stateGrade ?? ''}
             onChange={(v) => setStateGrade(v === '' ? null : (v as StateGrade))}
           />
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-zinc-400">
             Gold+ schaltet Nataly-Frags frei und erzwingt offensive Strategie (Trophy-Verlust ohne foreign-Hub-Capture).
           </p>
         </div>

@@ -22,7 +22,7 @@ export function Input({ label, hint, error, className, id, ...rest }: InputProps
           className,
         )}
       />
-      {hint && !error && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
+      {hint && !error && <p className="mt-1 text-xs text-zinc-400">{hint}</p>}
       {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
     </label>
   )
@@ -46,7 +46,7 @@ export function Textarea({ label, hint, className, ...rest }: TextareaProps) {
           className,
         )}
       />
-      {hint && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-zinc-400">{hint}</p>}
     </label>
   )
 }

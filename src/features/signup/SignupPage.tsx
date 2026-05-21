@@ -141,7 +141,7 @@ export function SignupPage() {
           Du kannst jederzeit zurückkommen und mit derselben IGN anpassen.
         </p>
         <ul className="mx-auto mt-6 max-w-sm space-y-2 rounded border border-zinc-800 bg-zinc-900/40 p-4 text-left text-xs text-zinc-300">
-          <li className="font-semibold uppercase tracking-wider text-zinc-500">Pre-Event Checklist</li>
+          <li className="font-semibold uppercase tracking-wider text-zinc-400">Pre-Event Checklist</li>
           <li>☐ Infirmary mit T1-Taxis vollfüllen (Casualties → Deep Healing)</li>
           <li>☐ Miraculous Survival in Nova/Research auf Max</li>
           <li>☐ First Aid + Instant Heal Talents geladen</li>
@@ -280,7 +280,7 @@ export function SignupPage() {
         <Crown className="h-5 w-5" />
         <h1 className="text-lg font-semibold tracking-wide">WK Sign-up</h1>
       </div>
-      <p className="mb-6 text-xs text-zinc-500">
+      <p className="mb-6 text-xs text-zinc-400">
         Event: {event.id} · Start {new Date(event.starts_at_utc).toLocaleString('de-DE')}
       </p>
 
@@ -424,7 +424,7 @@ export function SignupPage() {
 
         <div>
           <span className="mb-1 block text-sm font-medium text-zinc-300">
-            Verfügbare Shifts {event.shift_count > 1 && <span className="text-zinc-500">(mehrere möglich)</span>}
+            Verfügbare Shifts {event.shift_count > 1 && <span className="text-zinc-400">(mehrere möglich)</span>}
           </span>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {Array.from({ length: event.shift_count }, (_, i) => {
@@ -449,7 +449,7 @@ export function SignupPage() {
                   )}
                 >
                   <span className="font-semibold">Shift {n}</span>
-                  <span className="text-[10px] text-zinc-500">{label}</span>
+                  <span className="text-[10px] text-zinc-400">{label}</span>
                 </button>
               )
             })}
@@ -498,7 +498,7 @@ export function SignupPage() {
           </button>
         )}
         {existing && !isOwner && (
-          <p className="mt-1 text-center text-[11px] text-zinc-500">
+          <p className="mt-1 text-center text-[11px] text-zinc-400">
             Abmelden geht nur vom Gerät auf dem die Eintragung gemacht wurde.
           </p>
         )}

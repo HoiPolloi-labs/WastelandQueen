@@ -44,7 +44,7 @@ export function OtherShiftDropzone({ currentShift, shiftCount }: OtherShiftDropz
 
   return (
     <div className="flex items-center gap-1">
-      <span className="text-[10px] uppercase tracking-wider text-zinc-600">Verschieben:</span>
+      <span className="text-[10px] uppercase tracking-wider text-zinc-400">Verschieben:</span>
       <div className="flex flex-wrap gap-1">
         {targets.map((t) => (
           <SingleZone key={t} target={t} />

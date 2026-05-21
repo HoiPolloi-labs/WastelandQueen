@@ -59,7 +59,7 @@ export function EventPicker({ currentEventId }: EventPickerProps) {
                       )}
                     >
                       <span className="font-mono">{e.id}</span>
-                      <span className="text-[10px] text-zinc-500">{date}</span>
+                      <span className="text-[10px] text-zinc-400">{date}</span>
                     </Link>
                   </li>
                 )

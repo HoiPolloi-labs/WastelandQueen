@@ -18,7 +18,7 @@ export function Toggle({ checked, onChange, label, hint }: ToggleProps) {
     >
       <span>
         <span className="block text-sm font-medium text-zinc-100">{label}</span>
-        {hint && <span className="mt-0.5 block text-xs text-zinc-500">{hint}</span>}
+        {hint && <span className="mt-0.5 block text-xs text-zinc-400">{hint}</span>}
       </span>
       <span
         className={cn(

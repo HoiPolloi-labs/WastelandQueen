@@ -32,7 +32,7 @@ export function StatsSidebar({ shift, signups }: StatsSidebarProps) {
         <Stat icon={Activity} label="Ø Lair" value={avgLair.toFixed(1)} />
       </div>
       <div>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">
           Typen-Verteilung
         </h3>
         <div className="flex flex-col gap-1.5">
@@ -67,7 +67,7 @@ function Stat({
     <div className="rounded border border-zinc-800 bg-zinc-900/40 px-2 py-2 text-center">
       <Icon className="mx-auto h-3.5 w-3.5 text-zinc-500" />
       <div className="mt-1 text-lg font-semibold text-zinc-100">{value}</div>
-      <div className="text-[10px] uppercase tracking-wider text-zinc-500">{label}</div>
+      <div className="text-[10px] uppercase tracking-wider text-zinc-400">{label}</div>
     </div>
   )
 }

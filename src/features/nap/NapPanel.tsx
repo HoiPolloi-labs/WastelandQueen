@@ -30,7 +30,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
       <header className="mb-3 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
           <Handshake className="h-3.5 w-3.5" />
-          NAP <span className="font-normal normal-case text-zinc-600">· {terms.length}</span>
+          NAP <span className="font-normal normal-case text-zinc-400">· {terms.length}</span>
         </h3>
         {!adding && (
           <Button variant="ghost" size="sm" onClick={() => setAdding(true)}>

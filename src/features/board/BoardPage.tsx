@@ -64,7 +64,7 @@ export function BoardPage() {
             </span>
           </div>
           <h1 className="mt-1 text-2xl font-semibold">{event.id}</h1>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             Start {new Date(event.starts_at_utc).toLocaleString('de-DE')} · {signups.length}{' '}
             Spieler
           </p>
@@ -89,7 +89,7 @@ export function BoardPage() {
       </header>
 
       <div ref={captureRef} className="rounded-xl border border-zinc-800 bg-zinc-950 p-6">
-        <div className="mb-4 flex items-center justify-between text-xs text-zinc-500">
+        <div className="mb-4 flex items-center justify-between text-xs text-zinc-400">
           <span>Shift {shift} · WK Setup</span>
           <span>Drag-frei · nur Anzeige</span>
         </div>
@@ -115,7 +115,7 @@ export function BoardPage() {
           <Qr value={signupUrl} size={140} />
           <div className="text-sm">
             <div className="font-medium text-zinc-100">Noch nicht eingetragen?</div>
-            <div className="mt-1 text-xs text-zinc-500">QR scannen oder Link öffnen:</div>
+            <div className="mt-1 text-xs text-zinc-400">QR scannen oder Link öffnen:</div>
             <code className="mt-2 block break-all rounded bg-zinc-900 px-2 py-1 font-mono text-[11px] text-yellow-300">
               {signupUrl}
             </code>
@@ -123,7 +123,7 @@ export function BoardPage() {
         </div>
         {event.notes && (
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-300">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">
               Notes
             </div>
             <p className="whitespace-pre-wrap">{event.notes}</p>

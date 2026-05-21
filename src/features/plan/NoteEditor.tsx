@@ -42,7 +42,7 @@ export function NoteEditor({ signup, onClose }: NoteEditorProps) {
         <header className="mb-3 flex items-center justify-between">
           <div>
             <h2 className="text-sm font-semibold text-zinc-100">Notes für {signup.ign}</h2>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-400">
               Nur für den Planner sichtbar. Beispiele: „nur erste 2h", „spielt Sub-Account", „immer mit Y rallyen".
             </p>
           </div>

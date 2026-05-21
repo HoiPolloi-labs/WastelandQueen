@@ -125,7 +125,7 @@ export function Building({
         >
           {BUILDING_LABELS[building]}
         </span>
-        <span className="text-[10px] text-zinc-500">{members.length}</span>
+        <span className="text-[10px] text-zinc-400">{members.length}</span>
       </header>
       <TierHeat members={members} />
 
@@ -136,7 +136,7 @@ export function Building({
         )}
       >
         {members.length === 0 && (
-          <div className="flex h-full flex-1 items-center justify-center text-[11px] italic text-zinc-600">
+          <div className="flex h-full flex-1 items-center justify-center text-[11px] italic text-zinc-400">
             leer
           </div>
         )}
