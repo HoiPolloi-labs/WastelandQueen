@@ -129,6 +129,9 @@ export interface Assignment {
   shift: ShiftNumber
   is_captain: boolean
   position: number
+  /** Live-event flag set by Gov/R5: null = unknown, true = present, false = absent.
+   *  Only meaningful when `is_captain` is true; null on non-captain rows. */
+  captain_present: boolean | null
   updated_at: string
 }
 

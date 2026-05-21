@@ -58,6 +58,7 @@ function makeAssignment(overrides: Partial<Assignment>): Assignment {
     shift: 1,
     is_captain: false,
     position: 0,
+    captain_present: null,
     updated_at: EVENT_START,
     ...overrides,
   }

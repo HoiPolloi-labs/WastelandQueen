@@ -20,6 +20,7 @@ import {
   Eye,
   RefreshCcw,
   Trophy,
+  Copy,
 } from 'lucide-react'
 import { useEvent } from '@/features/event/use-event'
 import { Button } from '@/components/ui/Button'
@@ -37,6 +38,7 @@ import { StatsSidebar } from './StatsSidebar'
 import { OtherShiftDropzone } from './OtherShiftDropzone'
 import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
+import { HealthCheckPanel } from './HealthCheckPanel'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
@@ -45,8 +47,14 @@ export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading: eventLoading } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
-  const { assignments, moveOne, moveAcrossShifts, applyDraft, removeAll } =
-    useAssignments(eventId)
+  const {
+    assignments,
+    moveOne,
+    moveAcrossShifts,
+    applyDraft,
+    removeAll,
+    setCaptainPresent,
+  } = useAssignments(eventId)
   const [shift, setShift] = useState<ShiftNumber>(1)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -233,6 +241,12 @@ export function PlanPage() {
             Awards
           </Button>
         </Link>
+        <Link to={`/plan/new?clone=${event.id}`} title="Neues Event mit dieser Konfiguration anlegen">
+          <Button variant="ghost" size="sm">
+            <Copy className="h-3.5 w-3.5" />
+            Klonen
+          </Button>
+        </Link>
       </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -276,9 +290,16 @@ export function PlanPage() {
           signups={signups}
           assignments={assignments}
           foreignTargets={event.foreign_targets}
+          onCaptainPresentChange={setCaptainPresent}
         />
         <div className="flex flex-col gap-3">
           <ConflictBanner shift={shift} signups={signups} assignments={assignments} />
+          <HealthCheckPanel
+            signups={signups}
+            assignments={assignments}
+            event={event}
+            shift={shift}
+          />
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
         </div>

@@ -8,6 +8,7 @@ interface PlazaProps {
   assignments: Assignment[]
   /** Optional foreign-state targets, surfaced on the Hit-Squad bucket */
   foreignTargets?: string[] | null
+  onCaptainPresentChange?: (assignmentId: string, present: boolean | null) => void
 }
 
 function membersOf(
@@ -15,17 +16,27 @@ function membersOf(
   shift: ShiftNumber,
   assignments: Assignment[],
   signups: Signup[],
-): { members: Signup[]; captainId: string | null } {
+): { members: Signup[]; captainId: string | null; captainAssignment: Assignment | null } {
   const slot = assignments.filter((a) => a.building === building && a.shift === shift)
   slot.sort((a, b) => (a.is_captain === b.is_captain ? a.position - b.position : a.is_captain ? -1 : 1))
   const members = slot
     .map((a) => signups.find((s) => s.id === a.signup_id))
     .filter((s): s is Signup => Boolean(s))
-  const captain = slot.find((a) => a.is_captain)?.signup_id ?? null
-  return { members, captainId: captain }
+  const captainRow = slot.find((a) => a.is_captain) ?? null
+  return {
+    members,
+    captainId: captainRow?.signup_id ?? null,
+    captainAssignment: captainRow,
+  }
 }
 
-export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProps) {
+export function Plaza({
+  shift,
+  signups,
+  assignments,
+  foreignTargets,
+  onCaptainPresentChange,
+}: PlazaProps) {
   const hub = membersOf('hub', shift, assignments, signups)
   const turretData = TURRETS.map((t) => ({
     turret: t,
@@ -60,6 +71,8 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
           shift={shift}
           members={grid.n?.members ?? []}
           captainId={grid.n?.captainId ?? null}
+          captainAssignment={grid.n?.captainAssignment ?? null}
+          onCaptainPresentChange={onCaptainPresentChange}
         />
         <div className="hidden sm:block" />
 
@@ -68,12 +81,16 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
           shift={shift}
           members={grid.w?.members ?? []}
           captainId={grid.w?.captainId ?? null}
+          captainAssignment={grid.w?.captainAssignment ?? null}
+          onCaptainPresentChange={onCaptainPresentChange}
         />
         <Building
           building="hub"
           shift={shift}
           members={hub.members}
           captainId={hub.captainId}
+          captainAssignment={hub.captainAssignment}
+          onCaptainPresentChange={onCaptainPresentChange}
           large
         />
         <Building
@@ -81,6 +98,8 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
           shift={shift}
           members={grid.e?.members ?? []}
           captainId={grid.e?.captainId ?? null}
+          captainAssignment={grid.e?.captainAssignment ?? null}
+          onCaptainPresentChange={onCaptainPresentChange}
         />
 
         <div className="hidden sm:block" />
@@ -89,6 +108,8 @@ export function Plaza({ shift, signups, assignments, foreignTargets }: PlazaProp
           shift={shift}
           members={grid.s?.members ?? []}
           captainId={grid.s?.captainId ?? null}
+          captainAssignment={grid.s?.captainAssignment ?? null}
+          onCaptainPresentChange={onCaptainPresentChange}
         />
         <div className="hidden sm:block" />
       </div>

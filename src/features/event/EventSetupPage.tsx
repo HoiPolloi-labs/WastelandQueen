@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router'
-import { Loader2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router'
+import { Loader2, Copy } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Segmented } from '@/components/ui/Segmented'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { nextSaturdayIso, eventIdFromIso } from './event-id'
-import type { StateGrade, TurretMode } from '@/types/wk'
+import type { EventConfig, StateGrade, TurretMode } from '@/types/wk'
 
 const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
   {
@@ -25,6 +25,8 @@ const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
 
 export function EventSetupPage() {
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const cloneFromId = params.get('clone')
   const [startsAt, setStartsAt] = useState(() => nextSaturdayIso().slice(0, 16))
   const [turretMode, setTurretMode] = useState<TurretMode>('duplicate-strongest')
   const [homeServer, setHomeServer] = useState('S724')
@@ -39,6 +41,36 @@ export function EventSetupPage() {
   const [discordWebhookUrl, setDiscordWebhookUrl] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>('')
+  const [clonedFrom, setClonedFrom] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!cloneFromId) return
+    let cancelled = false
+    void (async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('id', cloneFromId)
+        .maybeSingle()
+      if (cancelled || error || !data) return
+      const src = data as EventConfig
+      setTurretMode(src.turret_mode)
+      setHomeServer(src.home_server)
+      setShiftCount(src.shift_count)
+      setHubDefenderTarget(src.hub_defender_target)
+      setStateGrade(src.state_grade)
+      setGovernorIgn(src.governor_ign ?? '')
+      setAssessorIgn(src.assessor_ign ?? '')
+      setNegotiatorIgn(src.negotiator_ign ?? '')
+      setForeignTargets((src.foreign_targets ?? []).join(', '))
+      setDiscordWebhookUrl(src.discord_webhook_url ?? '')
+      // notes intentionally NOT copied — they're event-specific (NAP status etc.)
+      setClonedFrom(src.id)
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [cloneFromId])
 
   const eventId = eventIdFromIso(new Date(startsAt).toISOString())
 
@@ -80,7 +112,19 @@ export function EventSetupPage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <PageHeader title="Neues WK-Event" subtitle="Lege Datum, Modus und Server fest." />
+      <PageHeader
+        title="Neues WK-Event"
+        subtitle={
+          clonedFrom ? (
+            <span className="flex items-center gap-1.5 text-yellow-300">
+              <Copy className="h-3.5 w-3.5" />
+              Geklont von {clonedFrom} — Datum und Notes anpassen.
+            </span>
+          ) : (
+            'Lege Datum, Modus und Server fest.'
+          )
+        }
+      />
 
       <form onSubmit={create} className="flex flex-col gap-4">
         <Input

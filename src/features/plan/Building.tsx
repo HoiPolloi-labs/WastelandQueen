@@ -1,6 +1,13 @@
 import { useDroppable } from '@dnd-kit/core'
+import { Check, X, HelpCircle } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import type { Building as BuildingType, ShiftNumber, Signup, TroopType } from '@/types/wk'
+import type {
+  Assignment,
+  Building as BuildingType,
+  ShiftNumber,
+  Signup,
+  TroopType,
+} from '@/types/wk'
 import { PlayerChip } from './PlayerChip'
 
 const BUILDING_LABELS: Record<BuildingType, string> = {
@@ -38,6 +45,9 @@ interface BuildingProps {
   shift: ShiftNumber
   members: Signup[]
   captainId: string | null
+  /** Captain row, used for the live-event present/absent toggle. */
+  captainAssignment?: Assignment | null
+  onCaptainPresentChange?: (assignmentId: string, present: boolean | null) => void
   className?: string
   large?: boolean
   /** Override the default tooltip — e.g. Hit Squad gets foreign-target list */
@@ -85,6 +95,8 @@ export function Building({
   shift,
   members,
   captainId,
+  captainAssignment,
+  onCaptainPresentChange,
   className,
   large,
   hintOverride,
@@ -110,7 +122,7 @@ export function Building({
       )}
     >
       <header
-        className="mb-2 flex items-center justify-between px-1"
+        className="mb-2 flex items-center justify-between gap-2 px-1"
         title={hintOverride ?? BUILDING_HINTS[building]}
       >
         <span
@@ -125,7 +137,15 @@ export function Building({
         >
           {BUILDING_LABELS[building]}
         </span>
-        <span className="text-[10px] text-zinc-400">{members.length}</span>
+        <div className="flex items-center gap-1.5">
+          {captainAssignment && onCaptainPresentChange && (
+            <CaptainPresentToggle
+              assignment={captainAssignment}
+              onChange={onCaptainPresentChange}
+            />
+          )}
+          <span className="text-[10px] text-zinc-400">{members.length}</span>
+        </div>
       </header>
       <TierHeat members={members} />
 
@@ -134,6 +154,7 @@ export function Building({
           'flex flex-col gap-1 overflow-y-auto pr-0.5',
           large ? 'min-h-[180px] max-h-[260px]' : 'min-h-[120px] max-h-[200px]',
         )}
+        data-testid={`building-body-${building}`}
       >
         {members.length === 0 && (
           <div className="flex h-full flex-1 items-center justify-center text-[11px] italic text-zinc-400">
@@ -151,5 +172,58 @@ export function Building({
         ))}
       </div>
     </div>
+  )
+}
+
+/**
+ * Tri-state pill: unknown → present → absent → unknown.
+ * Live-event Super-Reinforcement tracker — if the captain doesn't show, the
+ * R5/Gov flips this red so reinforcers know their incoming march won't get the
+ * captain's stat-stack and should retarget another building.
+ */
+function CaptainPresentToggle({
+  assignment,
+  onChange,
+}: {
+  assignment: Assignment
+  onChange: (assignmentId: string, present: boolean | null) => void
+}) {
+  const state = assignment.captain_present
+  const next = state === null ? true : state === true ? false : null
+  const cycle = () => onChange(assignment.id, next)
+
+  const tone =
+    state === true
+      ? 'border-emerald-500/60 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25'
+      : state === false
+        ? 'border-red-500/60 bg-red-500/15 text-red-300 hover:bg-red-500/25'
+        : 'border-zinc-700 bg-zinc-900 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300'
+
+  const label =
+    state === true
+      ? 'Captain anwesend — Super Reinforcement aktiv'
+      : state === false
+        ? 'Captain abwesend! Reinforcer sollten umrouten.'
+        : 'Captain-Status unbekannt. Klick zum Markieren als anwesend.'
+
+  return (
+    <button
+      type="button"
+      onClick={cycle}
+      title={label}
+      aria-label={label}
+      className={cn(
+        'rounded border px-1 py-px text-[10px] leading-none transition',
+        tone,
+      )}
+    >
+      {state === true ? (
+        <Check className="h-2.5 w-2.5" />
+      ) : state === false ? (
+        <X className="h-2.5 w-2.5" />
+      ) : (
+        <HelpCircle className="h-2.5 w-2.5" />
+      )}
+    </button>
   )
 }

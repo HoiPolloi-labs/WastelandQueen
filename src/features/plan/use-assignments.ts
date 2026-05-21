@@ -52,7 +52,7 @@ export function useAssignments(eventId: string | undefined) {
       signupId: string,
       shift: ShiftNumber,
       patch: Partial<
-        Pick<Assignment, 'building' | 'is_captain' | 'position'>
+        Pick<Assignment, 'building' | 'is_captain' | 'position' | 'captain_present'>
       >,
     ) => {
       if (!eventId) return
@@ -70,6 +70,7 @@ export function useAssignments(eventId: string | undefined) {
               shift,
               is_captain: patch.is_captain ?? false,
               position: patch.position ?? 0,
+              captain_present: patch.captain_present ?? null,
               updated_at: new Date().toISOString(),
             },
           ]
@@ -169,6 +170,7 @@ export function useAssignments(eventId: string | undefined) {
           shift: toShift,
           is_captain: patch.is_captain ?? false,
           position: patch.position ?? 0,
+          captain_present: null,
           updated_at: new Date().toISOString(),
         }
         if (existingTarget === -1) return [...withoutSource, targetRow]
@@ -214,6 +216,25 @@ export function useAssignments(eventId: string | undefined) {
     [eventId],
   )
 
+  /** Cycle/set the captain-present flag on a single assignment row. */
+  const setCaptainPresent = useCallback(
+    async (assignmentId: string, present: boolean | null) => {
+      setAssignments((prev) =>
+        prev.map((a) =>
+          a.id === assignmentId
+            ? { ...a, captain_present: present, updated_at: new Date().toISOString() }
+            : a,
+        ),
+      )
+      const { error } = await supabase
+        .from('assignments')
+        .update({ captain_present: present, updated_at: new Date().toISOString() })
+        .eq('id', assignmentId)
+      if (error) setError(error.message)
+    },
+    [],
+  )
+
   return {
     assignments,
     loading,
@@ -223,5 +244,6 @@ export function useAssignments(eventId: string | undefined) {
     moveAcrossShifts,
     applyDraft,
     removeAll,
+    setCaptainPresent,
   }
 }
