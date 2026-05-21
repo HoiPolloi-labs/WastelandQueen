@@ -229,6 +229,18 @@ export function AwardsPage() {
               <th className="px-2 py-2">Death</th>
               <th className="px-2 py-2">Occ</th>
               <th className="px-2 py-2 text-right" title="Σ Personal Points">Σ</th>
+              <th
+                className="px-2 py-2"
+                title="Hub/turret death-might. Fast-Comeback cap = 120% davon."
+              >
+                M-Lost
+              </th>
+              <th
+                className="px-2 py-2 text-right"
+                title="Fast Comeback cap = might_lost × 1.2. Training/Healing speedups bis dahin werden 300% beschleunigt."
+              >
+                FC-Cap
+              </th>
               <th className="px-2 py-2">Box</th>
             </tr>
           </thead>
@@ -290,6 +302,16 @@ export function AwardsPage() {
                     )}
                   </td>
                   <td className="px-2 py-1.5">
+                    <PointInput
+                      value={s.might_lost}
+                      step={1_000_000}
+                      onChange={(v) => updateSignup(s.id, { might_lost: v })}
+                    />
+                  </td>
+                  <td className="px-2 py-1.5 text-right font-mono text-[11px] text-amber-300">
+                    {s.might_lost > 0 ? formatMight(s.might_lost * 1.2) : '—'}
+                  </td>
+                  <td className="px-2 py-1.5">
                     <select
                       value={s.box_tier ?? ''}
                       onChange={(e) =>
@@ -322,14 +344,22 @@ export function AwardsPage() {
   )
 }
 
-function PointInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+function PointInput({
+  value,
+  onChange,
+  step = 100,
+}: {
+  value: number
+  onChange: (v: number) => void
+  step?: number
+}) {
   const [local, setLocal] = useState(String(value))
   return (
     <Input
       type="number"
       inputMode="numeric"
       min={0}
-      step={100}
+      step={step}
       value={local}
       onChange={(e) => setLocal(e.target.value)}
       onBlur={() => {
@@ -339,4 +369,11 @@ function PointInput({ value, onChange }: { value: number; onChange: (v: number) 
       className="w-20 px-1 py-0.5 text-right font-mono text-[11px]"
     />
   )
+}
+
+/** "12.3M" / "450k" — Fast Comeback caps are 6–9 figures, raw digits unreadable. */
+function formatMight(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
+  if (n >= 1_000) return `${Math.round(n / 1_000)}k`
+  return String(Math.round(n))
 }
