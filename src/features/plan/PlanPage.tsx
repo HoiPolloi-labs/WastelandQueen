@@ -39,6 +39,7 @@ import { OtherShiftDropzone } from './OtherShiftDropzone'
 import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
 import { HealthCheckPanel } from './HealthCheckPanel'
+import { WebhookSettings } from './WebhookSettings'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
@@ -90,7 +91,8 @@ export function PlanPage() {
     )
   }
 
-  const signupUrl = `${window.location.origin}/signup/${event.id}`
+  const signupUrl = `${window.location.origin}/signup/${event.id}/${event.signup_token}`
+  const boardUrl = `${window.location.origin}/board/${event.id}/${event.board_token}`
 
   const onDragStart = (e: DragStartEvent) => {
     setDraggingId(String(e.active.id))
@@ -228,14 +230,14 @@ export function PlanPage() {
           <ClipboardCopy className="h-3.5 w-3.5" />
           Sign-up URL
         </Button>
-        <Link to={`/board/${event.id}`} target="_blank" rel="noreferrer">
+        <a href={boardUrl} target="_blank" rel="noreferrer">
           <Button variant="secondary" size="sm">
             <Eye className="h-3.5 w-3.5" />
             Board
             <ExternalLink className="h-3 w-3" />
           </Button>
-        </Link>
-        <Link to={`/awards/${event.id}`}>
+        </a>
+        <Link to={`/awards/${event.id}/${event.planner_token}`}>
           <Button variant="secondary" size="sm">
             <Trophy className="h-3.5 w-3.5" />
             Awards
@@ -302,6 +304,7 @@ export function PlanPage() {
           />
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
+          <WebhookSettings />
         </div>
       </div>
 

@@ -75,8 +75,12 @@ export interface EventConfig {
   negotiator_ign: string | null
   /** S-codes of the up-to-3 opposing states currently targeted by hit-squad */
   foreign_targets: string[] | null
-  /** Discord channel webhook URL — secret, only readable by edge function */
-  discord_webhook_url: string | null
+  /** Per-event role tokens. signup_token gates the public signup URL,
+   *  planner_token gates the organizer's CRUD URL, board_token gates the
+   *  read-only PNG/QR view. All exchanged for JWTs via token-exchange Edge Fn. */
+  signup_token: string
+  planner_token: string
+  board_token: string
   /** How many defenders auto-sort should park on the Hub alongside the captain.
    *  Same troop type as the captain (Super Reinforcement synergy). 0 = captain-only. */
   hub_defender_target: number

@@ -1,30 +1,35 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
-import type { EventConfig } from '@/types/wk'
+
+export interface KnownEvent {
+  eventId: string
+  plannerToken: string
+}
 
 /**
- * Fetch all events (most recent first). Used by the multi-event picker.
+ * Lists events the user has a planner token for (read from localStorage).
+ *
+ * Post per-event-token RLS, the events table is no longer publicly listable —
+ * a user only sees what their JWT grants. The Planner's multi-event picker
+ * therefore can't query "all events"; it shows just the ones we've recorded a
+ * planner token for on this device, written by EventSetupPage success-screen
+ * and EventAuthGate on successful auth.
  */
-export function useEvents() {
-  const [events, setEvents] = useState<EventConfig[]>([])
-  const [loading, setLoading] = useState(true)
+export function usePlannerEvents() {
+  const [events, setEvents] = useState<KnownEvent[]>([])
 
   useEffect(() => {
-    let cancelled = false
-    supabase
-      .from('events')
-      .select('*')
-      .order('starts_at_utc', { ascending: false })
-      .limit(50)
-      .then(({ data }) => {
-        if (cancelled) return
-        setEvents((data ?? []) as EventConfig[])
-        setLoading(false)
-      })
-    return () => {
-      cancelled = true
+    const found: KnownEvent[] = []
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (!key?.startsWith('tok:planner:')) continue
+      const eventId = key.slice('tok:planner:'.length)
+      const plannerToken = localStorage.getItem(key)
+      if (eventId && plannerToken) found.push({ eventId, plannerToken })
     }
+    // Most recently created first by id descending (event IDs are date-sortable: wk-YYYY-MM-DD)
+    found.sort((a, b) => (a.eventId < b.eventId ? 1 : -1))
+    setEvents(found)
   }, [])
 
-  return { events, loading }
+  return { events, loading: false }
 }

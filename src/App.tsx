@@ -3,6 +3,8 @@ import { NavLink, Route, Routes, useLocation } from 'react-router'
 import { Crown, Plus, ClipboardList, Loader2, BookOpen } from 'lucide-react'
 import { cn } from './lib/cn'
 import { BuildInfo } from './components/ui/BuildInfo'
+import { EventAuthGate } from './features/auth/EventAuthGate'
+import { LegacyTokenlessURL } from './features/auth/LegacyTokenlessURL'
 
 const EventSetupPage = lazy(() =>
   import('./features/event/EventSetupPage').then((m) => ({ default: m.EventSetupPage })),
@@ -116,10 +118,42 @@ export default function App() {
             <Route path="/" element={<HeroScene />} />
             <Route path="/plan/new" element={<EventSetupPage />} />
             <Route path="/plan" element={<PlanIndex />} />
-            <Route path="/plan/:eventId" element={<PlanPage />} />
-            <Route path="/signup/:eventId" element={<SignupPage />} />
-            <Route path="/board/:eventId" element={<BoardPage />} />
-            <Route path="/awards/:eventId" element={<AwardsPage />} />
+            <Route
+              path="/plan/:eventId/:token"
+              element={
+                <EventAuthGate requiredRole="planner">
+                  <PlanPage />
+                </EventAuthGate>
+              }
+            />
+            <Route
+              path="/signup/:eventId/:token"
+              element={
+                <EventAuthGate requiredRole={['signup', 'planner']}>
+                  <SignupPage />
+                </EventAuthGate>
+              }
+            />
+            <Route
+              path="/board/:eventId/:token"
+              element={
+                <EventAuthGate requiredRole={['board', 'planner']}>
+                  <BoardPage />
+                </EventAuthGate>
+              }
+            />
+            <Route
+              path="/awards/:eventId/:token"
+              element={
+                <EventAuthGate requiredRole="planner">
+                  <AwardsPage />
+                </EventAuthGate>
+              }
+            />
+            <Route path="/plan/:eventId" element={<LegacyTokenlessURL kind="plan" />} />
+            <Route path="/signup/:eventId" element={<LegacyTokenlessURL kind="signup" />} />
+            <Route path="/board/:eventId" element={<LegacyTokenlessURL kind="board" />} />
+            <Route path="/awards/:eventId" element={<LegacyTokenlessURL kind="awards" />} />
             <Route path="/cheat-sheet" element={<CheatSheetPage />} />
             <Route
               path="*"

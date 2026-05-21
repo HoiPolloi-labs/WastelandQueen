@@ -2,14 +2,14 @@ import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router'
 import { ChevronDown, Calendar } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import { useEvents } from './use-events'
+import { usePlannerEvents } from './use-events'
 
 interface EventPickerProps {
   currentEventId: string
 }
 
 export function EventPicker({ currentEventId }: EventPickerProps) {
-  const { events, loading } = useEvents()
+  const { events } = usePlannerEvents()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -37,19 +37,18 @@ export function EventPicker({ currentEventId }: EventPickerProps) {
 
       {open && (
         <div className="absolute right-0 z-50 mt-1 w-72 max-h-96 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950 shadow-xl">
-          {loading ? (
-            <div className="px-3 py-4 text-center text-xs text-zinc-500">Lade…</div>
-          ) : events.length === 0 ? (
-            <div className="px-3 py-4 text-center text-xs text-zinc-500">Keine Events.</div>
+          {events.length === 0 ? (
+            <div className="px-3 py-4 text-center text-xs text-zinc-500">
+              Nur Events mit gespeichertem Planner-Token auf diesem Gerät.
+            </div>
           ) : (
             <ul className="py-1">
               {events.map((e) => {
-                const date = new Date(e.starts_at_utc).toLocaleDateString('de-DE')
-                const active = e.id === currentEventId
+                const active = e.eventId === currentEventId
                 return (
-                  <li key={e.id}>
+                  <li key={e.eventId}>
                     <Link
-                      to={`/plan/${e.id}`}
+                      to={`/plan/${e.eventId}/${e.plannerToken}`}
                       onClick={() => setOpen(false)}
                       className={cn(
                         'flex items-center justify-between gap-2 px-3 py-2 text-xs transition',
@@ -58,8 +57,7 @@ export function EventPicker({ currentEventId }: EventPickerProps) {
                           : 'text-zinc-300 hover:bg-zinc-800',
                       )}
                     >
-                      <span className="font-mono">{e.id}</span>
-                      <span className="text-[10px] text-zinc-400">{date}</span>
+                      <span className="font-mono">{e.eventId}</span>
                     </Link>
                   </li>
                 )

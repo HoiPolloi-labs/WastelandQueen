@@ -41,7 +41,7 @@ export function BoardPage() {
     )
   }
 
-  const signupUrl = `${window.location.origin}/signup/${event.id}`
+  const signupUrl = `${window.location.origin}/signup/${event.id}/${event.signup_token}`
 
   const exportPng = async () => {
     if (!captureRef.current) return

@@ -116,10 +116,26 @@ Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KE
 ## Backend / Supabase
 
 - **Project**: `wasteland-queen` (ref `ecxuvcuvuawxriucarmh`) in `eu-central-1`.
-- **Tables**: `events`, `signups`, `assignments` (see [`supabase/migrations/`](supabase/migrations/)).
-- **RLS**: pragmatic — anon can read/write all three tables (security by URL obscurity).
-  Acceptable for a 30–50 player alliance tool where the planner URL is shared on Discord.
-  If you ever need to harden, add per-event tokens and tighten the policies.
+- **Tables**: `events`, `signups`, `assignments`, `nap_terms`, `event_secrets`
+  (see [`supabase/migrations/`](supabase/migrations/)).
+- **Auth model** (since migration 0019): per-event tokens + JWT-claim RLS.
+  Each event has three uuid tokens (`signup_token` / `planner_token` /
+  `board_token`). URLs include the token (`/plan/:eventId/:token` etc.);
+  the client exchanges it for a 24h JWT via the `token-exchange` Edge
+  Function. RLS policies key off `auth.jwt() ->> 'event_id'` / `event_role`.
+  - **anon insert** on `events` is still open — anyone can create an event;
+    the success screen returns all three tokens.
+  - **planner role**: full CRUD on event + signups + assignments + nap_terms.
+  - **signup role**: read signups (duplicate check), insert new, self-edit
+    own row via `update_signup_self` / `delete_signup_self` RPCs (verify
+    edit_token).
+  - **board role**: read-only.
+  - `event_secrets` (Discord webhook URL etc.) has NO anon policies —
+    written via `set_event_secret` RPC (planner-only) and read only by Edge
+    Functions with the service-role key.
+- **Edge Function** `token-exchange` requires `SUPABASE_JWT_SECRET` set as a
+  function secret in the Supabase Dashboard (it's not auto-provided unlike
+  `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`).
 - **Realtime**: `signups` + `assignments` are in the `supabase_realtime` publication.
   `use-signups` / `use-assignments` subscribe via `supabase.channel()` so the planner
   reflects sign-ups and DnD edits across tabs without F5.

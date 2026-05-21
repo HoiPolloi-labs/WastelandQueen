@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router'
-import { Loader2, Copy } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router'
+import { Loader2, Copy, ClipboardCopy, ShieldAlert, Eye, Trophy, ClipboardList } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -24,7 +24,6 @@ const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
 ]
 
 export function EventSetupPage() {
-  const navigate = useNavigate()
   const [params] = useSearchParams()
   const cloneFromId = params.get('clone')
   const [startsAt, setStartsAt] = useState(() => nextSaturdayIso().slice(0, 16))
@@ -38,10 +37,10 @@ export function EventSetupPage() {
   const [assessorIgn, setAssessorIgn] = useState('')
   const [negotiatorIgn, setNegotiatorIgn] = useState('')
   const [foreignTargets, setForeignTargets] = useState('')
-  const [discordWebhookUrl, setDiscordWebhookUrl] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>('')
   const [clonedFrom, setClonedFrom] = useState<string | null>(null)
+  const [createdEvent, setCreatedEvent] = useState<EventConfig | null>(null)
 
   useEffect(() => {
     if (!cloneFromId) return
@@ -63,8 +62,8 @@ export function EventSetupPage() {
       setAssessorIgn(src.assessor_ign ?? '')
       setNegotiatorIgn(src.negotiator_ign ?? '')
       setForeignTargets((src.foreign_targets ?? []).join(', '))
-      setDiscordWebhookUrl(src.discord_webhook_url ?? '')
       // notes intentionally NOT copied — they're event-specific (NAP status etc.)
+      // discord_webhook_url is a secret + must be re-set per event by the planner
       setClonedFrom(src.id)
     })()
     return () => {
@@ -78,36 +77,51 @@ export function EventSetupPage() {
     e.preventDefault()
     setBusy(true)
     setError('')
-    const { error } = await supabase.from('events').insert({
-      id: eventId,
-      starts_at_utc: new Date(startsAt).toISOString(),
-      shift_count: shiftCount,
-      hub_defender_target: hubDefenderTarget,
-      turret_mode: turretMode,
-      home_server: homeServer.toUpperCase(),
-      notes: notes || null,
-      state_grade: stateGrade,
-      governor_ign: governorIgn.trim() || null,
-      assessor_ign: assessorIgn.trim() || null,
-      negotiator_ign: negotiatorIgn.trim() || null,
-      foreign_targets: foreignTargets
-        .split(/[,\s]+/)
-        .map((s) => s.trim().toUpperCase())
-        .filter((s) => /^S\d+$/.test(s))
-        .slice(0, 3) // doc: up to 3 opposing states
-        .reduce<string[] | null>((acc, s) => (acc ? [...acc, s] : [s]), null),
-      discord_webhook_url: discordWebhookUrl.trim() || null,
-    })
-    if (error) {
-      if (error.code === '23505') {
+    const { data, error } = await supabase
+      .from('events')
+      .insert({
+        id: eventId,
+        starts_at_utc: new Date(startsAt).toISOString(),
+        shift_count: shiftCount,
+        hub_defender_target: hubDefenderTarget,
+        turret_mode: turretMode,
+        home_server: homeServer.toUpperCase(),
+        notes: notes || null,
+        state_grade: stateGrade,
+        governor_ign: governorIgn.trim() || null,
+        assessor_ign: assessorIgn.trim() || null,
+        negotiator_ign: negotiatorIgn.trim() || null,
+        foreign_targets: foreignTargets
+          .split(/[,\s]+/)
+          .map((s) => s.trim().toUpperCase())
+          .filter((s) => /^S\d+$/.test(s))
+          .slice(0, 3) // doc: up to 3 opposing states
+          .reduce<string[] | null>((acc, s) => (acc ? [...acc, s] : [s]), null),
+      })
+      .select('*')
+      .single()
+    if (error || !data) {
+      if (error?.code === '23505') {
         setError(`Event ${eventId} existiert schon — gehe direkt zum Planner.`)
       } else {
-        setError(error.message)
+        setError(error?.message ?? 'unknown error')
       }
       setBusy(false)
       return
     }
-    navigate(`/plan/${eventId}`)
+    const ev = data as EventConfig
+    // Remember the planner token so the bookmarked /plan/:id route can redirect
+    // transparently next visit. Other tokens are public-share-only.
+    localStorage.setItem(`tok:planner:${ev.id}`, ev.planner_token)
+    setCreatedEvent(ev)
+    setBusy(false)
+    // NOTE: Discord webhook URL field is intentionally NOT submitted here.
+    // The planner sets it from PlanPage settings (separate set_event_secret
+    // RPC call) once they're authenticated with the planner JWT.
+  }
+
+  if (createdEvent) {
+    return <CreatedSuccess event={createdEvent} />
   }
 
   return (
@@ -258,14 +272,10 @@ export function EventSetupPage() {
           hint="Bis zu 3 gegnerische States für Hit-Squad-Ziele. Komma- oder Space-getrennt."
         />
 
-        <Input
-          label="Discord Webhook URL (optional)"
-          type="url"
-          value={discordWebhookUrl}
-          onChange={(e) => setDiscordWebhookUrl(e.target.value)}
-          placeholder="https://discord.com/api/webhooks/..."
-          hint="Bei jedem Sign-up/Update/Withdraw geht ein Embed an diesen Channel. URL bleibt server-seitig."
-        />
+        <p className="rounded border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-xs text-zinc-400">
+          Discord-Webhook setzt du im Planner — nicht hier. So bleibt die URL hinter
+          deinem Planner-Token sicher.
+        </p>
 
         <Textarea
           label="Notes (optional)"
@@ -285,6 +295,123 @@ export function EventSetupPage() {
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Event anlegen'}
         </Button>
       </form>
+    </div>
+  )
+}
+
+/**
+ * After-create screen showing all three role-scoped URLs.
+ *
+ * Critical UX: the planner URL is the ONLY admin entry-point — if it's lost,
+ * the event becomes unrecoverable (the legacy URL fallback only works if the
+ * token is in this browser's localStorage). We make the warning loud here so
+ * the user copies it somewhere durable before leaving.
+ */
+function CreatedSuccess({ event }: { event: EventConfig }) {
+  const origin = window.location.origin
+  const urls = {
+    planner: `${origin}/plan/${event.id}/${event.planner_token}`,
+    signup: `${origin}/signup/${event.id}/${event.signup_token}`,
+    board: `${origin}/board/${event.id}/${event.board_token}`,
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl">
+      <PageHeader
+        title={`Event ${event.id} angelegt`}
+        subtitle="Drei URLs, eine pro Rolle. Vor Verlassen kopieren."
+      />
+
+      <div className="mb-4 flex items-start gap-2 rounded border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-200">
+        <ShieldAlert className="mt-0.5 h-4 w-4 flex-shrink-0" />
+        <span>
+          Der <strong>Planner-Link</strong> ist dein einziger Admin-Zugang. Wenn er
+          verloren geht, hat niemand mehr Schreibzugriff auf das Event. Bookmarke
+          ihn jetzt — wir merken ihn in diesem Browser, aber das ist der einzige
+          Backup.
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <UrlCard
+          icon={<ClipboardList className="h-4 w-4" />}
+          label="Planner — DU"
+          tone="amber"
+          url={urls.planner}
+          to={`/plan/${event.id}/${event.planner_token}`}
+        />
+        <UrlCard
+          icon={<ClipboardCopy className="h-4 w-4" />}
+          label="Sign-up — für Spieler (Discord)"
+          tone="sky"
+          url={urls.signup}
+        />
+        <UrlCard
+          icon={<Eye className="h-4 w-4" />}
+          label="Board — read-only (Discord)"
+          tone="emerald"
+          url={urls.board}
+        />
+      </div>
+
+      <div className="mt-4 flex items-center justify-between text-xs">
+        <Link
+          to={`/awards/${event.id}/${event.planner_token}`}
+          className="text-zinc-400 hover:text-zinc-200"
+        >
+          <Trophy className="mr-1 inline h-3 w-3" />
+          Awards-Link (auch planner-gated)
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+function UrlCard({
+  icon,
+  label,
+  url,
+  tone,
+  to,
+}: {
+  icon: React.ReactNode
+  label: string
+  url: string
+  tone: 'amber' | 'sky' | 'emerald'
+  to?: string
+}) {
+  const toneClass =
+    tone === 'amber'
+      ? 'border-amber-500/40 bg-amber-500/5'
+      : tone === 'sky'
+        ? 'border-sky-500/40 bg-sky-500/5'
+        : 'border-emerald-500/40 bg-emerald-500/5'
+  return (
+    <div className={`flex items-center gap-3 rounded border ${toneClass} p-3`}>
+      <div className="text-zinc-300">{icon}</div>
+      <div className="min-w-0 flex-1">
+        <div className="mb-0.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
+          {label}
+        </div>
+        <code className="block truncate font-mono text-[11px] text-zinc-400" title={url}>
+          {url}
+        </code>
+      </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => void navigator.clipboard.writeText(url)}
+        title="In Zwischenablage kopieren"
+      >
+        <Copy className="h-3.5 w-3.5" />
+      </Button>
+      {to && (
+        <Link to={to}>
+          <Button variant="primary" size="sm">
+            Öffnen
+          </Button>
+        </Link>
+      )}
     </div>
   )
 }

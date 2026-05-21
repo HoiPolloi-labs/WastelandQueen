@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { Crown, Check, AlertCircle, Loader2, Info, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
+import { useEventAuth } from '@/features/auth/EventAuthGate'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -32,6 +33,7 @@ const TIER_OPTIONS = Array.from({ length: 13 }, (_, i) => ({
 export function SignupPage() {
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading } = useEvent(eventId)
+  const { role } = useEventAuth()
   const [status, setStatus] = useState<Status>('idle')
   const [errors, setErrors] = useState<Partial<Record<keyof SignupInput, string>>>({})
   const [errorMsg, setErrorMsg] = useState<string>('')
@@ -221,10 +223,30 @@ export function SignupPage() {
     }
 
     if (existing) {
-      const { error } = await supabase.from('signups').update(payload).eq('id', existing.id)
-      if (error) {
+      // Planner role goes direct (RLS allows). Signup role must use RPC
+      // which verifies edit_token server-side.
+      const updateError = await (async () => {
+        if (role === 'planner') {
+          const { error } = await supabase
+            .from('signups')
+            .update(payload)
+            .eq('id', existing.id)
+          return error
+        }
+        const editToken = recallToken(event.id, existing.ign)
+        if (!editToken || editToken !== existing.edit_token) {
+          return new Error('Du bist nicht der Inhaber dieses Eintrags.')
+        }
+        const { error } = await supabase.rpc('update_signup_self', {
+          p_signup_id: existing.id,
+          p_edit_token: editToken,
+          p_patch: payload,
+        })
+        return error
+      })()
+      if (updateError) {
         setStatus('error')
-        setErrorMsg(error.message)
+        setErrorMsg(updateError.message)
         return
       }
       notifyDiscord(event.id, existing.id, 'updated')
@@ -479,10 +501,24 @@ export function SignupPage() {
             type="button"
             onClick={async () => {
               if (!confirm(`${existing.ign} wirklich aus dem Event nehmen?`)) return
-              const { error } = await supabase
-                .from('signups')
-                .delete()
-                .eq('id', existing.id)
+              const editToken = recallToken(event.id, existing.ign)
+              const error = await (async () => {
+                if (role === 'planner') {
+                  const { error } = await supabase
+                    .from('signups')
+                    .delete()
+                    .eq('id', existing.id)
+                  return error
+                }
+                if (!editToken || editToken !== existing.edit_token) {
+                  return new Error('Du bist nicht der Inhaber dieses Eintrags.')
+                }
+                const { error } = await supabase.rpc('delete_signup_self', {
+                  p_signup_id: existing.id,
+                  p_edit_token: editToken,
+                })
+                return error
+              })()
               if (error) {
                 setStatus('error')
                 setErrorMsg(error.message)

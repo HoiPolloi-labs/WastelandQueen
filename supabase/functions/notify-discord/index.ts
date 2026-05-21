@@ -49,12 +49,24 @@ Deno.serve(async (req: Request) => {
   }
 
   const eventRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/events?id=eq.${event_id}&select=id,discord_webhook_url,home_server`,
+    `${SUPABASE_URL}/rest/v1/events?id=eq.${event_id}&select=id,home_server`,
     { headers: authHeaders },
   )
   const events = await eventRes.json()
   const event = events[0]
-  if (!event?.discord_webhook_url) {
+  if (!event) {
+    return new Response(JSON.stringify({ skipped: 'event not found' }), {
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+  // Webhook URL lives in event_secrets — read only with service-role.
+  const secretRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/event_secrets?event_id=eq.${event_id}&select=discord_webhook_url`,
+    { headers: authHeaders },
+  )
+  const secrets = await secretRes.json()
+  const webhookUrl = secrets[0]?.discord_webhook_url as string | undefined
+  if (!webhookUrl) {
     return new Response(JSON.stringify({ skipped: 'no webhook configured' }), {
       headers: { 'Content-Type': 'application/json' },
     })
@@ -89,7 +101,7 @@ Deno.serve(async (req: Request) => {
     timestamp: new Date().toISOString(),
   }
 
-  const r = await fetch(event.discord_webhook_url, {
+  const r = await fetch(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ embeds: [embed] }),
