@@ -407,15 +407,17 @@ export function SignupPage() {
 
         <div className="grid grid-cols-2 gap-3">
           <Input
-            label="Rally Size (optional)"
+            label="Rally Size"
             type="number"
             inputMode="numeric"
-            min={0}
+            min={1}
             step={50000}
             placeholder="1500000"
             value={rallySize}
             onChange={(e) => setRallySize(e.target.value)}
             hint="Captain-Capacity"
+            required
+            error={errors.rally_size}
           />
           <Input
             label="True Might (optional)"

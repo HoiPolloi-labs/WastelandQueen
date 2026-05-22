@@ -21,12 +21,9 @@ export const signupSchema = z.object({
   troop_type: z.enum(['fighter', 'shooter', 'rider']),
   max_solo_lair: z.number().int().min(1).max(200),
   rally_size: z
-    .number()
+    .number({ invalid_type_error: 'Rally Size ist Pflicht' })
     .int()
-    .nonnegative()
-    .nullable()
-    .optional()
-    .transform((v) => (v == null ? null : v)),
+    .positive('Rally Size muss > 0 sein'),
   true_might: z
     .number()
     .int()

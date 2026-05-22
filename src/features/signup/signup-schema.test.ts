@@ -54,18 +54,23 @@ describe('signupSchema', () => {
     expect(r.success).toBe(false)
   })
 
-  it('accepts null rally_size and null true_might', () => {
+  it('accepts null true_might (rally_size now required)', () => {
     const r = signupSchema.safeParse({
       ...baseValid,
-      rally_size: null,
       true_might: null,
     })
     expect(r.success).toBe(true)
   })
 
-  it('rejects negative rally_size', () => {
-    const r = signupSchema.safeParse({ ...baseValid, rally_size: -1 })
-    expect(r.success).toBe(false)
+  it('rejects negative or zero rally_size', () => {
+    expect(signupSchema.safeParse({ ...baseValid, rally_size: -1 }).success).toBe(false)
+    expect(signupSchema.safeParse({ ...baseValid, rally_size: 0 }).success).toBe(false)
+  })
+
+  it('rejects missing rally_size', () => {
+    const { rally_size: _omit, ...withoutRally } = baseValid
+    void _omit
+    expect(signupSchema.safeParse(withoutRally).success).toBe(false)
   })
 
   it.each(['1', '2', '1,2', '1,3,4', '1,2,3,4'])(
