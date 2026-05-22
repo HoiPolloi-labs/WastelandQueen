@@ -22,7 +22,10 @@ import {
   RefreshCcw,
   Trophy,
   Copy,
+  FileText,
+  Check,
 } from 'lucide-react'
+import { formatPlazaAsText } from '@/lib/share-formats'
 import { useEvent } from '@/features/event/use-event'
 import { Button } from '@/components/ui/Button'
 import { Segmented } from '@/components/ui/Segmented'
@@ -64,6 +67,7 @@ export function PlanPage() {
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
+  const [copiedPlaza, setCopiedPlaza] = useState(false)
 
   // PointerSensor handles mouse + stylus; TouchSensor splits off touch with
   // a delay-based activation so finger-jitter during scroll doesn't
@@ -171,6 +175,14 @@ export function PlanPage() {
 
   const copySignupUrl = async () => {
     await navigator.clipboard.writeText(signupUrl)
+  }
+
+  const copyPlazaForChat = async () => {
+    if (!event) return
+    const text = formatPlazaAsText(event, signups, assignments, shift)
+    await navigator.clipboard.writeText(text)
+    setCopiedPlaza(true)
+    setTimeout(() => setCopiedPlaza(false), 1500)
   }
 
   const draggingSignup = draggingId
@@ -291,6 +303,19 @@ export function PlanPage() {
           <Button variant="ghost" size="sm" onClick={refreshSignups} title="Sign-ups neu laden">
             <RefreshCcw className="h-3.5 w-3.5" />
             Reload
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={copyPlazaForChat}
+            title={`Aufstellung Shift ${shift} als Text in Zwischenablage (für In-Game-Chat)`}
+          >
+            {copiedPlaza ? (
+              <Check className="h-3.5 w-3.5 text-emerald-300" />
+            ) : (
+              <FileText className="h-3.5 w-3.5" />
+            )}
+            Copy
           </Button>
           <Button variant="primary" size="sm" onClick={runAutoSort} disabled={busy}>
             {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}

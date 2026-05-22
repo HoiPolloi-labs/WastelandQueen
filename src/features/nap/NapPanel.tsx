@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Handshake, Plus, X } from 'lucide-react'
+import { Handshake, Plus, X, FileText, Check } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
+import { formatNapAsText } from '@/lib/share-formats'
 import { useNapTerms } from './use-nap-terms'
 import { NapList } from './NapList'
 
@@ -16,6 +17,13 @@ export function NapPanel({ eventId }: NapPanelProps) {
   const [text, setText] = useState('')
   const [startsLocal, setStartsLocal] = useState('')
   const [endsLocal, setEndsLocal] = useState('')
+  const [copied, setCopied] = useState(false)
+
+  const copyForChat = async () => {
+    await navigator.clipboard.writeText(formatNapAsText(terms, eventId))
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
 
   const submitNew = async () => {
     const ws = withState.trim().toUpperCase()
@@ -39,12 +47,28 @@ export function NapPanel({ eventId }: NapPanelProps) {
           <Handshake className="h-3.5 w-3.5" />
           NAP <span className="font-normal normal-case text-zinc-400">· {terms.length}</span>
         </h3>
-        {!adding && (
-          <Button variant="ghost" size="sm" onClick={() => setAdding(true)}>
-            <Plus className="h-3 w-3" />
-            Add
-          </Button>
-        )}
+        <div className="flex items-center gap-1">
+          {terms.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={copyForChat}
+              title="NAP-Liste als Text in Zwischenablage (für In-Game-Chat)"
+            >
+              {copied ? (
+                <Check className="h-3 w-3 text-emerald-300" />
+              ) : (
+                <FileText className="h-3 w-3" />
+              )}
+            </Button>
+          )}
+          {!adding && (
+            <Button variant="ghost" size="sm" onClick={() => setAdding(true)}>
+              <Plus className="h-3 w-3" />
+              Add
+            </Button>
+          )}
+        </div>
       </header>
 
       {adding && (
