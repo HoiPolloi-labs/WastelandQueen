@@ -99,12 +99,24 @@ export function EventSetupPage() {
     }
   }, [cloneFromId, stateCloneFrom])
 
-  const eventId = eventIdFromIso(new Date(startsAt).toISOString())
+  // Guard against the user clearing the datetime-local input (empty string)
+  // or typing nonsense. Without this, every re-render explodes with
+  // `Invalid time value` from Date.toISOString() and unmounts the form.
+  const eventId = (() => {
+    const d = new Date(startsAt)
+    return isNaN(d.getTime()) ? '' : eventIdFromIso(d.toISOString())
+  })()
 
   const create = async (e: React.FormEvent) => {
     e.preventDefault()
     setBusy(true)
     setError('')
+    const startsDate = new Date(startsAt)
+    if (isNaN(startsDate.getTime())) {
+      setError('Bitte ein gültiges Start-Datum eingeben.')
+      setBusy(false)
+      return
+    }
     // create_event RPC bypasses RLS for the return path so the freshly
     // generated tokens come back to the client. Direct .insert() fails
     // because PostgREST's implicit SELECT-after-INSERT goes through the
@@ -117,7 +129,7 @@ export function EventSetupPage() {
     const { data, error } = await supabase.rpc('create_event', {
       p: {
         id: eventId,
-        starts_at_utc: new Date(startsAt).toISOString(),
+        starts_at_utc: startsDate.toISOString(),
         shift_count: shiftCount,
         hub_defender_target: hubDefenderTarget,
         turret_mode: turretMode,
