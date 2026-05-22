@@ -14,6 +14,7 @@ import { TypeCard } from './TypeCard'
 import { signupSchema, type SignupInput } from './signup-schema'
 import { rememberToken, recallToken, forgetToken } from './edit-token'
 import { notifyDiscord } from './notify'
+import { ProfileScreenshotUpload } from './ProfileScreenshotUpload'
 import {
   parseShiftPref,
   serializeShiftPref,
@@ -307,6 +308,15 @@ export function SignupPage() {
       </p>
 
       <form onSubmit={submit} className="flex flex-col gap-4">
+        <ProfileScreenshotUpload
+          onExtract={(f) => {
+            if (f.ign) setIgn(f.ign)
+            if (f.alliance_tag) setAllianceTag(f.alliance_tag.toUpperCase())
+            if (f.server) setServer(f.server.toUpperCase())
+            if (f.might) setTrueMight(String(f.might))
+            if (f.tier && f.tier >= 1 && f.tier <= 13) setTier(f.tier as TroopTier)
+          }}
+        />
         {existing && (
           <div className="flex items-start gap-2 rounded border border-yellow-500/40 bg-yellow-500/5 px-3 py-2 text-xs text-yellow-200">
             <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
