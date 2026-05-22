@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Webhook, Check, X, Loader2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Input } from '@/components/ui/Input'
@@ -14,6 +15,7 @@ import { Button } from '@/components/ui/Button'
  * empty value.
  */
 export function WebhookSettings() {
+  const { t } = useTranslation()
   const [configured, setConfigured] = useState<boolean | null>(null)
   const [url, setUrl] = useState('')
   const [busy, setBusy] = useState(false)
@@ -56,7 +58,7 @@ export function WebhookSettings() {
       <header className="mb-2 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
           <Webhook className="h-3.5 w-3.5" />
-          Discord-Webhook
+          {t('webhook.section_title')}
         </h3>
         <span className="text-[10px]">
           {configured === null ? (
@@ -64,12 +66,12 @@ export function WebhookSettings() {
           ) : configured ? (
             <span className="flex items-center gap-0.5 text-emerald-300">
               <Check className="h-3 w-3" />
-              aktiv
+              {t('webhook.status_active')}
             </span>
           ) : (
             <span className="flex items-center gap-0.5 text-zinc-500">
               <X className="h-3 w-3" />
-              nicht gesetzt
+              {t('webhook.status_not_set')}
             </span>
           )}
         </span>
@@ -79,19 +81,15 @@ export function WebhookSettings() {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="https://discord.com/api/webhooks/..."
-        hint={
-          configured
-            ? 'Schreibgeschützt — neue URL eingeben überschreibt, leer lassen + speichern entfernt'
-            : 'URL bleibt server-seitig (event_secrets, no anon read)'
-        }
+        hint={configured ? t('webhook.hint_configured') : t('webhook.hint_not_set')}
       />
       <div className="mt-2 flex items-center justify-between">
         <span className="text-[10px]">
-          {status === 'saved' && <span className="text-emerald-300">Gespeichert.</span>}
+          {status === 'saved' && <span className="text-emerald-300">{t('webhook.saved')}</span>}
           {status === 'error' && <span className="text-red-300">{errorMsg}</span>}
         </span>
         <Button variant="primary" size="sm" onClick={save} disabled={busy}>
-          {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Speichern'}
+          {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : t('webhook.save_button')}
         </Button>
       </div>
     </section>

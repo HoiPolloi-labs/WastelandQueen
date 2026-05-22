@@ -1,6 +1,7 @@
 import { useDroppable } from '@dnd-kit/core'
 import { useMemo, useState } from 'react'
 import { Search } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/cn'
 import { Input } from '@/components/ui/Input'
 import { Segmented } from '@/components/ui/Segmented'
@@ -17,6 +18,7 @@ interface UnassignedPoolProps {
 type Filter = 'all' | TroopType
 
 export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolProps) {
+  const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
   const [tagFilter, setTagFilter] = useState<string | null>(null)
@@ -75,14 +77,14 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
       )}
     >
       <h2 className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-400">
-        <span>Unassigned · Shift {shift}</span>
+        <span>{t('pool.title', { shift })}</span>
         <span className="text-zinc-400">{unassigned.length}</span>
       </h2>
       <div className="mb-2 flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-600" />
           <Input
-            placeholder="Suche IGN/Tag"
+            placeholder={t('pool.search_placeholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-7 text-xs"
@@ -93,10 +95,10 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
         size="sm"
         className="mb-2 text-xs"
         options={[
-          { value: 'all', label: 'All' },
-          { value: 'fighter', label: 'Fight' },
-          { value: 'shooter', label: 'Shoot' },
-          { value: 'rider', label: 'Ride' },
+          { value: 'all', label: t('pool.filter_all') },
+          { value: 'fighter', label: t('pool.filter_fighter') },
+          { value: 'shooter', label: t('pool.filter_shooter') },
+          { value: 'rider', label: t('pool.filter_rider') },
         ]}
         value={filter}
         onChange={(v: Filter) => setFilter(v)}
@@ -113,21 +115,21 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
                 : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
             )}
           >
-            ALL
+            {t('pool.tag_filter_all')}
           </button>
-          {allianceTags.map((t) => (
+          {allianceTags.map((tag) => (
             <button
               type="button"
-              key={t}
-              onClick={() => setTagFilter(t === tagFilter ? null : t)}
+              key={tag}
+              onClick={() => setTagFilter(tag === tagFilter ? null : tag)}
               className={cn(
                 'rounded border px-1.5 py-0.5 font-mono text-[10px] transition',
-                tagFilter === t
+                tagFilter === tag
                   ? 'border-yellow-500/60 bg-yellow-500/15 text-yellow-200'
                   : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
               )}
             >
-              {t}
+              {tag}
             </button>
           ))}
         </div>
@@ -154,7 +156,7 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
       <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto pr-0.5">
         {unassigned.length === 0 && (
           <div className="mt-6 text-center text-xs italic text-zinc-400">
-            Alle Spieler verteilt
+            {t('pool.all_distributed')}
           </div>
         )}
         {unassigned.map((s) => (

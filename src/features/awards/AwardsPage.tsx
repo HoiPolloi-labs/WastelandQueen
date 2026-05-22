@@ -11,6 +11,7 @@ import {
   Sword,
   Coins,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
 import { useSignups } from '@/features/plan/use-signups'
@@ -34,6 +35,7 @@ const TIER_TONE: Record<BoxTier, string> = {
 }
 
 export function AwardsPage() {
+  const { t } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading: eventLoading, refresh: refreshEvent } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
@@ -56,9 +58,9 @@ export function AwardsPage() {
   if (!event) {
     return (
       <div className="text-center text-zinc-400">
-        Event nicht gefunden.{' '}
+        {t('awards.event_not_found')}{' '}
         <Link to="/plan/new" className="text-yellow-400 underline">
-          Neues anlegen
+          {t('awards.create_new_link')}
         </Link>
       </div>
     )
@@ -90,7 +92,7 @@ export function AwardsPage() {
   }
 
   const autoAssign = async () => {
-    if (!confirm('Auto-Assign überschreibt alle aktuellen Box-Tier-Zuweisungen.')) return
+    if (!confirm(t('awards.confirm_autoassign'))) return
     setBusy(true)
     // top-N nach Score in jede Tier-Klasse, Reihenfolge king > rulers > loyalty > contribution
     // No-Shows (attended === false) bekommen nie einen Award.
@@ -117,7 +119,7 @@ export function AwardsPage() {
   }
 
   const clearAll = async () => {
-    if (!confirm('Alle Box-Tier-Zuweisungen entfernen?')) return
+    if (!confirm(t('awards.confirm_clear_all'))) return
     setBusy(true)
     await supabase
       .from('signups')
@@ -156,21 +158,21 @@ export function AwardsPage() {
   return (
     <div>
       <PageHeader
-        title={`Awards · ${event.id}`}
+        title={t('awards.title_prefix', { eventId: event.id })}
         subtitle={
           event.governor_ign ? (
             <span>
-              Governor: <span className="text-yellow-300">{event.governor_ign}</span>
+              {t('awards.subtitle_governor')} <span className="text-yellow-300">{event.governor_ign}</span>
             </span>
           ) : (
-            'Truhenvergabe — Contribution-Score = early-signup + attendance + captain × 25 + shifts × 10 + points/100'
+            t('awards.subtitle_default')
           )
         }
       >
         <Link to={`/plan/${event.id}`}>
           <Button variant="secondary" size="sm">
             <ArrowLeft className="h-3.5 w-3.5" />
-            Planner
+            {t('awards.planner_button')}
           </Button>
         </Link>
       </PageHeader>
@@ -197,7 +199,7 @@ export function AwardsPage() {
                 value={counts[tier]}
                 onChange={(e) => updateBoxCount(tier, Number(e.target.value) || 0)}
                 className="w-12 bg-transparent text-sm focus:outline-none"
-                aria-label={`${tier} Anzahl Boxes`}
+                aria-label={t('awards.boxes_anzahl_aria', { tier })}
               />
             </div>
           </div>
@@ -208,21 +210,24 @@ export function AwardsPage() {
 
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-zinc-400">
-          {candidates.length} Spieler · {candidates.filter((c) => c.signup.attended === true).length} attended ·{' '}
-          {candidates.filter((c) => c.signup.box_tier).length} Boxes verteilt
+          {t('awards.summary_count', {
+            count: candidates.length,
+            attended: candidates.filter((c) => c.signup.attended === true).length,
+            distributed: candidates.filter((c) => c.signup.box_tier).length,
+          })}
         </p>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={exportMarkdown}>
             <Download className="h-3.5 w-3.5" />
-            Export MD
+            {t('awards.export_md_button')}
           </Button>
           <Button variant="primary" size="sm" onClick={autoAssign} disabled={busy}>
             {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-            Auto-Assign
+            {t('awards.auto_assign_button')}
           </Button>
           <Button variant="ghost" size="sm" onClick={clearAll}>
             <Eraser className="h-3.5 w-3.5" />
-            Clear
+            {t('awards.clear_button')}
           </Button>
         </div>
       </div>
@@ -233,27 +238,27 @@ export function AwardsPage() {
             <tr>
               <th className="px-2 py-2">#</th>
               <th className="px-2 py-2">IGN</th>
-              <th className="px-2 py-2 text-right">Score</th>
-              <th className="px-2 py-2 text-center">Da?</th>
-              <th className="px-2 py-2 text-center" title="Captain-Einsätze">Cap</th>
-              <th className="px-2 py-2 text-center" title="Anzahl Shifts">Shifts</th>
-              <th className="px-2 py-2">Kill</th>
-              <th className="px-2 py-2">Death</th>
-              <th className="px-2 py-2">Occ</th>
-              <th className="px-2 py-2 text-right" title="Σ Personal Points">Σ</th>
+              <th className="px-2 py-2 text-right">{t('awards.table_score')}</th>
+              <th className="px-2 py-2 text-center">{t('awards.table_attended')}</th>
+              <th className="px-2 py-2 text-center" title={t('awards.table_cap_count_title')}>{t('awards.table_captain')}</th>
+              <th className="px-2 py-2 text-center" title={t('awards.table_shift_count_title')}>{t('awards.table_shifts')}</th>
+              <th className="px-2 py-2">{t('awards.table_kill')}</th>
+              <th className="px-2 py-2">{t('awards.table_death')}</th>
+              <th className="px-2 py-2">{t('awards.table_occ')}</th>
+              <th className="px-2 py-2 text-right" title={t('awards.table_total_title')}>{t('awards.table_total')}</th>
               <th
                 className="px-2 py-2"
-                title="Hub/turret death-might. Fast-Comeback cap = 120% davon."
+                title={t('awards.table_mlost_title')}
               >
-                M-Lost
+                {t('awards.table_mlost')}
               </th>
               <th
                 className="px-2 py-2 text-right"
-                title="Fast Comeback cap = might_lost × 1.2. Training/Healing speedups bis dahin werden 300% beschleunigt."
+                title={t('awards.table_fc_cap_title')}
               >
-                FC-Cap
+                {t('awards.table_fc_cap')}
               </th>
-              <th className="px-2 py-2">Box</th>
+              <th className="px-2 py-2">{t('awards.table_box')}</th>
             </tr>
           </thead>
           <tbody>
@@ -339,9 +344,9 @@ export function AwardsPage() {
                       )}
                     >
                       <option value="">—</option>
-                      {TIER_ORDER.map((t) => (
-                        <option key={t} value={t}>
-                          {BOX_TIER_LABELS[t]}
+                      {TIER_ORDER.map((tier) => (
+                        <option key={tier} value={tier}>
+                          {BOX_TIER_LABELS[tier]}
                         </option>
                       ))}
                     </select>
@@ -414,6 +419,7 @@ function GovernorPanel({
   signups: Signup[]
   onChange: (patch: Partial<EventConfig>) => void | Promise<void>
 }) {
+  const { t } = useTranslation()
   if (!event.governor_ign) return null
 
   const igns = [...new Set(signups.map((s) => s.ign))].sort((a, b) => a.localeCompare(b))
@@ -424,7 +430,9 @@ function GovernorPanel({
     <section className="mb-4 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-3">
       <header className="mb-3 flex items-center gap-1.5">
         <Crown className="h-4 w-4 text-yellow-400" />
-        <h2 className="text-sm font-semibold text-yellow-200">Governor — {event.governor_ign}</h2>
+        <h2 className="text-sm font-semibold text-yellow-200">
+          {t('awards.governor_header', { ign: event.governor_ign })}
+        </h2>
       </header>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -432,15 +440,15 @@ function GovernorPanel({
           <div className="mb-2 flex items-center justify-between">
             <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
               <Sword className="h-3.5 w-3.5 text-amber-400" />
-              King's-Sword Box
+              {t('awards.kings_sword_title')}
             </span>
             {frags !== null && (
-              <span className="text-[10px] text-amber-300">{frags} Nataly</span>
+              <span className="text-[10px] text-amber-300">{t('awards.kings_sword_frags_suffix', { frags })}</span>
             )}
           </div>
           <div className="flex flex-col gap-2">
             <label className="text-[11px] text-zinc-400">
-              Empfänger
+              {t('awards.kings_sword_recipient_label')}
               <select
                 value={event.king_sword_recipient_ign ?? ''}
                 onChange={(e) =>
@@ -448,7 +456,7 @@ function GovernorPanel({
                 }
                 className="mt-0.5 w-full rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-100"
               >
-                <option value="">— niemand —</option>
+                <option value="">{t('awards.kings_sword_none_option')}</option>
                 {igns.map((ign) => (
                   <option key={ign} value={ign}>
                     {ign}
@@ -457,7 +465,7 @@ function GovernorPanel({
               </select>
             </label>
             <label className="text-[11px] text-zinc-400">
-              Grade (Wert friert ein)
+              {t('awards.kings_sword_grade_label')}
               <select
                 value={event.king_sword_grade ?? ''}
                 onChange={(e) =>
@@ -468,10 +476,10 @@ function GovernorPanel({
                 }
                 className="mt-0.5 w-full rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-100"
               >
-                <option value="">— ungesetzt —</option>
-                <option value="gold">Gold · 10 Frags</option>
-                <option value="platinum">Platinum · 16 Frags</option>
-                <option value="diamond">Diamond · 20 Frags</option>
+                <option value="">{t('awards.kings_sword_grade_unset')}</option>
+                <option value="gold">{t('awards.kings_sword_gold')}</option>
+                <option value="platinum">{t('awards.kings_sword_platinum')}</option>
+                <option value="diamond">{t('awards.kings_sword_diamond')}</option>
               </select>
             </label>
           </div>
@@ -481,7 +489,7 @@ function GovernorPanel({
           <div className="mb-2 flex items-center justify-between">
             <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
               <Coins className="h-3.5 w-3.5 text-emerald-400" />
-              Coffer Tax-Stream
+              {t('awards.coffer_title')}
             </span>
             <label className="flex cursor-pointer items-center gap-1.5 text-[11px] text-zinc-300">
               <input
@@ -496,7 +504,7 @@ function GovernorPanel({
                 }
                 className="accent-emerald-500"
               />
-              eingesammelt
+              {t('awards.coffer_collected')}
             </label>
           </div>
           {event.coffer_collected_at && (
@@ -508,7 +516,7 @@ function GovernorPanel({
             value={event.coffer_notes ?? ''}
             onChange={(e) => void onChange({ coffer_notes: e.target.value || null })}
             rows={3}
-            placeholder="Verteilung: WhalerKing 5M food + 2M iron, …"
+            placeholder={t('awards.coffer_notes_placeholder')}
           />
         </div>
       </div>

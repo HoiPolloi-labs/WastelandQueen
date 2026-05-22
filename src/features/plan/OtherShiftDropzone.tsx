@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core'
 import { ArrowRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/cn'
 import type { ShiftNumber } from '@/types/wk'
 
@@ -13,6 +14,7 @@ interface SingleProps {
 }
 
 function SingleZone({ target }: SingleProps) {
+  const { t } = useTranslation()
   const { setNodeRef, isOver } = useDroppable({
     id: `drop:unassigned:${target}`,
     data: { building: 'unassigned' as const, shift: target },
@@ -28,7 +30,7 @@ function SingleZone({ target }: SingleProps) {
       )}
     >
       <ArrowRight className="h-3 w-3" />
-      <span>Shift {target}</span>
+      <span>{t('shifts.shift_label', { n: target })}</span>
     </div>
   )
 }
@@ -37,6 +39,7 @@ function SingleZone({ target }: SingleProps) {
  * Drop a chip on one of these targets to move it to that shift's unassigned pool.
  */
 export function OtherShiftDropzone({ currentShift, shiftCount }: OtherShiftDropzoneProps) {
+  const { t } = useTranslation()
   const targets = Array.from({ length: shiftCount }, (_, i) => (i + 1) as ShiftNumber).filter(
     (n) => n !== currentShift,
   )
@@ -44,7 +47,7 @@ export function OtherShiftDropzone({ currentShift, shiftCount }: OtherShiftDropz
 
   return (
     <div className="flex items-center gap-1">
-      <span className="text-[10px] uppercase tracking-wider text-zinc-400">Verschieben:</span>
+      <span className="text-[10px] uppercase tracking-wider text-zinc-400">{t('shifts.move_label')}</span>
       <div className="flex flex-wrap gap-1">
         {targets.map((t) => (
           <SingleZone key={t} target={t} />

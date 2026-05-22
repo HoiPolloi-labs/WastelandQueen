@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CheckCircle2, AlertCircle, AlertTriangle, Info, Activity } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { Assignment, EventConfig, ShiftNumber, Signup } from '@/types/wk'
@@ -31,6 +32,7 @@ export function HealthCheckPanel({
   event,
   shift,
 }: HealthCheckPanelProps) {
+  const { t } = useTranslation()
   const items = useMemo(
     () => healthCheck(signups, assignments, event, shift),
     [signups, assignments, event, shift],
@@ -44,17 +46,17 @@ export function HealthCheckPanel({
       <header className="mb-3 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
           <Activity className="h-3.5 w-3.5" />
-          Health
+          {t('health.section_title')}
         </h3>
         <span className="text-[10px] text-zinc-400">
           {errorCount > 0 && (
-            <span className="mr-1.5 text-red-300">{errorCount} err</span>
+            <span className="mr-1.5 text-red-300">{errorCount} {t('health.error_abbr')}</span>
           )}
           {warnCount > 0 && (
-            <span className="text-yellow-300">{warnCount} warn</span>
+            <span className="text-yellow-300">{warnCount} {t('health.warn_abbr')}</span>
           )}
           {errorCount === 0 && warnCount === 0 && (
-            <span className="text-emerald-300">all green</span>
+            <span className="text-emerald-300">{t('health.all_green')}</span>
           )}
         </span>
       </header>
@@ -62,14 +64,17 @@ export function HealthCheckPanel({
       <ul className="flex flex-col gap-1.5 text-xs">
         {items.map((item, i) => {
           const Icon = LEVEL_ICON[item.level]
+          const detail = item.detailRaw ?? (item.detailKey ? t(item.detailKey, item.detailParams ?? {}) : undefined)
           return (
             <li
               key={i}
               className="flex items-start gap-1.5"
-              title={item.detail}
+              title={detail}
             >
               <Icon className={cn('mt-0.5 h-3 w-3 flex-shrink-0', LEVEL_TONE[item.level])} />
-              <span className={cn('leading-tight', LEVEL_TONE[item.level])}>{item.label}</span>
+              <span className={cn('leading-tight', LEVEL_TONE[item.level])}>
+                {t(item.labelKey, item.labelParams ?? {})}
+              </span>
             </li>
           )
         })}

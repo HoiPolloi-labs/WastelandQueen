@@ -3,21 +3,28 @@ import { TURRETS, parseShiftPref } from '@/types/wk'
 
 export type HealthLevel = 'ok' | 'warn' | 'error' | 'info'
 
+/**
+ * Result entries are i18n keys + params, NOT rendered strings — the panel
+ * applies t() at render time. This keeps the pure function side-effect-free
+ * and lets each locale render the appropriate text without re-running the
+ * check.
+ */
 export interface HealthItem {
   level: HealthLevel
-  label: string
-  /** Extra context shown on hover */
-  detail?: string
+  labelKey: string
+  labelParams?: Record<string, string | number>
+  detailKey?: string
+  detailParams?: Record<string, string | number>
+  /** Pre-rendered detail string for free-form text (e.g. captain name + stats). */
+  detailRaw?: string
 }
 
 const ALL_TYPES: TroopType[] = ['fighter', 'shooter', 'rider']
 
 /**
- * Pre-event / mid-event readiness signals for the current shift. Pure function
- * so it's testable and the panel can re-render cheaply on every realtime tick.
- *
- * The list is intentionally short — Marcel scans this in 3 seconds before
- * the event window opens to decide "ready or scramble?".
+ * Pre-event / mid-event readiness signals for the current shift. Pure
+ * function so it's testable and the panel can re-render cheaply on every
+ * realtime tick. Output is i18n-key shaped — see HealthItem.
  */
 export function healthCheck(
   signups: Signup[],
@@ -33,23 +40,28 @@ export function healthCheck(
 
   items.push({
     level: 'info',
-    label: `Pool: ${pool.length} Spieler in Shift ${shift}`,
-    detail: `${signups.length} Sign-ups total`,
+    labelKey: 'health.pool_info',
+    labelParams: { count: pool.length, shift },
+    detailKey: 'health.total_signups_detail',
+    detailParams: { total: signups.length },
   })
 
   const hubCap = shiftAssignments.find((a) => a.building === 'hub' && a.is_captain)
   if (!hubCap) {
     items.push({
       level: 'error',
-      label: 'Hub ohne Captain',
-      detail: 'Auto-Sort oder manuell zuweisen — ohne Hub-Captain kein Super Reinforcement.',
+      labelKey: 'health.hub_no_captain',
+      detailKey: 'health.hub_no_captain_detail',
     })
   } else {
     const cap = signups.find((s) => s.id === hubCap.signup_id)
     items.push({
       level: 'ok',
-      label: `Hub-Captain: ${cap?.ign ?? '?'}`,
-      detail: cap ? `${cap.troop_type} · T${cap.tier} · Rally ${cap.rally_size ?? '?'}` : undefined,
+      labelKey: 'health.hub_captain',
+      labelParams: { ign: cap?.ign ?? '?' },
+      detailRaw: cap
+        ? `${cap.troop_type} · T${cap.tier} · Rally ${cap.rally_size ?? '?'}`
+        : undefined,
     })
   }
 
@@ -61,11 +73,12 @@ export function healthCheck(
   if (missing.length > 0) {
     items.push({
       level: 'warn',
-      label: `${missing.length}/4 Türme ohne Captain`,
-      detail: missing.map((m) => m.turret.replace('turret-', '').toUpperCase()).join(', '),
+      labelKey: 'health.turrets_missing_captains',
+      labelParams: { count: missing.length },
+      detailRaw: missing.map((m) => m.turret.replace('turret-', '').toUpperCase()).join(', '),
     })
   } else {
-    items.push({ level: 'ok', label: 'Alle 4 Türme haben einen Captain' })
+    items.push({ level: 'ok', labelKey: 'health.all_turrets_have_captains' })
   }
 
   for (const type of ALL_TYPES) {
@@ -73,14 +86,16 @@ export function healthCheck(
     if (count === 0) {
       items.push({
         level: 'warn',
-        label: `0× ${type} im Pool`,
-        detail: 'Kein Captain dieses Typs möglich — Mixed-Turm wird unvermeidbar.',
+        labelKey: 'health.no_type_in_pool',
+        labelParams: { type },
+        detailKey: 'health.no_type_detail',
       })
     } else if (count === 1) {
       items.push({
         level: 'warn',
-        label: `Nur 1× ${type}`,
-        detail: 'Knappes Backup falls Captain ausfällt.',
+        labelKey: 'health.only_one_type',
+        labelParams: { type },
+        detailKey: 'health.only_one_type_detail',
       })
     }
   }
@@ -91,8 +106,9 @@ export function healthCheck(
   if (willingNotAssigned > 0) {
     items.push({
       level: 'info',
-      label: `${willingNotAssigned} willige Captains nicht zugewiesen`,
-      detail: 'Auto-Sort drücken oder manuell in Reserve/Hit-Squad parken.',
+      labelKey: 'health.willing_captains_unassigned',
+      labelParams: { count: willingNotAssigned },
+      detailKey: 'health.willing_captains_detail',
     })
   }
 
@@ -101,11 +117,16 @@ export function healthCheck(
     if (hitSquadCount === 0) {
       items.push({
         level: 'warn',
-        label: `${event.foreign_targets.length} Foreign-Target(s) ohne Hit-Squad`,
-        detail: `Ziele: ${event.foreign_targets.join(', ')}`,
+        labelKey: 'health.foreign_targets_no_squad',
+        labelParams: { count: event.foreign_targets.length },
+        detailRaw: event.foreign_targets.join(', '),
       })
     } else {
-      items.push({ level: 'ok', label: `Hit-Squad: ${hitSquadCount} captain(s)` })
+      items.push({
+        level: 'ok',
+        labelKey: 'health.hit_squad_captains',
+        labelParams: { count: hitSquadCount },
+      })
     }
   }
 
@@ -116,8 +137,9 @@ export function healthCheck(
   if (hubTarget > 0 && hubDefenders < hubTarget) {
     items.push({
       level: hubDefenders === 0 ? 'warn' : 'info',
-      label: `Hub-Defender: ${hubDefenders}/${hubTarget}`,
-      detail: 'Same-type defenders für Super-Reinforcement-Stack.',
+      labelKey: 'health.hub_defenders',
+      labelParams: { count: hubDefenders, target: hubTarget },
+      detailKey: 'health.hub_defenders_detail',
     })
   }
 
@@ -127,8 +149,9 @@ export function healthCheck(
   if (absent.length > 0) {
     items.push({
       level: 'error',
-      label: `${absent.length} Captain(s) abwesend`,
-      detail: 'Reinforcer sollten umrouten — Super Reinforcement gebrochen.',
+      labelKey: 'health.captains_absent',
+      labelParams: { count: absent.length },
+      detailKey: 'health.captains_absent_detail',
     })
   }
 

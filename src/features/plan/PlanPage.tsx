@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { save } from '@/lib/storage'
 import { LAST_EVENT_KEY } from './PlanIndex'
 import {
@@ -52,6 +53,7 @@ import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
 
 export function PlanPage() {
+  const { t } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
   const navigate = useNavigate()
   const { event, loading: eventLoading } = useEvent(eventId)
@@ -99,9 +101,9 @@ export function PlanPage() {
   if (!event) {
     return (
       <div className="text-center text-zinc-400">
-        Event nicht gefunden.{' '}
+        {t('plan.event_not_found')}{' '}
         <Link to="/plan/new" className="text-yellow-400 underline">
-          Neues anlegen
+          {t('plan.create_new')}
         </Link>
       </div>
     )
@@ -154,7 +156,7 @@ export function PlanPage() {
   const runAutoSort = async () => {
     if (
       assignments.length > 0 &&
-      !confirm('Auto-Sort überschreibt alle aktuellen Zuweisungen. Trotzdem fortfahren?')
+      !confirm(t('plan.confirm_autosort'))
     ) {
       return
     }
@@ -170,7 +172,7 @@ export function PlanPage() {
   }
 
   const clearAll = async () => {
-    if (!confirm('Alle Zuweisungen löschen?')) return
+    if (!confirm(t('plan.confirm_clear_all'))) return
     await removeAll()
   }
 
@@ -206,28 +208,28 @@ export function PlanPage() {
                 {event.state_grade.toUpperCase()} ·{' '}
               </span>
             )}
-            <span>Modus: {event.turret_mode} · Server {event.home_server}</span>
+            <span>{t('plan.mode_label')}: {event.turret_mode} · {t('plan.server_label')} {event.home_server}</span>
             {event.state_grade &&
               ['gold', 'platinum', 'diamond', 'legend'].includes(event.state_grade) && (
-                <span> · Trophy-Verlust ohne foreign-Hub-Capture</span>
+                <span> · {t('plan.trophy_loss_note')}</span>
               )}
             {(event.governor_ign || event.assessor_ign || event.negotiator_ign) && (
               <span className="mt-1 block text-[11px]">
                 {event.governor_ign && (
                   <span className="mr-3">
-                    <span className="text-zinc-400">Gov</span>{' '}
+                    <span className="text-zinc-400">{t('plan.role_gov')}</span>{' '}
                     <span className="text-yellow-300">{event.governor_ign}</span>
                   </span>
                 )}
                 {event.assessor_ign && (
                   <span className="mr-3">
-                    <span className="text-zinc-400">Ass</span>{' '}
+                    <span className="text-zinc-400">{t('plan.role_ass')}</span>{' '}
                     <span className="text-zinc-300">{event.assessor_ign}</span>
                   </span>
                 )}
                 {event.negotiator_ign && (
                   <span className="mr-3">
-                    <span className="text-zinc-400">Neg</span>{' '}
+                    <span className="text-zinc-400">{t('plan.role_neg')}</span>{' '}
                     <span className="text-zinc-300">{event.negotiator_ign}</span>
                   </span>
                 )}
@@ -235,13 +237,13 @@ export function PlanPage() {
             )}
             {event.foreign_targets && event.foreign_targets.length > 0 && (
               <span className="mt-1 block text-[11px]">
-                <span className="text-zinc-400">Hit-Squad-Ziele:</span>{' '}
-                {event.foreign_targets.map((t) => (
+                <span className="text-zinc-400">{t('plan.foreign_targets_label')}</span>{' '}
+                {event.foreign_targets.map((tgt) => (
                   <span
-                    key={t}
+                    key={tgt}
                     className="ml-1 inline-block rounded border border-orange-500/40 bg-orange-500/10 px-1.5 py-0.5 font-mono text-orange-300"
                   >
-                    {t}
+                    {tgt}
                   </span>
                 ))}
               </span>
@@ -252,19 +254,19 @@ export function PlanPage() {
         <EventPicker currentEventId={event.id} />
         <Button variant="secondary" size="sm" onClick={copySignupUrl} title={signupUrl}>
           <ClipboardCopy className="h-3.5 w-3.5" />
-          Sign-up URL
+          {t('plan.signup_url_button')}
         </Button>
         <a href={boardUrl} target="_blank" rel="noreferrer">
           <Button variant="secondary" size="sm">
             <Eye className="h-3.5 w-3.5" />
-            Board
+            {t('plan.board_button')}
             <ExternalLink className="h-3 w-3" />
           </Button>
         </a>
         <Link to={`/awards/${event.id}/${event.planner_token}`}>
           <Button variant="secondary" size="sm">
             <Trophy className="h-3.5 w-3.5" />
-            Awards
+            {t('plan.awards_button')}
           </Button>
         </Link>
         <Button
@@ -275,10 +277,10 @@ export function PlanPage() {
             // have to re-fetch — anon can't read events anymore (RLS).
             navigate('/plan/new', { state: { clonedFrom: event } })
           }}
-          title="Neues Event mit dieser Konfiguration anlegen"
+          title={t('plan.clone_button_title')}
         >
           <Copy className="h-3.5 w-3.5" />
-          Klonen
+          {t('plan.clone_button')}
         </Button>
       </PageHeader>
 
@@ -287,7 +289,7 @@ export function PlanPage() {
           <Segmented<ShiftNumber>
             options={Array.from({ length: event.shift_count }, (_, i) => ({
               value: (i + 1) as ShiftNumber,
-              label: `Shift ${i + 1}`,
+              label: t('shifts.shift_label', { n: i + 1 }),
               hint: shiftWindowLabel(event.starts_at_utc, event.shift_count, (i + 1) as ShiftNumber),
             }))}
             value={shift}
@@ -301,30 +303,30 @@ export function PlanPage() {
           )}
         </div>
         <div className="flex gap-2">
-          <Button variant="ghost" size="sm" onClick={refreshSignups} title="Sign-ups neu laden">
+          <Button variant="ghost" size="sm" onClick={refreshSignups} title={t('plan.reload_signups_title')}>
             <RefreshCcw className="h-3.5 w-3.5" />
-            Reload
+            {t('plan.reload_button')}
           </Button>
           <Button
             variant="ghost"
             size="sm"
             onClick={copyPlazaForChat}
-            title={`Aufstellung Shift ${shift} als Text in Zwischenablage (für In-Game-Chat)`}
+            title={t('plan.copy_plaza_title', { n: shift })}
           >
             {copiedPlaza ? (
               <Check className="h-3.5 w-3.5 text-emerald-300" />
             ) : (
               <FileText className="h-3.5 w-3.5" />
             )}
-            Copy
+            {t('plan.copy_button')}
           </Button>
           <Button variant="primary" size="sm" onClick={runAutoSort} disabled={busy}>
             {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-            Auto-Sort
+            {t('plan.autosort_button')}
           </Button>
           <Button variant="ghost" size="sm" onClick={clearAll}>
             <Eraser className="h-3.5 w-3.5" />
-            Clear
+            {t('plan.clear_button')}
           </Button>
         </div>
       </div>

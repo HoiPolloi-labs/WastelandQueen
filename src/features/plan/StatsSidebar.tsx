@@ -1,4 +1,5 @@
 import { Users, Crown, Activity } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { parseShiftPref } from '@/types/wk'
 
@@ -14,6 +15,7 @@ const TYPE_COLOR: Record<TroopType, string> = {
 }
 
 export function StatsSidebar({ shift, signups }: StatsSidebarProps) {
+  const { t } = useTranslation()
   const pool = signups.filter((s) => parseShiftPref(s.shift_pref).includes(shift))
 
   const total = pool.length
@@ -27,13 +29,13 @@ export function StatsSidebar({ shift, signups }: StatsSidebarProps) {
   return (
     <div className="flex flex-col gap-3 text-sm">
       <div className="grid grid-cols-3 gap-2">
-        <Stat icon={Users} label="Spieler" value={total} />
-        <Stat icon={Crown} label="Captains" value={captains} />
-        <Stat icon={Activity} label="Ø Lair" value={Math.round(avgLair)} />
+        <Stat icon={Users} label={t('stats.players_label')} value={total} />
+        <Stat icon={Crown} label={t('stats.captains_label')} value={captains} />
+        <Stat icon={Activity} label={t('stats.avg_lair_label')} value={Math.round(avgLair)} />
       </div>
       <div>
         <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">
-          Typen-Verteilung
+          {t('stats.type_distribution')}
         </h3>
         <div className="flex flex-col gap-1.5">
           {(['fighter', 'shooter', 'rider'] as TroopType[]).map((t) => (

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Pencil, Trash2, Check } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Button } from '@/components/ui/Button'
@@ -30,55 +31,56 @@ interface NapListProps {
 }
 
 export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapListProps) {
+  const { t: tr } = useTranslation()
   const interactive = Boolean(onEdit || onDelete || onStatusChange)
   const [editingId, setEditingId] = useState<string | null>(null)
 
   if (terms.length === 0) {
     return (
       <div className="rounded border border-dashed border-zinc-800 bg-zinc-900/40 px-3 py-4 text-center text-xs text-zinc-400">
-        {empty ?? 'Keine NAP-Terms erfasst.'}
+        {empty ?? tr('nap.no_terms_default')}
       </div>
     )
   }
 
   return (
     <ul className="flex flex-col gap-2">
-      {terms.map((t) => {
-        if (interactive && editingId === t.id && onEdit) {
+      {terms.map((term) => {
+        if (interactive && editingId === term.id && onEdit) {
           return (
             <NapEditForm
-              key={t.id}
+              key={term.id}
               initial={{
-                with_state: t.with_state,
-                terms: t.terms,
-                starts_at_utc: t.starts_at_utc,
-                ends_at_utc: t.ends_at_utc,
+                with_state: term.with_state,
+                terms: term.terms,
+                starts_at_utc: term.starts_at_utc,
+                ends_at_utc: term.ends_at_utc,
               }}
               onCancel={() => setEditingId(null)}
               onSave={async (patch) => {
-                await onEdit(t.id, patch)
+                await onEdit(term.id, patch)
                 setEditingId(null)
               }}
             />
           )
         }
-        const window = formatNapWindow(t.starts_at_utc, t.ends_at_utc)
+        const window = formatNapWindow(term.starts_at_utc, term.ends_at_utc)
         return (
           <li
-            key={t.id}
+            key={term.id}
             className="rounded border border-zinc-800 bg-zinc-900/60 p-2.5 text-xs"
           >
             <div className="mb-1.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="font-mono font-semibold text-zinc-100">vs {t.with_state}</span>
+                <span className="font-mono font-semibold text-zinc-100">vs {term.with_state}</span>
                 <span
                   className={cn(
                     'rounded border px-1.5 py-px text-[10px] uppercase tracking-wider',
-                    STATUS_TONE[t.status],
+                    STATUS_TONE[term.status],
                   )}
                 >
-                  {t.status}
-                  {t.status === 'agreed' && (
+                  {term.status}
+                  {term.status === 'agreed' && (
                     <Check className="ml-0.5 -mt-px inline h-2.5 w-2.5" />
                   )}
                 </span>
@@ -88,9 +90,9 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
                   {onEdit && (
                     <button
                       type="button"
-                      onClick={() => setEditingId(t.id)}
+                      onClick={() => setEditingId(term.id)}
                       className="rounded p-1 hover:bg-zinc-800 hover:text-zinc-100"
-                      title="Bearbeiten"
+                      title={tr('common.edit')}
                     >
                       <Pencil className="h-3 w-3" />
                     </button>
@@ -99,10 +101,10 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
                     <button
                       type="button"
                       onClick={() => {
-                        if (confirm(`NAP vs ${t.with_state} löschen?`)) void onDelete(t.id)
+                        if (confirm(tr('nap.confirm_delete', { state: term.with_state }))) void onDelete(term.id)
                       }}
                       className="rounded p-1 hover:bg-red-500/20 hover:text-red-300"
-                      title="Löschen"
+                      title={tr('common.delete')}
                     >
                       <Trash2 className="h-3 w-3" />
                     </button>
@@ -110,7 +112,7 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
                 </div>
               )}
             </div>
-            <p className="whitespace-pre-wrap break-words text-zinc-300">{t.terms}</p>
+            <p className="whitespace-pre-wrap break-words text-zinc-300">{term.terms}</p>
             {window && (
               <p className="mt-1.5 font-mono text-[10px] text-zinc-400">{window}</p>
             )}
@@ -121,11 +123,11 @@ export function NapList({ terms, onEdit, onDelete, onStatusChange, empty }: NapL
                     type="button"
                     key={s}
                     onClick={() => {
-                      if (s !== t.status) void onStatusChange(t.id, s)
+                      if (s !== term.status) void onStatusChange(term.id, s)
                     }}
                     className={cn(
                       'rounded border px-1.5 py-px text-[10px] uppercase tracking-wider transition',
-                      s === t.status
+                      s === term.status
                         ? STATUS_TONE[s]
                         : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
                     )}
@@ -154,6 +156,7 @@ interface NapEditFormProps {
 }
 
 function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
+  const { t } = useTranslation()
   const [withState, setWithState] = useState(initial.with_state)
   const [text, setText] = useState(initial.terms)
   const [startsLocal, setStartsLocal] = useState(isoToLocal(initial.starts_at_utc))
@@ -162,38 +165,38 @@ function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
   return (
     <li className="flex flex-col gap-2 rounded border border-yellow-500/40 bg-zinc-900/60 p-2.5">
       <Input
-        label="vs State"
+        label={t('nap.vs_state_label')}
         value={withState}
         onChange={(e) => setWithState(e.target.value.toUpperCase())}
         className="font-mono text-xs uppercase"
         placeholder="S850"
       />
       <Textarea
-        label="Terms"
+        label={t('nap.terms_label')}
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={3}
-        placeholder="No T11+ marches into Hub, mud-sit RSS allowed both sides…"
+        placeholder={t('nap.terms_placeholder')}
       />
       <div className="grid grid-cols-2 gap-2">
         <Input
-          label="Start (UTC)"
+          label={t('nap.start_label')}
           type="datetime-local"
           value={startsLocal}
           onChange={(e) => setStartsLocal(e.target.value)}
-          hint="Optional"
+          hint={t('nap.optional_hint')}
         />
         <Input
-          label="Ende (UTC)"
+          label={t('nap.end_label')}
           type="datetime-local"
           value={endsLocal}
           onChange={(e) => setEndsLocal(e.target.value)}
-          hint="Optional"
+          hint={t('nap.optional_hint')}
         />
       </div>
       <div className="flex justify-end gap-2">
         <Button variant="ghost" size="sm" onClick={onCancel}>
-          Abbrechen
+          {t('common.cancel')}
         </Button>
         <Button
           variant="primary"
@@ -210,7 +213,7 @@ function NapEditForm({ initial, onSave, onCancel }: NapEditFormProps) {
             })
           }}
         >
-          Speichern
+          {t('common.save')}
         </Button>
       </div>
     </li>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router'
 import { Loader2, Copy, ClipboardCopy, ShieldAlert, Eye, Trophy, ClipboardList } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { supabase, clearEventSession } from '@/lib/supabase'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -9,21 +10,25 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { nextSaturdayIso, eventIdFromIso } from './event-id'
 import type { EventConfig, StateGrade, TurretMode } from '@/types/wk'
 
-const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
-  {
-    value: 'duplicate-strongest',
-    label: 'Stärksten Typ doppelt',
-    hint: 'Der häufigste Typ bekommt 2 Türme, die anderen je 1.',
-  },
-  {
-    value: 'mixed-4th',
-    label: '4. Turm gemischt',
-    hint: '3 Türme typ-rein, 4. Turm = Leftovers.',
-  },
-  { value: 'manual', label: 'Manuell', hint: 'Alle Spieler landen in Unassigned.' },
-]
-
 export function EventSetupPage() {
+  const { t } = useTranslation()
+  const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
+    {
+      value: 'duplicate-strongest',
+      label: t('event_setup.turret_mode_duplicate_label'),
+      hint: t('event_setup.turret_mode_duplicate_hint'),
+    },
+    {
+      value: 'mixed-4th',
+      label: t('event_setup.turret_mode_mixed_label'),
+      hint: t('event_setup.turret_mode_mixed_hint'),
+    },
+    {
+      value: 'manual',
+      label: t('event_setup.turret_mode_manual_label'),
+      hint: t('event_setup.turret_mode_manual_hint'),
+    },
+  ]
   const [params] = useSearchParams()
   const location = useLocation()
   // Source event for clone-mode. Comes either via router state (the PlanPage
@@ -113,7 +118,7 @@ export function EventSetupPage() {
     setError('')
     const startsDate = new Date(startsAt)
     if (isNaN(startsDate.getTime())) {
-      setError('Bitte ein gültiges Start-Datum eingeben.')
+      setError(t('event_setup.invalid_start_date'))
       setBusy(false)
       return
     }
@@ -144,9 +149,9 @@ export function EventSetupPage() {
     })
     if (error || !data) {
       if (error?.code === '23505' || error?.message?.includes('duplicate key')) {
-        setError(`Event ${eventId} existiert schon — gehe direkt zum Planner.`)
+        setError(t('event_setup.event_exists', { id: eventId }))
       } else {
-        setError(error?.message ?? 'unknown error')
+        setError(error?.message ?? t('event_setup.unknown_error'))
       }
       setBusy(false)
       return
@@ -169,32 +174,32 @@ export function EventSetupPage() {
   return (
     <div className="mx-auto max-w-xl">
       <PageHeader
-        title="Neues WK-Event"
+        title={t('event_setup.title')}
         subtitle={
           clonedFrom ? (
             <span className="flex items-center gap-1.5 text-yellow-300">
               <Copy className="h-3.5 w-3.5" />
-              Geklont von {clonedFrom} — Datum und Notes anpassen.
+              {t('event_setup.cloned_from', { id: clonedFrom })}
             </span>
           ) : (
-            'Lege Datum, Modus und Server fest.'
+            t('event_setup.subtitle')
           )
         }
       />
 
       <form onSubmit={create} className="flex flex-col gap-4">
         <Input
-          label="Start (UTC)"
+          label={t('event_setup.start_label')}
           type="datetime-local"
           value={startsAt}
           onChange={(e) => setStartsAt(e.target.value)}
-          hint={`Event-ID wird ${eventId}`}
+          hint={t('event_setup.event_id_hint', { id: eventId })}
           required
         />
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
-            <span className="mb-1 block text-sm font-medium text-zinc-300">Shifts</span>
+            <span className="mb-1 block text-sm font-medium text-zinc-300">{t('event_setup.shifts_label')}</span>
             <Segmented
               options={[
                 { value: 1, label: '1' },
@@ -207,7 +212,7 @@ export function EventSetupPage() {
             />
           </div>
           <Input
-            label="Hub-Defender (zusätzlich zum Captain)"
+            label={t('event_setup.hub_defender_label')}
             type="number"
             inputMode="numeric"
             min={0}
@@ -216,13 +221,13 @@ export function EventSetupPage() {
             onChange={(e) =>
               setHubDefenderTarget(Math.max(0, Math.min(20, Number(e.target.value) || 0)))
             }
-            hint="Auto-Sort parkt N Defender vom Captain-Typ auf dem Hub"
+            hint={t('event_setup.hub_defender_hint')}
           />
         </div>
 
         <div>
           <span className="mb-1 block text-sm font-medium text-zinc-300">
-            Turm-Verteilungsmodus
+            {t('event_setup.turret_mode_label')}
           </span>
           <div className="flex flex-col gap-2">
             {TURRET_MODES.map((mode) => (
@@ -252,7 +257,7 @@ export function EventSetupPage() {
         </div>
 
         <Input
-          label="Home Server"
+          label={t('event_setup.home_server_label')}
           value={homeServer}
           onChange={(e) => setHomeServer(e.target.value.toUpperCase())}
           className="font-mono uppercase"
@@ -260,71 +265,70 @@ export function EventSetupPage() {
 
         <div>
           <span className="mb-1 block text-sm font-medium text-zinc-300">
-            State Grade <span className="text-zinc-400">(optional)</span>
+            {t('event_setup.state_grade_label')} <span className="text-zinc-400">{t('event_setup.state_grade_optional')}</span>
           </span>
           <Segmented
             options={[
               { value: '', label: '—' },
-              { value: 'starter', label: 'Starter' },
-              { value: 'bronze', label: 'Bronze' },
-              { value: 'silver', label: 'Silver' },
-              { value: 'gold', label: 'Gold' },
-              { value: 'platinum', label: 'Platinum' },
-              { value: 'diamond', label: 'Diamond' },
-              { value: 'legend', label: 'Legend' },
+              { value: 'starter', label: t('event_setup.state_grade_starter') },
+              { value: 'bronze', label: t('event_setup.state_grade_bronze') },
+              { value: 'silver', label: t('event_setup.state_grade_silver') },
+              { value: 'gold', label: t('event_setup.state_grade_gold') },
+              { value: 'platinum', label: t('event_setup.state_grade_platinum') },
+              { value: 'diamond', label: t('event_setup.state_grade_diamond') },
+              { value: 'legend', label: t('event_setup.state_grade_legend') },
             ]}
             value={stateGrade ?? ''}
             onChange={(v) => setStateGrade(v === '' ? null : (v as StateGrade))}
           />
           <p className="mt-1 text-xs text-zinc-400">
-            Gold+ schaltet Nataly-Frags frei und erzwingt offensive Strategie (Trophy-Verlust ohne foreign-Hub-Capture).
+            {t('event_setup.state_grade_hint')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Input
-            label="Governor"
+            label={t('event_setup.governor_label')}
             value={governorIgn}
             onChange={(e) => setGovernorIgn(e.target.value)}
-            placeholder="IGN"
-            hint="Erbt Award-Boxes"
+            placeholder={t('event_setup.ign_placeholder')}
+            hint={t('event_setup.governor_hint')}
           />
           <Input
-            label="Assessor"
+            label={t('event_setup.assessor_label')}
             value={assessorIgn}
             onChange={(e) => setAssessorIgn(e.target.value)}
-            placeholder="IGN"
-            hint="Entscheidet NAP vs War"
+            placeholder={t('event_setup.ign_placeholder')}
+            hint={t('event_setup.assessor_hint')}
           />
           <Input
-            label="Negotiator"
+            label={t('event_setup.negotiator_label')}
             value={negotiatorIgn}
             onChange={(e) => setNegotiatorIgn(e.target.value)}
-            placeholder="IGN"
-            hint="Battle-Division-Chat"
+            placeholder={t('event_setup.ign_placeholder')}
+            hint={t('event_setup.negotiator_hint')}
           />
         </div>
 
         <Input
-          label="Foreign Targets (optional)"
+          label={t('event_setup.foreign_targets_label')}
           value={foreignTargets}
           onChange={(e) => setForeignTargets(e.target.value.toUpperCase())}
           placeholder="S850, S612"
           className="font-mono uppercase"
-          hint="Bis zu 3 gegnerische States für Hit-Squad-Ziele. Komma- oder Space-getrennt."
+          hint={t('event_setup.foreign_targets_hint')}
         />
 
         <p className="rounded border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-xs text-zinc-400">
-          Discord-Webhook setzt du im Planner — nicht hier. So bleibt die URL hinter
-          deinem Planner-Token sicher.
+          {t('event_setup.webhook_planner_hint')}
         </p>
 
         <Textarea
-          label="Notes (optional)"
+          label={t('event_setup.notes_label')}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={3}
-          placeholder="NAP-Status, Matchup, etc."
+          placeholder={t('event_setup.notes_placeholder')}
         />
 
         {error && (
@@ -334,7 +338,7 @@ export function EventSetupPage() {
         )}
 
         <Button type="submit" size="lg" disabled={busy} className="mt-2">
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Event anlegen'}
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : t('event_setup.submit_button')}
         </Button>
       </form>
     </div>
@@ -350,6 +354,7 @@ export function EventSetupPage() {
  * the user copies it somewhere durable before leaving.
  */
 function CreatedSuccess({ event }: { event: EventConfig }) {
+  const { t } = useTranslation()
   const origin = window.location.origin
   const urls = {
     planner: `${origin}/plan/${event.id}/${event.planner_token}`,
@@ -360,37 +365,32 @@ function CreatedSuccess({ event }: { event: EventConfig }) {
   return (
     <div className="mx-auto max-w-2xl">
       <PageHeader
-        title={`Event ${event.id} angelegt`}
-        subtitle="Drei URLs, eine pro Rolle. Vor Verlassen kopieren."
+        title={t('event_setup.success_title', { id: event.id })}
+        subtitle={t('event_setup.success_subtitle')}
       />
 
       <div className="mb-4 flex items-start gap-2 rounded border border-yellow-500/40 bg-yellow-500/10 p-3 text-sm text-yellow-200">
         <ShieldAlert className="mt-0.5 h-4 w-4 flex-shrink-0" />
-        <span>
-          Der <strong>Planner-Link</strong> ist dein einziger Admin-Zugang. Wenn er
-          verloren geht, hat niemand mehr Schreibzugriff auf das Event. Bookmarke
-          ihn jetzt — wir merken ihn in diesem Browser, aber das ist der einzige
-          Backup.
-        </span>
+        <span>{t('event_setup.success_warning')}</span>
       </div>
 
       <div className="flex flex-col gap-3">
         <UrlCard
           icon={<ClipboardList className="h-4 w-4" />}
-          label="Planner — DU"
+          label={t('event_setup.success_planner_label')}
           tone="amber"
           url={urls.planner}
           to={`/plan/${event.id}/${event.planner_token}`}
         />
         <UrlCard
           icon={<ClipboardCopy className="h-4 w-4" />}
-          label="Sign-up — für Spieler (Discord)"
+          label={t('event_setup.success_signup_label')}
           tone="sky"
           url={urls.signup}
         />
         <UrlCard
           icon={<Eye className="h-4 w-4" />}
-          label="Board — read-only (Discord)"
+          label={t('event_setup.success_board_label')}
           tone="emerald"
           url={urls.board}
         />
@@ -402,7 +402,7 @@ function CreatedSuccess({ event }: { event: EventConfig }) {
           className="text-zinc-400 hover:text-zinc-200"
         >
           <Trophy className="mr-1 inline h-3 w-3" />
-          Awards-Link (auch planner-gated)
+          {t('event_setup.success_awards_link')}
         </Link>
       </div>
     </div>
@@ -422,6 +422,7 @@ function UrlCard({
   tone: 'amber' | 'sky' | 'emerald'
   to?: string
 }) {
+  const { t } = useTranslation()
   const toneClass =
     tone === 'amber'
       ? 'border-amber-500/40 bg-amber-500/5'
@@ -443,14 +444,14 @@ function UrlCard({
         variant="ghost"
         size="sm"
         onClick={() => void navigator.clipboard.writeText(url)}
-        title="In Zwischenablage kopieren"
+        title={t('event_setup.success_copy_title')}
       >
         <Copy className="h-3.5 w-3.5" />
       </Button>
       {to && (
         <Link to={to}>
           <Button variant="primary" size="sm">
-            Öffnen
+            {t('event_setup.success_open_button')}
           </Button>
         </Link>
       )}

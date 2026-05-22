@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import './HeroScene.css'
 
 /**
@@ -16,6 +17,7 @@ import './HeroScene.css'
  * scoping) so the visual fidelity can be diffed against the prototype 1-to-1.
  */
 export function HeroScene() {
+  const { t } = useTranslation()
   return (
     <div className="hero-scene" data-screen-label="01 Hero">
       {/* Backdrop */}
@@ -49,22 +51,22 @@ export function HeroScene() {
         <div
           className="figure"
           role="img"
-          aria-label="Chibi Wasteland Queen with crown of chess pieces"
+          aria-label={t('home.figure_aria_label')}
         />
       </div>
 
       {/* Title plate with navigation */}
       <div className="plate">
-        <div className="eyebrow">Puzzles &amp; Survival · State Coordination</div>
+        <div className="eyebrow">{t('home.eyebrow')}</div>
         <h1>
           <b>Wasteland</b> Queen
         </h1>
         <div className="nav">
           <hr className="rule" aria-hidden="true" />
           <div className="nav-links">
-            <Link to="/plan/new">Sign-ups</Link>
-            <Link to="/plan">Plaza Planner</Link>
-            <Link to="/cheat-sheet">Cheat-Sheet</Link>
+            <Link to="/plan/new">{t('home.nav_signups')}</Link>
+            <Link to="/plan">{t('home.nav_planner')}</Link>
+            <Link to="/cheat-sheet">{t('home.nav_cheatsheet')}</Link>
           </div>
           <hr className="rule" aria-hidden="true" />
         </div>

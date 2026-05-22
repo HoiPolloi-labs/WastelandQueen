@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Handshake, Plus, X, FileText, Check } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
@@ -11,6 +12,7 @@ interface NapPanelProps {
 }
 
 export function NapPanel({ eventId }: NapPanelProps) {
+  const { t } = useTranslation()
   const { terms, add, update, remove, setStatus } = useNapTerms(eventId)
   const [adding, setAdding] = useState(false)
   const [withState, setWithState] = useState('')
@@ -45,7 +47,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
       <header className="mb-3 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
           <Handshake className="h-3.5 w-3.5" />
-          NAP <span className="font-normal normal-case text-zinc-400">· {terms.length}</span>
+          {t('nap.section_title')} <span className="font-normal normal-case text-zinc-400">· {terms.length}</span>
         </h3>
         <div className="flex items-center gap-1">
           {terms.length > 0 && (
@@ -53,7 +55,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
               variant="ghost"
               size="sm"
               onClick={copyForChat}
-              title="NAP-Liste als Text in Zwischenablage (für In-Game-Chat)"
+              title={t('nap.copy_title')}
             >
               {copied ? (
                 <Check className="h-3 w-3 text-emerald-300" />
@@ -65,7 +67,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
           {!adding && (
             <Button variant="ghost" size="sm" onClick={() => setAdding(true)}>
               <Plus className="h-3 w-3" />
-              Add
+              {t('common.add')}
             </Button>
           )}
         </div>
@@ -74,7 +76,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
       {adding && (
         <div className="mb-3 flex flex-col gap-2 rounded border border-yellow-500/40 bg-zinc-900/60 p-2.5">
           <div className="flex items-start justify-between">
-            <span className="text-xs font-medium text-zinc-300">Neuer NAP-Eintrag</span>
+            <span className="text-xs font-medium text-zinc-300">{t('nap.new_entry_title')}</span>
             <button
               type="button"
               onClick={() => {
@@ -88,33 +90,33 @@ export function NapPanel({ eventId }: NapPanelProps) {
             </button>
           </div>
           <Input
-            label="vs State"
+            label={t('nap.vs_state_label')}
             value={withState}
             onChange={(e) => setWithState(e.target.value.toUpperCase())}
             placeholder="S850"
             className="font-mono text-xs uppercase"
           />
           <Textarea
-            label="Terms"
+            label={t('nap.terms_label')}
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={3}
-            placeholder="No T11+ marches into Hub, mud-sit RSS allowed both sides…"
+            placeholder={t('nap.terms_placeholder')}
           />
           <div className="grid grid-cols-2 gap-2">
             <Input
-              label="Start (UTC)"
+              label={t('nap.start_label')}
               type="datetime-local"
               value={startsLocal}
               onChange={(e) => setStartsLocal(e.target.value)}
-              hint="Optional"
+              hint={t('nap.optional_hint')}
             />
             <Input
-              label="Ende (UTC)"
+              label={t('nap.end_label')}
               type="datetime-local"
               value={endsLocal}
               onChange={(e) => setEndsLocal(e.target.value)}
-              hint="Optional"
+              hint={t('nap.optional_hint')}
             />
           </div>
           <div className="flex justify-end gap-2">
@@ -124,7 +126,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
               onClick={submitNew}
               disabled={!withState.trim() || !text.trim()}
             >
-              Speichern
+              {t('common.save')}
             </Button>
           </div>
         </div>
@@ -135,7 +137,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
         onEdit={(id, patch) => update(id, patch)}
         onDelete={remove}
         onStatusChange={setStatus}
-        empty="Noch keine NAP-Terms — leg den ersten mit + Add an."
+        empty={t('nap.no_terms_planner')}
       />
     </section>
   )

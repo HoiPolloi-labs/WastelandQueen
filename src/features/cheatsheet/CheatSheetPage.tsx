@@ -11,27 +11,29 @@ import {
   Map,
   ArrowLeft,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
 import { KILL_POINTS, DEATH_POINTS } from '@/types/wk'
 
 export function CheatSheetPage() {
+  const { t } = useTranslation()
   return (
     <div className="mx-auto max-w-3xl">
       <PageHeader
-        title="WK Cheat-Sheet"
-        subtitle="Schneller Spickzettel zur Wasteland-King-Mechanik. Volle Doku im Repo unter docs/."
+        title={t('cheatsheet.title')}
+        subtitle={t('cheatsheet.subtitle')}
       >
         <Link to="/">
           <Button variant="secondary" size="sm">
             <ArrowLeft className="h-3.5 w-3.5" />
-            Zurück
+            {t('cheatsheet.back_button')}
           </Button>
         </Link>
       </PageHeader>
 
       <div className="flex flex-col gap-6">
-        <Section icon={Map} title="Geometrie">
+        <Section icon={Map} title={t('cheatsheet.section_geometry')}>
           <p>
             <strong>Zenith Plaza</strong> = Mitte mit Hub + 4 Türmen (N/S/E/W).{' '}
             <strong>Mud</strong> = brauner Ring drumrum (angreifbar während WK).{' '}
@@ -44,7 +46,7 @@ export function CheatSheetPage() {
           </p>
         </Section>
 
-        <Section icon={Trophy} title="Win-Conditions">
+        <Section icon={Trophy} title={t('cheatsheet.section_win')}>
           <ul className="list-inside list-disc space-y-1">
             <li>
               <strong>8h consecutive Hub-Hold</strong> → Instant-Win + 30-min Hub-Shield
@@ -59,7 +61,7 @@ export function CheatSheetPage() {
           </ul>
         </Section>
 
-        <Section icon={Crown} title="Captain-Duties">
+        <Section icon={Crown} title={t('cheatsheet.section_captain')}>
           <ol className="list-inside list-decimal space-y-1">
             <li>Als erstes ins Building rein</li>
             <li>Super Reinforcement aktivieren</li>
@@ -72,7 +74,7 @@ export function CheatSheetPage() {
           </p>
         </Section>
 
-        <Section icon={Swords} title="Personal Scoring (10.000 für volle Rewards)">
+        <Section icon={Swords} title={t('cheatsheet.section_scoring')}>
           <PointTable
             title="Kill Points (Hub/Türme oder Mud/Foreign-RSS-Tiles)"
             data={KILL_POINTS}
@@ -87,7 +89,7 @@ export function CheatSheetPage() {
           </p>
         </Section>
 
-        <Section icon={Shield} title="State Grades & Rewards">
+        <Section icon={Shield} title={t('cheatsheet.section_grades')}>
           <ul className="list-inside list-disc space-y-1">
             <li>Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)</li>
             <li>
@@ -108,7 +110,7 @@ export function CheatSheetPage() {
           </ul>
         </Section>
 
-        <Section icon={Skull} title="Troop-Loss-Flow">
+        <Section icon={Skull} title={t('cheatsheet.section_loss')}>
           <p>
             Casualties → Infirmary → Deep Healing → Alliance Infirmary →{' '}
             <strong>PERMANENT</strong>
@@ -128,7 +130,7 @@ export function CheatSheetPage() {
           </ul>
         </Section>
 
-        <Section icon={Crosshair} title="Pre-Event Checklist (F2P)">
+        <Section icon={Crosshair} title={t('cheatsheet.section_preevent')}>
           <ul className="list-inside list-disc space-y-1">
             <li>Miraculous Survival in Nova/Research auf Max</li>
             <li>First Aid + Instant Heal Commander-Talents geladen</li>
@@ -139,7 +141,7 @@ export function CheatSheetPage() {
           </ul>
         </Section>
 
-        <Section icon={Zap} title="NAP-Begriffe (typisch)">
+        <Section icon={Zap} title={t('cheatsheet.section_nap')}>
           <ul className="list-inside list-disc space-y-1 font-mono text-xs text-zinc-300">
             <li>"No T11+ marches into Hub"</li>
             <li>"No attacking on green"</li>
@@ -148,7 +150,7 @@ export function CheatSheetPage() {
           </ul>
         </Section>
 
-        <Section icon={AlertTriangle} title="Trigger-Punkte">
+        <Section icon={AlertTriangle} title={t('cheatsheet.section_triggers')}>
           <ul className="list-inside list-disc space-y-1">
             <li>
               <strong>State-Take vs NAP</strong>: take, wenn deine Top-3 True-Might je den

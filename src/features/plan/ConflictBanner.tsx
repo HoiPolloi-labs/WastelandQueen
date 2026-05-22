@@ -1,4 +1,6 @@
 import { AlertTriangle, Lightbulb } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import type { Assignment, ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { TURRETS, parseShiftPref } from '@/types/wk'
 import { captainScore } from './auto-sort'
@@ -15,6 +17,7 @@ function detectConflicts(
   shift: ShiftNumber,
   signups: Signup[],
   assignments: Assignment[],
+  t: TFunction,
 ): Conflict[] {
   const out: Conflict[] = []
   const shiftAssigns = assignments.filter((a) => a.shift === shift)
@@ -22,33 +25,31 @@ function detectConflicts(
   const shiftPool = signups.filter((s) => parseShiftPref(s.shift_pref).includes(shift))
   const idToSignup = new Map(signups.map((s) => [s.id, s]))
 
-  // --- Hub ---
   const hubAssigns = shiftAssigns.filter((a) => a.building === 'hub')
   const hubCaptainId = hubAssigns.find((a) => a.is_captain)?.signup_id
   const hubCaptain = hubCaptainId ? idToSignup.get(hubCaptainId) : null
 
   if (hubAssigns.length === 0) {
-    out.push({ kind: 'warn', msg: 'Hub leer — kein Captain' })
+    out.push({ kind: 'warn', msg: t('conflict.hub_empty') })
   } else if (!hubCaptain) {
-    out.push({ kind: 'error', msg: 'Hub hat keinen Captain markiert' })
+    out.push({ kind: 'error', msg: t('conflict.hub_no_captain') })
   } else {
-    // Hint: gibt es einen stärkeren willing-captain im Pool, der noch nicht Hub-Cap ist?
     const stronger = shiftPool
       .filter((s) => s.willing_captain && s.id !== hubCaptain.id)
-      .filter((s) => captainScore(s) > captainScore(hubCaptain) + 5) // 5 = Schwelle gegen Rauschen
+      .filter((s) => captainScore(s) > captainScore(hubCaptain) + 5)
       .sort((a, b) => captainScore(b) - captainScore(a))[0]
     if (stronger) {
-      const where = assignedIds.has(stronger.id)
-        ? (shiftAssigns.find((a) => a.signup_id === stronger.id)?.building ?? 'pool')
-        : 'pool'
       out.push({
         kind: 'hint',
-        msg: `Hub-Captain ${hubCaptain.ign} (${Math.round(captainScore(hubCaptain))}). Stärker wäre ${stronger.ign} (${Math.round(captainScore(stronger))}, ${where === 'pool' ? 'noch unassigned' : `aktuell auf ${where}`}).`,
+        msg: t('conflict.stronger_hub_captain', {
+          ign: stronger.ign,
+          score: Math.round(captainScore(stronger)),
+          currentScore: Math.round(captainScore(hubCaptain)),
+        }),
       })
     }
   }
 
-  // --- Türme: Captain + Typ-Reinheit ---
   for (const turret of TURRETS) {
     const list = shiftAssigns.filter((a) => a.building === turret)
     if (list.length === 0) continue
@@ -57,11 +58,11 @@ function detectConflicts(
       .filter((s): s is Signup => Boolean(s))
     const captainId = list.find((a) => a.is_captain)?.signup_id
     const captain = captainId ? idToSignup.get(captainId) : null
+    const turretLabel = turret.toUpperCase()
 
     if (!captain) {
-      out.push({ kind: 'warn', msg: `${turret.toUpperCase()}: kein Captain` })
+      out.push({ kind: 'warn', msg: t('conflict.turret_no_captain', { turret: turretLabel }) })
     } else {
-      // Hint: stärkerer willing-captain im selben Typ?
       const stronger = shiftPool
         .filter(
           (s) =>
@@ -74,7 +75,12 @@ function detectConflicts(
       if (stronger && !assignedIds.has(stronger.id)) {
         out.push({
           kind: 'hint',
-          msg: `${turret.toUpperCase()}: ${stronger.ign} (${Math.round(captainScore(stronger))}) wäre besser als ${captain.ign} (${Math.round(captainScore(captain))}).`,
+          msg: t('conflict.stronger_turret_captain', {
+            turret: turretLabel,
+            ign: stronger.ign,
+            score: Math.round(captainScore(stronger)),
+            currentScore: Math.round(captainScore(captain)),
+          }),
         })
       }
     }
@@ -83,7 +89,7 @@ function detectConflicts(
     if (types.size > 1) {
       out.push({
         kind: 'warn',
-        msg: `${turret.toUpperCase()}: gemischte Typen (${[...types].join('+')}) → keine Super-Reinforcement-Synergie`,
+        msg: t('conflict.mixed_types', { turret: turretLabel }),
       })
     }
   }
@@ -92,11 +98,12 @@ function detectConflicts(
 }
 
 export function ConflictBanner({ shift, signups, assignments }: ConflictBannerProps) {
-  const conflicts = detectConflicts(shift, signups, assignments)
+  const { t } = useTranslation()
+  const conflicts = detectConflicts(shift, signups, assignments, t)
   if (conflicts.length === 0) {
     return (
       <div className="rounded border border-emerald-500/30 bg-emerald-500/5 px-3 py-2 text-xs text-emerald-300">
-        ✓ Keine Konflikte
+        {t('conflict.no_conflicts')}
       </div>
     )
   }

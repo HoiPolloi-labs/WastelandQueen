@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { ChevronDown, Calendar } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { usePlannerEvents } from './use-events'
@@ -9,6 +10,7 @@ interface EventPickerProps {
 }
 
 export function EventPicker({ currentEventId }: EventPickerProps) {
+  const { t } = useTranslation()
   const { events } = usePlannerEvents()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -31,7 +33,7 @@ export function EventPicker({ currentEventId }: EventPickerProps) {
         className="flex items-center gap-1.5 rounded border border-zinc-800 bg-zinc-900 px-2 py-1 text-xs text-zinc-300 transition hover:border-zinc-700 hover:text-zinc-100"
       >
         <Calendar className="h-3.5 w-3.5" />
-        Events
+        {t('events_picker.events_button')}
         <ChevronDown className="h-3 w-3" />
       </button>
 
@@ -39,7 +41,7 @@ export function EventPicker({ currentEventId }: EventPickerProps) {
         <div className="absolute right-0 z-50 mt-1 w-72 max-h-96 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950 shadow-xl">
           {events.length === 0 ? (
             <div className="px-3 py-4 text-center text-xs text-zinc-500">
-              Nur Events mit gespeichertem Planner-Token auf diesem Gerät.
+              {t('events_picker.no_events')}
             </div>
           ) : (
             <ul className="py-1">

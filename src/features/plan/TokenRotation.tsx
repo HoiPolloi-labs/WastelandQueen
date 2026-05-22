@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { RefreshCw, Copy, ShieldAlert, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
@@ -24,6 +25,7 @@ const ROLE_LABEL: Record<RoleKey, string> = {
  * minted from the old token stay valid until their 24h expiry.
  */
 export function TokenRotation({ eventId }: TokenRotationProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [busy, setBusy] = useState<RoleKey | null>(null)
   const [newUrl, setNewUrl] = useState<{ role: RoleKey; url: string } | null>(null)
@@ -32,8 +34,8 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
   const rotate = async (role: RoleKey) => {
     const confirmMsg =
       role === 'planner'
-        ? `Planner-Token rotieren? Alte Planner-URL stirbt sofort. Du brauchst den neuen Link um nach Token-Ablauf wieder reinzukommen — kopier ihn und bookmarke ihn.`
-        : `${ROLE_LABEL[role]}-Token rotieren? Alle Discord-Posts mit dem alten Link müssen neu geteilt werden.`
+        ? t('token.confirm_planner')
+        : t('token.confirm_other', { role: ROLE_LABEL[role] })
     if (!confirm(confirmMsg)) return
 
     setBusy(role)
@@ -82,13 +84,10 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
       <header className="mb-2 flex items-center gap-1.5">
         <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
           <RefreshCw className="h-3.5 w-3.5" />
-          Token-Rotation
+          {t('token.section_title')}
         </h3>
       </header>
-      <p className="mb-3 text-[11px] text-zinc-400">
-        Token rotieren wenn der zugehörige Link versehentlich falsch geteilt
-        wurde. Bestehende offene Tabs laufen bis zu 24h weiter.
-      </p>
+      <p className="mb-3 text-[11px] text-zinc-400">{t('token.description')}</p>
 
       <div className="flex flex-col gap-1.5">
         {(['signup', 'board', 'planner'] as RoleKey[]).map((role) => (
@@ -106,7 +105,7 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
                 busy === role && 'animate-spin',
               )}
             />
-            {ROLE_LABEL[role]} rotieren
+            {t(`token.rotate_${role}` as 'token.rotate_signup' | 'token.rotate_planner' | 'token.rotate_board')}
           </Button>
         ))}
       </div>
@@ -120,7 +119,7 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
           <ShieldAlert className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-yellow-300" />
           <div className="min-w-0 flex-1">
             <div className="mb-1 font-semibold text-yellow-200">
-              Neue {ROLE_LABEL[newUrl.role]}-URL — alte ist tot
+              {t('token.new_url_title', { role: ROLE_LABEL[newUrl.role] })}
             </div>
             <code className="block truncate font-mono text-[10px] text-zinc-300" title={newUrl.url}>
               {newUrl.url}
@@ -130,7 +129,7 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
             variant="ghost"
             size="sm"
             onClick={() => void navigator.clipboard.writeText(newUrl.url)}
-            title="Kopieren"
+            title={t('token.copy_title')}
           >
             <Copy className="h-3 w-3" />
           </Button>
@@ -138,7 +137,7 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
             type="button"
             onClick={() => setNewUrl(null)}
             className="rounded p-1 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-100"
-            title="Schließen"
+            title={t('token.close_title')}
           >
             <X className="h-3 w-3" />
           </button>

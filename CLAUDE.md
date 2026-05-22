@@ -296,9 +296,14 @@ string ALWAYS means:
 "Fast Comeback" — players already know these from their game client and
 mixing localized + English terms would be more confusing than helpful.
 
-Pages translated today: Sign-up + Board (player-facing, Phase 1+2 done).
-Planner / EventSetup / Awards / CheatSheet pages are still DE/EN mixed
-(Phase 3+4 deferred).
+Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
++ Awards + CheatSheet + HeroScene (Phase 3+4). Coverage matrix:
+
+- **Full coverage** (en, de, ru, zh, ko, ja, it, tr) — all 8 locales have
+  the complete key-set across Phase 1+2+3+4.
+- **Partial coverage** (fr, uk, el, es) — Phase 1+2 only; Phase 3+4 keys
+  fall back to English via react-i18next's fallback chain. Safe but
+  mixed-language for those four locales. Roll forward when there's demand.
 
 ## Deploy
 

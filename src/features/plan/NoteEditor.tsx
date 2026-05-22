@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Loader2, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
@@ -11,6 +12,7 @@ interface NoteEditorProps {
 }
 
 export function NoteEditor({ signup, onClose }: NoteEditorProps) {
+  const { t } = useTranslation()
   const [text, setText] = useState(signup.planner_notes ?? '')
   const [saving, setSaving] = useState(false)
 
@@ -41,10 +43,8 @@ export function NoteEditor({ signup, onClose }: NoteEditorProps) {
       >
         <header className="mb-3 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-semibold text-zinc-100">Notes für {signup.ign}</h2>
-            <p className="text-xs text-zinc-400">
-              Nur für den Planner sichtbar. Beispiele: „nur erste 2h", „spielt Sub-Account", „immer mit Y rallyen".
-            </p>
+            <h2 className="text-sm font-semibold text-zinc-100">{t('note.editor_title', { ign: signup.ign })}</h2>
+            <p className="text-xs text-zinc-400">{t('note.editor_description')}</p>
           </div>
           <button
             type="button"
@@ -59,14 +59,14 @@ export function NoteEditor({ signup, onClose }: NoteEditorProps) {
           onChange={(e) => setText(e.target.value)}
           rows={5}
           autoFocus
-          placeholder="Anmerkung…"
+          placeholder={t('note.placeholder')}
         />
         <div className="mt-3 flex justify-end gap-2">
           <Button variant="ghost" size="sm" onClick={onClose}>
-            Abbrechen
+            {t('common.cancel')}
           </Button>
           <Button variant="primary" size="sm" onClick={save} disabled={saving}>
-            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Speichern'}
+            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t('common.save')}
           </Button>
         </div>
       </div>

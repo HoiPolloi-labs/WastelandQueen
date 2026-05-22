@@ -90,7 +90,7 @@ const baseEvent: EventConfig = {
 describe('healthCheck', () => {
   it('flags missing Hub captain as error', () => {
     const items = healthCheck([s({ id: 'a' })], [], baseEvent, 1)
-    expect(items.some((i) => i.level === 'error' && i.label.includes('Hub'))).toBe(true)
+    expect(items.some((i) => i.level === 'error' && i.labelKey === 'health.hub_no_captain')).toBe(true)
   })
 
   it('marks Hub captain as ok when assigned', () => {
@@ -101,7 +101,7 @@ describe('healthCheck', () => {
       baseEvent,
       1,
     )
-    expect(items.some((i) => i.level === 'ok' && i.label.includes('Hub-Captain'))).toBe(true)
+    expect(items.some((i) => i.level === 'ok' && i.labelKey === 'health.hub_captain')).toBe(true)
   })
 
   it('warns when type pool is thin', () => {
@@ -112,8 +112,8 @@ describe('healthCheck', () => {
       1,
     )
     // Only fighter present; shooter + rider missing
-    expect(items.filter((i) => i.label.includes('shooter')).length).toBe(1)
-    expect(items.filter((i) => i.label.includes('rider')).length).toBe(1)
+    expect(items.filter((i) => i.labelParams?.type === 'shooter').length).toBe(1)
+    expect(items.filter((i) => i.labelParams?.type === 'rider').length).toBe(1)
   })
 
   it('errors on absent captain', () => {
@@ -123,14 +123,14 @@ describe('healthCheck', () => {
       baseEvent,
       1,
     )
-    expect(items.some((i) => i.level === 'error' && i.label.includes('abwesend'))).toBe(true)
+    expect(items.some((i) => i.level === 'error' && i.labelKey === 'health.captains_absent')).toBe(true)
   })
 
   it('flags foreign targets without hit-squad', () => {
     const ev: EventConfig = { ...baseEvent, foreign_targets: ['S850'] }
     const items = healthCheck([s({ id: 'a' })], [], ev, 1)
     expect(
-      items.some((i) => i.level === 'warn' && i.label.includes('Hit-Squad')),
+      items.some((i) => i.level === 'warn' && i.labelKey === 'health.foreign_targets_no_squad'),
     ).toBe(true)
   })
 
@@ -144,6 +144,7 @@ describe('healthCheck', () => {
       { ...baseEvent, shift_count: 2 },
       1,
     )
-    expect(items[0]!.label).toBe('Pool: 1 Spieler in Shift 1')
+    expect(items[0]!.labelKey).toBe('health.pool_info')
+    expect(items[0]!.labelParams).toEqual({ count: 1, shift: 1 })
   })
 })

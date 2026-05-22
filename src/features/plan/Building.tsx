@@ -1,5 +1,7 @@
 import { useDroppable } from '@dnd-kit/core'
 import { Check, X, HelpCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import { cn } from '@/lib/cn'
 import type {
   Assignment,
@@ -10,28 +12,25 @@ import type {
 } from '@/types/wk'
 import { PlayerChip } from './PlayerChip'
 
-const BUILDING_LABELS: Record<BuildingType, string> = {
-  hub: 'HUB',
-  'turret-n': 'North',
-  'turret-s': 'South',
-  'turret-e': 'East',
-  'turret-w': 'West',
-  mud: 'Mud',
-  reserve: 'Reserve',
-  'hit-squad': 'Hit Squad',
-  unassigned: 'Unassigned',
+const BUILDING_LABEL_KEYS: Record<BuildingType, string> = {
+  hub: 'building.label_hub',
+  'turret-n': 'building.label_turret_n',
+  'turret-s': 'building.label_turret_s',
+  'turret-e': 'building.label_turret_e',
+  'turret-w': 'building.label_turret_w',
+  mud: 'building.label_mud',
+  reserve: 'building.label_reserve',
+  'hit-squad': 'building.label_hit_squad',
+  unassigned: 'building.label_unassigned',
 }
 
-const BUILDING_HINTS: Partial<Record<BuildingType, string>> = {
-  hub: 'Captain: enter first, activate Super Reinforcement, hold the spot, call reinforcements in chat. Captain-Rally = Building-Capacity, Captain-Stats = jede einlaufende March bekommt sie.',
-  'turret-n': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
-  'turret-s': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
-  'turret-e': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
-  'turret-w': 'Turret-Captain: gleicher Drill wie Hub. Türme mit nur 1 Typ aktivieren Synergy-Ring (Super Reinforcement Bonus).',
-  'hit-squad':
-    'Offensive captains für Foreign-Hub-Angriff. Auto-Sort lässt diesen Bucket leer; Belegung ist manuelle Entscheidung.',
-  mud: 'Mudsitter: shielded sanctuaries clogging the mud. Schild-Stack (8h+1d) Pflicht, sonst Troops weg.',
-  reserve: 'Fill-ins, die einspringen wenn ein Defender ausfällt.',
+function buildingHint(building: BuildingType, t: TFunction): string | undefined {
+  if (building === 'hub') return t('building.hint_hub')
+  if (building.startsWith('turret-')) return t('building.hint_turret')
+  if (building === 'hit-squad') return t('building.hint_hit_squad')
+  if (building === 'mud') return t('building.hint_mud')
+  if (building === 'reserve') return t('building.hint_reserve')
+  return undefined
 }
 
 const TYPE_RING: Record<TroopType, string> = {
@@ -101,6 +100,7 @@ export function Building({
   large,
   hintOverride,
 }: BuildingProps) {
+  const { t } = useTranslation()
   const { setNodeRef, isOver } = useDroppable({
     id: `drop:${building}:${shift}`,
     data: { building, shift },
@@ -123,7 +123,7 @@ export function Building({
     >
       <header
         className="mb-2 flex items-center justify-between gap-2 px-1"
-        title={hintOverride ?? BUILDING_HINTS[building]}
+        title={hintOverride ?? buildingHint(building, t)}
       >
         <span
           className={cn(
@@ -135,7 +135,7 @@ export function Building({
                 : 'text-zinc-400',
           )}
         >
-          {BUILDING_LABELS[building]}
+          {t(BUILDING_LABEL_KEYS[building])}
         </span>
         <div className="flex items-center gap-1.5">
           {captainAssignment && onCaptainPresentChange && (
@@ -158,7 +158,7 @@ export function Building({
       >
         {members.length === 0 && (
           <div className="flex h-full flex-1 items-center justify-center text-[11px] italic text-zinc-400">
-            leer
+            {t('building.empty')}
           </div>
         )}
         {members.map((s) => (
@@ -188,6 +188,7 @@ function CaptainPresentToggle({
   assignment: Assignment
   onChange: (assignmentId: string, present: boolean | null) => void
 }) {
+  const { t } = useTranslation()
   const state = assignment.captain_present
   const next = state === null ? true : state === true ? false : null
   const cycle = () => onChange(assignment.id, next)
@@ -201,10 +202,10 @@ function CaptainPresentToggle({
 
   const label =
     state === true
-      ? 'Captain anwesend — Super Reinforcement aktiv'
+      ? t('building.captain_present_tooltip')
       : state === false
-        ? 'Captain abwesend! Reinforcer sollten umrouten.'
-        : 'Captain-Status unbekannt. Klick zum Markieren als anwesend.'
+        ? t('building.captain_absent_tooltip')
+        : t('building.captain_unknown_tooltip')
 
   return (
     <button

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Download, Upload, Loader2, X, AlertTriangle, Check } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { parseCSV, stringifyCSV } from '@/lib/csv'
@@ -49,6 +50,7 @@ interface RowReport {
  * downloads when the user clicks Export/Import (not on every Planner load).
  */
 export function RosterImportExport({ eventId, signups, onRefresh }: RosterImportExportProps) {
+  const { t } = useTranslation()
   const fileRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [report, setReport] = useState<RowReport[] | null>(null)
@@ -129,9 +131,9 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
     const buffer = await file.arrayBuffer()
     const wb = XLSX.read(buffer, { type: 'array' })
     const firstSheetName = wb.SheetNames[0]
-    if (!firstSheetName) throw new Error('Excel-Datei enthält kein Sheet')
+    if (!firstSheetName) throw new Error(t('roster.err_xlsx_no_sheet'))
     const ws = wb.Sheets[firstSheetName]
-    if (!ws) throw new Error(`Sheet "${firstSheetName}" nicht lesbar`)
+    if (!ws) throw new Error(t('roster.err_sheet_unreadable', { name: firstSheetName }))
     // header:1 → array of arrays; defval:'' → don't skip empty cells;
     // raw:false → coerce numbers/booleans to strings for consistent parsing
     const out = XLSX.utils.sheet_to_json<string[]>(ws, { header: 1, defval: '', raw: false })
@@ -140,7 +142,7 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
 
   const processRows = async (rows: string[][]) => {
     if (rows.length < 2) {
-      setReport([{ line: 1, ign: '', status: 'error', message: 'Datei ist leer oder hat keinen Header' }])
+      setReport([{ line: 1, ign: '', status: 'error', message: t('roster.err_empty_or_no_header') }])
       return
     }
     const header = rows[0]!.map((h) => h.trim())
@@ -150,7 +152,7 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
       if (i === -1) {
         setReport([{
           line: 1, ign: '', status: 'error',
-          message: `Header fehlt: ${h}. Erwartet sind: ${HEADERS.join(', ')}`,
+          message: t('roster.err_missing_header', { header: h, expected: HEADERS.join(', ') }),
         }])
         return
       }
@@ -233,21 +235,19 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
     <section className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
       <header className="mb-2 flex items-center justify-between">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-          Roster
+          {t('roster.section_title')}
         </h3>
-        <span className="text-[10px] text-zinc-400">{signups.length} Spieler</span>
+        <span className="text-[10px] text-zinc-400">{t('roster.player_count', { count: signups.length })}</span>
       </header>
-      <p className="mb-2 text-[11px] text-zinc-400">
-        Excel-Backup oder Re-Import für nächstes Event. Import upsert per IGN.
-      </p>
+      <p className="mb-2 text-[11px] text-zinc-400">{t('roster.description')}</p>
       <div className="flex flex-wrap gap-2">
         <Button variant="primary" size="sm" onClick={() => void exportXlsx()} disabled={busy}>
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-          Export .xlsx
+          {t('roster.export_xlsx')}
         </Button>
         <Button variant="ghost" size="sm" onClick={exportCsv} disabled={busy}>
           <Download className="h-3.5 w-3.5" />
-          .csv
+          {t('roster.export_csv')}
         </Button>
         <Button
           variant="ghost"
@@ -256,7 +256,7 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
           disabled={busy}
         >
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          Import
+          {t('roster.import')}
         </Button>
         <input
           ref={fileRef}
@@ -275,8 +275,8 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
         <div className="mt-3 rounded border border-zinc-800 bg-zinc-950 p-2 text-[11px]">
           <div className="mb-1.5 flex items-center justify-between">
             <span className="text-zinc-300">
-              {report.filter((r) => r.status === 'ok').length} ok ·{' '}
-              <span className="text-red-300">{report.filter((r) => r.status === 'error').length} Fehler</span>
+              {report.filter((r) => r.status === 'ok').length} {t('roster.ok_label')} ·{' '}
+              <span className="text-red-300">{report.filter((r) => r.status === 'error').length} {t('roster.errors_label')}</span>
             </span>
             <button
               type="button"
@@ -297,7 +297,7 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
                 ) : (
                   <AlertTriangle className="mt-0.5 h-3 w-3 flex-shrink-0 text-red-300" />
                 )}
-                <span className="font-mono text-zinc-300">{r.ign || `Zeile ${r.line}`}</span>
+                <span className="font-mono text-zinc-300">{r.ign || t('roster.line_label', { n: r.line })}</span>
                 {r.message && (
                   <span className="text-zinc-400">— {r.message}</span>
                 )}
