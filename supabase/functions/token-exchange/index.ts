@@ -28,57 +28,84 @@ function roleFor(row: EventRow, token: string): Role | null {
   return null
 }
 
-let cachedKey: { kid: string; cryptoKey: CryptoKey } | null = null
+type Algo = 'HS256' | 'ES256'
+
+interface SigningMaterial {
+  alg: Algo
+  /** Header kid claim. Omitted for HS256 — PostgREST tries all symmetric keys. */
+  kid?: string
+  cryptoKey: CryptoKey
+}
+
+let cachedKey: SigningMaterial | null = null
 
 /**
- * Discover the active signing key once per cold start. The private key is
- * pasted into a function secret in either JWK (JSON) or PKCS#8 PEM form;
- * the kid (key id) is fetched from the project's public JWKS endpoint so
- * we don't have to hardcode it.
+ * Format-detect the secret. Supports three forms:
+ *   - JWK (JSON `{...}`)            → ES256 asymmetric private key
+ *   - PKCS#8 PEM (`-----BEGIN`)     → ES256 asymmetric private key
+ *   - Otherwise base64-ish string   → HS256 legacy shared secret
+ *
+ * The legacy HS256 path works as long as the project's "Previous Key" tab
+ * still lists the HS256 secret (Supabase verifies against it until it's
+ * explicitly revoked). New tokens we mint with HS256 are accepted by
+ * PostgREST/Realtime via that legacy key.
  */
-async function loadSigningKey(): Promise<{ kid: string; cryptoKey: CryptoKey }> {
+async function loadSigningKey(): Promise<SigningMaterial> {
   if (cachedKey) return cachedKey
-
-  const jwksRes = await fetch(`${SUPABASE_URL}/auth/v1/.well-known/jwks.json`)
-  if (!jwksRes.ok) throw new Error(`jwks fetch failed: ${jwksRes.status}`)
-  const jwks = await jwksRes.json() as { keys: Array<{ kid: string; alg: string }> }
-  const activeJwk = jwks.keys.find((k) => k.alg === 'ES256')
-  if (!activeJwk) throw new Error('no ES256 key in JWKS')
-
   const trimmed = JWT_PRIVATE_KEY.trim()
-  let cryptoKey: CryptoKey
 
   if (trimmed.startsWith('{')) {
-    // JWK form — must include the `d` (private) parameter
-    const jwk = JSON.parse(trimmed) as JsonWebKey
-    if (!jwk.d) throw new Error('JWK lacks private "d" parameter — that is a PUBLIC key')
-    cryptoKey = await crypto.subtle.importKey(
-      'jwk',
-      jwk,
+    const jwk = JSON.parse(trimmed) as JsonWebKey & { d?: string }
+    if (!jwk.d) throw new Error('JWK lacks private d parameter - that is a PUBLIC key')
+    const cryptoKey = await crypto.subtle.importKey(
+      'jwk', jwk,
       { name: 'ECDSA', namedCurve: 'P-256' },
-      false,
-      ['sign'],
+      false, ['sign'],
     )
-  } else if (trimmed.includes('BEGIN PRIVATE KEY') || trimmed.includes('BEGIN EC PRIVATE KEY')) {
-    // PKCS#8 PEM form
+    const kid = await matchJwksKid(jwk.x)
+    cachedKey = { alg: 'ES256', kid, cryptoKey }
+    return cachedKey
+  }
+
+  if (trimmed.includes('BEGIN PRIVATE KEY') || trimmed.includes('BEGIN EC PRIVATE KEY')) {
     const b64 = trimmed
       .replace(/-----BEGIN [A-Z ]+-----/g, '')
       .replace(/-----END [A-Z ]+-----/g, '')
       .replace(/\s+/g, '')
     const der = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0))
-    cryptoKey = await crypto.subtle.importKey(
-      'pkcs8',
-      der.buffer,
+    const cryptoKey = await crypto.subtle.importKey(
+      'pkcs8', der.buffer,
       { name: 'ECDSA', namedCurve: 'P-256' },
-      false,
-      ['sign'],
+      false, ['sign'],
     )
-  } else {
-    throw new Error('JWT_PRIVATE_KEY must be JWK (JSON) or PKCS#8 PEM')
+    const kid = await matchJwksKid()
+    cachedKey = { alg: 'ES256', kid, cryptoKey }
+    return cachedKey
   }
 
-  cachedKey = { kid: activeJwk.kid, cryptoKey }
+  // HS256 fallback — treat the secret as a UTF-8 string (matches Supabase's
+  // legacy HS256 shared secret format).
+  const enc = new TextEncoder().encode(trimmed)
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', enc,
+    { name: 'HMAC', hash: 'SHA-256' },
+    false, ['sign', 'verify'],
+  )
+  cachedKey = { alg: 'HS256', cryptoKey }
   return cachedKey
+}
+
+async function matchJwksKid(privX?: string): Promise<string> {
+  const jwksRes = await fetch(`${SUPABASE_URL}/auth/v1/.well-known/jwks.json`)
+  if (!jwksRes.ok) throw new Error(`jwks fetch failed: ${jwksRes.status}`)
+  const jwks = await jwksRes.json() as { keys: Array<{ kid: string; alg: string; x?: string }> }
+  const es256Keys = jwks.keys.filter((k) => k.alg === 'ES256')
+  if (es256Keys.length === 0) throw new Error('no ES256 key in JWKS')
+  const matchingKey = privX ? es256Keys.find((k) => k.x === privX) : es256Keys[0]
+  if (!matchingKey) {
+    throw new Error(`private key (x=${privX?.slice(0, 12)}...) does not match any ES256 key in JWKS - public counterpart must be uploaded to Supabase JWT Keys`)
+  }
+  return matchingKey.kid
 }
 
 Deno.serve(async (req: Request) => {
@@ -128,9 +155,11 @@ Deno.serve(async (req: Request) => {
       })
     }
 
-    const { kid, cryptoKey } = await loadSigningKey()
+    const sig = await loadSigningKey()
+    const header: Record<string, string> = { alg: sig.alg, typ: 'JWT' }
+    if (sig.kid) header.kid = sig.kid
     const jwt = await create(
-      { alg: 'ES256', typ: 'JWT', kid },
+      header as { alg: 'HS256' | 'ES256'; typ: 'JWT' },
       {
         iss: `${SUPABASE_URL}/auth/v1`,
         sub: `${event.id}:${role}`,
@@ -141,7 +170,7 @@ Deno.serve(async (req: Request) => {
         iat: getNumericDate(0),
         exp: getNumericDate(JWT_LIFETIME_SECONDS),
       },
-      cryptoKey,
+      sig.cryptoKey,
     )
 
     return new Response(JSON.stringify({ jwt, role, expires_in: JWT_LIFETIME_SECONDS }), {
