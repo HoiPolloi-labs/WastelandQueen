@@ -15,7 +15,10 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? ''
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY') ?? ''
 
-const MODEL = 'claude-haiku-4-5'
+// Sonnet 4.6 over Haiku for better accuracy on stylized game-UI numbers and
+// non-Latin scripts (CN/JP/KR/RU player names). ~3x cost vs Haiku — still
+// well under $1/event at the 5-calls/h cap.
+const MODEL = 'claude-sonnet-4-6'
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024 // 5MB before base64 — Anthropic limit
 
 const CORS_HEADERS = {
