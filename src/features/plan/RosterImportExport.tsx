@@ -37,17 +37,23 @@ interface RowReport {
 }
 
 /**
- * CSV roster import/export. Export dumps the current event's signups for
- * disaster recovery or to seed the next event (clone-like). Import upserts
- * by IGN — existing rows update, new rows insert. Planner-only (the RLS
- * policies on signups allow planner CRUD).
+ * Roster import/export. Default format is XLSX because everyone has Excel
+ * and the breadth of users don't reliably know what CSV is. CSV stays as
+ * an alternate for power users / Linux setups.
+ *
+ * Import accepts both XLSX and CSV — detected by file extension. Upserts by
+ * IGN (case-insensitive), per-row validation via signupSchema, errors
+ * collected without aborting the batch.
+ *
+ * XLSX library is dynamic-imported so the ~700KB SheetJS bundle only
+ * downloads when the user clicks Export/Import (not on every Planner load).
  */
 export function RosterImportExport({ eventId, signups, onRefresh }: RosterImportExportProps) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [report, setReport] = useState<RowReport[] | null>(null)
 
-  const exportCsv = () => {
+  const buildRows = (): (string | number | boolean | null)[][] => {
     const rows: (string | number | boolean | null)[][] = [HEADERS as unknown as string[]]
     for (const s of signups) {
       rows.push([
@@ -65,7 +71,24 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
         s.planner_notes,
       ])
     }
-    const blob = new Blob([stringifyCSV(rows)], { type: 'text/csv;charset=utf-8' })
+    return rows
+  }
+
+  const exportXlsx = async () => {
+    setBusy(true)
+    try {
+      const XLSX = await import('xlsx')
+      const wb = XLSX.utils.book_new()
+      const ws = XLSX.utils.aoa_to_sheet(buildRows())
+      XLSX.utils.book_append_sheet(wb, ws, 'Roster')
+      XLSX.writeFile(wb, `roster-${eventId}.xlsx`)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const exportCsv = () => {
+    const blob = new Blob([stringifyCSV(buildRows())], { type: 'text/csv;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -74,14 +97,50 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
     URL.revokeObjectURL(url)
   }
 
-  const importCsv = async (file: File) => {
+  const importFile = async (file: File) => {
     setBusy(true)
     setReport(null)
-    const text = await file.text()
-    const rows = parseCSV(text)
-    if (rows.length < 2) {
-      setReport([{ line: 1, ign: '', status: 'error', message: 'CSV ist leer oder hat keinen Header' }])
+    try {
+      let rows: string[][]
+      const lower = file.name.toLowerCase()
+      if (
+        lower.endsWith('.xlsx') ||
+        lower.endsWith('.xlsm') ||
+        lower.endsWith('.xls') ||
+        file.type.includes('spreadsheetml') ||
+        file.type.includes('excel')
+      ) {
+        rows = await parseXlsx(file)
+      } else {
+        const text = await file.text()
+        rows = parseCSV(text)
+      }
+      await processRows(rows)
+    } catch (e) {
+      setReport([{ line: 0, ign: '', status: 'error', message: (e as Error).message }])
+    } finally {
       setBusy(false)
+    }
+    await onRefresh()
+  }
+
+  const parseXlsx = async (file: File): Promise<string[][]> => {
+    const XLSX = await import('xlsx')
+    const buffer = await file.arrayBuffer()
+    const wb = XLSX.read(buffer, { type: 'array' })
+    const firstSheetName = wb.SheetNames[0]
+    if (!firstSheetName) throw new Error('Excel-Datei enthält kein Sheet')
+    const ws = wb.Sheets[firstSheetName]
+    if (!ws) throw new Error(`Sheet "${firstSheetName}" nicht lesbar`)
+    // header:1 → array of arrays; defval:'' → don't skip empty cells;
+    // raw:false → coerce numbers/booleans to strings for consistent parsing
+    const out = XLSX.utils.sheet_to_json<string[]>(ws, { header: 1, defval: '', raw: false })
+    return out.map((row) => row.map((cell) => (cell == null ? '' : String(cell))))
+  }
+
+  const processRows = async (rows: string[][]) => {
+    if (rows.length < 2) {
+      setReport([{ line: 1, ign: '', status: 'error', message: 'Datei ist leer oder hat keinen Header' }])
       return
     }
     const header = rows[0]!.map((h) => h.trim())
@@ -93,7 +152,6 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
           line: 1, ign: '', status: 'error',
           message: `Header fehlt: ${h}. Erwartet sind: ${HEADERS.join(', ')}`,
         }])
-        setBusy(false)
         return
       }
       colIdx[h] = i
@@ -137,9 +195,8 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
       })
     }
 
-    // Upsert in two passes — first try to bulk insert, then UPDATE-on-conflict
-    // for the duplicates. Doing this row-by-row keeps error reporting tied to
-    // the original CSV line and avoids a single bad row aborting the batch.
+    // Row-by-row upsert keeps error reports tied to the source row and
+    // means one bad row doesn't abort the rest of the batch.
     for (const r of validRows) {
       const { data: existing } = await supabase
         .from('signups')
@@ -170,25 +227,27 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
     }
 
     setReport(reports)
-    setBusy(false)
-    await onRefresh()
   }
 
   return (
     <section className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
       <header className="mb-2 flex items-center justify-between">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-          Roster CSV
+          Roster
         </h3>
         <span className="text-[10px] text-zinc-400">{signups.length} Spieler</span>
       </header>
       <p className="mb-2 text-[11px] text-zinc-400">
-        Export für Backup oder Re-Import in nächstes Event. Import upsert per IGN.
+        Excel-Backup oder Re-Import für nächstes Event. Import upsert per IGN.
       </p>
-      <div className="flex gap-2">
-        <Button variant="ghost" size="sm" onClick={exportCsv}>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="primary" size="sm" onClick={() => void exportXlsx()} disabled={busy}>
+          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+          Export .xlsx
+        </Button>
+        <Button variant="ghost" size="sm" onClick={exportCsv} disabled={busy}>
           <Download className="h-3.5 w-3.5" />
-          Export
+          .csv
         </Button>
         <Button
           variant="ghost"
@@ -202,11 +261,11 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
         <input
           ref={fileRef}
           type="file"
-          accept=".csv,text/csv"
+          accept=".xlsx,.xlsm,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv"
           className="hidden"
           onChange={(e) => {
             const f = e.target.files?.[0]
-            if (f) void importCsv(f)
+            if (f) void importFile(f)
             e.target.value = ''
           }}
         />
