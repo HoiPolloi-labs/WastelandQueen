@@ -6,6 +6,7 @@ import {
   DndContext,
   DragOverlay,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -40,6 +41,8 @@ import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
 import { HealthCheckPanel } from './HealthCheckPanel'
 import { WebhookSettings } from './WebhookSettings'
+import { TokenRotation } from './TokenRotation'
+import { RosterImportExport } from './RosterImportExport'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
@@ -61,7 +64,14 @@ export function PlanPage() {
   const [busy, setBusy] = useState(false)
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }))
+  // PointerSensor handles mouse + stylus; TouchSensor splits off touch with
+  // a delay-based activation so finger-jitter during scroll doesn't
+  // accidentally start a drag. 150ms hold + 5px tolerance is the @dnd-kit
+  // recommended baseline for mobile UX.
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } }),
+  )
 
   useEffect(() => {
     if (event?.id) save(LAST_EVENT_KEY, event.id)
@@ -305,6 +315,12 @@ export function PlanPage() {
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
           <WebhookSettings />
+          <RosterImportExport
+            eventId={event.id}
+            signups={signups}
+            onRefresh={refreshSignups}
+          />
+          <TokenRotation eventId={event.id} />
         </div>
       </div>
 
