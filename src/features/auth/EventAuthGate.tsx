@@ -90,7 +90,7 @@ export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
           return
         }
         const { jwt, role } = body as { jwt: string; role: EventRole }
-        await setEventSession(jwt)
+        setEventSession(jwt)
         localStorage.setItem(`tok:${role}:${eventId}`, token)
         setState({ jwt, role, eventId, loading: false, error: null })
       } catch (e) {
@@ -107,7 +107,7 @@ export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
 
     return () => {
       cancelled = true
-      void clearEventSession()
+      clearEventSession()
     }
   }, [eventId, token])
 
