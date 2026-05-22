@@ -177,7 +177,10 @@ Deno.serve(async (req: Request) => {
       headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
     })
   } catch (e) {
-    return new Response(JSON.stringify({ error: 'exception', message: (e as Error).message, stack: (e as Error).stack?.slice(0, 500) }), {
+    // Log full stack server-side for debugging; only return a sanitized
+    // message to the client so we don't leak file paths / function names.
+    console.error('token-exchange exception:', e)
+    return new Response(JSON.stringify({ error: 'exception', message: (e as Error).message }), {
       status: 500, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
     })
   }

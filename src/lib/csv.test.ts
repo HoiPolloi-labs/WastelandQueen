@@ -34,6 +34,37 @@ describe('parseCSV', () => {
   it('strips BOM', () => {
     expect(parseCSV('﻿a\n1')).toEqual([['a'], ['1']])
   })
+
+  it('drops trailing all-empty row from file with trailing comma + newline', () => {
+    // `field1,field2,\n` yields `['field1','field2','']` then trailing `''`.
+    // The trailing-row dropper should ignore the truly-empty row that comes
+    // from the file ending in \n.
+    expect(parseCSV('a,b\nx,y\n')).toEqual([
+      ['a', 'b'],
+      ['x', 'y'],
+    ])
+    // multi-cell empty row should also be dropped
+    expect(parseCSV('a,b\nx,y\n,,\n')).toEqual([
+      ['a', 'b'],
+      ['x', 'y'],
+    ])
+  })
+
+  it('preserves a row that has some empty cells but not all', () => {
+    // not a "trailing empty row" — keep it
+    expect(parseCSV('a,b,c\n1,,3')).toEqual([
+      ['a', 'b', 'c'],
+      ['1', '', '3'],
+    ])
+  })
+
+  it('handles single-row file without trailing newline', () => {
+    expect(parseCSV('only,row')).toEqual([['only', 'row']])
+  })
+
+  it('handles empty file', () => {
+    expect(parseCSV('')).toEqual([])
+  })
 })
 
 describe('stringifyCSV', () => {

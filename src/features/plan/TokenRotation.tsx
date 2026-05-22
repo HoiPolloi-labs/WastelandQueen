@@ -62,13 +62,17 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
     const url = `${window.location.origin}/${role === 'planner' ? 'plan' : role}/${eventId}/${tokenForRole}`
     setNewUrl({ role, url })
     if (role === 'planner') {
-      // keep the cached planner token in sync so the bookmarked /plan/:id
-      // redirect still works in this browser even after the page reloads
+      // Order matters: localStorage first (most-important for recovery if
+      // anything else fails), then clipboard (best-effort), then navigate
+      // (visible side-effect). Awaiting the clipboard so a permission
+      // denial doesn't strand the user on an invalid URL.
       localStorage.setItem(`tok:planner:${eventId}`, tokenForRole)
-      // Navigate the current tab to the new URL so reload-after-JWT-expiry
-      // also lands on the valid URL. Existing in-flight JWT stays valid for
-      // its 24h TTL, so navigation is non-disruptive.
-      void navigator.clipboard.writeText(url)
+      try {
+        await navigator.clipboard.writeText(url)
+      } catch {
+        // Clipboard API can be denied (insecure context, permission)
+        // — the success card still shows the URL with its own copy button.
+      }
       navigate(`/plan/${eventId}/${tokenForRole}`, { replace: true })
     }
   }

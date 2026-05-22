@@ -148,11 +148,15 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
         .ilike('ign', r.ign)
         .maybeSingle()
       let err
-      if (existing) {
+      const existingId =
+        existing && typeof (existing as { id?: unknown }).id === 'string'
+          ? (existing as { id: string }).id
+          : null
+      if (existingId) {
         const { error } = await supabase
           .from('signups')
           .update(r.payload)
-          .eq('id', (existing as { id: string }).id)
+          .eq('id', existingId)
         err = error
       } else {
         const { error } = await supabase.from('signups').insert(r.payload)

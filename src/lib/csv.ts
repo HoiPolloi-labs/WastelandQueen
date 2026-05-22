@@ -71,8 +71,13 @@ export function parseCSV(input: string): string[][] {
     row.push(field)
     rows.push(row)
   }
-  // drop trailing empty row that comes from files ending in newline
-  if (rows.length > 0 && rows[rows.length - 1]!.length === 1 && rows[rows.length - 1]![0] === '') {
+  // drop trailing empty row that comes from files ending in newline. A bare
+  // newline yields a row `['']`; a trailing comma yields `['', '']` etc. —
+  // both should be considered "empty trailing row" and dropped.
+  if (
+    rows.length > 0 &&
+    rows[rows.length - 1]!.every((cell) => cell === '')
+  ) {
     rows.pop()
   }
   return rows

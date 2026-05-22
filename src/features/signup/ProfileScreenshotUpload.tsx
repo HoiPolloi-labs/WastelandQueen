@@ -188,8 +188,13 @@ function fileToBase64(file: File): Promise<string> {
     r.onload = () => {
       const result = r.result
       if (typeof result !== 'string') return reject(new Error('FileReader returned non-string'))
+      // data URL must be `data:<mime>;base64,<payload>` — reject anything else
+      // so we don't send garbage to the Edge Function.
       const comma = result.indexOf(',')
-      resolve(comma === -1 ? result : result.slice(comma + 1))
+      if (comma === -1 || !result.startsWith('data:')) {
+        return reject(new Error('Unexpected FileReader output (not a data URL)'))
+      }
+      resolve(result.slice(comma + 1))
     }
     r.onerror = () => reject(r.error ?? new Error('FileReader error'))
     r.readAsDataURL(file)

@@ -18,10 +18,17 @@ export function usePlannerEvents() {
   const [events, setEvents] = useState<KnownEvent[]>([])
 
   useEffect(() => {
-    const found: KnownEvent[] = []
+    // Snapshot keys first so a concurrent localStorage mutation (other tab,
+    // EventAuthGate writing a new token) can't make localStorage.key(i)
+    // return null mid-iteration.
+    const keys: string[] = []
     for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
-      if (!key?.startsWith('tok:planner:')) continue
+      const k = localStorage.key(i)
+      if (k) keys.push(k)
+    }
+    const found: KnownEvent[] = []
+    for (const key of keys) {
+      if (!key.startsWith('tok:planner:')) continue
       const eventId = key.slice('tok:planner:'.length)
       const plannerToken = localStorage.getItem(key)
       if (eventId && plannerToken) found.push({ eventId, plannerToken })
