@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { Loader2, ShieldX } from 'lucide-react'
 import { clearEventSession, setEventSession } from '@/lib/supabase'
 
@@ -135,26 +136,28 @@ function AuthErrorScreen({
   message: string
   eventId?: string
 }) {
+  const { t } = useTranslation()
+  const body =
+    message === 'missing event_id or token'
+      ? t('auth.missing_token')
+      : message === 'invalid_token'
+        ? t('auth.invalid_token')
+        : message
   return (
     <div className="mx-auto max-w-md py-16 text-center">
       <ShieldX className="mx-auto mb-3 h-10 w-10 text-red-400" />
-      <h2 className="mb-2 text-lg font-semibold text-zinc-100">Zugang verweigert</h2>
-      <p className="mb-4 text-sm text-zinc-400">
-        {message === 'missing event_id or token'
-          ? 'Diese URL ist veraltet — sie braucht jetzt einen Token.'
-          : message === 'invalid_token'
-            ? 'Token ungültig oder Event existiert nicht.'
-            : message}
-      </p>
+      <h2 className="mb-2 text-lg font-semibold text-zinc-100">
+        {t('auth.access_denied_title')}
+      </h2>
+      <p className="mb-4 text-sm text-zinc-400">{body}</p>
       {eventId && (
         <p className="text-xs text-zinc-500">
-          Frage den Organisator (Planner) nach dem aktuellen Link für{' '}
-          <span className="font-mono text-zinc-300">{eventId}</span>.
+          {t('auth.ask_planner', { eventId })}
         </p>
       )}
       <p className="mt-4 text-xs text-zinc-500">
         <Link to="/" className="text-yellow-400 hover:underline">
-          Zur Startseite
+          {t('common.back_to_home')}
         </Link>
       </p>
     </div>
@@ -168,14 +171,22 @@ function ForbiddenScreen({
   actual: EventRole
   required: EventRole[]
 }) {
+  const { t } = useTranslation()
   return (
     <div className="mx-auto max-w-md py-16 text-center">
       <ShieldX className="mx-auto mb-3 h-10 w-10 text-yellow-400" />
-      <h2 className="mb-2 text-lg font-semibold text-zinc-100">Falscher Token-Typ</h2>
-      <p className="text-sm text-zinc-400">
-        Diese Seite braucht <strong>{required.join(' oder ')}</strong>-Zugang. Dein
-        Token gibt dir nur <strong>{actual}</strong>-Zugang.
-      </p>
+      <h2 className="mb-2 text-lg font-semibold text-zinc-100">
+        {t('auth.wrong_role_title')}
+      </h2>
+      <p
+        className="text-sm text-zinc-400"
+        dangerouslySetInnerHTML={{
+          __html: t('auth.wrong_role_body', {
+            required: required.join(' / '),
+            actual,
+          }),
+        }}
+      />
     </div>
   )
 }

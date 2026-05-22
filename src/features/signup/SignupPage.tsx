@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { Crown, Check, AlertCircle, Loader2, Info, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useEvent } from '@/features/event/use-event'
@@ -32,6 +33,7 @@ const TIER_OPTIONS = Array.from({ length: 13 }, (_, i) => ({
 }))
 
 export function SignupPage() {
+  const { t, i18n } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading } = useEvent(eventId)
   const { role } = useEventAuth()
@@ -98,10 +100,8 @@ export function SignupPage() {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center">
         <AlertCircle className="mx-auto h-10 w-10 text-red-500" />
-        <h1 className="mt-4 text-xl font-semibold">Event nicht gefunden</h1>
-        <p className="mt-2 text-sm text-zinc-400">
-          Diese Sign-up-URL ist ungültig. Frag im Discord nach dem aktuellen Link.
-        </p>
+        <h1 className="mt-4 text-xl font-semibold">{t('signup.not_found_title')}</h1>
+        <p className="mt-2 text-sm text-zinc-400">{t('signup.not_found_body')}</p>
       </div>
     )
   }
@@ -111,10 +111,8 @@ export function SignupPage() {
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-zinc-800 text-zinc-400">
           <X className="h-8 w-8" />
         </div>
-        <h1 className="mt-4 text-xl font-semibold">Abgemeldet</h1>
-        <p className="mt-2 text-sm text-zinc-400">
-          {ign} ist aus dem Event raus. Du kannst dich jederzeit wieder eintragen.
-        </p>
+        <h1 className="mt-4 text-xl font-semibold">{t('signup.withdrawn_title')}</h1>
+        <p className="mt-2 text-sm text-zinc-400">{t('signup.withdrawn_body', { ign })}</p>
         <Button
           variant="secondary"
           className="mt-6"
@@ -124,7 +122,7 @@ export function SignupPage() {
             setIgn('')
           }}
         >
-          Zurück zum Formular
+          {t('common.back_to_form')}
         </Button>
       </div>
     )
@@ -137,19 +135,18 @@ export function SignupPage() {
           <Check className="h-8 w-8" />
         </div>
         <h1 className="mt-4 text-xl font-semibold">
-          {wasUpdate ? 'Aktualisiert!' : 'Eingetragen!'}
+          {wasUpdate ? t('signup.success_updated_title') : t('signup.success_inserted_title')}
         </h1>
         <p className="mt-2 text-sm text-zinc-400">
-          Danke {ign} — {wasUpdate ? 'deine Daten sind aktualisiert' : 'deine Daten sind bei uns'}.
-          Du kannst jederzeit zurückkommen und mit derselben IGN anpassen.
+          {wasUpdate ? t('signup.success_updated_body', { ign }) : t('signup.success_inserted_body', { ign })}
         </p>
         <ul className="mx-auto mt-6 max-w-sm space-y-2 rounded border border-zinc-800 bg-zinc-900/40 p-4 text-left text-xs text-zinc-300">
-          <li className="font-semibold uppercase tracking-wider text-zinc-400">Pre-Event Checklist</li>
-          <li>☐ Infirmary mit T1-Taxis vollfüllen (Casualties → Deep Healing)</li>
-          <li>☐ Miraculous Survival in Nova/Research auf Max</li>
-          <li>☐ First Aid + Instant Heal Talents geladen</li>
-          <li>☐ Trainings-Speedups + Ressourcen für Fast Comeback</li>
-          <li>☐ Drei-Tage-Schild stacken falls Mudsitter</li>
+          <li className="font-semibold uppercase tracking-wider text-zinc-400">{t('signup.pre_event_header')}</li>
+          <li>{t('signup.pre_event_taxis')}</li>
+          <li>{t('signup.pre_event_miraculous')}</li>
+          <li>{t('signup.pre_event_talents')}</li>
+          <li>{t('signup.pre_event_speedups')}</li>
+          <li>{t('signup.pre_event_shield')}</li>
         </ul>
         <Button
           variant="secondary"
@@ -169,7 +166,7 @@ export function SignupPage() {
             setStateAllianceJoined(false)
           }}
         >
-          Noch einen Spieler eintragen
+          {t('signup.signup_more')}
         </Button>
       </div>
     )
@@ -236,7 +233,7 @@ export function SignupPage() {
         }
         const editToken = recallToken(event.id, existing.ign)
         if (!editToken || editToken !== existing.edit_token) {
-          return new Error('Du bist nicht der Inhaber dieses Eintrags.')
+          return new Error(t('signup.error_not_owner'))
         }
         const { error } = await supabase.rpc('update_signup_self', {
           p_signup_id: existing.id,
@@ -301,10 +298,10 @@ export function SignupPage() {
     <div className="mx-auto max-w-md px-4 py-6">
       <div className="mb-6 flex items-center gap-2 text-yellow-400">
         <Crown className="h-5 w-5" />
-        <h1 className="text-lg font-semibold tracking-wide">WK Sign-up</h1>
+        <h1 className="text-lg font-semibold tracking-wide">{t('signup.title')}</h1>
       </div>
       <p className="mb-6 text-xs text-zinc-400">
-        Event: {event.id} · Start {new Date(event.starts_at_utc).toLocaleString('de-DE')}
+        {t('signup.event_info', { eventId: event.id, date: new Date(event.starts_at_utc).toLocaleString(i18n.language) })}
       </p>
 
       <form onSubmit={submit} className="flex flex-col gap-4">
@@ -320,15 +317,12 @@ export function SignupPage() {
         {existing && (
           <div className="flex items-start gap-2 rounded border border-yellow-500/40 bg-yellow-500/5 px-3 py-2 text-xs text-yellow-200">
             <Info className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-            <span>
-              Du bist schon eingetragen — Felder sind vorausgefüllt. Anpassungen aktualisieren
-              deinen Eintrag, statt einen neuen anzulegen.
-            </span>
+            <span>{t('signup.existing_hint')}</span>
           </div>
         )}
         <Input
-          label="IGN"
-          placeholder="Dein In-Game-Name"
+          label={t('signup.ign_label')}
+          placeholder={t('signup.ign_placeholder')}
           value={ign}
           onChange={(e) => {
             setIgn(e.target.value)
@@ -338,15 +332,15 @@ export function SignupPage() {
             }
           }}
           onBlur={lookupExisting}
-          hint={lookingUp ? 'Schaue ob du schon eingetragen bist…' : undefined}
+          hint={lookingUp ? t('signup.ign_lookup_hint') : undefined}
           error={errors.ign}
           autoComplete="off"
           required
         />
         <div className="grid grid-cols-2 gap-3">
           <Input
-            label="Alliance Tag"
-            placeholder="ABC"
+            label={t('signup.alliance_label')}
+            placeholder={t('signup.alliance_placeholder')}
             value={allianceTag}
             onChange={(e) => {
               setAllianceTag(e.target.value.toUpperCase())
@@ -359,7 +353,7 @@ export function SignupPage() {
             required
           />
           <Input
-            label="Server"
+            label={t('signup.server_label')}
             placeholder={event.home_server}
             value={server}
             onChange={(e) => {
@@ -373,11 +367,11 @@ export function SignupPage() {
         </div>
 
         <div>
-          <span className="mb-1 block text-sm font-medium text-zinc-300">Truppen-Typ</span>
+          <span className="mb-1 block text-sm font-medium text-zinc-300">{t('signup.type_label')}</span>
           <TypeCard
             value={troopType}
-            onChange={(t) => {
-              setTroopType(t)
+            onChange={(tp) => {
+              setTroopType(tp)
               setFieldError('troop_type')
             }}
           />
@@ -385,7 +379,7 @@ export function SignupPage() {
         </div>
 
         <div>
-          <span className="mb-1 block text-sm font-medium text-zinc-300">Höchster Tier</span>
+          <span className="mb-1 block text-sm font-medium text-zinc-300">{t('signup.tier_label')}</span>
           <Segmented
             options={TIER_OPTIONS}
             value={tier}
@@ -398,67 +392,67 @@ export function SignupPage() {
         </div>
 
         <Input
-          label="Max Solo Lair"
+          label={t('signup.lair_label')}
           type="number"
           inputMode="numeric"
           min={1}
           max={200}
-          placeholder="50"
+          placeholder={t('signup.lair_placeholder')}
           value={maxSoloLair}
           onChange={(e) => {
             const n = e.target.value === '' ? '' : Number(e.target.value)
             setMaxSoloLair(n as number | '')
             setFieldError('max_solo_lair')
           }}
-          hint="Höchstes Zombie-Lair-Level, das du solo schaffst"
+          hint={t('signup.lair_hint')}
           error={errors.max_solo_lair}
           required
         />
 
         <div className="grid grid-cols-2 gap-3">
           <Input
-            label="Rally Size"
+            label={t('signup.rally_label')}
             type="number"
             inputMode="numeric"
             min={1}
             step={50000}
-            placeholder="1500000"
+            placeholder={t('signup.rally_placeholder')}
             value={rallySize}
             onChange={(e) => setRallySize(e.target.value)}
-            hint="Captain-Capacity"
+            hint={t('signup.rally_hint')}
             required
             error={errors.rally_size}
           />
           <Input
-            label="True Might (optional)"
+            label={t('signup.might_label')}
             type="number"
             inputMode="numeric"
             min={0}
             step={1000000}
-            placeholder="80000000"
+            placeholder={t('signup.might_placeholder')}
             value={trueMight}
             onChange={(e) => setTrueMight(e.target.value)}
-            hint="Whale-Strategy-Signal"
+            hint={t('signup.might_hint')}
           />
         </div>
 
         <Toggle
           checked={willingCaptain}
           onChange={setWillingCaptain}
-          label="Captain möglich"
-          hint="Bereit, einen Hub/Turm-Captain zu übernehmen (Super Reinforcement)"
+          label={t('signup.willing_captain_label')}
+          hint={t('signup.willing_captain_hint')}
         />
 
         <Toggle
           checked={stateAllianceJoined}
           onChange={setStateAllianceJoined}
-          label="State Alliance beigetreten"
-          hint="Hak ab wenn du in der temporären State-Alliance bist (gleiches Flag = keine Friendly-Fire vom Turm)"
+          label={t('signup.state_alliance_label')}
+          hint={t('signup.state_alliance_hint')}
         />
 
         <div>
           <span className="mb-1 block text-sm font-medium text-zinc-300">
-            Verfügbare Shifts {event.shift_count > 1 && <span className="text-zinc-400">(mehrere möglich)</span>}
+            {t('signup.shifts_label')} {event.shift_count > 1 && <span className="text-zinc-400">{t('signup.shifts_multi_hint')}</span>}
           </span>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {Array.from({ length: event.shift_count }, (_, i) => {
@@ -482,7 +476,7 @@ export function SignupPage() {
                       : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200',
                   )}
                 >
-                  <span className="font-semibold">Shift {n}</span>
+                  <span className="font-semibold">{t('signup.shift_n', { n })}</span>
                   <span className="text-[10px] text-zinc-400">{label}</span>
                 </button>
               )
@@ -494,7 +488,7 @@ export function SignupPage() {
         {status === 'error' && (
           <div className="rounded border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
             <AlertCircle className="mr-2 inline h-4 w-4" />
-            {errorMsg || 'Fehler beim Eintragen. Versuch es nochmal.'}
+            {errorMsg || t('signup.error_default')}
           </div>
         )}
 
@@ -502,9 +496,9 @@ export function SignupPage() {
           {status === 'submitting' ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : existing ? (
-            'Aktualisieren'
+            t('signup.submit_update')
           ) : (
-            'Eintragen'
+            t('signup.submit_create')
           )}
         </Button>
 
@@ -512,7 +506,7 @@ export function SignupPage() {
           <button
             type="button"
             onClick={async () => {
-              if (!confirm(`${existing.ign} wirklich aus dem Event nehmen?`)) return
+              if (!confirm(t('signup.withdraw_confirm', { ign: existing.ign }))) return
               const editToken = recallToken(event.id, existing.ign)
               const error = await (async () => {
                 if (role === 'planner') {
@@ -523,7 +517,7 @@ export function SignupPage() {
                   return error
                 }
                 if (!editToken || editToken !== existing.edit_token) {
-                  return new Error('Du bist nicht der Inhaber dieses Eintrags.')
+                  return new Error(t('signup.error_not_owner'))
                 }
                 const { error } = await supabase.rpc('delete_signup_self', {
                   p_signup_id: existing.id,
@@ -542,12 +536,12 @@ export function SignupPage() {
             }}
             className="mx-auto mt-1 text-xs text-red-400 underline hover:text-red-300"
           >
-            Mich aus dem Event abmelden
+            {t('signup.withdraw_button')}
           </button>
         )}
         {existing && !isOwner && (
           <p className="mt-1 text-center text-[11px] text-zinc-400">
-            Abmelden geht nur vom Gerät auf dem die Eintragung gemacht wurde.
+            {t('signup.withdraw_not_owner')}
           </p>
         )}
       </form>

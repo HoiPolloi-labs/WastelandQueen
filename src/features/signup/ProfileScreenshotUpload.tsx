@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Sparkles, Loader2, Image as ImageIcon, X, AlertCircle } from 'lucide-react'
 import { useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/cn'
 
 interface ExtractedFields {
@@ -24,6 +25,7 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024
  * skip the human-in-the-loop step.
  */
 export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadProps) {
+  const { t } = useTranslation()
   const { eventId, token } = useParams<{ eventId: string; token: string }>()
   const fileRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
@@ -35,15 +37,15 @@ export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadPr
     setError('')
     setSuccess(null)
     if (!eventId || !token) {
-      setError('URL fehlt event_id oder token')
+      setError(t('profile_upload.err_missing_url'))
       return
     }
     if (file.size > MAX_IMAGE_BYTES) {
-      setError(`Bild zu groß (max ${MAX_IMAGE_BYTES / 1024 / 1024}MB).`)
+      setError(t('profile_upload.err_too_large', { mb: MAX_IMAGE_BYTES / 1024 / 1024 }))
       return
     }
     if (!/^image\//.test(file.type)) {
-      setError('Bitte ein Bild auswählen.')
+      setError(t('profile_upload.err_not_image'))
       return
     }
 
@@ -73,14 +75,16 @@ export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadPr
       if (!res.ok) {
         const msg =
           body?.error === 'rate_limited'
-            ? 'Zu viele Versuche — max 5/h pro Link.'
+            ? t('profile_upload.err_rate_limited')
             : body?.error === 'invalid_signup_token'
-              ? 'Link nicht gültig (Token-Check fehlgeschlagen).'
+              ? t('profile_upload.err_invalid_token')
               : body?.error === 'image too large'
-                ? `Bild zu groß. Limit ${(body.limit_bytes / 1024 / 1024).toFixed(0)}MB.`
+                ? t('profile_upload.err_image_too_large', {
+                    mb: (body.limit_bytes / 1024 / 1024).toFixed(0),
+                  })
                 : body?.error === 'anthropic_failed'
-                  ? `AI-Service hat Fehler: ${body.detail?.slice(0, 80) ?? '?'}`
-                  : body?.error ?? `Fehler ${res.status}`
+                  ? t('profile_upload.err_ai_failed', { detail: body.detail?.slice(0, 80) ?? '?' })
+                  : body?.error ?? t('profile_upload.err_generic', { status: res.status })
         setError(msg)
         return
       }
@@ -107,17 +111,13 @@ export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadPr
       <header className="mb-2 flex items-center justify-between">
         <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-purple-200">
           <Sparkles className="h-3.5 w-3.5" />
-          Auto-Fill aus Profil-Screenshot
+          {t('profile_upload.title')}
         </h3>
-        <span className="text-[10px] text-zinc-400">optional · KI-gestützt</span>
+        <span className="text-[10px] text-zinc-400">{t('profile_upload.tag')}</span>
       </header>
 
       {!preview && !success && !error && (
-        <p className="mb-2 text-[11px] text-zinc-400">
-          Profil-Screenshot aus dem Spiel hochladen — IGN, Alliance-Tag, Server, True Might
-          und ggf. Tier werden automatisch erkannt. Du checkst danach manuell und ergänzt
-          den Rest.
-        </p>
+        <p className="mb-2 text-[11px] text-zinc-400">{t('profile_upload.description')}</p>
       )}
 
       <div className="flex items-center gap-2">
@@ -132,12 +132,12 @@ export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadPr
           )}
         >
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImageIcon className="h-3.5 w-3.5" />}
-          {busy ? 'Erkenne…' : 'Screenshot wählen'}
+          {busy ? t('profile_upload.detecting') : t('profile_upload.choose_button')}
         </button>
         {preview && (
           <img
             src={preview}
-            alt="Screenshot Vorschau"
+            alt=""
             className="h-12 w-12 rounded border border-zinc-800 object-cover"
           />
         )}
@@ -146,7 +146,7 @@ export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadPr
             type="button"
             onClick={reset}
             className="ml-auto rounded p-1 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-100"
-            title="Zurücksetzen"
+            title={t('profile_upload.reset')}
           >
             <X className="h-3 w-3" />
           </button>
@@ -166,9 +166,9 @@ export function ProfileScreenshotUpload({ onExtract }: ProfileScreenshotUploadPr
 
       {success && (
         <p className="mt-2 text-[11px] text-emerald-300">
-          ✓ {success.filledCount} Felder erkannt. Bitte unten prüfen + ergänzen.
+          {t('profile_upload.success', { count: success.filledCount })}
           {success.remaining > 0 && (
-            <span className="text-zinc-400"> {success.remaining} Versuche übrig diese Stunde.</span>
+            <span className="text-zinc-400"> {t('profile_upload.remaining_hint', { remaining: success.remaining })}</span>
           )}
         </p>
       )}

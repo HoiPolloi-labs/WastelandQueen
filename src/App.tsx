@@ -1,8 +1,10 @@
 import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes, useLocation } from 'react-router'
 import { Crown, Plus, ClipboardList, Loader2, BookOpen } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from './lib/cn'
 import { BuildInfo } from './components/ui/BuildInfo'
+import { LanguageSwitcher } from './components/ui/LanguageSwitcher'
 import { EventAuthGate } from './features/auth/EventAuthGate'
 import { LegacyTokenlessURL } from './features/auth/LegacyTokenlessURL'
 
@@ -43,6 +45,7 @@ function RouteFallback() {
 }
 
 export default function App() {
+  const { t } = useTranslation()
   const location = useLocation()
   const isPublic =
     location.pathname === '/' ||
@@ -71,7 +74,7 @@ export default function App() {
                 }
               >
                 <Plus className="h-4 w-4" />
-                Neues Event
+                {t('nav.new_event')}
               </NavLink>
               <NavLink
                 to="/plan"
@@ -86,7 +89,7 @@ export default function App() {
                 }
               >
                 <ClipboardList className="h-4 w-4" />
-                Planner
+                {t('nav.planner')}
               </NavLink>
               <NavLink
                 to="/cheat-sheet"
@@ -100,11 +103,20 @@ export default function App() {
                 }
               >
                 <BookOpen className="h-4 w-4" />
-                Cheat-Sheet
+                {t('nav.cheat_sheet')}
               </NavLink>
             </nav>
+            <div className="ml-auto">
+              <LanguageSwitcher />
+            </div>
           </div>
         </header>
+      )}
+      {/* Floating language picker for public pages (signup/board/hero) that don't show the header */}
+      {isPublic && (
+        <div className="fixed right-2 top-2 z-40">
+          <LanguageSwitcher />
+        </div>
       )}
 
       <main
@@ -159,7 +171,7 @@ export default function App() {
               path="*"
               element={
                 <div className="mx-auto max-w-md py-12 text-center text-zinc-500">
-                  Nicht gefunden.
+                  404
                 </div>
               }
             />
