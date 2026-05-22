@@ -82,7 +82,23 @@
     "submit_update": "Aktualisieren",
     "withdraw_button": "Mich aus dem Event abmelden",
     "withdraw_confirm": "{{ign}} wirklich aus dem Event nehmen?",
-    "withdraw_not_owner": "Abmelden geht nur vom Gerät auf dem die Eintragung gemacht wurde."
+    "withdraw_not_owner": "Abmelden geht nur vom Gerät auf dem die Eintragung gemacht wurde.",
+    "cl_header": "Event-Vorbereitung",
+    "cl_hint": "Hak ab was du vorbereitet hast. Planner kann pingen wer noch was offen hat.",
+    "cl_taxis": "T1-Taxis im Infirmary",
+    "cl_speedups": "Speedups + Ressourcen für Fast Comeback",
+    "cl_heroes": "Heroes equipped + geleveled",
+    "cl_shield": "3-Tage-Schild aktiv (Mudsitter)"
+  },
+  "board": {
+    "event_not_found": "Event nicht gefunden",
+    "players": "{{count}} Spieler",
+    "shift_setup": "Shift {{n}} · WK Setup",
+    "view_only": "Nur Anzeige — kein Drag",
+    "nap_terms_header": "NAP-Terms",
+    "not_signed_up_yet_title": "Noch nicht eingetragen?",
+    "not_signed_up_yet_hint": "QR scannen oder Link öffnen:",
+    "notes_header": "Notes"
   },
   "profile_upload": {
     "title": "Auto-Fill aus Profil-Screenshot",

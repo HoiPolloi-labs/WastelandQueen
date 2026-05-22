@@ -82,7 +82,23 @@
     "submit_update": "업데이트",
     "withdraw_button": "이 이벤트에서 탈퇴",
     "withdraw_confirm": "정말로 {{ign}}을(를) 이 이벤트에서 제거하시겠습니까?",
-    "withdraw_not_owner": "가입한 기기에서만 탈퇴할 수 있습니다."
+    "withdraw_not_owner": "가입한 기기에서만 탈퇴할 수 있습니다.",
+    "cl_header": "이벤트 준비 상태",
+    "cl_hint": "준비 완료된 항목을 체크하세요. 플래너가 미완료 플레이어에게 알릴 수 있습니다.",
+    "cl_taxis": "의무실에 T1 택시 채움",
+    "cl_speedups": "가속 + Fast Comeback용 자원",
+    "cl_heroes": "Heroes 장착 및 레벨업",
+    "cl_shield": "3일 방어막 활성화 (mud-sitter)"
+  },
+  "board": {
+    "event_not_found": "이벤트를 찾을 수 없음",
+    "players": "{{count}}명",
+    "shift_setup": "시프트 {{n}} · WK 배치",
+    "view_only": "보기 전용 — 드래그 불가",
+    "nap_terms_header": "NAP 조건",
+    "not_signed_up_yet_title": "아직 가입하지 않으셨나요?",
+    "not_signed_up_yet_hint": "QR 스캔 또는 링크 열기:",
+    "notes_header": "메모"
   },
   "profile_upload": {
     "title": "프로필 스크린샷에서 자동 채우기",

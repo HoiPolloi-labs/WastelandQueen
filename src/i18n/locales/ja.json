@@ -82,7 +82,23 @@
     "submit_update": "更新",
     "withdraw_button": "このイベントから離脱",
     "withdraw_confirm": "本当に{{ign}}をこのイベントから削除しますか?",
-    "withdraw_not_owner": "登録した端末からのみ離脱できます。"
+    "withdraw_not_owner": "登録した端末からのみ離脱できます。",
+    "cl_header": "イベント準備状況",
+    "cl_hint": "準備済みの項目をチェック。プランナーは未完了プレイヤーに通知できます。",
+    "cl_taxis": "医務室にT1タクシー",
+    "cl_speedups": "加速 + Fast Comeback用リソース",
+    "cl_heroes": "Heroes装備・レベル済み",
+    "cl_shield": "3日シールド有効 (Mud-sitter)"
+  },
+  "board": {
+    "event_not_found": "イベントが見つかりません",
+    "players": "{{count}}名",
+    "shift_setup": "シフト{{n}} · WK配置",
+    "view_only": "閲覧のみ — ドラッグ不可",
+    "nap_terms_header": "NAP条件",
+    "not_signed_up_yet_title": "まだサインアップしていませんか?",
+    "not_signed_up_yet_hint": "QRをスキャンまたはリンクを開く:",
+    "notes_header": "メモ"
   },
   "profile_upload": {
     "title": "プロフィールスクリーンショットから自動入力",

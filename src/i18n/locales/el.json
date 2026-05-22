@@ -82,7 +82,23 @@
     "submit_update": "Ενημέρωση",
     "withdraw_button": "Βγάλε με από αυτό το γεγονός",
     "withdraw_confirm": "Σίγουρα αφαίρεση του {{ign}} από αυτό το γεγονός;",
-    "withdraw_not_owner": "Η αποχώρηση λειτουργεί μόνο από τη συσκευή με την οποία έγινε η εγγραφή."
+    "withdraw_not_owner": "Η αποχώρηση λειτουργεί μόνο από τη συσκευή με την οποία έγινε η εγγραφή.",
+    "cl_header": "Ετοιμότητα πριν το γεγονός",
+    "cl_hint": "Τσέκαρε ό,τι έχεις προετοιμάσει. Ο planner μπορεί να ping όσους έχουν εκκρεμότητες.",
+    "cl_taxis": "T1 taxis στο infirmary",
+    "cl_speedups": "Επιταχύνσεις + πόροι για Fast Comeback",
+    "cl_heroes": "Heroes equipped και leveled",
+    "cl_shield": "3ήμερη ασπίδα ενεργή (mud-sitters)"
+  },
+  "board": {
+    "event_not_found": "Το γεγονός δεν βρέθηκε",
+    "players": "{{count}} παίκτες",
+    "shift_setup": "Βάρδια {{n}} · WK Setup",
+    "view_only": "Μόνο προβολή — χωρίς drag",
+    "nap_terms_header": "Όροι NAP",
+    "not_signed_up_yet_title": "Δεν έχεις εγγραφεί ακόμα;",
+    "not_signed_up_yet_hint": "Σκάναρε το QR ή άνοιξε τον σύνδεσμο:",
+    "notes_header": "Σημειώσεις"
   },
   "profile_upload": {
     "title": "Αυτόματη συμπλήρωση από screenshot προφίλ",

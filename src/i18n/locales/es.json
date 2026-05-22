@@ -82,7 +82,23 @@
     "submit_update": "Actualizar",
     "withdraw_button": "Quitarme de este evento",
     "withdraw_confirm": "¿Realmente eliminar a {{ign}} de este evento?",
-    "withdraw_not_owner": "Darse de baja solo funciona desde el dispositivo donde se hizo el registro."
+    "withdraw_not_owner": "Darse de baja solo funciona desde el dispositivo donde se hizo el registro.",
+    "cl_header": "Preparación pre-evento",
+    "cl_hint": "Marca lo que ya preparaste. El planner puede pingar a quien aún tenga ítems pendientes.",
+    "cl_taxis": "T1 taxis en la enfermería",
+    "cl_speedups": "Aceleradores + recursos para Fast Comeback",
+    "cl_heroes": "Heroes equipados y leveled",
+    "cl_shield": "Escudo de 3 días activo (mud-sitters)"
+  },
+  "board": {
+    "event_not_found": "Evento no encontrado",
+    "players": "{{count}} jugadores",
+    "shift_setup": "Turno {{n}} · WK Setup",
+    "view_only": "Solo lectura — sin arrastrar",
+    "nap_terms_header": "Términos NAP",
+    "not_signed_up_yet_title": "¿Aún no te registraste?",
+    "not_signed_up_yet_hint": "Escanea el QR o abre el enlace:",
+    "notes_header": "Notas"
   },
   "profile_upload": {
     "title": "Auto-rellenar desde captura de perfil",

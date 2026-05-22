@@ -49,6 +49,7 @@ function makeSignup(overrides: Partial<Signup> = {}): Signup {
     occupation_points: 0,
     might_lost: 0,
     box_tier: null,
+    checklist: {},
     edit_token: 't',
     submitted_at: EVENT_START,
     ...overrides,

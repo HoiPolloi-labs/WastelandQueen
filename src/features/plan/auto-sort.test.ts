@@ -32,6 +32,7 @@ function s(opts: {
     occupation_points: 0,
     might_lost: 0,
     box_tier: null,
+    checklist: {},
     edit_token: 't',
     submitted_at: '2026-05-30T10:00:00Z',
   }

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { Crown, Download, Loader2, AlertCircle } from 'lucide-react'
 import { useEvent } from '@/features/event/use-event'
 import { useSignups } from '@/features/plan/use-signups'
@@ -16,6 +17,7 @@ import { Handshake } from 'lucide-react'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 
 export function BoardPage() {
+  const { t, i18n } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading } = useEvent(eventId)
   const { signups } = useSignups(eventId)
@@ -36,7 +38,7 @@ export function BoardPage() {
     return (
       <div className="mx-auto max-w-md px-4 py-12 text-center">
         <AlertCircle className="mx-auto h-10 w-10 text-red-500" />
-        <h1 className="mt-4 text-xl font-semibold">Event nicht gefunden</h1>
+        <h1 className="mt-4 text-xl font-semibold">{t('board.event_not_found')}</h1>
       </div>
     )
   }
@@ -65,8 +67,8 @@ export function BoardPage() {
           </div>
           <h1 className="mt-1 text-2xl font-semibold">{event.id}</h1>
           <p className="text-xs text-zinc-400">
-            Start {new Date(event.starts_at_utc).toLocaleString('de-DE')} · {signups.length}{' '}
-            Spieler
+            Start {new Date(event.starts_at_utc).toLocaleString(i18n.language)} ·{' '}
+            {t('board.players', { count: signups.length })}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -74,7 +76,7 @@ export function BoardPage() {
             <Segmented<ShiftNumber>
               options={Array.from({ length: event.shift_count }, (_, i) => ({
                 value: (i + 1) as ShiftNumber,
-                label: `Shift ${i + 1}`,
+                label: t('signup.shift_n', { n: i + 1 }),
                 hint: shiftWindowLabel(event.starts_at_utc, event.shift_count, (i + 1) as ShiftNumber),
               }))}
               value={shift}
@@ -90,8 +92,8 @@ export function BoardPage() {
 
       <div ref={captureRef} className="rounded-xl border border-zinc-800 bg-zinc-950 p-6">
         <div className="mb-4 flex items-center justify-between text-xs text-zinc-400">
-          <span>Shift {shift} · WK Setup</span>
-          <span>Drag-frei · nur Anzeige</span>
+          <span>{t('board.shift_setup', { n: shift })}</span>
+          <span>{t('board.view_only')}</span>
         </div>
         <Plaza
           shift={shift}
@@ -103,7 +105,7 @@ export function BoardPage() {
           <div className="mt-6 border-t border-zinc-800 pt-4">
             <h3 className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
               <Handshake className="h-3.5 w-3.5" />
-              NAP-Terms
+              {t('board.nap_terms_header')}
             </h3>
             <NapList terms={napTerms} />
           </div>
@@ -114,8 +116,8 @@ export function BoardPage() {
         <div className="flex items-center gap-4 rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
           <Qr value={signupUrl} size={140} />
           <div className="text-sm">
-            <div className="font-medium text-zinc-100">Noch nicht eingetragen?</div>
-            <div className="mt-1 text-xs text-zinc-400">QR scannen oder Link öffnen:</div>
+            <div className="font-medium text-zinc-100">{t('board.not_signed_up_yet_title')}</div>
+            <div className="mt-1 text-xs text-zinc-400">{t('board.not_signed_up_yet_hint')}</div>
             <code className="mt-2 block break-all rounded bg-zinc-900 px-2 py-1 font-mono text-[11px] text-yellow-300">
               {signupUrl}
             </code>
@@ -124,7 +126,7 @@ export function BoardPage() {
         {event.notes && (
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-300">
             <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">
-              Notes
+              {t('board.notes_header')}
             </div>
             <p className="whitespace-pre-wrap">{event.notes}</p>
           </div>

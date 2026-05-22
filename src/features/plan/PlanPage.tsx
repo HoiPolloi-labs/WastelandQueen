@@ -43,6 +43,7 @@ import { OtherShiftDropzone } from './OtherShiftDropzone'
 import { NotesProvider } from './NotesContext'
 import { NoteEditor } from './NoteEditor'
 import { HealthCheckPanel } from './HealthCheckPanel'
+import { PreEventStatusPanel } from './PreEventStatusPanel'
 import { WebhookSettings } from './WebhookSettings'
 import { TokenRotation } from './TokenRotation'
 import { RosterImportExport } from './RosterImportExport'
@@ -345,6 +346,7 @@ export function PlanPage() {
             event={event}
             shift={shift}
           />
+          <PreEventStatusPanel signups={signups} />
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
           <WebhookSettings />

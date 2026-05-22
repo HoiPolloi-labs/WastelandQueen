@@ -82,7 +82,23 @@
     "submit_update": "更新",
     "withdraw_button": "退出此事件",
     "withdraw_confirm": "真的要从此事件中移除 {{ign}}？",
-    "withdraw_not_owner": "只能在最初报名的设备上退出。"
+    "withdraw_not_owner": "只能在最初报名的设备上退出。",
+    "cl_header": "事件前准备",
+    "cl_hint": "勾选已完成的准备。规划者可以提醒尚未完成的玩家。",
+    "cl_taxis": "医院里有 T1 出租兵",
+    "cl_speedups": "训练加速 + Fast Comeback 资源",
+    "cl_heroes": "Heroes 已装备并升级",
+    "cl_shield": "3 天护盾已激活（蹲泥）"
+  },
+  "board": {
+    "event_not_found": "未找到事件",
+    "players": "{{count}} 位玩家",
+    "shift_setup": "班次 {{n}} · WK 部署",
+    "view_only": "仅查看 — 不可拖动",
+    "nap_terms_header": "NAP 条款",
+    "not_signed_up_yet_title": "尚未报名？",
+    "not_signed_up_yet_hint": "扫描二维码或打开链接：",
+    "notes_header": "备注"
   },
   "profile_upload": {
     "title": "从个人资料截图自动填充",

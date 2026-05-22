@@ -96,6 +96,12 @@ export interface EventConfig {
 }
 
 
+/** Pre-event checklist keys. All optional; absence is equivalent to false. */
+export type ChecklistKey = 'taxis' | 'speedups' | 'heroes' | 'shield'
+export type Checklist = Partial<Record<ChecklistKey, boolean>>
+
+export const CHECKLIST_KEYS: ChecklistKey[] = ['taxis', 'speedups', 'heroes', 'shield']
+
 export interface Signup {
   id: string
   event_id: string
@@ -111,6 +117,8 @@ export interface Signup {
   shift_pref: ShiftPref
   planner_notes: string | null
   state_alliance_joined: boolean
+  /** Pre-event readiness items; player ticks them as they prepare. */
+  checklist: Checklist
   /** Post-event capture, set by governor */
   attended: boolean | null
   kill_points: number

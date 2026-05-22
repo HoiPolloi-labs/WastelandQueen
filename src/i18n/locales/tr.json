@@ -82,7 +82,23 @@
     "submit_update": "Güncelle",
     "withdraw_button": "Beni bu etkinlikten çıkar",
     "withdraw_confirm": "{{ign}} gerçekten bu etkinlikten çıkarılsın mı?",
-    "withdraw_not_owner": "Çıkış sadece kayıt yapılan cihazdan çalışır."
+    "withdraw_not_owner": "Çıkış sadece kayıt yapılan cihazdan çalışır.",
+    "cl_header": "Etkinlik öncesi hazırlık",
+    "cl_hint": "Hazırladığın şeyleri işaretle. Planlayıcı eksik kalan oyuncuları pingleyebilir.",
+    "cl_taxis": "Revirde T1 taxi",
+    "cl_speedups": "Hızlandırıcılar + Fast Comeback için kaynaklar",
+    "cl_heroes": "Heroes equip edildi ve level alındı",
+    "cl_shield": "3 günlük kalkan aktif (mud-sitter)"
+  },
+  "board": {
+    "event_not_found": "Etkinlik bulunamadı",
+    "players": "{{count}} oyuncu",
+    "shift_setup": "Vardiya {{n}} · WK Kurulumu",
+    "view_only": "Sadece görüntüleme — sürükleme yok",
+    "nap_terms_header": "NAP Şartları",
+    "not_signed_up_yet_title": "Henüz kayıt olmadın mı?",
+    "not_signed_up_yet_hint": "QR'ı tara veya bağlantıyı aç:",
+    "notes_header": "Notlar"
   },
   "profile_upload": {
     "title": "Profil ekran görüntüsünden otomatik doldur",

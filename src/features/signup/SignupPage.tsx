@@ -19,11 +19,15 @@ import { ProfileScreenshotUpload } from './ProfileScreenshotUpload'
 import {
   parseShiftPref,
   serializeShiftPref,
+  type Checklist,
+  type ChecklistKey,
   type ShiftNumber,
   type Signup,
   type TroopTier,
   type TroopType,
 } from '@/types/wk'
+
+const CHECKLIST_KEYS: ChecklistKey[] = ['taxis', 'speedups', 'heroes', 'shield']
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'withdrawn'
 
@@ -52,6 +56,7 @@ export function SignupPage() {
   const [willingCaptain, setWillingCaptain] = useState(false)
   const [shifts, setShifts] = useState<ShiftNumber[]>([])
   const [stateAllianceJoined, setStateAllianceJoined] = useState(false)
+  const [checklist, setChecklist] = useState<Checklist>({})
   const [existing, setExisting] = useState<Signup | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
   const isOwner = Boolean(
@@ -70,6 +75,7 @@ export function SignupPage() {
     setWillingCaptain(s.willing_captain)
     setShifts(parseShiftPref(s.shift_pref))
     setStateAllianceJoined(s.state_alliance_joined)
+    setChecklist(s.checklist ?? {})
   }
 
   const lookupExisting = async () => {
@@ -164,6 +170,7 @@ export function SignupPage() {
             setWillingCaptain(false)
             setShifts([])
             setStateAllianceJoined(false)
+            setChecklist({})
           }}
         >
           {t('signup.signup_more')}
@@ -218,6 +225,7 @@ export function SignupPage() {
       event_id: event.id,
       ...parsed.data,
       state_alliance_joined: stateAllianceJoined,
+      checklist,
     }
 
     if (existing) {
@@ -483,6 +491,28 @@ export function SignupPage() {
             })}
           </div>
           {errors.shift_pref && <p className="mt-1 text-xs text-red-400">{errors.shift_pref}</p>}
+        </div>
+
+        <div className="rounded border border-zinc-800 bg-zinc-900/40 p-3">
+          <div className="mb-1 text-sm font-medium text-zinc-300">{t('signup.cl_header')}</div>
+          <p className="mb-2 text-[11px] text-zinc-400">{t('signup.cl_hint')}</p>
+          <ul className="flex flex-col gap-1.5">
+            {CHECKLIST_KEYS.map((key) => (
+              <li key={key}>
+                <label className="flex cursor-pointer items-center gap-2 text-xs text-zinc-200">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(checklist[key])}
+                    onChange={(e) =>
+                      setChecklist((cur) => ({ ...cur, [key]: e.target.checked }))
+                    }
+                    className="h-4 w-4 accent-yellow-500"
+                  />
+                  {t(`signup.cl_${key}`)}
+                </label>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {status === 'error' && (
