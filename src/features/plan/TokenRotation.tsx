@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import { RefreshCw, Copy, ShieldAlert, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
@@ -23,6 +24,7 @@ const ROLE_LABEL: Record<RoleKey, string> = {
  * minted from the old token stay valid until their 24h expiry.
  */
 export function TokenRotation({ eventId }: TokenRotationProps) {
+  const navigate = useNavigate()
   const [busy, setBusy] = useState<RoleKey | null>(null)
   const [newUrl, setNewUrl] = useState<{ role: RoleKey; url: string } | null>(null)
   const [error, setError] = useState<string>('')
@@ -63,6 +65,11 @@ export function TokenRotation({ eventId }: TokenRotationProps) {
       // keep the cached planner token in sync so the bookmarked /plan/:id
       // redirect still works in this browser even after the page reloads
       localStorage.setItem(`tok:planner:${eventId}`, tokenForRole)
+      // Navigate the current tab to the new URL so reload-after-JWT-expiry
+      // also lands on the valid URL. Existing in-flight JWT stays valid for
+      // its 24h TTL, so navigation is non-disruptive.
+      void navigator.clipboard.writeText(url)
+      navigate(`/plan/${eventId}/${tokenForRole}`, { replace: true })
     }
   }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router'
+import { Link, useLocation, useSearchParams } from 'react-router'
 import { Loader2, Copy, ClipboardCopy, ShieldAlert, Eye, Trophy, ClipboardList } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Input, Textarea } from '@/components/ui/Input'
@@ -25,7 +25,14 @@ const TURRET_MODES: { value: TurretMode; label: string; hint: string }[] = [
 
 export function EventSetupPage() {
   const [params] = useSearchParams()
-  const cloneFromId = params.get('clone')
+  const location = useLocation()
+  // Source event for clone-mode. Comes either via router state (the PlanPage
+  // "Klonen" button passes the already-authenticated event row directly) or
+  // via the legacy ?clone=ID query param for bookmarked links. The state
+  // path is preferred because the events table is no longer anon-readable
+  // post per-event-token RLS.
+  const stateCloneFrom = (location.state as { clonedFrom?: EventConfig } | null)?.clonedFrom ?? null
+  const cloneFromId = stateCloneFrom?.id ?? params.get('clone')
   const [startsAt, setStartsAt] = useState(() => nextSaturdayIso().slice(0, 16))
   const [turretMode, setTurretMode] = useState<TurretMode>('duplicate-strongest')
   const [homeServer, setHomeServer] = useState('S724')
@@ -44,15 +51,7 @@ export function EventSetupPage() {
 
   useEffect(() => {
     if (!cloneFromId) return
-    let cancelled = false
-    void (async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .eq('id', cloneFromId)
-        .maybeSingle()
-      if (cancelled || error || !data) return
-      const src = data as EventConfig
+    const applyClone = (src: EventConfig) => {
       setTurretMode(src.turret_mode)
       setHomeServer(src.home_server)
       setShiftCount(src.shift_count)
@@ -62,14 +61,35 @@ export function EventSetupPage() {
       setAssessorIgn(src.assessor_ign ?? '')
       setNegotiatorIgn(src.negotiator_ign ?? '')
       setForeignTargets((src.foreign_targets ?? []).join(', '))
-      // notes intentionally NOT copied — they're event-specific (NAP status etc.)
+      // notes carry over — often the same matchup means same NAP/strategy notes.
+      // The "Geklont von" banner cues the planner to review before submit.
+      setNotes(src.notes ?? '')
       // discord_webhook_url is a secret + must be re-set per event by the planner
       setClonedFrom(src.id)
+    }
+
+    if (stateCloneFrom) {
+      applyClone(stateCloneFrom)
+      return
+    }
+
+    // Legacy ?clone=ID path — anon fetch will only return data if the events
+    // table is still anon-readable, which post-token-RLS it isn't. Kept as
+    // best-effort fallback for bookmarked links.
+    let cancelled = false
+    void (async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('id', cloneFromId)
+        .maybeSingle()
+      if (cancelled || error || !data) return
+      applyClone(data as EventConfig)
     })()
     return () => {
       cancelled = true
     }
-  }, [cloneFromId])
+  }, [cloneFromId, stateCloneFrom])
 
   const eventId = eventIdFromIso(new Date(startsAt).toISOString())
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useParams, Link } from 'react-router'
+import { useParams, Link, useNavigate } from 'react-router'
 import { save } from '@/lib/storage'
 import { LAST_EVENT_KEY } from './PlanIndex'
 import {
@@ -49,6 +49,7 @@ import { EventPicker } from '@/features/event/EventPicker'
 
 export function PlanPage() {
   const { eventId } = useParams<{ eventId: string }>()
+  const navigate = useNavigate()
   const { event, loading: eventLoading } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
   const {
@@ -253,12 +254,19 @@ export function PlanPage() {
             Awards
           </Button>
         </Link>
-        <Link to={`/plan/new?clone=${event.id}`} title="Neues Event mit dieser Konfiguration anlegen">
-          <Button variant="ghost" size="sm">
-            <Copy className="h-3.5 w-3.5" />
-            Klonen
-          </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            // Pass event row via React Router state so EventSetupPage doesn't
+            // have to re-fetch — anon can't read events anymore (RLS).
+            navigate('/plan/new', { state: { clonedFrom: event } })
+          }}
+          title="Neues Event mit dieser Konfiguration anlegen"
+        >
+          <Copy className="h-3.5 w-3.5" />
+          Klonen
+        </Button>
       </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
