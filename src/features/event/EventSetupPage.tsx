@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router'
 import { Loader2, Copy, ClipboardCopy, ShieldAlert, Eye, Trophy, ClipboardList } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { supabase, clearEventSession } from '@/lib/supabase'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Segmented } from '@/components/ui/Segmented'
@@ -48,6 +48,14 @@ export function EventSetupPage() {
   const [error, setError] = useState<string>('')
   const [clonedFrom, setClonedFrom] = useState<string | null>(null)
   const [createdEvent, setCreatedEvent] = useState<EventConfig | null>(null)
+
+  // Defensive: if the user navigated here from an authenticated route, the
+  // supabase client may still hold a per-event JWT. Inserting into events as
+  // an authenticated role used to fail because the RLS policy only matched
+  // anon (now widened in migration 0022 — kept here as belt-and-suspenders).
+  useEffect(() => {
+    clearEventSession()
+  }, [])
 
   useEffect(() => {
     if (!cloneFromId) return
@@ -97,9 +105,17 @@ export function EventSetupPage() {
     e.preventDefault()
     setBusy(true)
     setError('')
-    const { data, error } = await supabase
-      .from('events')
-      .insert({
+    // create_event RPC bypasses RLS for the return path so the freshly
+    // generated tokens come back to the client. Direct .insert() fails
+    // because PostgREST's implicit SELECT-after-INSERT goes through the
+    // event_id_claim()-gated read policy and returns nothing for anon.
+    const targets = foreignTargets
+      .split(/[,\s]+/)
+      .map((s) => s.trim().toUpperCase())
+      .filter((s) => /^S\d+$/.test(s))
+      .slice(0, 3)
+    const { data, error } = await supabase.rpc('create_event', {
+      p: {
         id: eventId,
         starts_at_utc: new Date(startsAt).toISOString(),
         shift_count: shiftCount,
@@ -111,17 +127,11 @@ export function EventSetupPage() {
         governor_ign: governorIgn.trim() || null,
         assessor_ign: assessorIgn.trim() || null,
         negotiator_ign: negotiatorIgn.trim() || null,
-        foreign_targets: foreignTargets
-          .split(/[,\s]+/)
-          .map((s) => s.trim().toUpperCase())
-          .filter((s) => /^S\d+$/.test(s))
-          .slice(0, 3) // doc: up to 3 opposing states
-          .reduce<string[] | null>((acc, s) => (acc ? [...acc, s] : [s]), null),
-      })
-      .select('*')
-      .single()
+        foreign_targets: targets.length > 0 ? targets : null,
+      },
+    })
     if (error || !data) {
-      if (error?.code === '23505') {
+      if (error?.code === '23505' || error?.message?.includes('duplicate key')) {
         setError(`Event ${eventId} existiert schon — gehe direkt zum Planner.`)
       } else {
         setError(error?.message ?? 'unknown error')
