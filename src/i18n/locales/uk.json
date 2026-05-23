@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes екіпіровані та прокачані",
     "item_tooltip_shield": "3-денний щит активний (mud-sitter)",
     "item_status_missing": "відсутнє",
-    "item_status_done": "готово"
+    "item_status_done": "готово",
+    "send_reminder_button": "Надіслати",
+    "send_reminder_title": "Опублікувати reminder у Discord webhook",
+    "send_failed": "Помилка",
+    "mudsit_header": "Mudsit shield-check ({{count}})",
+    "mudsit_copy_button": "Копіювати",
+    "mudsit_copy_title": "Скопіювати mudsit reminder для чату",
+    "mudsit_send_button": "Надіслати",
+    "mudsit_send_title": "Опублікувати mudsit reminder у Discord"
   },
   "webhook": {
     "section_title": "Discord-вебхук",

@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes equipped + leveled",
     "item_tooltip_shield": "3-day shield active (mud-sitter)",
     "item_status_missing": "missing",
-    "item_status_done": "done"
+    "item_status_done": "done",
+    "send_reminder_button": "Send",
+    "send_reminder_title": "Post reminder to Discord webhook",
+    "send_failed": "Failed",
+    "mudsit_header": "Mudsit shield-check ({{count}})",
+    "mudsit_copy_button": "Copy",
+    "mudsit_copy_title": "Copy mudsit reminder for chat",
+    "mudsit_send_button": "Send",
+    "mudsit_send_title": "Post mudsit reminder to Discord"
   },
   "webhook": {
     "section_title": "Discord Webhook",

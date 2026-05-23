@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { computePreEventGaps, formatPreEventReminder } from './preevent-status'
-import type { Signup, TroopTier, TroopType, Checklist } from '@/types/wk'
+import {
+  computePreEventGaps,
+  formatPreEventReminder,
+  computeMudsitShieldGaps,
+  formatMudsitReminder,
+} from './preevent-status'
+import type { Assignment, Signup, TroopTier, TroopType, Checklist } from '@/types/wk'
 
 function sig(opts: {
   id: string
@@ -84,5 +89,68 @@ describe('formatPreEventReminder', () => {
     ])
     expect(text).toContain('Pre-Event reminder:')
     expect(text).toContain('  Whaler [WQR] — taxis, shield')
+  })
+})
+
+function asg(signupId: string, building: Assignment['building']): Assignment {
+  return {
+    id: `a-${signupId}`,
+    event_id: 'e',
+    signup_id: signupId,
+    building,
+    shift: 1,
+    is_captain: false,
+    position: 0,
+    captain_present: null,
+    updated_at: '',
+  }
+}
+
+describe('computeMudsitShieldGaps', () => {
+  it('returns empty when no one is assigned to mud', () => {
+    const s = sig({ id: 'a' })
+    expect(computeMudsitShieldGaps([s], [asg('a', 'hub')])).toEqual([])
+  })
+
+  it('returns empty when assigned mud-sitters all ticked shield', () => {
+    const s = sig({ id: 'a', checklist: { shield: true } })
+    expect(computeMudsitShieldGaps([s], [asg('a', 'mud')])).toEqual([])
+  })
+
+  it('flags assigned mud-sitter without shield ticked', () => {
+    const s = sig({ id: 'a', ign: 'MudSitter' })
+    const gaps = computeMudsitShieldGaps([s], [asg('a', 'mud')])
+    expect(gaps).toHaveLength(1)
+    expect(gaps[0]!.signup.ign).toBe('MudSitter')
+  })
+
+  it('ignores players who are not assigned (even if checklist incomplete)', () => {
+    const s = sig({ id: 'a' })
+    // assignment for a different signup
+    const other = asg('other', 'mud')
+    expect(computeMudsitShieldGaps([s], [other])).toEqual([])
+  })
+
+  it('sorts gaps alphabetically by IGN', () => {
+    const a = sig({ id: '1', ign: 'Zeta' })
+    const b = sig({ id: '2', ign: 'Alpha' })
+    const c = sig({ id: '3', ign: 'Mike' })
+    const gaps = computeMudsitShieldGaps(
+      [a, b, c],
+      [asg('1', 'mud'), asg('2', 'mud'), asg('3', 'mud')],
+    )
+    expect(gaps.map((g) => g.signup.ign)).toEqual(['Alpha', 'Mike', 'Zeta'])
+  })
+})
+
+describe('formatMudsitReminder', () => {
+  it('renders an all-clear line when no gaps', () => {
+    expect(formatMudsitReminder([])).toContain('all clear')
+  })
+
+  it('lists each gap as one indented line', () => {
+    const text = formatMudsitReminder([{ signup: sig({ id: 'a', ign: 'Whaler', tag: 'WQR' }) }])
+    expect(text).toContain('Mudsit shield check')
+    expect(text).toContain('  Whaler [WQR]')
   })
 })

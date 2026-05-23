@@ -1,4 +1,4 @@
-import type { ChecklistKey, Signup } from '@/types/wk'
+import type { Assignment, ChecklistKey, Signup } from '@/types/wk'
 import { CHECKLIST_KEYS } from '@/types/wk'
 
 const ITEM_LABEL: Record<ChecklistKey, string> = {
@@ -47,6 +47,45 @@ export function formatPreEventReminder(gaps: PreEventGap[]): string {
   for (const g of gaps) {
     const items = g.missing.map((k) => ITEM_LABEL[k]).join(', ')
     lines.push(`  ${g.signup.ign} [${g.signup.alliance_tag}] — ${items}`)
+  }
+  return lines.join('\n') + '\n'
+}
+
+/**
+ * Subset of pre-event gaps that matter on event day: players who are
+ * planner-assigned to the `mud` bucket AND haven't ticked the 3-day-shield
+ * checklist item. Without that shield, troops in mud get cleared on contact —
+ * we want to ping them specifically, not bundled with the broader reminder.
+ */
+export interface MudsitGap {
+  signup: Signup
+}
+
+export function computeMudsitShieldGaps(
+  signups: Signup[],
+  assignments: Assignment[],
+): MudsitGap[] {
+  const mudSignupIds = new Set(
+    assignments.filter((a) => a.building === 'mud').map((a) => a.signup_id),
+  )
+  if (mudSignupIds.size === 0) return []
+  const out: MudsitGap[] = []
+  for (const s of signups) {
+    if (!mudSignupIds.has(s.id)) continue
+    if (s.checklist?.shield) continue
+    out.push({ signup: s })
+  }
+  out.sort((a, b) => a.signup.ign.localeCompare(b.signup.ign))
+  return out
+}
+
+export function formatMudsitReminder(gaps: MudsitGap[]): string {
+  if (gaps.length === 0) return 'Mudsit shield check: all clear ✓\n'
+  const lines = [
+    'Mudsit shield check — please confirm 3-day shield is up:',
+  ]
+  for (const g of gaps) {
+    lines.push(`  ${g.signup.ign} [${g.signup.alliance_tag}]`)
   }
   return lines.join('\n') + '\n'
 }

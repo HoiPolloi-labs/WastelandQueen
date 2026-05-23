@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes equip edildi ve level alındı",
     "item_tooltip_shield": "3 günlük kalkan aktif (mud-sitter)",
     "item_status_missing": "eksik",
-    "item_status_done": "tamam"
+    "item_status_done": "tamam",
+    "send_reminder_button": "Gönder",
+    "send_reminder_title": "Reminder'ı Discord webhook'a gönder",
+    "send_failed": "Başarısız",
+    "mudsit_header": "Mudsit shield-check ({{count}})",
+    "mudsit_copy_button": "Kopyala",
+    "mudsit_copy_title": "Mudsit reminder'ı sohbet için kopyala",
+    "mudsit_send_button": "Gönder",
+    "mudsit_send_title": "Mudsit reminder'ı Discord'a gönder"
   },
   "webhook": {
     "section_title": "Discord Webhook",

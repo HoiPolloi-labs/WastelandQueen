@@ -351,7 +351,7 @@ export function PlanPage() {
             event={event}
             shift={shift}
           />
-          <PreEventStatusPanel signups={signups} />
+          <PreEventStatusPanel eventId={event.id} signups={signups} assignments={assignments} />
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
           <HeroesSettings event={event} onChange={() => refreshEvent()} />

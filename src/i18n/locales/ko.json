@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes 장착 및 레벨업",
     "item_tooltip_shield": "3일 방어막 활성 (mud-sitter)",
     "item_status_missing": "누락",
-    "item_status_done": "완료"
+    "item_status_done": "완료",
+    "send_reminder_button": "보내기",
+    "send_reminder_title": "Reminder를 Discord webhook으로 전송",
+    "send_failed": "실패",
+    "mudsit_header": "Mudsit shield 체크 ({{count}})",
+    "mudsit_copy_button": "복사",
+    "mudsit_copy_title": "Mudsit reminder를 채팅용으로 복사",
+    "mudsit_send_button": "보내기",
+    "mudsit_send_title": "Mudsit reminder를 Discord로 전송"
   },
   "webhook": {
     "section_title": "Discord 웹훅",

@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes equipaggiati e leveled",
     "item_tooltip_shield": "Scudo 3 giorni attivo (mud-sitter)",
     "item_status_missing": "mancante",
-    "item_status_done": "fatto"
+    "item_status_done": "fatto",
+    "send_reminder_button": "Invia",
+    "send_reminder_title": "Pubblica reminder sul webhook Discord",
+    "send_failed": "Fallito",
+    "mudsit_header": "Mudsit shield-check ({{count}})",
+    "mudsit_copy_button": "Copia",
+    "mudsit_copy_title": "Copia mudsit reminder per la chat",
+    "mudsit_send_button": "Invia",
+    "mudsit_send_title": "Pubblica mudsit reminder su Discord"
   },
   "webhook": {
     "section_title": "Discord Webhook",

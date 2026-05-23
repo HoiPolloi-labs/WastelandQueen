@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes equipped και leveled",
     "item_tooltip_shield": "3ήμερη ασπίδα ενεργή (mud-sitter)",
     "item_status_missing": "λείπει",
-    "item_status_done": "ολοκληρώθηκε"
+    "item_status_done": "ολοκληρώθηκε",
+    "send_reminder_button": "Αποστολή",
+    "send_reminder_title": "Δημοσίευση reminder στο Discord webhook",
+    "send_failed": "Απέτυχε",
+    "mudsit_header": "Mudsit shield-check ({{count}})",
+    "mudsit_copy_button": "Αντιγραφή",
+    "mudsit_copy_title": "Αντιγραφή mudsit reminder για chat",
+    "mudsit_send_button": "Αποστολή",
+    "mudsit_send_title": "Δημοσίευση mudsit reminder στο Discord"
   },
   "webhook": {
     "section_title": "Discord Webhook",

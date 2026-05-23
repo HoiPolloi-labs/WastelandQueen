@@ -210,7 +210,15 @@
     "item_tooltip_heroes": "Heroes 已装备且升级",
     "item_tooltip_shield": "3 天护盾激活（mud-sitter）",
     "item_status_missing": "缺失",
-    "item_status_done": "已完成"
+    "item_status_done": "已完成",
+    "send_reminder_button": "发送",
+    "send_reminder_title": "将 reminder 发送到 Discord webhook",
+    "send_failed": "失败",
+    "mudsit_header": "Mudsit 护盾检查 ({{count}})",
+    "mudsit_copy_button": "复制",
+    "mudsit_copy_title": "复制 mudsit reminder 到聊天",
+    "mudsit_send_button": "发送",
+    "mudsit_send_title": "将 mudsit reminder 发送到 Discord"
   },
   "webhook": {
     "section_title": "Discord Webhook",
