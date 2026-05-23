@@ -384,7 +384,8 @@
     "success_board_label": "Board — μόνο ανάγνωση (Discord)",
     "success_awards_link": "Σύνδεσμος Awards (επίσης planner-gated)",
     "success_open_button": "Άνοιγμα",
-    "success_copy_title": "Αντιγραφή στο πρόχειρο"
+    "success_copy_title": "Αντιγραφή στο πρόχειρο",
+    "success_copy_short_title": "Αντιγραφή σύντομου URL (chat-friendly)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

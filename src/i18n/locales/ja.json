@@ -384,7 +384,8 @@
     "success_board_label": "Board — 読み取り専用 (Discord)",
     "success_awards_link": "Awardsリンク (これもplanner-gated)",
     "success_open_button": "開く",
-    "success_copy_title": "クリップボードにコピー"
+    "success_copy_title": "クリップボードにコピー",
+    "success_copy_short_title": "短縮URLをコピー (チャット用)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

@@ -4,5 +4,15 @@
   "installCommand": "pnpm install",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/s/:eventId",
+      "destination": "https://ecxuvcuvuawxriucarmh.supabase.co/functions/v1/r?e=:eventId&k=s"
+    },
+    {
+      "source": "/b/:eventId",
+      "destination": "https://ecxuvcuvuawxriucarmh.supabase.co/functions/v1/r?e=:eventId&k=b"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

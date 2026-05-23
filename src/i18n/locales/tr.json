@@ -384,7 +384,8 @@
     "success_board_label": "Board — sadece okuma (Discord)",
     "success_awards_link": "Awards linki (o da planner-gated)",
     "success_open_button": "Aç",
-    "success_copy_title": "Panoya kopyala"
+    "success_copy_title": "Panoya kopyala",
+    "success_copy_short_title": "Kısa URL'yi kopyala (sohbet için)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

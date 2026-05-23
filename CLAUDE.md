@@ -115,6 +115,7 @@ supabase/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
     extract-profile/index.ts     # Vision-LLM dispatcher: kind='profile' | 'heroes'; rate-limited
+    r/index.ts                   # short-URL resolver: /s/:id → signup, /b/:id → board (no JWT)
 docs/                            # WK guide reference (do not edit casually)
 ```
 
@@ -328,6 +329,16 @@ aren't in the conflict-target spec by default).
   `HeroesScreenshotUpload` (signup feature) uses `kind: 'heroes'` to detect
   Agent X / Dr. J / Nataly fragment counts. Same 5/h-per-signup_token rate
   limit and Sonnet 4.6 model.
+- **Short URLs for chat sharing.** Event-IDs gained a 4-char base32 salt:
+  format is now `wk-YYYY-MM-DD-xxxx` (legacy `wk-YYYY-MM-DD` still
+  accepted by `isoFromEventId`). Two short paths:
+  - `waqu.app/s/<eventId>` → 302 to `/signup/<eventId>/<signup_token>`
+  - `waqu.app/b/<eventId>` → 302 to `/board/<eventId>/<board_token>`
+  Resolved by Supabase edge function `r` (no JWT, service-role lookup).
+  Vercel `rewrites` in `vercel.json` proxy the short paths to the edge
+  function. Planner copy-button + Board QR code emit short URLs by
+  default. Planner + Awards tokens are never short-linked (they grant
+  write access).
 
 ## Internationalization
 

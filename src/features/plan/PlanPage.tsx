@@ -111,8 +111,13 @@ export function PlanPage() {
     )
   }
 
-  const signupUrl = `${window.location.origin}/signup/${event.id}/${event.signup_token}`
+  // Full URLs stay around as the canonical address (used in tooltips +
+  // by the "open board in new tab" link for instant load without redirect).
+  // Short URLs are what the planner copy-buttons emit for chat-friendly
+  // sharing.
   const boardUrl = `${window.location.origin}/board/${event.id}/${event.board_token}`
+  const shortSignupUrl = `${window.location.origin}/s/${event.id}`
+  const shortBoardUrl = `${window.location.origin}/b/${event.id}`
 
   const onDragStart = (e: DragStartEvent) => {
     setDraggingId(String(e.active.id))
@@ -190,7 +195,8 @@ export function PlanPage() {
   }
 
   const copySignupUrl = async () => {
-    await navigator.clipboard.writeText(signupUrl)
+    // Chat-friendly short URL preferred — long URL still visible in the tooltip.
+    await navigator.clipboard.writeText(shortSignupUrl)
   }
 
   const copyPlazaForChat = async () => {
@@ -266,11 +272,11 @@ export function PlanPage() {
         }
       >
         <EventPicker currentEventId={event.id} />
-        <Button variant="secondary" size="sm" onClick={copySignupUrl} title={signupUrl}>
+        <Button variant="secondary" size="sm" onClick={copySignupUrl} title={shortSignupUrl}>
           <ClipboardCopy className="h-3.5 w-3.5" />
           {t('plan.signup_url_button')}
         </Button>
-        <a href={boardUrl} target="_blank" rel="noreferrer">
+        <a href={boardUrl} target="_blank" rel="noreferrer" title={shortBoardUrl}>
           <Button variant="secondary" size="sm">
             <Eye className="h-3.5 w-3.5" />
             {t('plan.board_button')}

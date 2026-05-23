@@ -384,7 +384,8 @@
     "success_board_label": "Board — 只读（Discord）",
     "success_awards_link": "Awards 链接（也是 planner-gated）",
     "success_open_button": "打开",
-    "success_copy_title": "复制到剪贴板"
+    "success_copy_title": "复制到剪贴板",
+    "success_copy_short_title": "复制短链接 (聊天友好)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

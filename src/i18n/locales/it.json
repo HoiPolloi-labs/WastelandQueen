@@ -384,7 +384,8 @@
     "success_board_label": "Board — sola lettura (Discord)",
     "success_awards_link": "Link Awards (anch'esso planner-gated)",
     "success_open_button": "Apri",
-    "success_copy_title": "Copia negli appunti"
+    "success_copy_title": "Copia negli appunti",
+    "success_copy_short_title": "Copia URL breve (chat-friendly)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

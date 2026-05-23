@@ -43,7 +43,10 @@ export function BoardPage() {
     )
   }
 
-  const signupUrl = `${window.location.origin}/signup/${event.id}/${event.signup_token}`
+  // Short URL for the QR code + display — denser QR scans faster with the
+  // game's in-app camera, and players can read out the URL if they prefer
+  // typing. Long URL still works (redirect target).
+  const signupUrl = `${window.location.origin}/s/${event.id}`
 
   const exportPng = async () => {
     if (!captureRef.current) return

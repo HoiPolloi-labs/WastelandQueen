@@ -384,7 +384,8 @@
     "success_board_label": "Board — 읽기 전용 (Discord)",
     "success_awards_link": "Awards 링크 (이것도 planner-gated)",
     "success_open_button": "열기",
-    "success_copy_title": "클립보드에 복사"
+    "success_copy_title": "클립보드에 복사",
+    "success_copy_short_title": "짧은 URL 복사 (채팅용)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

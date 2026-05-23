@@ -7,7 +7,7 @@ import { Input, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Segmented } from '@/components/ui/Segmented'
 import { PageHeader } from '@/components/ui/PageHeader'
-import { nextSaturdayIso, eventIdFromIso } from './event-id'
+import { nextSaturdayIso, eventIdFromIso, generateEventSalt } from './event-id'
 import type { EventConfig, StateGrade, TurretMode } from '@/types/wk'
 
 export function EventSetupPage() {
@@ -39,6 +39,9 @@ export function EventSetupPage() {
   const stateCloneFrom = (location.state as { clonedFrom?: EventConfig } | null)?.clonedFrom ?? null
   const cloneFromId = stateCloneFrom?.id ?? params.get('clone')
   const [startsAt, setStartsAt] = useState(() => nextSaturdayIso().slice(0, 16))
+  // Salt locked on first render so the displayed eventId is stable across
+  // re-renders. Submit reuses the same salt.
+  const [salt] = useState(() => generateEventSalt())
   const [turretMode, setTurretMode] = useState<TurretMode>('duplicate-strongest')
   const [homeServer, setHomeServer] = useState('S724')
   const [notes, setNotes] = useState('')
@@ -111,7 +114,7 @@ export function EventSetupPage() {
   // `Invalid time value` from Date.toISOString() and unmounts the form.
   const eventId = (() => {
     const d = new Date(startsAt)
-    return isNaN(d.getTime()) ? '' : eventIdFromIso(d.toISOString())
+    return isNaN(d.getTime()) ? '' : eventIdFromIso(d.toISOString(), salt)
   })()
 
   const create = async (e: React.FormEvent) => {
@@ -381,6 +384,13 @@ function CreatedSuccess({ event }: { event: EventConfig }) {
     signup: `${origin}/signup/${event.id}/${event.signup_token}`,
     board: `${origin}/board/${event.id}/${event.board_token}`,
   }
+  // Short variants for chat-friendly sharing. Resolve to the long URL via
+  // a Vercel rewrite → Supabase edge function. Planner/awards intentionally
+  // skipped — those tokens grant write access.
+  const shortUrls = {
+    signup: `${origin}/s/${event.id}`,
+    board: `${origin}/b/${event.id}`,
+  }
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -407,12 +417,14 @@ function CreatedSuccess({ event }: { event: EventConfig }) {
           label={t('event_setup.success_signup_label')}
           tone="sky"
           url={urls.signup}
+          shortUrl={shortUrls.signup}
         />
         <UrlCard
           icon={<Eye className="h-4 w-4" />}
           label={t('event_setup.success_board_label')}
           tone="emerald"
           url={urls.board}
+          shortUrl={shortUrls.board}
         />
       </div>
 
@@ -433,12 +445,16 @@ function UrlCard({
   icon,
   label,
   url,
+  shortUrl,
   tone,
   to,
 }: {
   icon: React.ReactNode
   label: string
   url: string
+  /** Short variant for chat-friendly sharing. When set, both URLs render and
+   *  the short one gets its own copy button. */
+  shortUrl?: string
   tone: 'amber' | 'sky' | 'emerald'
   to?: string
 }) {
@@ -450,8 +466,8 @@ function UrlCard({
         ? 'border-sky-500/40 bg-sky-500/5'
         : 'border-emerald-500/40 bg-emerald-500/5'
   return (
-    <div className={`flex items-center gap-3 rounded border ${toneClass} p-3`}>
-      <div className="text-zinc-300">{icon}</div>
+    <div className={`flex items-start gap-3 rounded border ${toneClass} p-3`}>
+      <div className="mt-0.5 text-zinc-300">{icon}</div>
       <div className="min-w-0 flex-1">
         <div className="mb-0.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
           {label}
@@ -459,6 +475,24 @@ function UrlCard({
         <code className="block truncate font-mono text-[11px] text-zinc-400" title={url}>
           {url}
         </code>
+        {shortUrl && (
+          <div className="mt-1 flex items-center gap-1.5">
+            <code
+              className="block truncate font-mono text-[11px] text-zinc-200"
+              title={shortUrl}
+            >
+              {shortUrl}
+            </code>
+            <button
+              type="button"
+              onClick={() => void navigator.clipboard.writeText(shortUrl)}
+              title={t('event_setup.success_copy_short_title')}
+              className="rounded p-0.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
+            >
+              <Copy className="h-3 w-3" />
+            </button>
+          </div>
+        )}
       </div>
       <Button
         variant="ghost"

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { nextSaturdayIso, eventIdFromIso, isoFromEventId } from './event-id'
+import { nextSaturdayIso, eventIdFromIso, isoFromEventId, generateEventSalt } from './event-id'
 
 describe('nextSaturdayIso', () => {
   it('from a Wednesday picks the upcoming Saturday at 10:00 UTC', () => {
@@ -43,18 +43,39 @@ describe('nextSaturdayIso', () => {
 })
 
 describe('eventIdFromIso', () => {
-  it('strips to wk-YYYY-MM-DD', () => {
-    expect(eventIdFromIso('2026-05-30T10:00:00.000Z')).toBe('wk-2026-05-30')
+  it('combines date + salt into wk-YYYY-MM-DD-xxxx', () => {
+    expect(eventIdFromIso('2026-05-30T10:00:00.000Z', 'x4q9')).toBe('wk-2026-05-30-x4q9')
+  })
+})
+
+describe('generateEventSalt', () => {
+  it('produces a 4-char string from the safe base32 alphabet', () => {
+    const salt = generateEventSalt()
+    expect(salt).toHaveLength(4)
+    expect(salt).toMatch(/^[a-hjkmnp-z2-9]{4}$/)
+  })
+
+  it('is reasonably random across many invocations', () => {
+    // 100 salts × 31^4 alphabet → collisions vanishingly unlikely.
+    const seen = new Set<string>()
+    for (let i = 0; i < 100; i++) seen.add(generateEventSalt())
+    expect(seen.size).toBeGreaterThan(95)
   })
 })
 
 describe('isoFromEventId', () => {
-  it('roundtrips an event id back to 10:00 UTC', () => {
+  it('roundtrips a salted id back to 10:00 UTC', () => {
+    expect(isoFromEventId('wk-2026-05-30-x4q9')).toBe('2026-05-30T10:00:00.000Z')
+  })
+
+  it('accepts legacy date-only ids for backwards compat', () => {
     expect(isoFromEventId('wk-2026-05-30')).toBe('2026-05-30T10:00:00.000Z')
   })
 
   it('returns null for malformed ids', () => {
     expect(isoFromEventId('wk-2026-5-30')).toBeNull()
+    expect(isoFromEventId('wk-2026-05-30-X4Q9')).toBeNull() // uppercase salt
+    expect(isoFromEventId('wk-2026-05-30-x4')).toBeNull() // salt too short
     expect(isoFromEventId('foo')).toBeNull()
     expect(isoFromEventId('')).toBeNull()
   })

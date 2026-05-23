@@ -384,7 +384,8 @@
     "success_board_label": "Board — read-only (Discord)",
     "success_awards_link": "Awards link (also planner-gated)",
     "success_open_button": "Open",
-    "success_copy_title": "Copy to clipboard"
+    "success_copy_title": "Copy to clipboard",
+    "success_copy_short_title": "Copy short URL (chat-friendly)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

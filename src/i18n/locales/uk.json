@@ -384,7 +384,8 @@
     "success_board_label": "Board — лише для читання (Discord)",
     "success_awards_link": "Посилання Awards (теж planner-gated)",
     "success_open_button": "Відкрити",
-    "success_copy_title": "Скопіювати в буфер"
+    "success_copy_title": "Скопіювати в буфер",
+    "success_copy_short_title": "Скопіювати короткий URL (для чату)"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
