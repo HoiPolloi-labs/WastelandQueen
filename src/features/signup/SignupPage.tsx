@@ -57,6 +57,9 @@ export function SignupPage() {
   const [shifts, setShifts] = useState<ShiftNumber[]>([])
   const [stateAllianceJoined, setStateAllianceJoined] = useState(false)
   const [checklist, setChecklist] = useState<Checklist>({})
+  const [agentXFrags, setAgentXFrags] = useState<string>('')
+  const [drJFrags, setDrJFrags] = useState<string>('')
+  const [natalyFrags, setNatalyFrags] = useState<string>('')
   const [existing, setExisting] = useState<Signup | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
   const isOwner = Boolean(
@@ -76,6 +79,9 @@ export function SignupPage() {
     setShifts(parseShiftPref(s.shift_pref))
     setStateAllianceJoined(s.state_alliance_joined)
     setChecklist(s.checklist ?? {})
+    setAgentXFrags(s.agent_x_frags > 0 ? String(s.agent_x_frags) : '')
+    setDrJFrags(s.dr_j_frags > 0 ? String(s.dr_j_frags) : '')
+    setNatalyFrags(s.nataly_frags > 0 ? String(s.nataly_frags) : '')
   }
 
   const lookupExisting = async () => {
@@ -171,6 +177,9 @@ export function SignupPage() {
             setShifts([])
             setStateAllianceJoined(false)
             setChecklist({})
+            setAgentXFrags('')
+            setDrJFrags('')
+            setNatalyFrags('')
           }}
         >
           {t('signup.signup_more')}
@@ -205,6 +214,9 @@ export function SignupPage() {
       true_might: trueMight ? Number(trueMight.replace(/[.\s,]/g, '')) : null,
       willing_captain: willingCaptain,
       shift_pref: shifts.length > 0 ? serializeShiftPref(shifts) : '',
+      agent_x_frags: agentXFrags ? Number(agentXFrags) : 0,
+      dr_j_frags: drJFrags ? Number(drJFrags) : 0,
+      nataly_frags: natalyFrags ? Number(natalyFrags) : 0,
     })
 
     // Note: state_alliance_joined isn't in the zod schema (it's optional metadata)
@@ -514,6 +526,44 @@ export function SignupPage() {
             ))}
           </ul>
         </div>
+
+        {event.heroes_enabled && (
+          <div className="rounded border border-zinc-800 bg-zinc-900/40 p-3">
+            <div className="mb-1 text-sm font-medium text-zinc-300">
+              {t('signup.heroes_header')}
+            </div>
+            <p className="mb-2 text-[11px] text-zinc-400">{t('signup.heroes_hint')}</p>
+            <div className="grid grid-cols-3 gap-2">
+              <Input
+                label={t('signup.agent_x_frags_label')}
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={agentXFrags}
+                onChange={(e) => setAgentXFrags(e.target.value)}
+                className="text-sm"
+              />
+              <Input
+                label={t('signup.dr_j_frags_label')}
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={drJFrags}
+                onChange={(e) => setDrJFrags(e.target.value)}
+                className="text-sm"
+              />
+              <Input
+                label={t('signup.nataly_frags_label')}
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={natalyFrags}
+                onChange={(e) => setNatalyFrags(e.target.value)}
+                className="text-sm"
+              />
+            </div>
+          </div>
+        )}
 
         {status === 'error' && (
           <div className="rounded border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">

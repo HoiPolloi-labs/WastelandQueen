@@ -95,7 +95,12 @@
     "cl_taxis": "医院里有 T1 出租兵",
     "cl_speedups": "训练加速 + Fast Comeback 资源",
     "cl_heroes": "Heroes 已装备并升级",
-    "cl_shield": "3 天护盾已激活（蹲泥）"
+    "cl_shield": "3 天护盾已激活（蹲泥）",
+    "heroes_header": "Hero 碎片",
+    "heroes_hint": "可选 — 帮助 planner 协调谁最接近满级 Nataly / Agent X / Dr. J。",
+    "agent_x_frags_label": "Agent X 碎片",
+    "dr_j_frags_label": "Dr. J 碎片",
+    "nataly_frags_label": "Nataly 碎片"
   },
   "board": {
     "event_not_found": "未找到事件",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "清除",
     "confirm_autosort": "Auto-Sort 会覆盖所有当前分配。继续？",
-    "confirm_clear_all": "清除所有分配？"
+    "confirm_clear_all": "清除所有分配？",
+    "heroes_settings_label": "Heroes 追踪",
+    "heroes_settings_hint": "在 Signup 中启用碎片库存 + 在 Awards 中显示联盟总数。",
+    "heroes_settings_on": "开",
+    "heroes_settings_off": "关"
   },
   "conflict": {
     "hub_empty": "Hub 为空 — 无 captain",
@@ -348,6 +357,8 @@
     "notes_label": "备注（可选）",
     "notes_placeholder": "NAP 状态、matchup 等。",
     "submit_button": "创建事件",
+    "heroes_enabled_label": "追踪 heroes",
+    "heroes_enabled_hint": "为每位玩家显示 Agent X / Dr. J / Nataly 碎片输入。达到 Gold+ 后启用更值得。",
     "invalid_start_date": "请输入有效的开始日期。",
     "event_exists": "事件 {{id}} 已存在 — 直接进入 Planner。",
     "unknown_error": "未知错误",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "已收集",
-    "coffer_notes_placeholder": "分配：WhalerKing 5M 食物 + 2M 铁，…"
+    "coffer_notes_placeholder": "分配：WhalerKing 5M 食物 + 2M 铁，…",
+    "heroes_title": "Hero 碎片",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK 速查表",

@@ -95,7 +95,12 @@
     "cl_taxis": "T1 taxi in infermeria",
     "cl_speedups": "Speedup + risorse per Fast Comeback",
     "cl_heroes": "Heroes equipaggiati e leveled",
-    "cl_shield": "Scudo di 3 giorni attivo (mud-sitter)"
+    "cl_shield": "Scudo di 3 giorni attivo (mud-sitter)",
+    "heroes_header": "Frammenti hero",
+    "heroes_hint": "Opzionale — aiuta il planner a coordinare chi è più vicino al massimo di Nataly / Agent X / Dr. J.",
+    "agent_x_frags_label": "Frammenti Agent X",
+    "dr_j_frags_label": "Frammenti Dr. J",
+    "nataly_frags_label": "Frammenti Nataly"
   },
   "board": {
     "event_not_found": "Evento non trovato",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "Pulisci",
     "confirm_autosort": "Auto-Sort sovrascriverà tutte le assegnazioni correnti. Procedere?",
-    "confirm_clear_all": "Pulire tutte le assegnazioni?"
+    "confirm_clear_all": "Pulire tutte le assegnazioni?",
+    "heroes_settings_label": "Tracciamento heroes",
+    "heroes_settings_hint": "Abilita l'inventario frammenti nel Signup + totali alliance negli Awards.",
+    "heroes_settings_on": "acceso",
+    "heroes_settings_off": "spento"
   },
   "conflict": {
     "hub_empty": "Hub vuoto — nessun captain",
@@ -348,6 +357,8 @@
     "notes_label": "Note (opzionale)",
     "notes_placeholder": "Stato NAP, matchup, ecc.",
     "submit_button": "Crea evento",
+    "heroes_enabled_label": "Tracciamento heroes",
+    "heroes_enabled_hint": "Mostra i campi di input per i frammenti di Agent X / Dr. J / Nataly per ogni giocatore. Vale la pena abilitarlo dal Gold+ in poi.",
     "invalid_start_date": "Inserisci una data di inizio valida.",
     "event_exists": "L'evento {{id}} esiste già — vai direttamente al Planner.",
     "unknown_error": "errore sconosciuto",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "raccolto",
-    "coffer_notes_placeholder": "Distribuzione: WhalerKing 5M food + 2M iron, …"
+    "coffer_notes_placeholder": "Distribuzione: WhalerKing 5M food + 2M iron, …",
+    "heroes_title": "Frammenti hero",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK Cheat Sheet",

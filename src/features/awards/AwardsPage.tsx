@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   Sword,
   Coins,
+  Sparkles,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
@@ -207,6 +208,8 @@ export function AwardsPage() {
       </div>
 
       <GovernorPanel event={event} signups={signups} onChange={updateEvent} />
+
+      {event.heroes_enabled && <HeroesPanel signups={signups} />}
 
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-zinc-400">
@@ -521,5 +524,47 @@ function GovernorPanel({
         </div>
       </div>
     </section>
+  )
+}
+
+/**
+ * Alliance-wide hero-fragment totals. Only rendered when `event.heroes_enabled`.
+ * Pulled live from each Signup's `agent_x_frags` / `dr_j_frags` / `nataly_frags`
+ * — no separate aggregate table, the planner sees what players self-reported.
+ */
+function HeroesPanel({ signups }: { signups: Signup[] }) {
+  const { t } = useTranslation()
+  const totals = signups.reduce(
+    (acc, s) => {
+      acc.agent_x += s.agent_x_frags
+      acc.dr_j += s.dr_j_frags
+      acc.nataly += s.nataly_frags
+      return acc
+    },
+    { agent_x: 0, dr_j: 0, nataly: 0 },
+  )
+  return (
+    <section className="mb-4 rounded-lg border border-purple-500/30 bg-purple-500/5 p-3">
+      <header className="mb-2 flex items-center gap-1.5">
+        <Sparkles className="h-4 w-4 text-purple-300" />
+        <h2 className="text-sm font-semibold text-purple-200">{t('awards.heroes_title')}</h2>
+      </header>
+      <div className="grid grid-cols-3 gap-2 text-center">
+        <HeroStat label={t('awards.heroes_total_agent_x')} value={totals.agent_x} />
+        <HeroStat label={t('awards.heroes_total_dr_j')} value={totals.dr_j} />
+        <HeroStat label={t('awards.heroes_total_nataly')} value={totals.nataly} />
+      </div>
+    </section>
+  )
+}
+
+function HeroStat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded border border-zinc-800 bg-zinc-900/60 p-2">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+        {label}
+      </div>
+      <div className="font-mono text-lg text-purple-100">{value.toLocaleString()}</div>
+    </div>
   )
 }

@@ -95,7 +95,12 @@
     "cl_taxis": "의무실에 T1 택시 채움",
     "cl_speedups": "가속 + Fast Comeback용 자원",
     "cl_heroes": "Heroes 장착 및 레벨업",
-    "cl_shield": "3일 방어막 활성화 (mud-sitter)"
+    "cl_shield": "3일 방어막 활성화 (mud-sitter)",
+    "heroes_header": "Hero 조각",
+    "heroes_hint": "선택사항 — planner가 Nataly / Agent X / Dr. J 만렙에 가장 가까운 사람을 조율하는 데 도움이 됩니다.",
+    "agent_x_frags_label": "Agent X 조각",
+    "dr_j_frags_label": "Dr. J 조각",
+    "nataly_frags_label": "Nataly 조각"
   },
   "board": {
     "event_not_found": "이벤트를 찾을 수 없음",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "초기화",
     "confirm_autosort": "Auto-Sort는 현재 모든 할당을 덮어씁니다. 계속하시겠습니까?",
-    "confirm_clear_all": "모든 할당을 초기화하시겠습니까?"
+    "confirm_clear_all": "모든 할당을 초기화하시겠습니까?",
+    "heroes_settings_label": "Heroes 트래킹",
+    "heroes_settings_hint": "Signup에서 조각 인벤토리를 활성화하고 Awards에서 연맹 합계를 표시합니다.",
+    "heroes_settings_on": "켜짐",
+    "heroes_settings_off": "꺼짐"
   },
   "conflict": {
     "hub_empty": "Hub 비어있음 — captain 없음",
@@ -348,6 +357,8 @@
     "notes_label": "메모 (선택)",
     "notes_placeholder": "NAP 상태, matchup 등.",
     "submit_button": "이벤트 만들기",
+    "heroes_enabled_label": "Heroes 트래킹",
+    "heroes_enabled_hint": "각 플레이어에 대해 Agent X / Dr. J / Nataly 조각 입력란을 표시합니다. Gold+에 도달하면 활성화할 가치가 있습니다.",
     "invalid_start_date": "유효한 시작 날짜를 입력하세요.",
     "event_exists": "이벤트 {{id}}이(가) 이미 존재합니다 — 바로 Planner로 이동하세요.",
     "unknown_error": "알 수 없는 오류",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "수집됨",
-    "coffer_notes_placeholder": "배포: WhalerKing 5M 식량 + 2M 철, …"
+    "coffer_notes_placeholder": "배포: WhalerKing 5M 식량 + 2M 철, …",
+    "heroes_title": "Hero 조각",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK 치트 시트",

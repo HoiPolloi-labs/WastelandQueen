@@ -95,7 +95,12 @@
     "cl_taxis": "T1-Taxis im Infirmary",
     "cl_speedups": "Speedups + Ressourcen für Fast Comeback",
     "cl_heroes": "Heroes equipped + geleveled",
-    "cl_shield": "3-Tage-Schild aktiv (Mudsitter)"
+    "cl_shield": "3-Tage-Schild aktiv (Mudsitter)",
+    "heroes_header": "Hero-Fragmente",
+    "heroes_hint": "Optional — hilft dem Planner zu sehen, wer am dichtesten an Nataly / Agent X / Dr. J max ist.",
+    "agent_x_frags_label": "Agent X Fragmente",
+    "dr_j_frags_label": "Dr. J Fragmente",
+    "nataly_frags_label": "Nataly Fragmente"
   },
   "board": {
     "event_not_found": "Event nicht gefunden",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "Clear",
     "confirm_autosort": "Auto-Sort überschreibt alle aktuellen Zuweisungen. Trotzdem fortfahren?",
-    "confirm_clear_all": "Alle Zuweisungen löschen?"
+    "confirm_clear_all": "Alle Zuweisungen löschen?",
+    "heroes_settings_label": "Heroes-Tracking",
+    "heroes_settings_hint": "Aktiviert Fragment-Inventar im Signup + Alliance-Summen in den Awards.",
+    "heroes_settings_on": "an",
+    "heroes_settings_off": "aus"
   },
   "conflict": {
     "hub_empty": "Hub leer — kein Captain",
@@ -348,6 +357,8 @@
     "notes_label": "Notes (optional)",
     "notes_placeholder": "NAP-Status, Matchup, etc.",
     "submit_button": "Event anlegen",
+    "heroes_enabled_label": "Heroes tracken",
+    "heroes_enabled_hint": "Zeigt Agent X / Dr. J / Nataly Fragment-Inputs für jeden Spieler. Lohnt sich ab Gold+.",
     "invalid_start_date": "Bitte ein gültiges Start-Datum eingeben.",
     "event_exists": "Event {{id}} existiert schon — gehe direkt zum Planner.",
     "unknown_error": "unbekannter Fehler",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "eingesammelt",
-    "coffer_notes_placeholder": "Verteilung: WhalerKing 5M food + 2M iron, …"
+    "coffer_notes_placeholder": "Verteilung: WhalerKing 5M food + 2M iron, …",
+    "heroes_title": "Hero-Fragmente",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK Cheat-Sheet",

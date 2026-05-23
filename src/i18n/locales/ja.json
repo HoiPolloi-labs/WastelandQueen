@@ -95,7 +95,12 @@
     "cl_taxis": "医務室にT1タクシー",
     "cl_speedups": "加速 + Fast Comeback用リソース",
     "cl_heroes": "Heroes装備・レベル済み",
-    "cl_shield": "3日シールド有効 (Mud-sitter)"
+    "cl_shield": "3日シールド有効 (Mud-sitter)",
+    "heroes_header": "Heroフラグメント",
+    "heroes_hint": "オプション — plannerがNataly / Agent X / Dr. Jのマックスに最も近い人を調整するのに役立ちます。",
+    "agent_x_frags_label": "Agent Xフラグメント",
+    "dr_j_frags_label": "Dr. Jフラグメント",
+    "nataly_frags_label": "Natalyフラグメント"
   },
   "board": {
     "event_not_found": "イベントが見つかりません",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "クリア",
     "confirm_autosort": "Auto-Sortは現在のすべての割り当てを上書きします。続けますか?",
-    "confirm_clear_all": "すべての割り当てをクリアしますか?"
+    "confirm_clear_all": "すべての割り当てをクリアしますか?",
+    "heroes_settings_label": "Heroesトラッキング",
+    "heroes_settings_hint": "Signupでフラグメント在庫を有効化し、Awardsでアライアンス合計を表示します。",
+    "heroes_settings_on": "オン",
+    "heroes_settings_off": "オフ"
   },
   "conflict": {
     "hub_empty": "Hub空 — captainなし",
@@ -348,6 +357,8 @@
     "notes_label": "メモ (オプション)",
     "notes_placeholder": "NAP状態、matchup等。",
     "submit_button": "イベント作成",
+    "heroes_enabled_label": "Heroesトラッキング",
+    "heroes_enabled_hint": "各プレイヤーにAgent X / Dr. J / Natalyのフラグメント入力欄を表示します。Gold+に到達したら有効化する価値があります。",
     "invalid_start_date": "有効な開始日を入力してください。",
     "event_exists": "イベント{{id}}は既に存在します — Plannerへ直接移動。",
     "unknown_error": "不明なエラー",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "回収済み",
-    "coffer_notes_placeholder": "配布: WhalerKing 5M food + 2M iron, …"
+    "coffer_notes_placeholder": "配布: WhalerKing 5M food + 2M iron, …",
+    "heroes_title": "Heroフラグメント",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK チートシート",

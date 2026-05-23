@@ -35,6 +35,9 @@ export const signupSchema = z.object({
   shift_pref: z
     .string()
     .regex(/^[1-4](,[1-4]){0,3}$/, 'Mindestens eine Shift wählen'),
+  agent_x_frags: z.number().int().nonnegative().default(0),
+  dr_j_frags: z.number().int().nonnegative().default(0),
+  nataly_frags: z.number().int().nonnegative().default(0),
 })
 
 export type SignupInput = z.infer<typeof signupSchema>

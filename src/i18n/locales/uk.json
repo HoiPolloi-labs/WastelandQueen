@@ -95,7 +95,12 @@
     "cl_taxis": "T1-таксі у шпиталі",
     "cl_speedups": "Прискорення + ресурси для Fast Comeback",
     "cl_heroes": "Heroes екіпіровані та прокачані",
-    "cl_shield": "3-денний щит активний (mud-sitter)"
+    "cl_shield": "3-денний щит активний (mud-sitter)",
+    "heroes_header": "Фрагменти heroes",
+    "heroes_hint": "Опціонально — допомагає планувальнику координувати, хто найближче до максу Nataly / Agent X / Dr. J.",
+    "agent_x_frags_label": "Фрагменти Agent X",
+    "dr_j_frags_label": "Фрагменти Dr. J",
+    "nataly_frags_label": "Фрагменти Nataly"
   },
   "board": {
     "event_not_found": "Подію не знайдено",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "Очистити",
     "confirm_autosort": "Auto-Sort перезапише всі поточні призначення. Продовжити?",
-    "confirm_clear_all": "Очистити всі призначення?"
+    "confirm_clear_all": "Очистити всі призначення?",
+    "heroes_settings_label": "Відстеження heroes",
+    "heroes_settings_hint": "Вмикає інвентар фрагментів у Signup + загальні суми по альянсу в Awards.",
+    "heroes_settings_on": "увімкнено",
+    "heroes_settings_off": "вимкнено"
   },
   "conflict": {
     "hub_empty": "Hub порожній — немає капітана",
@@ -348,6 +357,8 @@
     "notes_label": "Нотатки (опціонально)",
     "notes_placeholder": "Статус NAP, matchup тощо.",
     "submit_button": "Створити подію",
+    "heroes_enabled_label": "Відстежувати heroes",
+    "heroes_enabled_hint": "Показує поля для фрагментів Agent X / Dr. J / Nataly для кожного гравця. Варто вмикати з рівня Gold+.",
     "invalid_start_date": "Будь ласка, введи коректну дату старту.",
     "event_exists": "Подія {{id}} вже існує — переходь прямо в Planner.",
     "unknown_error": "невідома помилка",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "зібрано",
-    "coffer_notes_placeholder": "Розподіл: WhalerKing 5M food + 2M iron, …"
+    "coffer_notes_placeholder": "Розподіл: WhalerKing 5M food + 2M iron, …",
+    "heroes_title": "Фрагменти heroes",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK Шпаргалка",

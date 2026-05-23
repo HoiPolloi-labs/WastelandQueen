@@ -30,6 +30,9 @@ function sig(opts: {
     might_lost: 0,
     box_tier: null,
     checklist: opts.checklist ?? {},
+    agent_x_frags: 0,
+    dr_j_frags: 0,
+    nataly_frags: 0,
     edit_token: 't',
     submitted_at: '2026-05-30T10:00:00Z',
   }

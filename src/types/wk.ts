@@ -92,6 +92,9 @@ export interface EventConfig {
   coffer_collected_at: string | null
   /** Governor's log: who got Coffer-funded retraining etc. */
   coffer_notes: string | null
+  /** When true, Signup form shows hero-frag inputs and Awards shows totals.
+   *  Default off; enable for Gold+ states coordinating Nataly progression. */
+  heroes_enabled: boolean
   created_at: string
 }
 
@@ -126,6 +129,10 @@ export interface Signup {
   occupation_points: number
   might_lost: number
   box_tier: BoxTier | null
+  /** Hero fragment inventory. Only meaningful when event.heroes_enabled. */
+  agent_x_frags: number
+  dr_j_frags: number
+  nataly_frags: number
   /** UUID returned on insert, client stores in localStorage to gate Withdraw */
   edit_token: string
   submitted_at: string

@@ -48,6 +48,7 @@ import { PreEventStatusPanel } from './PreEventStatusPanel'
 import { WebhookSettings } from './WebhookSettings'
 import { TokenRotation } from './TokenRotation'
 import { RosterImportExport } from './RosterImportExport'
+import { HeroesSettings } from './HeroesSettings'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
@@ -56,7 +57,7 @@ export function PlanPage() {
   const { t } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
   const navigate = useNavigate()
-  const { event, loading: eventLoading } = useEvent(eventId)
+  const { event, loading: eventLoading, refresh: refreshEvent } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
   const {
     assignments,
@@ -351,6 +352,7 @@ export function PlanPage() {
           <PreEventStatusPanel signups={signups} />
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
+          <HeroesSettings event={event} onChange={() => refreshEvent()} />
           <WebhookSettings />
           <RosterImportExport
             eventId={event.id}

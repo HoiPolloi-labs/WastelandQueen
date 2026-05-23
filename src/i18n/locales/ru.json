@@ -95,7 +95,12 @@
     "cl_taxis": "T1-такси в госпитале",
     "cl_speedups": "Ускорения + ресурсы для Fast Comeback",
     "cl_heroes": "Heroes экипированы и прокачаны",
-    "cl_shield": "3-дневный щит активен (для mud-sitter)"
+    "cl_shield": "3-дневный щит активен (для mud-sitter)",
+    "heroes_header": "Фрагменты heroes",
+    "heroes_hint": "Опционально — помогает планировщику понять, кто ближе всех к максу Nataly / Agent X / Dr. J.",
+    "agent_x_frags_label": "Фрагменты Agent X",
+    "dr_j_frags_label": "Фрагменты Dr. J",
+    "nataly_frags_label": "Фрагменты Nataly"
   },
   "board": {
     "event_not_found": "Событие не найдено",
@@ -147,7 +152,11 @@
     "autosort_button": "Auto-Sort",
     "clear_button": "Очистить",
     "confirm_autosort": "Auto-Sort перезапишет все текущие назначения. Продолжить?",
-    "confirm_clear_all": "Очистить все назначения?"
+    "confirm_clear_all": "Очистить все назначения?",
+    "heroes_settings_label": "Отслеживание heroes",
+    "heroes_settings_hint": "Включает инвентарь фрагментов в Signup + общие итоги по альянсу в Awards.",
+    "heroes_settings_on": "вкл",
+    "heroes_settings_off": "выкл"
   },
   "conflict": {
     "hub_empty": "Hub пустой — нет капитана",
@@ -348,6 +357,8 @@
     "notes_label": "Заметки (опционально)",
     "notes_placeholder": "Статус NAP, matchup и т.д.",
     "submit_button": "Создать событие",
+    "heroes_enabled_label": "Отслеживать heroes",
+    "heroes_enabled_hint": "Показывает поля для фрагментов Agent X / Dr. J / Nataly для каждого игрока. Стоит включать с уровня Gold+.",
     "invalid_start_date": "Пожалуйста, введи корректную дату старта.",
     "event_exists": "Событие {{id}} уже существует — переходи прямо в Planner.",
     "unknown_error": "неизвестная ошибка",
@@ -404,7 +415,11 @@
     "kings_sword_frags_suffix": "{{frags}} Nataly",
     "coffer_title": "Coffer Tax-Stream",
     "coffer_collected": "собрано",
-    "coffer_notes_placeholder": "Распределение: WhalerKing 5M food + 2M iron, …"
+    "coffer_notes_placeholder": "Распределение: WhalerKing 5M food + 2M iron, …",
+    "heroes_title": "Фрагменты heroes",
+    "heroes_total_agent_x": "Σ Agent X",
+    "heroes_total_dr_j": "Σ Dr. J",
+    "heroes_total_nataly": "Σ Nataly"
   },
   "cheatsheet": {
     "title": "WK Шпаргалка",

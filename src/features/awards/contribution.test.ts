@@ -24,6 +24,7 @@ const baseEvent: EventConfig = {
   king_sword_grade: null,
   coffer_collected_at: null,
   coffer_notes: null,
+  heroes_enabled: false,
   created_at: EVENT_START,
 }
 
@@ -50,6 +51,9 @@ function makeSignup(overrides: Partial<Signup> = {}): Signup {
     might_lost: 0,
     box_tier: null,
     checklist: {},
+    agent_x_frags: 0,
+    dr_j_frags: 0,
+    nataly_frags: 0,
     edit_token: 't',
     submitted_at: EVENT_START,
     ...overrides,
