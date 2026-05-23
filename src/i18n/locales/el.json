@@ -112,6 +112,11 @@
     "not_signed_up_yet_hint": "Σκάναρε το QR ή άνοιξε τον σύνδεσμο:",
     "notes_header": "Σημειώσεις"
   },
+  "heroes_upload": {
+    "title": "Αυτόματη συμπλήρωση από screenshot hero inventory",
+    "description": "Ανέβασε screenshot του hero inventory σου — τα θραύσματα Agent X / Dr. J / Nataly ανιχνεύονται αυτόματα. Έλεγξε πριν την υποβολή.",
+    "choose_button": "Επιλογή hero screenshot"
+  },
   "profile_upload": {
     "title": "Αυτόματη συμπλήρωση από screenshot προφίλ",
     "tag": "προαιρετικό · με AI",
@@ -428,7 +433,16 @@
     "heroes_title": "Θραύσματα hero",
     "heroes_total_agent_x": "Σ Agent X",
     "heroes_total_dr_j": "Σ Dr. J",
-    "heroes_total_nataly": "Σ Nataly"
+    "heroes_total_nataly": "Σ Nataly",
+    "calc_open_kill_title": "Άνοιγμα υπολογιστή kill-points (ανάλυση ανά tier)",
+    "calc_open_death_title": "Άνοιγμα υπολογιστή death-points (ανάλυση ανά tier)",
+    "calc_kill_title": "Kill points · {{ign}}",
+    "calc_death_title": "Death points · {{ign}}",
+    "calc_kill_header": "Εισάγετε kills ανά tier. Κάθε γραμμή πολλαπλασιάζεται με την WK αξία και αθροίζεται κάτω.",
+    "calc_death_header": "Εισάγετε deaths ανά tier. Μόνο Hub/turret — τα mud-deaths δεν μετράνε.",
+    "calc_total_label": "Σ Σύνολο",
+    "calc_current": "Αντικαθιστά την τρέχουσα τιμή ({{current}}).",
+    "calc_apply": "Εφαρμογή"
   },
   "cheatsheet": {
     "title": "WK Cheat Sheet",

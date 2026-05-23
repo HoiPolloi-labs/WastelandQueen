@@ -27,7 +27,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'authorization, content-type, apikey',
 }
 
-const SYSTEM_PROMPT =
+const PROFILE_SYSTEM_PROMPT =
   `You will receive a screenshot from the mobile game "Puzzles & Survival" ` +
   `showing a player's profile page. The display language may be German, ` +
   `English, Russian, Chinese, Korean, Japanese, or others.
@@ -43,19 +43,48 @@ Extract these fields. Return null for any you cannot determine with high confide
 Output STRICT JSON with all keys present. No prose, no markdown fences:
 {"ign": string|null, "alliance_tag": string|null, "server": string|null, "might": number|null, "tier": number|null}`
 
+const HEROES_SYSTEM_PROMPT =
+  `You will receive a screenshot from the mobile game "Puzzles & Survival" ` +
+  `showing the player's hero inventory or a specific hero's detail panel. ` +
+  `The display language may be German, English, Russian, Chinese, Korean, ` +
+  `Japanese, or others.
+
+Extract the FRAGMENT (shard) counts for these three heroes. Hero names may be localized but the icons are consistent.
+
+- agent_x: integer fragment count for "Agent X" (a defensive hero, suit-wearing male, often shown with a briefcase or rifle).
+- dr_j: integer fragment count for "Dr. J" / "Dr. Jenner" (a research hero, lab-coat, often holding a flask or syringe).
+- nataly: integer fragment count for "Nataly" (an attack hero, female with twin pistols).
+
+For each hero, return:
+- The fragment count if visible in the screenshot (usually shown as "10/30", "10", "x10", or similar near the hero icon).
+- 0 if the hero is shown but no fragments are accumulated.
+- null if you cannot identify the hero in the screenshot at all.
+
+Note: fragments are NOT the same as hero level/stars. We want the SHARD count, used for further hero upgrades.
+
+Output STRICT JSON with all keys present. No prose, no markdown fences:
+{"agent_x": number|null, "dr_j": number|null, "nataly": number|null}`
+
 interface Body {
   event_id?: string
   signup_token?: string
   image_base64?: string
   media_type?: string
+  kind?: 'profile' | 'heroes'
 }
 
-interface Extracted {
+interface ProfileExtracted {
   ign: string | null
   alliance_tag: string | null
   server: string | null
   might: number | null
   tier: number | null
+}
+
+interface HeroesExtracted {
+  agent_x: number | null
+  dr_j: number | null
+  nataly: number | null
 }
 
 Deno.serve(async (req: Request) => {
@@ -80,6 +109,8 @@ Deno.serve(async (req: Request) => {
     if (!/^image\/(jpeg|png|webp|gif)$/.test(media_type)) {
       return json({ error: 'unsupported media_type' }, 400)
     }
+    const kind: 'profile' | 'heroes' = body.kind === 'heroes' ? 'heroes' : 'profile'
+    const systemPrompt = kind === 'heroes' ? HEROES_SYSTEM_PROMPT : PROFILE_SYSTEM_PROMPT
     // base64-encoded image — rough size check (base64 is ~4/3 of binary).
     if (body.image_base64.length * 3 / 4 > MAX_IMAGE_BYTES) {
       return json({ error: 'image too large', limit_bytes: MAX_IMAGE_BYTES }, 413)
@@ -124,7 +155,7 @@ Deno.serve(async (req: Request) => {
       body: JSON.stringify({
         model: MODEL,
         max_tokens: 300,
-        system: SYSTEM_PROMPT,
+        system: systemPrompt,
         messages: [
           {
             role: 'user',
@@ -149,9 +180,9 @@ Deno.serve(async (req: Request) => {
 
     // Be lenient with stray code fences just in case.
     const jsonStr = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim()
-    let parsed: Extracted
+    let parsed: ProfileExtracted | HeroesExtracted
     try {
-      parsed = JSON.parse(jsonStr) as Extracted
+      parsed = JSON.parse(jsonStr) as ProfileExtracted | HeroesExtracted
     } catch {
       return json({ error: 'parse_failed', raw: raw.slice(0, 300) }, 502)
     }
@@ -172,6 +203,7 @@ Deno.serve(async (req: Request) => {
     ).catch(() => {})
 
     return json({
+      kind,
       extracted: parsed,
       remaining: rate.remaining,
       model: MODEL,

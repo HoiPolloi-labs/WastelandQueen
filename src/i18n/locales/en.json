@@ -112,6 +112,11 @@
     "not_signed_up_yet_hint": "Scan QR or open link:",
     "notes_header": "Notes"
   },
+  "heroes_upload": {
+    "title": "Auto-Fill from Hero Inventory Screenshot",
+    "description": "Upload a screenshot of your hero inventory — Agent X / Dr. J / Nataly fragment counts are detected automatically. Review before submitting.",
+    "choose_button": "Choose hero screenshot"
+  },
   "profile_upload": {
     "title": "Auto-Fill from Profile Screenshot",
     "tag": "optional · AI-powered",
@@ -428,7 +433,16 @@
     "heroes_title": "Hero Fragments",
     "heroes_total_agent_x": "Σ Agent X",
     "heroes_total_dr_j": "Σ Dr. J",
-    "heroes_total_nataly": "Σ Nataly"
+    "heroes_total_nataly": "Σ Nataly",
+    "calc_open_kill_title": "Open kill-points calculator (per-tier breakdown)",
+    "calc_open_death_title": "Open death-points calculator (per-tier breakdown)",
+    "calc_kill_title": "Kill points · {{ign}}",
+    "calc_death_title": "Death points · {{ign}}",
+    "calc_kill_header": "Enter per-tier kill counts. Each row multiplied by its WK point value, summed below.",
+    "calc_death_header": "Enter per-tier death counts. Hub/turret deaths only — mud-deaths don't count.",
+    "calc_total_label": "Σ Total",
+    "calc_current": "Replaces current value ({{current}}).",
+    "calc_apply": "Apply"
   },
   "cheatsheet": {
     "title": "WK Cheat Sheet",

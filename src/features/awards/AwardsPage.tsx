@@ -11,6 +11,7 @@ import {
   Sword,
   Coins,
   Sparkles,
+  Calculator,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
@@ -25,6 +26,7 @@ import type { BoxTier, EventConfig, Signup } from '@/types/wk'
 import { BOX_TIER_LABELS } from '@/types/wk'
 import { computeAwardCandidates } from './contribution'
 import { useBoxCounts } from './use-box-counts'
+import { PointCalcModal } from './PointCalcModal'
 
 const TIER_ORDER: BoxTier[] = ['king', 'rulers', 'loyalty', 'contribution']
 
@@ -43,6 +45,10 @@ export function AwardsPage() {
   const { assignments } = useAssignments(eventId)
   const { counts, update: updateBoxCount } = useBoxCounts(eventId)
   const [busy, setBusy] = useState(false)
+  const [calcModal, setCalcModal] = useState<{
+    kind: 'kill' | 'death'
+    signupId: string
+  } | null>(null)
 
   const candidates = useMemo(() => {
     if (!event) return []
@@ -297,16 +303,36 @@ export function AwardsPage() {
                     {c.shiftCount}
                   </td>
                   <td className="px-2 py-1.5">
-                    <PointInput
-                      value={s.kill_points}
-                      onChange={(v) => updateSignup(s.id, { kill_points: v })}
-                    />
+                    <div className="flex items-center gap-0.5">
+                      <PointInput
+                        value={s.kill_points}
+                        onChange={(v) => updateSignup(s.id, { kill_points: v })}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setCalcModal({ kind: 'kill', signupId: s.id })}
+                        title={t('awards.calc_open_kill_title')}
+                        className="rounded p-0.5 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-200"
+                      >
+                        <Calculator className="h-3 w-3" />
+                      </button>
+                    </div>
                   </td>
                   <td className="px-2 py-1.5">
-                    <PointInput
-                      value={s.death_points}
-                      onChange={(v) => updateSignup(s.id, { death_points: v })}
-                    />
+                    <div className="flex items-center gap-0.5">
+                      <PointInput
+                        value={s.death_points}
+                        onChange={(v) => updateSignup(s.id, { death_points: v })}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setCalcModal({ kind: 'death', signupId: s.id })}
+                        title={t('awards.calc_open_death_title')}
+                        className="rounded p-0.5 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-200"
+                      >
+                        <Calculator className="h-3 w-3" />
+                      </button>
+                    </div>
                   </td>
                   <td className="px-2 py-1.5">
                     <PointInput
@@ -360,6 +386,26 @@ export function AwardsPage() {
           </tbody>
         </table>
       </div>
+
+      {calcModal && (() => {
+        const target = signups.find((s) => s.id === calcModal.signupId)
+        if (!target) return null
+        return (
+          <PointCalcModal
+            kind={calcModal.kind}
+            current={
+              calcModal.kind === 'kill' ? target.kill_points : target.death_points
+            }
+            ign={target.ign}
+            onApply={(total) =>
+              updateSignup(target.id, {
+                [calcModal.kind === 'kill' ? 'kill_points' : 'death_points']: total,
+              } as Partial<Signup>)
+            }
+            onClose={() => setCalcModal(null)}
+          />
+        )
+      })()}
     </div>
   )
 }

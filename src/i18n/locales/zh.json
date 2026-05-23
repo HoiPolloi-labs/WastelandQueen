@@ -112,6 +112,11 @@
     "not_signed_up_yet_hint": "扫描二维码或打开链接：",
     "notes_header": "备注"
   },
+  "heroes_upload": {
+    "title": "从 Hero 库存截图自动填充",
+    "description": "上传 hero 库存截图 — Agent X / Dr. J / Nataly 碎片数量自动识别。提交前请检查。",
+    "choose_button": "选择 hero 截图"
+  },
   "profile_upload": {
     "title": "从个人资料截图自动填充",
     "tag": "可选 · AI 驱动",
@@ -428,7 +433,16 @@
     "heroes_title": "Hero 碎片",
     "heroes_total_agent_x": "Σ Agent X",
     "heroes_total_dr_j": "Σ Dr. J",
-    "heroes_total_nataly": "Σ Nataly"
+    "heroes_total_nataly": "Σ Nataly",
+    "calc_open_kill_title": "打开击杀积分计算器 (按 tier 分解)",
+    "calc_open_death_title": "打开死亡积分计算器 (按 tier 分解)",
+    "calc_kill_title": "击杀积分 · {{ign}}",
+    "calc_death_title": "死亡积分 · {{ign}}",
+    "calc_kill_header": "按 tier 输入击杀数。每行乘以 WK 分值并在下方汇总。",
+    "calc_death_header": "按 tier 输入死亡数。仅 Hub/turret 死亡 — mud 死亡不计。",
+    "calc_total_label": "Σ 总计",
+    "calc_current": "将替换当前值 ({{current}})。",
+    "calc_apply": "应用"
   },
   "cheatsheet": {
     "title": "WK 速查表",

@@ -112,6 +112,11 @@
     "not_signed_up_yet_hint": "QR scannen oder Link öffnen:",
     "notes_header": "Notes"
   },
+  "heroes_upload": {
+    "title": "Auto-Fill aus Hero-Inventar-Screenshot",
+    "description": "Lade einen Screenshot deines Hero-Inventars hoch — Agent X / Dr. J / Nataly Fragment-Counts werden automatisch erkannt. Vor dem Submit prüfen.",
+    "choose_button": "Hero-Screenshot wählen"
+  },
   "profile_upload": {
     "title": "Auto-Fill aus Profil-Screenshot",
     "tag": "optional · KI-gestützt",
@@ -428,7 +433,16 @@
     "heroes_title": "Hero-Fragmente",
     "heroes_total_agent_x": "Σ Agent X",
     "heroes_total_dr_j": "Σ Dr. J",
-    "heroes_total_nataly": "Σ Nataly"
+    "heroes_total_nataly": "Σ Nataly",
+    "calc_open_kill_title": "Kill-Points-Kalkulator öffnen (Tier-Aufschlüsselung)",
+    "calc_open_death_title": "Death-Points-Kalkulator öffnen (Tier-Aufschlüsselung)",
+    "calc_kill_title": "Kill-Points · {{ign}}",
+    "calc_death_title": "Death-Points · {{ign}}",
+    "calc_kill_header": "Kill-Anzahl pro Tier eingeben. Jede Zeile wird mit dem WK-Punktwert multipliziert und unten summiert.",
+    "calc_death_header": "Death-Anzahl pro Tier eingeben. Nur Hub/Turret-Deaths — Mud-Deaths zählen nicht.",
+    "calc_total_label": "Σ Total",
+    "calc_current": "Ersetzt aktuellen Wert ({{current}}).",
+    "calc_apply": "Übernehmen"
   },
   "cheatsheet": {
     "title": "WK Cheat-Sheet",

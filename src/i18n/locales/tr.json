@@ -112,6 +112,11 @@
     "not_signed_up_yet_hint": "QR'ı tara veya bağlantıyı aç:",
     "notes_header": "Notlar"
   },
+  "heroes_upload": {
+    "title": "Hero envanter ekran görüntüsünden otomatik doldur",
+    "description": "Hero envanter ekran görüntünü yükle — Agent X / Dr. J / Nataly parça sayıları otomatik algılanır. Göndermeden önce kontrol et.",
+    "choose_button": "Hero ekran görüntüsü seç"
+  },
   "profile_upload": {
     "title": "Profil ekran görüntüsünden otomatik doldur",
     "tag": "opsiyonel · AI destekli",
@@ -428,7 +433,16 @@
     "heroes_title": "Hero parçaları",
     "heroes_total_agent_x": "Σ Agent X",
     "heroes_total_dr_j": "Σ Dr. J",
-    "heroes_total_nataly": "Σ Nataly"
+    "heroes_total_nataly": "Σ Nataly",
+    "calc_open_kill_title": "Kill-points hesaplayıcısını aç (tier dökümü)",
+    "calc_open_death_title": "Death-points hesaplayıcısını aç (tier dökümü)",
+    "calc_kill_title": "Kill points · {{ign}}",
+    "calc_death_title": "Death points · {{ign}}",
+    "calc_kill_header": "Tier başına kill sayısını gir. Her satır WK puanıyla çarpılıp altta toplanır.",
+    "calc_death_header": "Tier başına death sayısını gir. Sadece Hub/turret — mud-deaths sayılmaz.",
+    "calc_total_label": "Σ Toplam",
+    "calc_current": "Mevcut değeri ({{current}}) değiştirir.",
+    "calc_apply": "Uygula"
   },
   "cheatsheet": {
     "title": "WK Kopya Kağıdı",

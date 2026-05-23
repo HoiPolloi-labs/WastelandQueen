@@ -112,6 +112,11 @@
     "not_signed_up_yet_hint": "Скануй QR або відкрий посилання:",
     "notes_header": "Нотатки"
   },
+  "heroes_upload": {
+    "title": "Автозаповнення зі скріншоту інвентаря heroes",
+    "description": "Завантаж скріншот інвентаря heroes — фрагменти Agent X / Dr. J / Nataly визначаються автоматично. Перевір перед надсиланням.",
+    "choose_button": "Вибрати hero-скріншот"
+  },
   "profile_upload": {
     "title": "Автозаповнення зі скріншоту профілю",
     "tag": "опціонально · з підтримкою ШІ",
@@ -428,7 +433,16 @@
     "heroes_title": "Фрагменти heroes",
     "heroes_total_agent_x": "Σ Agent X",
     "heroes_total_dr_j": "Σ Dr. J",
-    "heroes_total_nataly": "Σ Nataly"
+    "heroes_total_nataly": "Σ Nataly",
+    "calc_open_kill_title": "Відкрити калькулятор kill-points (розбивка по тирах)",
+    "calc_open_death_title": "Відкрити калькулятор death-points (розбивка по тирах)",
+    "calc_kill_title": "Kill points · {{ign}}",
+    "calc_death_title": "Death points · {{ign}}",
+    "calc_kill_header": "Введи кількість вбивств по тирах. Кожен рядок множиться на WK-вартість і підсумовується нижче.",
+    "calc_death_header": "Введи кількість смертей по тирах. Лише Hub/turret — mud-deaths не рахуються.",
+    "calc_total_label": "Σ Разом",
+    "calc_current": "Замінює поточне значення ({{current}}).",
+    "calc_apply": "Застосувати"
   },
   "cheatsheet": {
     "title": "WK Шпаргалка",

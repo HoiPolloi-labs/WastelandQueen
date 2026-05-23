@@ -16,6 +16,7 @@ import { signupSchema, type SignupInput } from './signup-schema'
 import { rememberToken, recallToken, forgetToken } from './edit-token'
 import { notifyDiscord } from './notify'
 import { ProfileScreenshotUpload } from './ProfileScreenshotUpload'
+import { HeroesScreenshotUpload } from './HeroesScreenshotUpload'
 import {
   parseShiftPref,
   serializeShiftPref,
@@ -533,6 +534,15 @@ export function SignupPage() {
               {t('signup.heroes_header')}
             </div>
             <p className="mb-2 text-[11px] text-zinc-400">{t('signup.heroes_hint')}</p>
+            <div className="mb-3">
+              <HeroesScreenshotUpload
+                onExtract={(f) => {
+                  if (f.agent_x != null) setAgentXFrags(String(f.agent_x))
+                  if (f.dr_j != null) setDrJFrags(String(f.dr_j))
+                  if (f.nataly != null) setNatalyFrags(String(f.nataly))
+                }}
+              />
+            </div>
             <div className="grid grid-cols-3 gap-2">
               <Input
                 label={t('signup.agent_x_frags_label')}
