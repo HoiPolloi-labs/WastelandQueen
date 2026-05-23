@@ -69,4 +69,16 @@ void i18n
     },
   })
 
+// Keep <html lang> in sync with i18next so screen readers and the browser's
+// own translation prompt pick the right locale. Without this, the document
+// stays at whatever <html lang="…"> was in the static template (currently "de")
+// regardless of what the user actually sees.
+const syncHtmlLang = (lng: string) => {
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = lng.split('-')[0] ?? 'en'
+  }
+}
+syncHtmlLang(i18n.language || 'en')
+i18n.on('languageChanged', syncHtmlLang)
+
 export default i18n

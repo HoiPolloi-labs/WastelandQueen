@@ -21,5 +21,6 @@ Thumbs.db
 
 # claude
 .claude/settings.json
+.claude/scheduled_tasks.lock
 
 .vercel
