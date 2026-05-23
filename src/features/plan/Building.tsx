@@ -51,6 +51,10 @@ interface BuildingProps {
   large?: boolean
   /** Override the default tooltip — e.g. Hit Squad gets foreign-target list */
   hintOverride?: string
+  /** Per-state Hit-Squad sub-bucket discriminator. When set, the droppable id
+   *  encodes it (so drops route to the right target) and the title gets the
+   *  target appended ("Hit Squad → S850"). Null/undefined = generic bucket. */
+  foreignTarget?: string | null
 }
 
 function pureType(members: Signup[]): TroopType | null {
@@ -99,11 +103,18 @@ export function Building({
   className,
   large,
   hintOverride,
+  foreignTarget,
 }: BuildingProps) {
   const { t } = useTranslation()
+  // Distinct droppable id per (building, shift, foreignTarget) so per-target
+  // Hit-Squad buckets don't accept each other's drops. Falls back to the
+  // original 2-segment id for non-targeted buckets to keep migration trivial.
+  const dropId = foreignTarget
+    ? `drop:${building}:${foreignTarget}:${shift}`
+    : `drop:${building}:${shift}`
   const { setNodeRef, isOver } = useDroppable({
-    id: `drop:${building}:${shift}`,
-    data: { building, shift },
+    id: dropId,
+    data: { building, shift, foreignTarget: foreignTarget ?? null },
   })
 
   const synergy = building.startsWith('turret-') ? pureType(members) : null
@@ -136,6 +147,9 @@ export function Building({
           )}
         >
           {t(BUILDING_LABEL_KEYS[building])}
+          {foreignTarget && (
+            <span className="ml-1 font-mono text-amber-300">→ {foreignTarget}</span>
+          )}
         </span>
         <div className="flex items-center gap-1.5">
           {captainAssignment && onCaptainPresentChange && (

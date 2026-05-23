@@ -125,13 +125,19 @@ export function PlanPage() {
       signupId: string
       shift: ShiftNumber
     }
-    const { building, shift: targetShift } = e.over.data.current as {
+    const { building, shift: targetShift, foreignTarget } = e.over.data.current as {
       building: BuildingType
       shift: ShiftNumber
+      foreignTarget?: string | null
     }
 
+    // Per-target Hit-Squad sub-buckets share `building='hit-squad'` so the
+    // member-count needs to be scoped to the exact bucket we're dropping into.
     const targetMembers = assignments.filter(
-      (a) => a.building === building && a.shift === targetShift,
+      (a) =>
+        a.building === building &&
+        a.shift === targetShift &&
+        (a.foreign_target ?? null) === (foreignTarget ?? null),
     )
     const wasCaptain = assignments.find(
       (a) => a.signup_id === signupId && a.shift === sourceShift,
@@ -139,11 +145,15 @@ export function PlanPage() {
     const isCaptain =
       building === 'hub' && targetMembers.length === 0 ? true : Boolean(wasCaptain)
 
+    // Only set foreign_target on hit-squad rows; everywhere else it stays null.
+    const targetPatch = building === 'hit-squad' ? { foreign_target: foreignTarget ?? null } : { foreign_target: null }
+
     if (sourceShift === targetShift) {
       await moveOne(signupId, targetShift, {
         building,
         is_captain: isCaptain,
         position: targetMembers.length,
+        ...targetPatch,
       })
     } else {
       await moveAcrossShifts(signupId, sourceShift, targetShift, {
@@ -151,6 +161,7 @@ export function PlanPage() {
         // captain status doesn't carry across shifts — different building, fresh slate
         is_captain: building === 'hub' && targetMembers.length === 0,
         position: targetMembers.length,
+        ...targetPatch,
       })
     }
   }

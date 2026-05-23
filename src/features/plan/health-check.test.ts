@@ -63,6 +63,7 @@ function a(opts: {
     is_captain: opts.captain ?? false,
     position: 0,
     captain_present: opts.present ?? null,
+    foreign_target: null,
     updated_at: '',
   }
 }

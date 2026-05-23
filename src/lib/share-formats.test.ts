@@ -63,6 +63,7 @@ function asg(opts: {
     is_captain: opts.captain ?? false,
     position: 0,
     captain_present: null,
+    foreign_target: null,
     updated_at: '',
   }
 }

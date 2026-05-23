@@ -159,6 +159,11 @@ export interface Assignment {
   /** Live-event flag set by Gov/R5: null = unknown, true = present, false = absent.
    *  Only meaningful when `is_captain` is true; null on non-captain rows. */
   captain_present: boolean | null
+  /** For Hit-Squad rows: which foreign state this captain group is tasked with
+   *  (e.g. 'S850'). Null for all other buildings. Soft contract — not constrained
+   *  to event.foreign_targets, since changing the event-level targets shouldn't
+   *  cascade-invalidate live assignments. */
+  foreign_target: string | null
   updated_at: string
 }
 

@@ -70,6 +70,7 @@ function makeAssignment(overrides: Partial<Assignment>): Assignment {
     is_captain: false,
     position: 0,
     captain_present: null,
+    foreign_target: null,
     updated_at: EVENT_START,
     ...overrides,
   }

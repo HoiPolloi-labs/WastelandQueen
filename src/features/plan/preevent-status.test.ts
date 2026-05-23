@@ -102,6 +102,7 @@ function asg(signupId: string, building: Assignment['building']): Assignment {
     is_captain: false,
     position: 0,
     captain_present: null,
+    foreign_target: null,
     updated_at: '',
   }
 }

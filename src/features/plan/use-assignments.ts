@@ -52,7 +52,10 @@ export function useAssignments(eventId: string | undefined) {
       signupId: string,
       shift: ShiftNumber,
       patch: Partial<
-        Pick<Assignment, 'building' | 'is_captain' | 'position' | 'captain_present'>
+        Pick<
+          Assignment,
+          'building' | 'is_captain' | 'position' | 'captain_present' | 'foreign_target'
+        >
       >,
     ) => {
       if (!eventId) return
@@ -71,6 +74,7 @@ export function useAssignments(eventId: string | undefined) {
               is_captain: patch.is_captain ?? false,
               position: patch.position ?? 0,
               captain_present: patch.captain_present ?? null,
+              foreign_target: patch.foreign_target ?? null,
               updated_at: new Date().toISOString(),
             },
           ]
@@ -104,6 +108,7 @@ export function useAssignments(eventId: string | undefined) {
           building: patch.building ?? 'unassigned',
           is_captain: patch.is_captain ?? false,
           position: patch.position ?? 0,
+          foreign_target: patch.foreign_target ?? null,
         })
         if (error) setError(error.message)
       }
@@ -151,7 +156,9 @@ export function useAssignments(eventId: string | undefined) {
       signupId: string,
       fromShift: ShiftNumber,
       toShift: ShiftNumber,
-      patch: Partial<Pick<Assignment, 'building' | 'is_captain' | 'position'>>,
+      patch: Partial<
+        Pick<Assignment, 'building' | 'is_captain' | 'position' | 'foreign_target'>
+      >,
     ) => {
       if (!eventId) return
       // Optimistic local update
@@ -171,6 +178,7 @@ export function useAssignments(eventId: string | undefined) {
           is_captain: patch.is_captain ?? false,
           position: patch.position ?? 0,
           captain_present: null,
+          foreign_target: patch.foreign_target ?? null,
           updated_at: new Date().toISOString(),
         }
         if (existingTarget === -1) return [...withoutSource, targetRow]
@@ -209,6 +217,7 @@ export function useAssignments(eventId: string | undefined) {
           building: patch.building ?? 'unassigned',
           is_captain: patch.is_captain ?? false,
           position: patch.position ?? 0,
+          foreign_target: patch.foreign_target ?? null,
         })
         if (error) setError(error.message)
       }

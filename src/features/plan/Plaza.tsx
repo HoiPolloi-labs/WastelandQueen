@@ -16,8 +16,16 @@ function membersOf(
   shift: ShiftNumber,
   assignments: Assignment[],
   signups: Signup[],
+  /** Optional filter for per-target Hit-Squad buckets. When set, only rows
+   *  whose foreign_target matches (including null when target === null) are
+   *  considered. */
+  foreignTarget?: string | null,
 ): { members: Signup[]; captainId: string | null; captainAssignment: Assignment | null } {
-  const slot = assignments.filter((a) => a.building === building && a.shift === shift)
+  const slot = assignments.filter((a) => {
+    if (a.building !== building || a.shift !== shift) return false
+    if (foreignTarget === undefined) return true
+    return (a.foreign_target ?? null) === foreignTarget
+  })
   slot.sort((a, b) => (a.is_captain === b.is_captain ? a.position - b.position : a.is_captain ? -1 : 1))
   const members = slot
     .map((a) => signups.find((s) => s.id === a.signup_id))
@@ -44,7 +52,28 @@ export function Plaza({
   }))
   const mud = membersOf('mud', shift, assignments, signups)
   const reserve = membersOf('reserve', shift, assignments, signups)
-  const hitSquad = membersOf('hit-squad', shift, assignments, signups)
+  // Per-state Hit-Squad buckets when the event lists 1+ foreign targets;
+  // otherwise a single generic bucket. The "generic" bucket also catches
+  // legacy rows where foreign_target is null even on targeted events.
+  const hitSquadTargets = (foreignTargets ?? []).filter((s) => s.trim() !== '')
+  const hitSquadBuckets =
+    hitSquadTargets.length > 0
+      ? hitSquadTargets.map((target) => ({
+          target,
+          ...membersOf('hit-squad', shift, assignments, signups, target),
+        }))
+      : [
+          {
+            target: null as string | null,
+            ...membersOf('hit-squad', shift, assignments, signups),
+          },
+        ]
+  // Untargeted overflow when event has targets but some rows are tagless —
+  // surface them separately so they don't silently vanish from the UI.
+  const untaggedHitSquad =
+    hitSquadTargets.length > 0
+      ? membersOf('hit-squad', shift, assignments, signups, null)
+      : { members: [], captainId: null, captainAssignment: null }
 
   const grid: Record<string, (typeof turretData)[number] | undefined> = {}
   for (const t of turretData) {
@@ -114,7 +143,7 @@ export function Plaza({
         <div className="hidden sm:block" />
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Building building="mud" shift={shift} members={mud.members} captainId={null} />
         <Building
           building="reserve"
@@ -122,13 +151,41 @@ export function Plaza({
           members={reserve.members}
           captainId={null}
         />
-        <Building
-          building="hit-squad"
-          shift={shift}
-          members={hitSquad.members}
-          captainId={null}
-          hintOverride={hitSquadHint}
-        />
+      </div>
+
+      {/* Hit-Squad row. One bucket per foreign target, or a single generic
+          bucket if the event hasn't named any targets. Untagged-but-targeted
+          rows get an "Unassigned" bucket at the end so legacy data stays
+          visible. Bucket count drives the column grid (max 3 on sm+). */}
+      <div
+        className={`grid grid-cols-1 gap-3 ${
+          hitSquadBuckets.length + (untaggedHitSquad.members.length > 0 ? 1 : 0) >= 3
+            ? 'sm:grid-cols-3'
+            : hitSquadBuckets.length + (untaggedHitSquad.members.length > 0 ? 1 : 0) === 2
+              ? 'sm:grid-cols-2'
+              : ''
+        }`}
+      >
+        {hitSquadBuckets.map((b) => (
+          <Building
+            key={`hit-squad-${b.target ?? 'generic'}`}
+            building="hit-squad"
+            shift={shift}
+            members={b.members}
+            captainId={b.captainId}
+            foreignTarget={b.target}
+            hintOverride={hitSquadHint}
+          />
+        ))}
+        {untaggedHitSquad.members.length > 0 && (
+          <Building
+            building="hit-squad"
+            shift={shift}
+            members={untaggedHitSquad.members}
+            captainId={untaggedHitSquad.captainId}
+            hintOverride="Untagged hit-squad members. Drag onto a target bucket to assign."
+          />
+        )}
       </div>
     </div>
   )
