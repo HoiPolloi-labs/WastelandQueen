@@ -65,8 +65,9 @@ src/
       signup-schema.ts           # zod schema (rally_size mandatory)
       TypeCard.tsx               # Fighter/Shooter/Rider picker
       ProfileScreenshotUpload.tsx # optional Vision-LLM auto-fill from game profile screenshot
+      HeroesScreenshotUpload.tsx  # optional Vision-LLM auto-fill for hero frag counts (heroes_enabled)
       edit-token.ts              # localStorage gate for Withdraw button
-      notify.ts                  # Discord webhook ping on signup events
+      notify.ts                  # Discord ping (signup events + planner-triggered reminders)
     plan/
       PlanPage.tsx               # /plan/:eventId/:token — Plaza + DnD + sidebar
       Plaza.tsx                  # 5-dropzone Hub layout + Mud/Reserve/Hit-Squad row
@@ -77,15 +78,17 @@ src/
       ConflictBanner.tsx         # warnings (no captain, mixed types)
       StatsSidebar.tsx           # type-dist bars + counters
       HealthCheckPanel.tsx       # pre-event readiness signals per shift
-      PreEventStatusPanel.tsx    # per-player checklist gaps + copy reminder
+      PreEventStatusPanel.tsx    # per-player checklist gaps + Copy/Send reminder + Mudsit-Check
+      HeroesSettings.tsx         # planner-side toggle for event.heroes_enabled
+      HeroesContext.tsx          # context carrying heroes_enabled down to PlayerChip
       WebhookSettings.tsx        # Discord webhook URL via set_event_secret RPC
       TokenRotation.tsx          # rotate signup/planner/board tokens via RPC + navigate
-      RosterImportExport.tsx     # XLSX/CSV export + import (upsert by IGN)
+      RosterImportExport.tsx     # XLSX/CSV export + import (upsert by IGN, heroes cols when enabled)
       auto-sort.ts               # pure algorithm — captainScore, autoSort
       health-check.ts            # pure — per-shift readiness signals
-      preevent-status.ts         # pure — per-signup missing checklist items + reminder text
+      preevent-status.ts         # pure — checklist gaps + Mudsit-shield gaps + reminder text
       use-signups.ts             # fetch signups + realtime subscription
-      use-assignments.ts         # CRUD + applyDraft + setCaptainPresent + realtime
+      use-assignments.ts         # CRUD + applyDraft + setCaptainPresent + foreign_target + realtime
     nap/
       use-nap-terms.ts           # fetch/add/update/remove + realtime
       NapList.tsx                # read-only or interactive list of terms
@@ -94,7 +97,8 @@ src/
       BoardPage.tsx              # /board/:eventId/:token — read-only + PNG/QR
       Qr.tsx                     # qrcode → data URL
     awards/
-      AwardsPage.tsx             # /awards/:eventId/:token — score table + box assignment + governor cockpit
+      AwardsPage.tsx             # /awards/:eventId/:token — score table + box assignment + governor cockpit + heroes-panel
+      PointCalcModal.tsx         # per-tier kill/death breakdown calculator (optional)
       contribution.ts            # pure — score-weighting per signup
       use-box-counts.ts          # event-config persistence for box counts
   lib/
@@ -106,11 +110,11 @@ src/
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0024_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0029_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
-    notify-discord/index.ts      # Webhook poster on signup insert/update/delete
+    notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
-    extract-profile/index.ts     # Claude Sonnet Vision → JSON form fields, rate-limited
+    extract-profile/index.ts     # Vision-LLM dispatcher: kind='profile' | 'heroes'; rate-limited
 docs/                            # WK guide reference (do not edit casually)
 ```
 
@@ -293,6 +297,33 @@ aren't in the conflict-target spec by default).
   heroes_enabled / coffer state / governor changes propagate to other open
   planner tabs and the Board page without F5. `use-event` subscribes; RLS
   still gates delivery by `event_id_claim()`.
+- **Per-state Hit-Squad buckets** (migration 0029). When `event.foreign_targets`
+  has 2+ entries, Plaza renders one Hit-Squad bucket per target instead of a
+  single generic one. Each drop is tagged with `assignments.foreign_target`
+  so the same player can land on "→ S850" vs "→ S612" buckets. Soft contract:
+  no FK between `assignments.foreign_target` and `events.foreign_targets`, so
+  mid-event target changes don't cascade-invalidate live rows. Untagged-but-
+  targeted rows surface as a separate overflow bucket so legacy data stays
+  visible. Auto-sort still skips Hit-Squad entirely.
+- **Discord pings are now planner-triggerable**, not just signup-event-driven.
+  `PreEventStatusPanel` has Copy + Send buttons that POST the formatted
+  reminder text to the existing `notify-discord` Edge Function with
+  `action: 'reminder'` (Pre-Event readiness) or `'mudsit_reminder'` (Mudsit
+  shield-check). Same webhook URL, different embed colour. Client formats
+  the text (i18n stays out of Deno); function just forwards.
+- **Mudsit-Shield-Check** detects signups assigned to building `mud` who
+  haven't ticked the `shield` checklist item. Pure function
+  `computeMudsitShieldGaps` in `preevent-status.ts`.
+- **PointCalcModal** in AwardsPage: small calculator icon next to kill/death
+  columns opens a per-tier breakdown modal using `KILL_POINTS` / `DEATH_POINTS`.
+  Niche but handy when a player has the per-tier screenshot (the game usually
+  only shows aggregates — see "Personal point tables" comment above). Apply
+  writes total to the column; manual edit still works directly.
+- **Vision-LLM dispatch via `kind`**: `extract-profile` edge function (v4)
+  now accepts `kind: 'profile' | 'heroes'` and swaps the system prompt.
+  `HeroesScreenshotUpload` (signup feature) uses `kind: 'heroes'` to detect
+  Agent X / Dr. J / Nataly fragment counts. Same 5/h-per-signup_token rate
+  limit and Sonnet 4.6 model.
 
 ## Internationalization
 
