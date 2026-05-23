@@ -297,13 +297,15 @@ string ALWAYS means:
 mixing localized + English terms would be more confusing than helpful.
 
 Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
-+ Awards + CheatSheet + HeroScene (Phase 3+4). Coverage matrix:
++ Awards + CheatSheet + HeroScene + PlayerChip tooltips (Phase 3+4). All
+12 locales (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es) have the full
+376-key schema. CI-style parity check:
 
-- **Full coverage** (en, de, ru, zh, ko, ja, it, tr) — all 8 locales have
-  the complete key-set across Phase 1+2+3+4.
-- **Partial coverage** (fr, uk, el, es) — Phase 1+2 only; Phase 3+4 keys
-  fall back to English via react-i18next's fallback chain. Safe but
-  mixed-language for those four locales. Roll forward when there's demand.
+```
+node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"
+```
+
+should print "parity" for every locale.
 
 ## Deploy
 

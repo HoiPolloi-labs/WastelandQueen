@@ -262,9 +262,11 @@
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
+    "captain_unavailable_suffix": " (captain olarak müsait değil)",
     "not_in_state_alliance": "Henüz State Alliance'da değil",
     "add_note_title": "Not ekle",
-    "player_tooltip": "{{ign}} [{{tag}}] · T{{tier}} {{type}} · Lair {{lair}}{{rally}}{{might}}"
+    "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
+    "tooltip_note_suffix": "\n📝 {{note}}"
   },
   "pool": {
     "title": "Atanmamış · Vardiya {{shift}}",

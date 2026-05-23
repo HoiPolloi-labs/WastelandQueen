@@ -1,6 +1,7 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { Crown, Swords, Crosshair, Zap, StickyNote, ShieldOff } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/cn'
 import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { captainScore } from './auto-sort'
@@ -38,6 +39,7 @@ function formatRally(n: number | null): string {
 }
 
 function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
+  const { t } = useTranslation()
   const rounded = Math.round(score)
   // Distribution under the tier-dominant formula (tier × 20 + rally/100k × 4 + lair):
   //   T8  newer 250k/10  → 178   (zinc / low)
@@ -53,10 +55,11 @@ function ScoreBadge({ score, willing }: { score: number; willing: boolean }) {
         : rounded >= 200
           ? 'border-zinc-600 bg-zinc-800 text-zinc-300'
           : 'border-zinc-700 bg-zinc-900 text-zinc-300'
+  const suffix = willing ? '' : t('chip.captain_unavailable_suffix')
   return (
     <span
       className={`rounded border px-1 py-px font-mono text-[10px] ${tone} ${willing ? '' : 'opacity-60'}`}
-      title={`Captain-Score ${rounded} — tier×20 + rally/100k×4 + lair${willing ? '' : ' (nicht als Captain verfügbar)'}`}
+      title={t('chip.captain_score_tooltip', { score: rounded, suffix })}
     >
       {rounded}
     </span>
@@ -80,6 +83,7 @@ export function PlayerChip({
   dragId,
   highlight,
 }: PlayerChipProps) {
+  const { t } = useTranslation()
   const meta = TYPE_META[signup.troop_type]
   const id = dragId ?? `chip:${signup.id}:${shift}`
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -90,6 +94,17 @@ export function PlayerChip({
   const hasNote = Boolean(signup.planner_notes?.trim())
 
   const style = transform ? { transform: CSS.Translate.toString(transform) } : undefined
+
+  const summary = t('chip.tooltip_summary', {
+    ign: signup.ign,
+    type: signup.troop_type,
+    tier: signup.tier,
+    lair: signup.max_solo_lair,
+    score: Math.round(captainScore(signup)),
+  })
+  const noteSuffix = hasNote
+    ? t('chip.tooltip_note_suffix', { note: signup.planner_notes ?? '' })
+    : ''
 
   return (
     <div
@@ -105,9 +120,7 @@ export function PlayerChip({
         isDragging && 'opacity-30',
         highlight && 'ring-2 ring-yellow-500',
       )}
-      title={`${signup.ign} · ${signup.troop_type} · T${signup.tier} · Lair ${signup.max_solo_lair} · score ${Math.round(
-        captainScore(signup),
-      )}${hasNote ? `\n📝 ${signup.planner_notes}` : ''}`}
+      title={`${summary}${noteSuffix}`}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-1.5">
@@ -119,7 +132,7 @@ export function PlayerChip({
           {!signup.state_alliance_joined && (
             <ShieldOff
               className="h-3 w-3 text-amber-400"
-              aria-label="Noch nicht in State Alliance"
+              aria-label={t('chip.not_in_state_alliance')}
             />
           )}
           {isCaptain && <Crown className="h-3.5 w-3.5 text-yellow-400" />}
@@ -139,7 +152,7 @@ export function PlayerChip({
                 ? 'text-amber-300 hover:bg-amber-500/20'
                 : 'text-zinc-600 opacity-0 hover:bg-zinc-800 hover:text-zinc-300 group-hover:opacity-100',
             )}
-            title={hasNote ? signup.planner_notes ?? '' : 'Notiz hinzufügen'}
+            title={hasNote ? signup.planner_notes ?? '' : t('chip.add_note_title')}
           >
             <StickyNote className="h-3 w-3" />
           </button>

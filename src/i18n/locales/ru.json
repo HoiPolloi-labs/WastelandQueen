@@ -262,9 +262,11 @@
   },
   "chip": {
     "captain_score_tooltip": "Captain-score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
+    "captain_unavailable_suffix": " (не доступен как captain)",
     "not_in_state_alliance": "Ещё не в State Alliance",
     "add_note_title": "Добавить заметку",
-    "player_tooltip": "{{ign}} [{{tag}}] · T{{tier}} {{type}} · Lair {{lair}}{{rally}}{{might}}"
+    "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
+    "tooltip_note_suffix": "\n📝 {{note}}"
   },
   "pool": {
     "title": "Не назначено · Смена {{shift}}",

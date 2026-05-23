@@ -262,9 +262,11 @@
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
+    "captain_unavailable_suffix": " (captain으로 불가)",
     "not_in_state_alliance": "아직 State Alliance에 없음",
     "add_note_title": "메모 추가",
-    "player_tooltip": "{{ign}} [{{tag}}] · T{{tier}} {{type}} · Lair {{lair}}{{rally}}{{might}}"
+    "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
+    "tooltip_note_suffix": "\n📝 {{note}}"
   },
   "pool": {
     "title": "미할당 · 시프트 {{shift}}",

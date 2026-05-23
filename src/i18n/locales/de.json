@@ -262,9 +262,11 @@
   },
   "chip": {
     "captain_score_tooltip": "Captain-Score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
+    "captain_unavailable_suffix": " (nicht als Captain verfügbar)",
     "not_in_state_alliance": "Noch nicht in State Alliance",
     "add_note_title": "Notiz hinzufügen",
-    "player_tooltip": "{{ign}} [{{tag}}] · T{{tier}} {{type}} · Lair {{lair}}{{rally}}{{might}}"
+    "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
+    "tooltip_note_suffix": "\n📝 {{note}}"
   },
   "pool": {
     "title": "Unassigned · Shift {{shift}}",

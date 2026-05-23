@@ -262,9 +262,11 @@
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
+    "captain_unavailable_suffix": "（不可作为 captain）",
     "not_in_state_alliance": "尚未加入 State Alliance",
     "add_note_title": "添加备注",
-    "player_tooltip": "{{ign}} [{{tag}}] · T{{tier}} {{type}} · Lair {{lair}}{{rally}}{{might}}"
+    "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
+    "tooltip_note_suffix": "\n📝 {{note}}"
   },
   "pool": {
     "title": "未分配 · 班次 {{shift}}",
