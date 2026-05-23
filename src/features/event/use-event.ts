@@ -28,8 +28,25 @@ export function useEvent(eventId: string | undefined) {
     refresh().finally(() => {
       if (!cancelled) setLoading(false)
     })
+
+    // Realtime: pick up planner-side toggles (heroes_enabled, coffer state,
+    // governor changes, etc.) without forcing a manual reload. Migration 0028
+    // adds `events` to the supabase_realtime publication; RLS still gates which
+    // rows reach this client (only matching event_id_claim()).
+    const channel = supabase
+      .channel(`event:${eventId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'events', filter: `id=eq.${eventId}` },
+        () => {
+          if (!cancelled) void refresh()
+        },
+      )
+      .subscribe()
+
     return () => {
       cancelled = true
+      void supabase.removeChannel(channel)
     }
   }, [eventId, refresh])
 

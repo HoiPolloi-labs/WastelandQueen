@@ -36,7 +36,7 @@ const TIER_TONE: Record<BoxTier, string> = {
 }
 
 export function AwardsPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
   const { event, loading: eventLoading, refresh: refreshEvent } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
@@ -133,7 +133,7 @@ export function AwardsPage() {
   const exportMarkdown = () => {
     const lines: string[] = [
       `# Award Distribution — ${event.id}`,
-      `_Generated ${new Date().toLocaleString('de-DE')}_`,
+      `_Generated ${new Date().toLocaleString(i18n.language)}_`,
       '',
     ]
     for (const tier of TIER_ORDER) {
@@ -422,7 +422,7 @@ function GovernorPanel({
   signups: Signup[]
   onChange: (patch: Partial<EventConfig>) => void | Promise<void>
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   if (!event.governor_ign) return null
 
   const igns = [...new Set(signups.map((s) => s.ign))].sort((a, b) => a.localeCompare(b))
@@ -512,7 +512,7 @@ function GovernorPanel({
           </div>
           {event.coffer_collected_at && (
             <p className="mb-2 text-[10px] text-emerald-300">
-              {new Date(event.coffer_collected_at).toLocaleString('de-DE')}
+              {new Date(event.coffer_collected_at).toLocaleString(i18n.language)}
             </p>
           )}
           <Textarea

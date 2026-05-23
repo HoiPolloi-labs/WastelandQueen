@@ -275,7 +275,8 @@
     "not_in_state_alliance": "Ще не в State Alliance",
     "add_note_title": "Додати нотатку",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
-    "tooltip_note_suffix": "\n📝 {{note}}"
+    "tooltip_note_suffix": "\n📝 {{note}}",
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
   },
   "pool": {
     "title": "Не призначено · Зміна {{shift}}",

@@ -6,6 +6,7 @@ import { cn } from '@/lib/cn'
 import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
 import { captainScore } from './auto-sort'
 import { useOpenNote } from './NotesContext'
+import { useHeroesEnabled } from './HeroesContext'
 
 const TYPE_META: Record<
   TroopType,
@@ -84,6 +85,7 @@ export function PlayerChip({
   highlight,
 }: PlayerChipProps) {
   const { t } = useTranslation()
+  const heroesEnabled = useHeroesEnabled()
   const meta = TYPE_META[signup.troop_type]
   const id = dragId ?? `chip:${signup.id}:${shift}`
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -92,6 +94,8 @@ export function PlayerChip({
   })
   const openNote = useOpenNote()
   const hasNote = Boolean(signup.planner_notes?.trim())
+  const hasAnyHeroFrags =
+    signup.agent_x_frags > 0 || signup.dr_j_frags > 0 || signup.nataly_frags > 0
 
   const style = transform ? { transform: CSS.Translate.toString(transform) } : undefined
 
@@ -105,6 +109,14 @@ export function PlayerChip({
   const noteSuffix = hasNote
     ? t('chip.tooltip_note_suffix', { note: signup.planner_notes ?? '' })
     : ''
+  const heroesSuffix =
+    heroesEnabled && hasAnyHeroFrags
+      ? t('chip.tooltip_heroes_suffix', {
+          agentX: signup.agent_x_frags,
+          drJ: signup.dr_j_frags,
+          nataly: signup.nataly_frags,
+        })
+      : ''
 
   return (
     <div
@@ -120,7 +132,7 @@ export function PlayerChip({
         isDragging && 'opacity-30',
         highlight && 'ring-2 ring-yellow-500',
       )}
-      title={`${summary}${noteSuffix}`}
+      title={`${summary}${heroesSuffix}${noteSuffix}`}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-1.5">

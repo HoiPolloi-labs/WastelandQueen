@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { signupSchema } from '@/features/signup/signup-schema'
 import type { Signup } from '@/types/wk'
 
-const HEADERS = [
+const BASE_HEADERS = [
   'ign',
   'alliance_tag',
   'server',
@@ -22,10 +22,13 @@ const HEADERS = [
   'planner_notes',
 ] as const
 
-type Header = (typeof HEADERS)[number]
+const HEROES_HEADERS = ['agent_x_frags', 'dr_j_frags', 'nataly_frags'] as const
+
+type Header = (typeof BASE_HEADERS)[number] | (typeof HEROES_HEADERS)[number]
 
 interface RosterImportExportProps {
   eventId: string
+  heroesEnabled: boolean
   signups: Signup[]
   onRefresh: () => void | Promise<void>
 }
@@ -49,16 +52,27 @@ interface RowReport {
  * XLSX library is dynamic-imported so the ~700KB SheetJS bundle only
  * downloads when the user clicks Export/Import (not on every Planner load).
  */
-export function RosterImportExport({ eventId, signups, onRefresh }: RosterImportExportProps) {
+export function RosterImportExport({
+  eventId,
+  heroesEnabled,
+  signups,
+  onRefresh,
+}: RosterImportExportProps) {
   const { t } = useTranslation()
   const fileRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [report, setReport] = useState<RowReport[] | null>(null)
 
+  // Heroes columns are tail-appended only when the event has the feature on.
+  // Keeps default sheets clean for the 90% of events that don't track frags.
+  const headers: readonly Header[] = heroesEnabled
+    ? [...BASE_HEADERS, ...HEROES_HEADERS]
+    : BASE_HEADERS
+
   const buildRows = (): (string | number | boolean | null)[][] => {
-    const rows: (string | number | boolean | null)[][] = [HEADERS as unknown as string[]]
+    const rows: (string | number | boolean | null)[][] = [headers as unknown as string[]]
     for (const s of signups) {
-      rows.push([
+      const base: (string | number | boolean | null)[] = [
         s.ign,
         s.alliance_tag,
         s.server,
@@ -71,7 +85,11 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
         s.shift_pref,
         s.state_alliance_joined,
         s.planner_notes,
-      ])
+      ]
+      if (heroesEnabled) {
+        base.push(s.agent_x_frags, s.dr_j_frags, s.nataly_frags)
+      }
+      rows.push(base)
     }
     return rows
   }
@@ -146,17 +164,24 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
       return
     }
     const header = rows[0]!.map((h) => h.trim())
-    const colIdx: Record<Header, number> = {} as Record<Header, number>
-    for (const h of HEADERS) {
+    const colIdx: Partial<Record<Header, number>> = {}
+    for (const h of BASE_HEADERS) {
       const i = header.indexOf(h)
       if (i === -1) {
         setReport([{
           line: 1, ign: '', status: 'error',
-          message: t('roster.err_missing_header', { header: h, expected: HEADERS.join(', ') }),
+          message: t('roster.err_missing_header', { header: h, expected: BASE_HEADERS.join(', ') }),
         }])
         return
       }
       colIdx[h] = i
+    }
+    // Hero columns are optional in imports — older sheets pre-feature won't
+    // have them, and that's fine. Only pick up values when both the column
+    // exists in the sheet AND the event has heroes_enabled.
+    for (const h of HEROES_HEADERS) {
+      const i = header.indexOf(h)
+      if (i !== -1) colIdx[h] = i
     }
 
     const reports: RowReport[] = []
@@ -164,8 +189,17 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i]!
       if (row.every((c) => c.trim() === '')) continue
-      const cell = (h: Header) => row[colIdx[h]] ?? ''
+      const cell = (h: Header) => {
+        const idx = colIdx[h]
+        return idx == null ? '' : row[idx] ?? ''
+      }
       const ign = cell('ign').trim()
+      const numOrZero = (h: Header) => {
+        const v = cell(h).trim()
+        if (!v) return 0
+        const n = Number(v)
+        return Number.isFinite(n) && n >= 0 ? n : 0
+      }
       const raw = {
         ign,
         alliance_tag: cell('alliance_tag').trim(),
@@ -177,6 +211,9 @@ export function RosterImportExport({ eventId, signups, onRefresh }: RosterImport
         true_might: cell('true_might').trim() ? Number(cell('true_might')) : undefined,
         willing_captain: parseBool(cell('willing_captain')),
         shift_pref: cell('shift_pref').trim(),
+        agent_x_frags: numOrZero('agent_x_frags'),
+        dr_j_frags: numOrZero('dr_j_frags'),
+        nataly_frags: numOrZero('nataly_frags'),
       }
       const parsed = signupSchema.safeParse(raw)
       if (!parsed.success) {

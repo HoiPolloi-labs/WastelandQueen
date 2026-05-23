@@ -275,7 +275,8 @@
     "not_in_state_alliance": "Henüz State Alliance'da değil",
     "add_note_title": "Not ekle",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
-    "tooltip_note_suffix": "\n📝 {{note}}"
+    "tooltip_note_suffix": "\n📝 {{note}}",
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
   },
   "pool": {
     "title": "Atanmamış · Vardiya {{shift}}",

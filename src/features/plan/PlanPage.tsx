@@ -42,6 +42,7 @@ import { ConflictBanner } from './ConflictBanner'
 import { StatsSidebar } from './StatsSidebar'
 import { OtherShiftDropzone } from './OtherShiftDropzone'
 import { NotesProvider } from './NotesContext'
+import { HeroesEnabledProvider } from './HeroesContext'
 import { NoteEditor } from './NoteEditor'
 import { HealthCheckPanel } from './HealthCheckPanel'
 import { PreEventStatusPanel } from './PreEventStatusPanel'
@@ -199,6 +200,7 @@ export function PlanPage() {
 
   return (
     <NotesProvider value={{ openNote: setEditingNoteId }}>
+    <HeroesEnabledProvider value={event.heroes_enabled}>
     <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <PageHeader
         title={`Planner · ${event.id}`}
@@ -356,6 +358,7 @@ export function PlanPage() {
           <WebhookSettings />
           <RosterImportExport
             eventId={event.id}
+            heroesEnabled={event.heroes_enabled}
             signups={signups}
             onRefresh={refreshSignups}
           />
@@ -372,6 +375,7 @@ export function PlanPage() {
     {editingSignup && (
       <NoteEditor signup={editingSignup} onClose={() => setEditingNoteId(null)} />
     )}
+    </HeroesEnabledProvider>
     </NotesProvider>
   )
 }

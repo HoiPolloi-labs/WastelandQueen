@@ -280,6 +280,19 @@ aren't in the conflict-target spec by default).
 - **Personal point tables** (KILL_POINTS / DEATH_POINTS) are in `src/types/wk.ts`
   but the game only surfaces aggregated post-event totals, not per-tier
   breakdowns — so the tables are reference-only, not used for auto-compute.
+- **Heroes tracking is opt-in per event** (`event.heroes_enabled`, default
+  false). Worth flipping on for Gold+ states coordinating Nataly / Agent X /
+  Dr. J frag progress. Toggle is in EventSetupPage at create-time and in
+  the planner sidebar (`HeroesSettings` card) post-hoc. When on: SignupPage
+  shows three frag inputs, AwardsPage renders alliance-wide totals,
+  PlayerChip tooltip appends `📿 Agent X N · Dr. J M · Nataly K`, Roster
+  XLSX/CSV export+import include the three columns. Off state hides the
+  UI but data persists silently (0 defaults), so flipping on/off mid-event
+  is non-destructive.
+- **Realtime now covers `events` too** (migration 0028). Planner toggles like
+  heroes_enabled / coffer state / governor changes propagate to other open
+  planner tabs and the Board page without F5. `use-event` subscribes; RLS
+  still gates delivery by `event_id_claim()`.
 
 ## Internationalization
 

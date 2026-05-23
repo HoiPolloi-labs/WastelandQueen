@@ -275,7 +275,8 @@
     "not_in_state_alliance": "Δεν είναι ακόμα στο State Alliance",
     "add_note_title": "Προσθήκη σημείωσης",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
-    "tooltip_note_suffix": "\n📝 {{note}}"
+    "tooltip_note_suffix": "\n📝 {{note}}",
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
   },
   "pool": {
     "title": "Μη ανατεθειμένοι · Βάρδια {{shift}}",

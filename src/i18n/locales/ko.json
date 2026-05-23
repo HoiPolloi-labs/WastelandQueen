@@ -275,7 +275,8 @@
     "not_in_state_alliance": "아직 State Alliance에 없음",
     "add_note_title": "메모 추가",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
-    "tooltip_note_suffix": "\n📝 {{note}}"
+    "tooltip_note_suffix": "\n📝 {{note}}",
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
   },
   "pool": {
     "title": "미할당 · 시프트 {{shift}}",
