@@ -6,7 +6,7 @@
 > every two weeks with a public sign-up form, an auto-sorting planner with
 > drag-and-drop, and a shareable read-only board.
 
-**Live:** <https://wasteland-queen.vercel.app>
+**Live:** <https://waqu.app>
 
 ![Hero](docs/Gemini_Generated_Image_1pc7a01pc7a01pc7.png)
 
