@@ -151,9 +151,13 @@ Suites:
   cross-shift, invariants (no double-assign, never auto-route to `hit-squad`)
 - `src/features/plan/health-check.test.ts` — readiness signals (hub captain,
   type pool, hit-squad coverage, absent-captain errors)
-- `src/features/plan/preevent-status.test.ts` — missing-checklist gaps + reminder format
+- `src/features/plan/preevent-status.test.ts` — missing-checklist gaps,
+  Mudsit-shield gaps, reminder formats
 - `src/lib/csv.test.ts` — RFC4180 quoting, BOM, trailing-empty-row dropping
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
+
+Current total: **118 tests** across 10 suites, full pipeline green
+(`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
 (see `.env.example`).
@@ -341,9 +345,10 @@ string ALWAYS means:
 mixing localized + English terms would be more confusing than helpful.
 
 Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
-+ Awards + CheatSheet + HeroScene + PlayerChip tooltips (Phase 3+4). All
-12 locales (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es) have the full
-376-key schema. CI-style parity check:
++ Awards + CheatSheet + HeroScene + PlayerChip tooltips + heroes feature
++ Discord-reminder buttons + point calculator. All 12 locales (en, de, ru,
+zh, ko, ja, it, tr, fr, uk, el, es) have the full **412-key** schema with
+zero gaps. CI-style parity check:
 
 ```
 node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"
