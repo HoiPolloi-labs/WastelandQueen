@@ -19,7 +19,7 @@
 .hero-scene .bg {
   position: absolute;
   inset: -6%;
-  background-image: url('/queen-scene.png');
+  background-image: url('/queen-scene.webp');
   background-size: cover;
   background-position: center;
   filter: blur(28px) saturate(0.85) brightness(1.05);
@@ -162,7 +162,7 @@
   transform: translate(-50%, -50%);
   /* v2: figure repainted with correct "WQ" initials on the chest plate
      and the blue hologram board next to her. */
-  background-image: url('/queen-figure-v2.png');
+  background-image: url('/queen-figure-v2.webp');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   /* Mask widened (19% → 27%) and shifted right (50% → 56%) so the

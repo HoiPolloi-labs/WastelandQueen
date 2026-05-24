@@ -13,7 +13,8 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "optimize:images": "node scripts/optimize-hero-images.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -47,11 +48,18 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "happy-dom": "^20.9.0",
     "prettier": "^3.4.2",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.0.0-beta.8",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.1",
     "vite": "^6.0.7",
     "vitest": "^4.1.7"
   },
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.28.2",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
 }

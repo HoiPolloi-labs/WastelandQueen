@@ -6,7 +6,7 @@ import './HeroScene.css'
  * Hero scene for the landing page — port of design/Wasteland Queen Scene.html.
  *
  * Layered composition:
- *   1. blurred queen-scene.png as full-bleed backdrop + warm haze
+ *   1. blurred queen-scene.webp as full-bleed backdrop + warm haze
  *   2. four animated zeppelins drifting horizontally with vertical bob
  *   3. the same image, sharp, masked to an ellipse so only the central
  *      figure column shows through
