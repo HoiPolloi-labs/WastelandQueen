@@ -219,6 +219,7 @@
     "send_reminder_button": "Send",
     "send_reminder_title": "Post reminder to Discord webhook",
     "send_failed": "Failed",
+    "send_no_webhook": "No webhook set",
     "mudsit_header": "Mudsit shield-check ({{count}})",
     "mudsit_copy_button": "Copy",
     "mudsit_copy_title": "Copy mudsit reminder for chat",

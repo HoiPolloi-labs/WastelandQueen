@@ -223,7 +223,8 @@
     "mudsit_copy_button": "Copiar",
     "mudsit_copy_title": "Copiar mudsit reminder para chat",
     "mudsit_send_button": "Enviar",
-    "mudsit_send_title": "Publicar mudsit reminder en Discord"
+    "mudsit_send_title": "Publicar mudsit reminder en Discord",
+    "send_no_webhook": "Sin webhook"
   },
   "webhook": {
     "section_title": "Discord Webhook",

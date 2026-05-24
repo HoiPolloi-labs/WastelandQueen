@@ -223,7 +223,8 @@
     "mudsit_copy_button": "复制",
     "mudsit_copy_title": "复制 mudsit reminder 到聊天",
     "mudsit_send_button": "发送",
-    "mudsit_send_title": "将 mudsit reminder 发送到 Discord"
+    "mudsit_send_title": "将 mudsit reminder 发送到 Discord",
+    "send_no_webhook": "未设置 webhook"
   },
   "webhook": {
     "section_title": "Discord Webhook",

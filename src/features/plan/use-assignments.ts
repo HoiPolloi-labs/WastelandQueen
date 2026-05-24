@@ -73,8 +73,13 @@ export function useAssignments(eventId: string | undefined) {
       >,
     ) => {
       if (!eventId) return
-      // optimistic
+      // Snapshot for rollback if the persist fails. Without this the chip
+      // appeared moved while the DB silently rejected the write (RLS,
+      // network, etc.), and only a stray realtime tick later would snap
+      // it back — confusing the planner about what's actually saved.
+      let snapshot: Assignment[] = []
       setAssignments((prev) => {
+        snapshot = prev
         const idx = prev.findIndex((a) => a.signup_id === signupId && a.shift === shift)
         if (idx === -1) {
           return [
@@ -108,12 +113,13 @@ export function useAssignments(eventId: string | undefined) {
         .eq('shift', shift)
         .maybeSingle()
 
+      let persistError: { message: string } | null = null
       if (existing.data) {
         const { error } = await supabase
           .from('assignments')
           .update({ ...patch, updated_at: new Date().toISOString() })
           .eq('id', existing.data.id)
-        if (error) setError(error.message)
+        persistError = error
       } else {
         const { error } = await supabase.from('assignments').insert({
           event_id: eventId,
@@ -124,10 +130,18 @@ export function useAssignments(eventId: string | undefined) {
           position: patch.position ?? 0,
           foreign_target: patch.foreign_target ?? null,
         })
-        if (error) setError(error.message)
+        persistError = error
+      }
+      if (persistError) {
+        setError(persistError.message)
+        // Roll back the optimistic state so the user doesn't see a
+        // phantom-moved chip. A refresh() also re-queries the canonical
+        // server state in case the failure was a stale read.
+        setAssignments(snapshot)
+        void refresh()
       }
     },
-    [eventId],
+    [eventId, refresh],
   )
 
   const applyDraft = useCallback(
@@ -181,8 +195,9 @@ export function useAssignments(eventId: string | undefined) {
       >,
     ) => {
       if (!eventId) return
-      // Optimistic local update
+      let snapshot: Assignment[] = []
       setAssignments((prev) => {
+        snapshot = prev
         const withoutSource = prev.filter(
           (a) => !(a.signup_id === signupId && a.shift === fromShift),
         )
@@ -207,13 +222,19 @@ export function useAssignments(eventId: string | undefined) {
         return next
       })
 
-      // Persist: delete source row, then upsert target
-      await supabase
+      // Persist: delete source row, then upsert target.
+      const { error: delError } = await supabase
         .from('assignments')
         .delete()
         .eq('event_id', eventId)
         .eq('signup_id', signupId)
         .eq('shift', fromShift)
+      if (delError) {
+        setError(delError.message)
+        setAssignments(snapshot)
+        void refresh()
+        return
+      }
 
       const existing = await supabase
         .from('assignments')
@@ -223,12 +244,13 @@ export function useAssignments(eventId: string | undefined) {
         .eq('shift', toShift)
         .maybeSingle()
 
+      let persistError: { message: string } | null = null
       if (existing.data) {
         const { error } = await supabase
           .from('assignments')
           .update({ ...patch, updated_at: new Date().toISOString() })
           .eq('id', (existing.data as { id: string }).id)
-        if (error) setError(error.message)
+        persistError = error
       } else {
         const { error } = await supabase.from('assignments').insert({
           event_id: eventId,
@@ -239,10 +261,15 @@ export function useAssignments(eventId: string | undefined) {
           position: patch.position ?? 0,
           foreign_target: patch.foreign_target ?? null,
         })
-        if (error) setError(error.message)
+        persistError = error
+      }
+      if (persistError) {
+        setError(persistError.message)
+        setAssignments(snapshot)
+        void refresh()
       }
     },
-    [eventId],
+    [eventId, refresh],
   )
 
   /** Cycle/set the captain-present flag on a single assignment row. */

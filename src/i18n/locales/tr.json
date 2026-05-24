@@ -223,7 +223,8 @@
     "mudsit_copy_button": "Kopyala",
     "mudsit_copy_title": "Mudsit reminder'ı sohbet için kopyala",
     "mudsit_send_button": "Gönder",
-    "mudsit_send_title": "Mudsit reminder'ı Discord'a gönder"
+    "mudsit_send_title": "Mudsit reminder'ı Discord'a gönder",
+    "send_no_webhook": "Webhook yok"
   },
   "webhook": {
     "section_title": "Discord Webhook",

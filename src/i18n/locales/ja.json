@@ -223,7 +223,8 @@
     "mudsit_copy_button": "コピー",
     "mudsit_copy_title": "Mudsit reminderをチャット用にコピー",
     "mudsit_send_button": "送信",
-    "mudsit_send_title": "Mudsit reminderをDiscordに投稿"
+    "mudsit_send_title": "Mudsit reminderをDiscordに投稿",
+    "send_no_webhook": "Webhook未設定"
   },
   "webhook": {
     "section_title": "Discord Webhook",

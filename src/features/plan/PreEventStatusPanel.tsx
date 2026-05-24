@@ -26,7 +26,11 @@ const ITEM_DOT_LABEL: Record<ChecklistKey, string> = {
   shield: 'D',
 }
 
-type SendStatus = 'idle' | 'sending' | 'ok' | 'fail'
+// 'no_webhook' is a distinct state from 'fail' so the planner doesn't see
+// a red "send failed" toast when they just haven't wired up Discord yet.
+// The error-UX agent caught this: a deliberate skip was being shown as
+// a hard error, confusing planners into thinking the action is broken.
+type SendStatus = 'idle' | 'sending' | 'ok' | 'fail' | 'no_webhook'
 
 /**
  * Per-signup view of pre-event readiness. Each gap row shows the player name
@@ -63,9 +67,10 @@ export function PreEventStatusPanel({ eventId, signups, assignments }: PreEventS
 
   const sendReminder = async () => {
     setSendStatus('sending')
-    const ok = await pushDiscordReminder(eventId, 'reminder', formatPreEventReminder(gaps))
-    setSendStatus(ok ? 'ok' : 'fail')
-    setTimeout(() => setSendStatus('idle'), 2000)
+    const result = await pushDiscordReminder(eventId, 'reminder', formatPreEventReminder(gaps))
+    setSendStatus(result === 'posted' ? 'ok' : result === 'no_webhook' ? 'no_webhook' : 'fail')
+    // 'no_webhook' stays visible longer — it's an actionable hint, not a flash.
+    setTimeout(() => setSendStatus('idle'), result === 'no_webhook' ? 4000 : 2000)
   }
 
   const copyMudsit = async () => {
@@ -76,13 +81,13 @@ export function PreEventStatusPanel({ eventId, signups, assignments }: PreEventS
 
   const sendMudsit = async () => {
     setMudsitSendStatus('sending')
-    const ok = await pushDiscordReminder(
+    const result = await pushDiscordReminder(
       eventId,
       'mudsit_reminder',
       formatMudsitReminder(mudsitGaps),
     )
-    setMudsitSendStatus(ok ? 'ok' : 'fail')
-    setTimeout(() => setMudsitSendStatus('idle'), 2000)
+    setMudsitSendStatus(result === 'posted' ? 'ok' : result === 'no_webhook' ? 'no_webhook' : 'fail')
+    setTimeout(() => setMudsitSendStatus('idle'), result === 'no_webhook' ? 4000 : 2000)
   }
 
   const ready = signups.length - gaps.length
@@ -171,7 +176,11 @@ export function PreEventStatusPanel({ eventId, signups, assignments }: PreEventS
               ) : (
                 <Send className="h-3 w-3" />
               )}
-              {sendStatus === 'fail' ? t('preevent.send_failed') : t('preevent.send_reminder_button')}
+              {sendStatus === 'fail'
+                ? t('preevent.send_failed')
+                : sendStatus === 'no_webhook'
+                  ? t('preevent.send_no_webhook')
+                  : t('preevent.send_reminder_button')}
             </Button>
           </div>
         </>
@@ -220,7 +229,11 @@ export function PreEventStatusPanel({ eventId, signups, assignments }: PreEventS
               ) : (
                 <Send className="h-3 w-3" />
               )}
-              {mudsitSendStatus === 'fail' ? t('preevent.send_failed') : t('preevent.mudsit_send_button')}
+              {mudsitSendStatus === 'fail'
+                ? t('preevent.send_failed')
+                : mudsitSendStatus === 'no_webhook'
+                  ? t('preevent.send_no_webhook')
+                  : t('preevent.mudsit_send_button')}
             </Button>
           </div>
         </div>

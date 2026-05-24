@@ -137,7 +137,7 @@ export function NapPanel({ eventId }: NapPanelProps) {
         onEdit={(id, patch) => update(id, patch)}
         onDelete={remove}
         onStatusChange={setStatus}
-        empty={t('nap.no_terms_planner')}
+        empty={t('nap.no_terms_planner', { add: t('common.add') })}
       />
     </section>
   )

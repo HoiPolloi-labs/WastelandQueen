@@ -223,7 +223,8 @@
     "mudsit_copy_button": "Αντιγραφή",
     "mudsit_copy_title": "Αντιγραφή mudsit reminder για chat",
     "mudsit_send_button": "Αποστολή",
-    "mudsit_send_title": "Δημοσίευση mudsit reminder στο Discord"
+    "mudsit_send_title": "Δημοσίευση mudsit reminder στο Discord",
+    "send_no_webhook": "Χωρίς webhook"
   },
   "webhook": {
     "section_title": "Discord Webhook",

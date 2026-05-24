@@ -223,7 +223,8 @@
     "mudsit_copy_button": "Копіювати",
     "mudsit_copy_title": "Скопіювати mudsit reminder для чату",
     "mudsit_send_button": "Надіслати",
-    "mudsit_send_title": "Опублікувати mudsit reminder у Discord"
+    "mudsit_send_title": "Опублікувати mudsit reminder у Discord",
+    "send_no_webhook": "Немає webhook"
   },
   "webhook": {
     "section_title": "Discord-вебхук",

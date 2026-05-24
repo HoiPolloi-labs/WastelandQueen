@@ -223,7 +223,8 @@
     "mudsit_copy_button": "복사",
     "mudsit_copy_title": "Mudsit reminder를 채팅용으로 복사",
     "mudsit_send_button": "보내기",
-    "mudsit_send_title": "Mudsit reminder를 Discord로 전송"
+    "mudsit_send_title": "Mudsit reminder를 Discord로 전송",
+    "send_no_webhook": "Webhook 없음"
   },
   "webhook": {
     "section_title": "Discord 웹훅",
