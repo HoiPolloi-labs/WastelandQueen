@@ -8,7 +8,7 @@
 
 **Live:** <https://waqu.app>
 
-![Hero](docs/Gemini_Generated_Image_1pc7a01pc7a01pc7.png)
+![Hero](docs/Gemini_Generated_Image_eq429ieq429ieq42.png)
 
 ---
 
