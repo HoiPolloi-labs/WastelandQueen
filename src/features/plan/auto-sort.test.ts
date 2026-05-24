@@ -299,6 +299,25 @@ describe('autoSort — invariants', () => {
     expect(result.filter((d) => d.building === 'hit-squad')).toHaveLength(0)
   })
 
+  it('never routes to mud (manual-only bucket — paired invariant with hit-squad)', () => {
+    // Regression guard for the wipe bug: applyDraft now scopes its delete
+    // to NOT IN (mud, hit-squad). That fix relies on the algorithm never
+    // emitting either bucket. If a future change starts auto-routing to
+    // mud, the persistence layer would also need to start clearing it.
+    const result = autoSort({
+      signups: Array.from({ length: 20 }, (_, i) =>
+        s({
+          id: `p${i}`,
+          type: (['fighter', 'shooter', 'rider'] as const)[i % 3],
+          captain: i < 5,
+        }),
+      ),
+      turretMode: 'duplicate-strongest',
+      shiftCount: 2,
+    })
+    expect(result.filter((d) => d.building === 'mud')).toHaveLength(0)
+  })
+
   it('empty pool produces empty output', () => {
     const result = autoSort({
       signups: [],
