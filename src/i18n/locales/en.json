@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival in Nova/Research maxed",
     "pre_event_talents": "☐ First Aid + Instant Heal talents loaded",
     "pre_event_speedups": "☐ Training speedups + resources for Fast Comeback",
-    "pre_event_shield": "☐ Three-day shield stacked if mud-sitting",
+    "pre_event_shield": "☐ 3-day shield OR 8h+1d stack if mud-sitting",
     "existing_hint": "You're already signed up — fields are pre-filled. Edits update your entry instead of creating a new one.",
     "ign_label": "IGN",
     "ign_placeholder": "Your in-game name",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1 taxis in infirmary",
     "cl_speedups": "Speedups + resources for Fast Comeback",
     "cl_heroes": "Heroes equipped + leveled",
-    "cl_shield": "3-day shield active (mud-sitters)",
+    "cl_shield": "3-day shield OR 8h+1d stack active (mud-sitters)",
     "heroes_header": "Hero Fragments",
     "heroes_hint": "Optional — helps the planner coordinate who's closest to maxing Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Agent X Frags",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Strongest type doubled",
     "turret_mode_duplicate_hint": "Most common type gets 2 turrets, others get 1 each.",
     "turret_mode_mixed_label": "4th turret mixed",
-    "turret_mode_mixed_hint": "3 turrets type-pure, 4th turret = leftovers.",
+    "turret_mode_mixed_hint": "3 turrets type-pure (N=fighter, E=shooter, S=rider). 4th turret W stays empty for manual captain-choice placements.",
     "turret_mode_manual_label": "Manual",
     "turret_mode_manual_hint": "Everyone lands in Unassigned.",
     "home_server_label": "Home Server",
@@ -386,7 +386,8 @@
     "success_awards_link": "Awards link (also planner-gated)",
     "success_open_button": "Open",
     "success_copy_title": "Copy to clipboard",
-    "success_copy_short_title": "Copy short URL (chat-friendly)"
+    "success_copy_short_title": "Copy short URL (chat-friendly)",
+    "foreign_targets_warning": "WK doctrine: concentrate Hit-Squad on the weakest opposing state. Splitting top-might across multiple targets often dilutes the attack below the threshold needed to take any Hub — and a failed take costs your home Hub its automatic shield."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

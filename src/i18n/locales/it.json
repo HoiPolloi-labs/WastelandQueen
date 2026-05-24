@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival in Nova/Research al massimo",
     "pre_event_talents": "☐ Talenti First Aid + Instant Heal caricati",
     "pre_event_speedups": "☐ Speedup training + risorse per Fast Comeback",
-    "pre_event_shield": "☐ Scudo da tre giorni stackato se mud-sitter",
+    "pre_event_shield": "☐ Scudo 3 giorni OPPURE stack 8h+1d se mud-sitter",
     "existing_hint": "Sei già iscritto — i campi sono precompilati. Le modifiche aggiornano la tua iscrizione invece di crearne una nuova.",
     "ign_label": "IGN",
     "ign_placeholder": "Il tuo nome in gioco",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1 taxi in infermeria",
     "cl_speedups": "Speedup + risorse per Fast Comeback",
     "cl_heroes": "Heroes equipaggiati e leveled",
-    "cl_shield": "Scudo di 3 giorni attivo (mud-sitter)",
+    "cl_shield": "Scudo 3 giorni OPPURE stack 8h+1d attivo (mud-sitter)",
     "heroes_header": "Frammenti hero",
     "heroes_hint": "Opzionale — aiuta il planner a coordinare chi è più vicino al massimo di Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Frammenti Agent X",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Tipo più forte doppio",
     "turret_mode_duplicate_hint": "Il tipo più frequente prende 2 torrette, gli altri 1 ciascuno.",
     "turret_mode_mixed_label": "4ª torretta mista",
-    "turret_mode_mixed_hint": "3 torrette puro-tipo, 4ª = rimanenti.",
+    "turret_mode_mixed_hint": "3 turret type-pure (N=fighter, E=shooter, S=rider). 4° turret W resta vuoto per piazzamenti captain manuali.",
     "turret_mode_manual_label": "Manuale",
     "turret_mode_manual_hint": "Tutti i giocatori finiscono in Unassigned.",
     "home_server_label": "Server casa",
@@ -386,7 +386,8 @@
     "success_awards_link": "Link Awards (anch'esso planner-gated)",
     "success_open_button": "Apri",
     "success_copy_title": "Copia negli appunti",
-    "success_copy_short_title": "Copia URL breve (chat-friendly)"
+    "success_copy_short_title": "Copia URL breve (chat-friendly)",
+    "foreign_targets_warning": "Dottrina WK: concentra l'Hit-Squad sullo state nemico più debole. Dividere top-might tra più target diluisce l'attacco sotto la soglia necessaria a prendere qualsiasi Hub — un take fallito costa al tuo Hub home lo shield automatico."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

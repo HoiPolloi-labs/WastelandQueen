@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival Nova/Research'te maksimum",
     "pre_event_talents": "☐ First Aid + Instant Heal yetenekleri yüklü",
     "pre_event_speedups": "☐ Eğitim hızlandırıcıları + Fast Comeback için kaynaklar",
-    "pre_event_shield": "☐ Mud-sitter isen üç günlük kalkan stack'le",
+    "pre_event_shield": "☐ Mud-sitter isen 3 günlük kalkan VEYA 8h+1d stack",
     "existing_hint": "Zaten kayıtlısın — alanlar önceden dolduruldu. Düzenlemeler yeni bir giriş oluşturmak yerine mevcut girişini günceller.",
     "ign_label": "IGN",
     "ign_placeholder": "Oyun içi adın",
@@ -95,7 +95,7 @@
     "cl_taxis": "Revirde T1 taxi",
     "cl_speedups": "Hızlandırıcılar + Fast Comeback için kaynaklar",
     "cl_heroes": "Heroes equip edildi ve level alındı",
-    "cl_shield": "3 günlük kalkan aktif (mud-sitter)",
+    "cl_shield": "3 günlük kalkan VEYA 8h+1d stack aktif (mud-sitter)",
     "heroes_header": "Hero parçaları",
     "heroes_hint": "İsteğe bağlı — planner'ın Nataly / Agent X / Dr. J max'a en yakın kim olduğunu koordine etmesine yardımcı olur.",
     "agent_x_frags_label": "Agent X parçaları",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "En güçlü tip iki kat",
     "turret_mode_duplicate_hint": "En yaygın tip 2 kule alır, diğerleri birer.",
     "turret_mode_mixed_label": "4. kule karışık",
-    "turret_mode_mixed_hint": "3 kule tek tip, 4. kule = artakalan.",
+    "turret_mode_mixed_hint": "3 turret tek type (N=fighter, E=shooter, S=rider). 4. turret W manuel captain yerleştirmesi için boş kalır.",
     "turret_mode_manual_label": "Manuel",
     "turret_mode_manual_hint": "Tüm oyuncular Unassigned'a düşer.",
     "home_server_label": "Ev sunucusu",
@@ -386,7 +386,8 @@
     "success_awards_link": "Awards linki (o da planner-gated)",
     "success_open_button": "Aç",
     "success_copy_title": "Panoya kopyala",
-    "success_copy_short_title": "Kısa URL'yi kopyala (sohbet için)"
+    "success_copy_short_title": "Kısa URL'yi kopyala (sohbet için)",
+    "foreign_targets_warning": "WK doktrini: Hit-Squad'ı en zayıf rakip state'e yoğunlaştır. Top-might'ı birden fazla hedefe bölmek saldırıyı hiçbir Hub'ı alamayacak eşiğin altına seyreltir — başarısız take, ev Hub'ın otomatik shield'ini kaybettirir."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

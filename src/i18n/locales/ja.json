@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous SurvivalをNova/Researchで最大",
     "pre_event_talents": "☐ First Aid + Instant Healタレント装備",
     "pre_event_speedups": "☐ 訓練加速 + Fast Comeback用リソース",
-    "pre_event_shield": "☐ Mud-sitterなら3日シールドをスタック",
+    "pre_event_shield": "☐ Mud-sit なら 3日シールド または 8h+1d スタック",
     "existing_hint": "既に登録されています — フィールドは事前入力されています。編集すると新規ではなく既存エントリが更新されます。",
     "ign_label": "IGN",
     "ign_placeholder": "ゲーム内ネーム",
@@ -95,7 +95,7 @@
     "cl_taxis": "医務室にT1タクシー",
     "cl_speedups": "加速 + Fast Comeback用リソース",
     "cl_heroes": "Heroes装備・レベル済み",
-    "cl_shield": "3日シールド有効 (Mud-sitter)",
+    "cl_shield": "3日シールド または 8h+1d スタック有効 (Mud-sitter)",
     "heroes_header": "Heroフラグメント",
     "heroes_hint": "オプション — plannerがNataly / Agent X / Dr. Jのマックスに最も近い人を調整するのに役立ちます。",
     "agent_x_frags_label": "Agent Xフラグメント",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "最強兵種を重複",
     "turret_mode_duplicate_hint": "最多兵種が2タレット、その他は各1。",
     "turret_mode_mixed_label": "4番目のタレットは混合",
-    "turret_mode_mixed_hint": "3タレットは単一兵種、4番目 = 残り。",
+    "turret_mode_mixed_hint": "3つの turret は単一 type (N=fighter, E=shooter, S=rider)。4つ目の turret W は手動 captain 配置用に空のまま。",
     "turret_mode_manual_label": "手動",
     "turret_mode_manual_hint": "全プレイヤーがUnassignedに。",
     "home_server_label": "ホームサーバー",
@@ -386,7 +386,8 @@
     "success_awards_link": "Awardsリンク (これもplanner-gated)",
     "success_open_button": "開く",
     "success_copy_title": "クリップボードにコピー",
-    "success_copy_short_title": "短縮URLをコピー (チャット用)"
+    "success_copy_short_title": "短縮URLをコピー (チャット用)",
+    "foreign_targets_warning": "WK ドクトリン: Hit-Squad は最弱の敵 state に集中。top-might を複数ターゲットに分散すると、どの Hub も take できない閾値以下に希釈されがち — take 失敗は自国 Hub の自動シールドを失わせる。"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

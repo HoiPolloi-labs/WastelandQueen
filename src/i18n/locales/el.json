@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival σε Nova/Research στο μάξιμουμ",
     "pre_event_talents": "☐ Talents First Aid + Instant Heal φορτωμένα",
     "pre_event_speedups": "☐ Επιταχύνσεις training + πόροι για Fast Comeback",
-    "pre_event_shield": "☐ Ασπίδα τριών ημερών στακαρισμένη αν κάνεις mud-sit",
+    "pre_event_shield": "☐ Ασπίδα 3 ημερών Ή stack 8h+1d αν mud-sit",
     "existing_hint": "Είσαι ήδη εγγεγραμμένος — τα πεδία έχουν προ-συμπληρωθεί. Οι αλλαγές ενημερώνουν την εγγραφή σου αντί να δημιουργήσουν νέα.",
     "ign_label": "IGN",
     "ign_placeholder": "Το όνομά σου στο παιχνίδι",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1 taxis στο infirmary",
     "cl_speedups": "Επιταχύνσεις + πόροι για Fast Comeback",
     "cl_heroes": "Heroes equipped και leveled",
-    "cl_shield": "3ήμερη ασπίδα ενεργή (mud-sitters)",
+    "cl_shield": "Ασπίδα 3 ημερών Ή stack 8h+1d ενεργή (mud-sitter)",
     "heroes_header": "Θραύσματα hero",
     "heroes_hint": "Προαιρετικό — βοηθάει τον planner να συντονίσει ποιος είναι πιο κοντά στο max των Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Θραύσματα Agent X",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Ισχυρότερος τύπος διπλός",
     "turret_mode_duplicate_hint": "Ο πιο συχνός τύπος παίρνει 2 turrets, οι άλλοι από 1.",
     "turret_mode_mixed_label": "4ο turret μικτό",
-    "turret_mode_mixed_hint": "3 turrets καθαρού τύπου, 4ο = υπόλοιπα.",
+    "turret_mode_mixed_hint": "3 turret καθαρού type (N=fighter, E=shooter, S=rider). 4ο turret W μένει άδειο για χειροκίνητη τοποθέτηση captain.",
     "turret_mode_manual_label": "Χειροκίνητη",
     "turret_mode_manual_hint": "Όλοι καταλήγουν στο Unassigned.",
     "home_server_label": "Home Server",
@@ -386,7 +386,8 @@
     "success_awards_link": "Σύνδεσμος Awards (επίσης planner-gated)",
     "success_open_button": "Άνοιγμα",
     "success_copy_title": "Αντιγραφή στο πρόχειρο",
-    "success_copy_short_title": "Αντιγραφή σύντομου URL (chat-friendly)"
+    "success_copy_short_title": "Αντιγραφή σύντομου URL (chat-friendly)",
+    "foreign_targets_warning": "Δόγμα WK: συγκέντρωσε το Hit-Squad στο πιο αδύναμο εχθρικό state. Ο διαμοιρασμός top-might σε πολλούς στόχους συχνά αραιώνει την επίθεση κάτω από το όριο για κατάληψη οποιουδήποτε Hub — αποτυχημένο take στερεί από το home Hub το αυτόματο shield."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

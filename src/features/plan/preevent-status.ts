@@ -81,8 +81,11 @@ export function computeMudsitShieldGaps(
 
 export function formatMudsitReminder(gaps: MudsitGap[]): string {
   if (gaps.length === 0) return 'Mudsit shield check: all clear ✓\n'
+  // DOMAIN fix: the WK guide accepts either a 3-day shield OR a stacked
+  // 8h+1d shield for mud-sitting. Previously the reminder hardcoded
+  // "3-day shield is up" which mis-informed players using the stack.
   const lines = [
-    'Mudsit shield check — please confirm 3-day shield is up:',
+    'Mudsit shield check — please confirm your shield (3-day OR 8h+1d stack) is up:',
   ]
   for (const g of gaps) {
     lines.push(`  ${g.signup.ign} [${g.signup.alliance_tag}]`)

@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival dans Nova/Research au maximum",
     "pre_event_talents": "☐ Talents First Aid + Instant Heal chargés",
     "pre_event_speedups": "☐ Accélérateurs d'entraînement + ressources pour Fast Comeback",
-    "pre_event_shield": "☐ Bouclier de trois jours empilé si mud-sitter",
+    "pre_event_shield": "☐ Bouclier 3 jours OU stack 8h+1d si mud-sitter",
     "existing_hint": "Tu es déjà inscrit — les champs sont pré-remplis. Les modifications mettent à jour ton inscription au lieu d'en créer une nouvelle.",
     "ign_label": "IGN",
     "ign_placeholder": "Ton pseudo en jeu",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1 taxis dans l'infirmerie",
     "cl_speedups": "Accélérateurs + ressources pour Fast Comeback",
     "cl_heroes": "Heroes équipés et leveled",
-    "cl_shield": "Bouclier 3 jours actif (mud-sitters)",
+    "cl_shield": "Bouclier 3 jours OU stack 8h+1d actif (mud-sitter)",
     "heroes_header": "Fragments de hero",
     "heroes_hint": "Optionnel — aide le planner à coordonner qui est le plus proche du max sur Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Fragments Agent X",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Type le plus fort doublé",
     "turret_mode_duplicate_hint": "Le type le plus courant prend 2 turrets, les autres 1 chacun.",
     "turret_mode_mixed_label": "4e turret mixte",
-    "turret_mode_mixed_hint": "3 turrets type-pur, 4e turret = restes.",
+    "turret_mode_mixed_hint": "3 turret type-pures (N=fighter, E=shooter, S=rider). 4e turret W reste vide pour placement captain manuel.",
     "turret_mode_manual_label": "Manuel",
     "turret_mode_manual_hint": "Tout le monde atterrit en Unassigned.",
     "home_server_label": "Serveur d'origine",
@@ -386,7 +386,8 @@
     "success_awards_link": "Lien Awards (aussi planner-gated)",
     "success_open_button": "Ouvrir",
     "success_copy_title": "Copier dans le presse-papier",
-    "success_copy_short_title": "Copier l'URL courte (chat-friendly)"
+    "success_copy_short_title": "Copier l'URL courte (chat-friendly)",
+    "foreign_targets_warning": "Doctrine WK : concentrer le Hit-Squad sur le state adverse le plus faible. Diviser top-might sur plusieurs cibles dilue souvent l'attaque sous le seuil nécessaire pour prendre un Hub — un take raté coûte à ton Hub home son shield automatique."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

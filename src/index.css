@@ -24,4 +24,10 @@ body {
     'Segoe UI',
     Roboto,
     sans-serif;
+  /* XBROWSER fix: native <input>, <select>, checkbox accent and scrollbars
+   * render in the OS light theme without this, which looks broken against
+   * the dark zinc-950 app shell on Safari and Firefox. accent-color picks
+   * up our yellow brand so checkboxes match the rest of the UI. */
+  color-scheme: dark;
+  accent-color: #eab308;
 }

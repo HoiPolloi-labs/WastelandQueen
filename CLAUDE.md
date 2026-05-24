@@ -87,8 +87,11 @@ src/
       auto-sort.ts               # pure algorithm — captainScore, autoSort
       health-check.ts            # pure — per-shift readiness signals
       preevent-status.ts         # pure — checklist gaps + Mudsit-shield gaps + reminder text
-      use-signups.ts             # fetch signups + realtime subscription
-      use-assignments.ts         # CRUD + applyDraft + setCaptainPresent + foreign_target + realtime
+      use-signups.ts             # fetch signups + realtime subscription (race-guarded)
+      use-assignments.ts         # CRUD + applyDraft (preserves mud/hit-squad) + optimistic rollback
+      NotesContext.tsx           # context for the PlayerChip note-editor dispatch
+      NoteEditor.tsx             # modal for editing a signup's planner_notes
+      PlanIndex.tsx              # /plan (no token) → localStorage lookup or legacy hint
     nap/
       use-nap-terms.ts           # fetch/add/update/remove + realtime
       NapList.tsx                # read-only or interactive list of terms
@@ -99,18 +102,24 @@ src/
     awards/
       AwardsPage.tsx             # /awards/:eventId/:token — score table + box assignment + governor cockpit + heroes-panel
       PointCalcModal.tsx         # per-tier kill/death breakdown calculator (optional)
-      contribution.ts            # pure — score-weighting per signup
+      contribution.ts            # pure — score-weighting per signup (with NaN-guarded date math)
       use-box-counts.ts          # event-config persistence for box counts
+    cheatsheet/
+      CheatSheetPage.tsx         # /cheat-sheet — WK mechanics quick-reference (body content currently DE-only)
+    home/
+      HeroScene.tsx              # /  — landing page with animated zeppelins + figure cut-out
   lib/
     supabase.ts                  # createClient + setEventSession (JWT injection via accessToken)
     capture.ts                   # downloadAsPng (html-to-image wrapper)
+    storage.ts                   # tiny localStorage helpers (last visited event etc.)
     cn.ts                        # clsx wrapper
     csv.ts                       # RFC4180 parser + stringifier (no PapaParse dependency)
     share-formats.ts             # Plaza + NAP → plain-ASCII for in-game chat paste
+    csv.ts                       # RFC4180 parse/stringify + `escapeFormula` CSV-injection guard
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0029_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0034_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
@@ -157,7 +166,7 @@ Suites:
 - `src/lib/csv.test.ts` — RFC4180 quoting, BOM, trailing-empty-row dropping
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 
-Current total: **118 tests** across 10 suites, full pipeline green
+Current total: **133 tests** across 10 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
@@ -200,6 +209,16 @@ into REST + Realtime via `accessToken()`. RLS policies key off
   insert new, self-edit own row via `update_signup_self` / `delete_signup_self`
   RPCs (verify edit_token server-side).
 - **board role**: read-only on event + signups + assignments + nap_terms.
+
+**Column-level grant gotcha (migrations 0030 + 0034):** `events.planner_token`
+SELECT is REVOKED from anon + authenticated to prevent a signup or board
+JWT from escalating via `select('planner_token')`. Postgres column-revoke
+is a no-op against a table-level `GRANT SELECT ON events` — the only way
+to actually deny one column is to revoke the table grant then re-grant
+the explicit safe-column list. `use-event.ts` therefore SELECTs an explicit
+column allowlist (never `*`) — adding a new column to `events` requires
+updating both the allowlist AND the per-column GRANT in a follow-up
+migration, or clients will get "permission denied for column" errors.
 
 ### Why SECURITY DEFINER RPCs
 
@@ -264,10 +283,19 @@ Pure function in `src/features/plan/auto-sort.ts`. Per shift:
    in mixed-4th).
 
 `autoSort()` returns a `DraftAssignment[]`. `useAssignments.applyDraft()`
-deletes existing rows for the event and bulk-inserts the draft. Manual
-drag-and-drop edits use `moveOne` which does the existing-row check +
-update-or-insert (no PostgREST upsert because the unique constraint columns
-aren't in the conflict-target spec by default).
+deletes the event's existing rows **except** those in `mud` or `hit-squad`
+(both are manual planner decisions the algorithm never emits — wiping them
+on Auto-Sort was the critical data-loss bug fixed in commit `b6d7585`) and
+bulk-inserts the draft. The `auto-sort.test.ts` "never routes to hit-squad
+/ mud" invariants guard against that fix regressing — adding a new
+manually-managed bucket means updating BOTH the delete filter AND adding
+an algorithm-side invariant test.
+
+Manual drag-and-drop edits use `moveOne` (same shift) or `moveAcrossShifts`
+(cross-shift). Both snapshot the prior state before the optimistic update
+and roll back if the persist fails (RLS denial, network, etc.). No
+PostgREST upsert because the unique-constraint columns aren't in the
+conflict-target spec by default.
 
 ## WK domain gotchas
 
@@ -359,7 +387,7 @@ Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
 + Awards + CheatSheet + HeroScene + PlayerChip tooltips + heroes feature
 + Discord-reminder buttons + point calculator. All 12 locales (en, de, ru,
 zh, ko, ja, it, tr, fr, uk, el, es) have the full **412-key** schema with
-zero gaps. CI-style parity check:
+zero gaps (~414 keys today). CI-style parity check:
 
 ```
 node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"

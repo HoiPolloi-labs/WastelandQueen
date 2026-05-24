@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival in Nova/Research auf Max",
     "pre_event_talents": "☐ First Aid + Instant Heal Talents geladen",
     "pre_event_speedups": "☐ Trainings-Speedups + Ressourcen für Fast Comeback",
-    "pre_event_shield": "☐ Drei-Tage-Schild stacken falls Mudsitter",
+    "pre_event_shield": "☐ 3-Tage-Schild ODER 8h+1d-Stack wenn Mud-sitter",
     "existing_hint": "Du bist schon eingetragen — Felder sind vorausgefüllt. Anpassungen aktualisieren deinen Eintrag, statt einen neuen anzulegen.",
     "ign_label": "IGN",
     "ign_placeholder": "Dein In-Game-Name",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1-Taxis im Infirmary",
     "cl_speedups": "Speedups + Ressourcen für Fast Comeback",
     "cl_heroes": "Heroes equipped + geleveled",
-    "cl_shield": "3-Tage-Schild aktiv (Mudsitter)",
+    "cl_shield": "3-Tage-Schild ODER 8h+1d-Stack aktiv (Mud-sitter)",
     "heroes_header": "Hero-Fragmente",
     "heroes_hint": "Optional — hilft dem Planner zu sehen, wer am dichtesten an Nataly / Agent X / Dr. J max ist.",
     "agent_x_frags_label": "Agent X Fragmente",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Stärksten Typ doppelt",
     "turret_mode_duplicate_hint": "Der häufigste Typ bekommt 2 Türme, die anderen je 1.",
     "turret_mode_mixed_label": "4. Turm gemischt",
-    "turret_mode_mixed_hint": "3 Türme typ-rein, 4. Turm = Leftovers.",
+    "turret_mode_mixed_hint": "3 Türme typ-rein (N=Fighter, E=Shooter, S=Rider). 4. Turm W bleibt leer für manuelle Captain-Choice-Platzierung.",
     "turret_mode_manual_label": "Manuell",
     "turret_mode_manual_hint": "Alle Spieler landen in Unassigned.",
     "home_server_label": "Home Server",
@@ -386,7 +386,8 @@
     "success_awards_link": "Awards-Link (auch planner-gated)",
     "success_open_button": "Öffnen",
     "success_copy_title": "In Zwischenablage kopieren",
-    "success_copy_short_title": "Kurze URL kopieren (chat-freundlich)"
+    "success_copy_short_title": "Kurze URL kopieren (chat-freundlich)",
+    "foreign_targets_warning": "WK-Doktrin: Hit-Squad auf den schwächsten Gegner-State konzentrieren. Top-Might über mehrere Ziele zu splitten verdünnt den Angriff oft unter die Schwelle die nötig ist um einen Hub zu nehmen — und ein gescheiterter Take kostet deinen Home-Hub das automatische Shield."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

@@ -25,10 +25,17 @@ export type DraftAssignment = Pick<
 const ALL_TYPES = ['fighter', 'shooter', 'rider'] as const
 
 /**
- * Higher = better captain. Per Marcel's observation in his state:
- *   Tier is the primary signal (T13 = top), Rally is the second (Captain-
- *   Capacity = Rally Size, so a high-rally lower-tier can still beat a
- *   weak-rally higher-tier), Lair is the tiebreaker.
+ * Higher = better captain.
+ *
+ * The WK guide (docs/wasteland-king-guide.md) ranks **rally size first**
+ * because Captain-Rally = Building-Capacity. This implementation softens
+ * that to tier-primary + rally-secondary on Marcel's observation that
+ * within his state, tier strongly correlates with troop stats (rally
+ * scales with castle level, not skill). The two diverge mainly at the
+ * extremes — a fresh T13 with low rally can outrank a maxed T11 with
+ * massive rally, where the guide would pick the T11. Audit periodically:
+ * if too many "wrong" captains get auto-picked, rebalance toward rally
+ * primacy (e.g. `rally/100k × 8 + tier × 10 + lair`).
  *
  *   tier × 20 + rally/100k × 4 + lair × 1
  *

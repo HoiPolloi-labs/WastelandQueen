@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival в Nova/Research на максимум",
     "pre_event_talents": "☐ Таланти First Aid + Instant Heal завантажено",
     "pre_event_speedups": "☐ Прискорення тренування + ресурси для Fast Comeback",
-    "pre_event_shield": "☐ Триденний щит застаканий, якщо mud-sitter",
+    "pre_event_shield": "☐ 3-денний щит АБО стак 8h+1d при mud-sit",
     "existing_hint": "Ти вже зареєстрований — поля попередньо заповнені. Зміни оновлюють запис, а не створюють новий.",
     "ign_label": "IGN",
     "ign_placeholder": "Твій нік у грі",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1-таксі у шпиталі",
     "cl_speedups": "Прискорення + ресурси для Fast Comeback",
     "cl_heroes": "Heroes екіпіровані та прокачані",
-    "cl_shield": "3-денний щит активний (mud-sitter)",
+    "cl_shield": "3-денний щит АБО стак 8h+1d активний (mud-sitter)",
     "heroes_header": "Фрагменти heroes",
     "heroes_hint": "Опціонально — допомагає планувальнику координувати, хто найближче до максу Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Фрагменти Agent X",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Найсильніший тип подвоєний",
     "turret_mode_duplicate_hint": "Найчастіший тип отримує 2 вежі, решта по 1.",
     "turret_mode_mixed_label": "4-та вежа змішана",
-    "turret_mode_mixed_hint": "3 вежі одного типу, 4-та = залишки.",
+    "turret_mode_mixed_hint": "3 турелі type-pure (N=fighter, E=shooter, S=rider). 4-та турель W залишається порожньою для ручного captain-розміщення.",
     "turret_mode_manual_label": "Вручну",
     "turret_mode_manual_hint": "Усі гравці потрапляють у Unassigned.",
     "home_server_label": "Домашній сервер",
@@ -386,7 +386,8 @@
     "success_awards_link": "Посилання Awards (теж planner-gated)",
     "success_open_button": "Відкрити",
     "success_copy_title": "Скопіювати в буфер",
-    "success_copy_short_title": "Скопіювати короткий URL (для чату)"
+    "success_copy_short_title": "Скопіювати короткий URL (для чату)",
+    "foreign_targets_warning": "Доктрина WK: Hit-Squad концентрувати на найслабшому ворожому state. Розділення топової сили між кількома цілями часто розводить атаку нижче порогу взяття будь-якого Hub — провалений take позбавляє домашній Hub автоматичного щита."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

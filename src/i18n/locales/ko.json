@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival을 Nova/Research에서 최대로",
     "pre_event_talents": "☐ First Aid + Instant Heal 특성 장착",
     "pre_event_speedups": "☐ 훈련 가속 + Fast Comeback용 자원",
-    "pre_event_shield": "☐ 머드시터라면 3일 방어막 스택",
+    "pre_event_shield": "☐ mud-sit 시 3일 shield 또는 8h+1d 스택",
     "existing_hint": "이미 가입되어 있습니다 — 필드가 미리 채워져 있습니다. 수정 시 기존 항목이 업데이트됩니다.",
     "ign_label": "IGN",
     "ign_placeholder": "게임 내 닉네임",
@@ -95,7 +95,7 @@
     "cl_taxis": "의무실에 T1 택시 채움",
     "cl_speedups": "가속 + Fast Comeback용 자원",
     "cl_heroes": "Heroes 장착 및 레벨업",
-    "cl_shield": "3일 방어막 활성화 (mud-sitter)",
+    "cl_shield": "3일 shield 또는 8h+1d 스택 활성 (mud-sitter)",
     "heroes_header": "Hero 조각",
     "heroes_hint": "선택사항 — planner가 Nataly / Agent X / Dr. J 만렙에 가장 가까운 사람을 조율하는 데 도움이 됩니다.",
     "agent_x_frags_label": "Agent X 조각",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "최강 병종 중복",
     "turret_mode_duplicate_hint": "가장 흔한 병종이 2개 터렛, 다른 병종은 1개씩.",
     "turret_mode_mixed_label": "4번째 터렛 혼합",
-    "turret_mode_mixed_hint": "3개 터렛은 단일 병종, 4번째 = 잔여.",
+    "turret_mode_mixed_hint": "3개 turret type-pure (N=fighter, E=shooter, S=rider). 4번째 turret W는 수동 captain 배치를 위해 비워둠.",
     "turret_mode_manual_label": "수동",
     "turret_mode_manual_hint": "모든 플레이어가 Unassigned로 이동.",
     "home_server_label": "홈 서버",
@@ -386,7 +386,8 @@
     "success_awards_link": "Awards 링크 (이것도 planner-gated)",
     "success_open_button": "열기",
     "success_copy_title": "클립보드에 복사",
-    "success_copy_short_title": "짧은 URL 복사 (채팅용)"
+    "success_copy_short_title": "짧은 URL 복사 (채팅용)",
+    "foreign_targets_warning": "WK 원칙: Hit-Squad는 가장 약한 상대 state에 집중. 최상위 might를 여러 타겟에 분산하면 어떤 Hub도 take할 수 없는 임계 이하로 희석됨 — 실패한 take는 home Hub의 자동 shield를 잃게 함."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

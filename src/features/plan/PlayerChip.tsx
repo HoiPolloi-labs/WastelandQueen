@@ -162,7 +162,11 @@ export function PlayerChip({
               'rounded p-0.5 transition',
               hasNote
                 ? 'text-amber-300 hover:bg-amber-500/20'
-                : 'text-zinc-600 opacity-0 hover:bg-zinc-800 hover:text-zinc-300 group-hover:opacity-100',
+                : // XBROWSER fix: on touch (no `:hover`) the button was permanently invisible.
+                  // `coarse:opacity-50` keeps it visible-but-faded on touch devices so the
+                  // affordance is reachable; hover devices keep the hidden-until-hover behaviour
+                  // via `[@media(hover:hover)]:opacity-0`.
+                  'rounded p-0.5 text-zinc-600 opacity-50 hover:bg-zinc-800 hover:text-zinc-300 [@media(hover:hover)]:opacity-0 group-hover:[@media(hover:hover)]:opacity-100',
             )}
             title={hasNote ? signup.planner_notes ?? '' : t('chip.add_note_title')}
           >

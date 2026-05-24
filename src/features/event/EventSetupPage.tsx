@@ -341,6 +341,20 @@ export function EventSetupPage() {
           className="font-mono uppercase"
           hint={t('event_setup.foreign_targets_hint')}
         />
+        {/* DOMAIN warning — WK guide doctrine: "concentrate on weakest opponent state".
+            Splitting Hit-Squad across multiple foreign targets dilutes the attack
+            below the threshold needed to actually take any Hub, costing the home
+            Hub its automatic foreign-Hub-capture shield. Show only when the user
+            entered 2+ targets. */}
+        {foreignTargets
+          .split(/[,\s]+/)
+          .map((s) => s.trim())
+          .filter((s) => /^S\d+$/.test(s)).length > 1 && (
+          <p className="-mt-2 flex items-start gap-1.5 rounded border border-amber-500/40 bg-amber-500/5 px-3 py-2 text-xs text-amber-300">
+            <ShieldAlert className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+            <span>{t('event_setup.foreign_targets_warning')}</span>
+          </p>
+        )}
 
         <p className="rounded border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-xs text-zinc-400">
           {t('event_setup.webhook_planner_hint')}

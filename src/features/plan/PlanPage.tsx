@@ -6,6 +6,7 @@ import { LAST_EVENT_KEY } from './PlanIndex'
 import {
   DndContext,
   DragOverlay,
+  KeyboardSensor,
   PointerSensor,
   TouchSensor,
   useSensor,
@@ -13,6 +14,7 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from '@dnd-kit/core'
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import {
   Loader2,
   Wand2,
@@ -77,10 +79,13 @@ export function PlanPage() {
   // PointerSensor handles mouse + stylus; TouchSensor splits off touch with
   // a delay-based activation so finger-jitter during scroll doesn't
   // accidentally start a drag. 150ms hold + 5px tolerance is the @dnd-kit
-  // recommended baseline for mobile UX.
+  // recommended baseline for mobile UX. KeyboardSensor closes the WCAG
+  // 2.1.1 gap — keyboard-only users can now Tab to a chip, hit Space to
+  // pick it up, arrow-key to a building, Space to drop.
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   )
 
   useEffect(() => {

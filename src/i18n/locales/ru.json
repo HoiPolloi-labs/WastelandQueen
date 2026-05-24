@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival в Nova/Research на максимум",
     "pre_event_talents": "☐ Таланты First Aid + Instant Heal загружены",
     "pre_event_speedups": "☐ Ускорения тренировки + ресурсы для Fast Comeback",
-    "pre_event_shield": "☐ Трёхдневный щит застакан, если mud-sitter",
+    "pre_event_shield": "☐ 3-дневный щит ИЛИ стак 8h+1d при mud-sit",
     "existing_hint": "Ты уже зарегистрирован — поля предзаполнены. Изменения обновляют запись, а не создают новую.",
     "ign_label": "IGN",
     "ign_placeholder": "Твой ник в игре",
@@ -95,7 +95,7 @@
     "cl_taxis": "T1-такси в госпитале",
     "cl_speedups": "Ускорения + ресурсы для Fast Comeback",
     "cl_heroes": "Heroes экипированы и прокачаны",
-    "cl_shield": "3-дневный щит активен (для mud-sitter)",
+    "cl_shield": "3-дневный щит ИЛИ стак 8h+1d активен (mud-sitter)",
     "heroes_header": "Фрагменты heroes",
     "heroes_hint": "Опционально — помогает планировщику понять, кто ближе всех к максу Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Фрагменты Agent X",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "Сильнейший тип удвоен",
     "turret_mode_duplicate_hint": "Самый частый тип получает 2 башни, остальные по 1.",
     "turret_mode_mixed_label": "4-я башня смешанная",
-    "turret_mode_mixed_hint": "3 башни одного типа, 4-я = остатки.",
+    "turret_mode_mixed_hint": "3 турели type-pure (N=fighter, E=shooter, S=rider). 4-я турель W остаётся пустой для ручной captain-choice расстановки.",
     "turret_mode_manual_label": "Вручную",
     "turret_mode_manual_hint": "Все игроки попадают в Unassigned.",
     "home_server_label": "Домашний сервер",
@@ -386,7 +386,8 @@
     "success_awards_link": "Ссылка Awards (тоже planner-gated)",
     "success_open_button": "Открыть",
     "success_copy_title": "Скопировать в буфер",
-    "success_copy_short_title": "Короткий URL (для чата)"
+    "success_copy_short_title": "Короткий URL (для чата)",
+    "foreign_targets_warning": "Доктрина WK: Hit-Squad концентрировать на слабейшем гос-противнике. Деление топовой силы между несколькими целями часто разбавляет атаку ниже порога взятия любого Hub — провалившийся take лишает домашний Hub автоматического щита."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

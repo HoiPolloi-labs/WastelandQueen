@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseCSV, stringifyCSV } from './csv'
+import { parseCSV, stringifyCSV, escapeFormula } from './csv'
 
 describe('parseCSV', () => {
   it('splits a plain header + row', () => {
@@ -83,5 +83,60 @@ describe('stringifyCSV', () => {
 
   it('coerces non-strings', () => {
     expect(stringifyCSV([[1, true, null, 'x']])).toBe('1,true,,x\r\n')
+  })
+})
+
+// SECURITY: escapeFormula defuses Excel/Sheets formula injection. A signup
+// with `ign = "=HYPERLINK(\"https://evil.tld\")"` would fire when the
+// planner opens the roster export — this guard prefixes a `'` so the
+// spreadsheet renders the literal text instead of evaluating the formula.
+// Regression risk: if this function is "simplified" without these tests,
+// the CSV-injection hole reopens silently.
+describe('escapeFormula', () => {
+  it('prefixes a leading = with a single quote', () => {
+    expect(escapeFormula('=SUM(1+1)')).toBe("'=SUM(1+1)")
+  })
+
+  it('prefixes a leading + with a single quote', () => {
+    expect(escapeFormula('+cmd|/c calc')).toBe("'+cmd|/c calc")
+  })
+
+  it('prefixes a leading - with a single quote (DDE injection)', () => {
+    expect(escapeFormula('-2+3+cmd|/calc!A0')).toBe("'-2+3+cmd|/calc!A0")
+  })
+
+  it('prefixes a leading @ with a single quote', () => {
+    expect(escapeFormula('@SUM(A1:A5)')).toBe("'@SUM(A1:A5)")
+  })
+
+  it('prefixes a leading tab with a single quote', () => {
+    expect(escapeFormula('\t=BAD')).toBe("'\t=BAD")
+  })
+
+  it('prefixes a leading carriage-return with a single quote', () => {
+    expect(escapeFormula('\rBAD')).toBe("'\rBAD")
+  })
+
+  it('passes through normal strings unchanged', () => {
+    expect(escapeFormula('WhalerKing')).toBe('WhalerKing')
+    expect(escapeFormula('[WQR] T13')).toBe('[WQR] T13')
+    expect(escapeFormula('hello world')).toBe('hello world')
+  })
+
+  it('passes through empty string unchanged', () => {
+    expect(escapeFormula('')).toBe('')
+  })
+
+  it('does NOT prefix when the dangerous char is mid-string', () => {
+    // Only LEADING characters are dangerous in spreadsheet cells.
+    expect(escapeFormula('5+5=10')).toBe('5+5=10')
+    expect(escapeFormula('user@host')).toBe('user@host')
+  })
+
+  it('actually defuses the threat when round-tripped through stringifyCSV', () => {
+    const out = stringifyCSV([['ign'], ['=HYPERLINK("https://evil.tld")']])
+    // Excel/Sheets sees the leading ' and renders literal text.
+    expect(out).toContain("'=HYPERLINK")
+    expect(out).not.toMatch(/^=HYPERLINK/m)
   })
 })

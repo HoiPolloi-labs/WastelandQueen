@@ -42,10 +42,11 @@ canon (Hub, turret, mud, NAP, Super Reinforcement, Fast Comeback).
   (project `ecxuvcuvuawxriucarmh` in `eu-central-1`)
 - **Zod** for form validation
 - **react-i18next** + `i18next-browser-languagedetector` — 12 locales
-  (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es), full 412-key parity
+  (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es), ~415-key parity, locale
+  bundles lazy-loaded so the main chunk doesn't ship 12× translations
 - **xlsx (SheetJS)** for roster import/export (dynamic-imported chunk)
 - **html-to-image** + **qrcode** for the Board PNG/QR export
-- **Vitest** + **happy-dom** for pure-function tests (118/118 passing)
+- **Vitest** + **happy-dom** for pure-function tests (134/134 passing)
 
 ---
 
@@ -73,14 +74,18 @@ pnpm preview      # http://localhost:4173 — serve the production bundle
 - **Frontend → Vercel.** Push to `main` → static build → auto-deploy.
   Env vars `VITE_SUPABASE_URL` + `VITE_SUPABASE_PUBLISHABLE_KEY` are set in
   the Vercel project settings.
-- **Database → Supabase.** Schema lives in `supabase/migrations/0001..0029_*.sql`.
+- **Database → Supabase.** Schema lives in `supabase/migrations/0001..0034_*.sql`.
   Apply via Supabase MCP `apply_migration` (mirror each into the
   `supabase/migrations/` folder for the repo record).
-- **Edge Functions → Supabase.** Three functions in `supabase/functions/`:
+- **Edge Functions → Supabase.** Four functions in `supabase/functions/`:
   - `token-exchange` — mints per-event JWTs (ES256 / HS256)
   - `extract-profile` — Claude Sonnet Vision; rate-limited (5/h per signup_token);
     dispatches on `kind: 'profile' | 'heroes'`
-  - `notify-discord` — webhook poster for signup events + planner-triggered reminders
+  - `notify-discord` — webhook poster for signup events + planner-triggered reminders;
+    requires event-bound JWT with role-appropriate scope (planner for reminders,
+    signup-or-planner for signup events)
+  - `r` — short-URL resolver: `/s/:eventId` → signup, `/b/:eventId` → board (no JWT,
+    service-role lookup, renders branded HTML on 404)
   Deploy via Supabase MCP `deploy_edge_function`.
 
 Function secrets required (Supabase Dashboard → Functions → Manage secrets):

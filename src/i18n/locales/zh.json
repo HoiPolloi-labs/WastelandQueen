@@ -57,7 +57,7 @@
     "pre_event_miraculous": "☐ Miraculous Survival 在 Nova/Research 拉满",
     "pre_event_talents": "☐ 装载 First Aid + Instant Heal 天赋",
     "pre_event_speedups": "☐ 训练加速 + Fast Comeback 用资源",
-    "pre_event_shield": "☐ 如果蹲泥（mud-sit）请叠三天护盾",
+    "pre_event_shield": "☐ mud-sit 时开 3天护盾 或 8h+1d 叠加",
     "existing_hint": "你已报名 — 字段已预填。修改会更新原条目而不是新建。",
     "ign_label": "IGN",
     "ign_placeholder": "你的游戏内昵称",
@@ -95,7 +95,7 @@
     "cl_taxis": "医院里有 T1 出租兵",
     "cl_speedups": "训练加速 + Fast Comeback 资源",
     "cl_heroes": "Heroes 已装备并升级",
-    "cl_shield": "3 天护盾已激活（蹲泥）",
+    "cl_shield": "3天护盾 或 8h+1d 叠加 已开启 (mud-sitter)",
     "heroes_header": "Hero 碎片",
     "heroes_hint": "可选 — 帮助 planner 协调谁最接近满级 Nataly / Agent X / Dr. J。",
     "agent_x_frags_label": "Agent X 碎片",
@@ -345,7 +345,7 @@
     "turret_mode_duplicate_label": "最强兵种翻倍",
     "turret_mode_duplicate_hint": "最常见兵种占 2 座炮塔，其他各 1 座。",
     "turret_mode_mixed_label": "第 4 座炮塔混合",
-    "turret_mode_mixed_hint": "3 座纯一兵种，第 4 座 = 剩余。",
+    "turret_mode_mixed_hint": "3 个 turret 单 type (N=fighter, E=shooter, S=rider)。第 4 个 turret W 留空供手动 captain 选择放置。",
     "turret_mode_manual_label": "手动",
     "turret_mode_manual_hint": "所有玩家都进 Unassigned。",
     "home_server_label": "主服务器",
@@ -386,7 +386,8 @@
     "success_awards_link": "Awards 链接（也是 planner-gated）",
     "success_open_button": "打开",
     "success_copy_title": "复制到剪贴板",
-    "success_copy_short_title": "复制短链接 (聊天友好)"
+    "success_copy_short_title": "复制短链接 (聊天友好)",
+    "foreign_targets_warning": "WK 战术：Hit-Squad 集中攻击最弱的对方 state。把 top-might 分散到多个目标常常使攻击力低于拿下任何 Hub 所需的门槛 — 一次失败的 take 会让自家 Hub 失去自动护盾。"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

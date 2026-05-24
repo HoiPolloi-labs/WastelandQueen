@@ -200,7 +200,7 @@ export const KILL_POINTS: Record<TroopTier, number> = {
   10: 60,
   11: 80,
   12: 100,
-  13: 125, // extrapolated — pnsdme chart only goes to T12; adjust when official figure surfaces
+  13: 120, // extrapolated — pnsdme chart only goes to T12; the T11→T12 jump is +20 so a linear extrapolation lands at 120, not 125. Adjust when the official figure surfaces.
 }
 
 export const DEATH_POINTS: Record<TroopTier, number> = {
@@ -216,7 +216,7 @@ export const DEATH_POINTS: Record<TroopTier, number> = {
   10: 60,
   11: 80,
   12: 100,
-  13: 125, // extrapolated — same caveat as KILL_POINTS[13]
+  13: 120, // extrapolated — same caveat as KILL_POINTS[13], linear from the T11→T12 +20 step.
 }
 
 export const OCCUPATION_CAP_POINTS = 2000

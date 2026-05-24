@@ -177,4 +177,16 @@ describe('computeAwardCandidates', () => {
     const r = computeAwardCandidates([unknown], [], baseEvent)
     expect(r[0]!.attendedBonus).toBe(0)
   })
+
+  it('malformed submitted_at falls back to 0 earlyBonus (no NaN propagation)', () => {
+    // Regression for the code-review NaN-guard fix: a bad date used to
+    // propagate NaN through the score and break the sort ordering.
+    const broken = makeSignup({
+      attended: true,
+      submitted_at: 'not-a-date',
+    })
+    const r = computeAwardCandidates([broken], [], baseEvent)
+    expect(r[0]!.earlyBonus).toBe(0)
+    expect(Number.isFinite(r[0]!.score)).toBe(true)
+  })
 })
