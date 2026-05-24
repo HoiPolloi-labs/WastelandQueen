@@ -133,11 +133,17 @@ export function useAssignments(eventId: string | undefined) {
   const applyDraft = useCallback(
     async (drafts: DraftAssignment[]) => {
       if (!eventId) return
-      // Clear existing assignments for the event, then bulk insert.
+      // FUNCTIONAL fix: Auto-Sort never emits `mud` or `hit-squad` rows
+      // (both are explicit planner decisions per WK domain). Previously we
+      // deleted ALL assignments for the event before insert, which silently
+      // wiped manual mud-sitter placements and per-state Hit-Squad buckets
+      // every time the planner clicked Auto-Sort. Restrict the delete to
+      // buildings the algorithm actually replaces.
       const { error: delErr } = await supabase
         .from('assignments')
         .delete()
         .eq('event_id', eventId)
+        .not('building', 'in', '(mud,hit-squad)')
       if (delErr) {
         setError(delErr.message)
         return

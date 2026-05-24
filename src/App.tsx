@@ -56,17 +56,21 @@ export default function App() {
     <div className="flex h-full flex-col">
       {!isPublic && (
         <header className="border-b border-zinc-800 bg-zinc-900/60 backdrop-blur">
-          <div className="mx-auto flex max-w-7xl items-center gap-6 px-4 py-3">
-            <NavLink to="/" className="flex items-center gap-2 text-yellow-400">
+          {/* UX-FIX: shrink gap + collapse nav label visibility on <sm so the
+              brand + 3 NavLinks + LanguageSwitcher don't overflow the 375px
+              viewport. Icons stay visible (and are big enough for tap),
+              labels hide. */}
+          <div className="mx-auto flex max-w-7xl items-center gap-2 px-3 py-3 sm:gap-6 sm:px-4">
+            <NavLink to="/" className="flex items-center gap-2 text-yellow-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 rounded">
               <Crown className="h-5 w-5" />
-              <span className="font-semibold tracking-wide">Wasteland Queen</span>
+              <span className="hidden font-semibold tracking-wide sm:inline">Wasteland Queen</span>
             </NavLink>
             <nav className="flex gap-1">
               <NavLink
                 to="/plan/new"
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-2 rounded px-3 py-1.5 text-sm transition',
+                    'flex items-center gap-2 rounded px-2 py-1.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 sm:px-3',
                     isActive
                       ? 'bg-zinc-800 text-zinc-50'
                       : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
@@ -74,14 +78,14 @@ export default function App() {
                 }
               >
                 <Plus className="h-4 w-4" />
-                {t('nav.new_event')}
+                <span className="hidden sm:inline">{t('nav.new_event')}</span>
               </NavLink>
               <NavLink
                 to="/plan"
                 end
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-2 rounded px-3 py-1.5 text-sm transition',
+                    'flex items-center gap-2 rounded px-2 py-1.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 sm:px-3',
                     isActive
                       ? 'bg-zinc-800 text-zinc-50'
                       : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
@@ -89,13 +93,13 @@ export default function App() {
                 }
               >
                 <ClipboardList className="h-4 w-4" />
-                {t('nav.planner')}
+                <span className="hidden sm:inline">{t('nav.planner')}</span>
               </NavLink>
               <NavLink
                 to="/cheat-sheet"
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-2 rounded px-3 py-1.5 text-sm transition',
+                    'flex items-center gap-2 rounded px-2 py-1.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 sm:px-3',
                     isActive
                       ? 'bg-zinc-800 text-zinc-50'
                       : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
@@ -103,7 +107,7 @@ export default function App() {
                 }
               >
                 <BookOpen className="h-4 w-4" />
-                {t('nav.cheat_sheet')}
+                <span className="hidden sm:inline">{t('nav.cheat_sheet')}</span>
               </NavLink>
             </nav>
             <div className="ml-auto">
