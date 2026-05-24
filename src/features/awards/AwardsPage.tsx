@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router'
 import {
   Loader2,
@@ -73,19 +73,28 @@ export function AwardsPage() {
     )
   }
 
+  // CODE-REVIEW fix: wrap async writes in try/finally so any DB throw
+  // releases setBusy. Previously a transient error stranded the toolbar
+  // in busy state forever.
   const updateSignup = async (id: string, patch: Partial<Signup>) => {
     setBusy(true)
-    await supabase.from('signups').update(patch).eq('id', id)
-    await refreshSignups()
-    setBusy(false)
+    try {
+      await supabase.from('signups').update(patch).eq('id', id)
+      await refreshSignups()
+    } finally {
+      setBusy(false)
+    }
   }
 
   const updateEvent = async (patch: Partial<EventConfig>) => {
     if (!event) return
     setBusy(true)
-    await supabase.from('events').update(patch).eq('id', event.id)
-    await refreshEvent()
-    setBusy(false)
+    try {
+      await supabase.from('events').update(patch).eq('id', event.id)
+      await refreshEvent()
+    } finally {
+      setBusy(false)
+    }
   }
 
   const assignedByTier: Record<BoxTier, number> = {
@@ -101,39 +110,45 @@ export function AwardsPage() {
   const autoAssign = async () => {
     if (!confirm(t('awards.confirm_autoassign'))) return
     setBusy(true)
-    // top-N nach Score in jede Tier-Klasse, Reihenfolge king > rulers > loyalty > contribution
-    // No-Shows (attended === false) bekommen nie einen Award.
-    const eligible = candidates.filter((c) => c.signup.attended !== false)
-    const ineligible = candidates.filter((c) => c.signup.attended === false)
+    try {
+      // top-N by score per tier, order king > rulers > loyalty > contribution.
+      // No-shows (attended === false) are never awarded.
+      const eligible = candidates.filter((c) => c.signup.attended !== false)
+      const ineligible = candidates.filter((c) => c.signup.attended === false)
 
-    const updates: { id: string; tier: BoxTier | null }[] = [
-      ...eligible.map((c) => ({ id: c.signup.id, tier: null as BoxTier | null })),
-      ...ineligible.map((c) => ({ id: c.signup.id, tier: null as BoxTier | null })),
-    ]
-    let cursor = 0
-    for (const tier of TIER_ORDER) {
-      for (let i = 0; i < counts[tier] && cursor < eligible.length; i++, cursor++) {
-        updates[cursor]!.tier = tier
+      const updates: { id: string; tier: BoxTier | null }[] = [
+        ...eligible.map((c) => ({ id: c.signup.id, tier: null as BoxTier | null })),
+        ...ineligible.map((c) => ({ id: c.signup.id, tier: null as BoxTier | null })),
+      ]
+      let cursor = 0
+      for (const tier of TIER_ORDER) {
+        for (let i = 0; i < counts[tier] && cursor < eligible.length; i++, cursor++) {
+          updates[cursor]!.tier = tier
+        }
       }
+      await Promise.all(
+        updates.map((u) =>
+          supabase.from('signups').update({ box_tier: u.tier }).eq('id', u.id),
+        ),
+      )
+      await refreshSignups()
+    } finally {
+      setBusy(false)
     }
-    await Promise.all(
-      updates.map((u) =>
-        supabase.from('signups').update({ box_tier: u.tier }).eq('id', u.id),
-      ),
-    )
-    await refreshSignups()
-    setBusy(false)
   }
 
   const clearAll = async () => {
     if (!confirm(t('awards.confirm_clear_all'))) return
     setBusy(true)
-    await supabase
-      .from('signups')
-      .update({ box_tier: null })
-      .eq('event_id', event.id)
-    await refreshSignups()
-    setBusy(false)
+    try {
+      await supabase
+        .from('signups')
+        .update({ box_tier: null })
+        .eq('event_id', event.id)
+      await refreshSignups()
+    } finally {
+      setBusy(false)
+    }
   }
 
   const exportMarkdown = () => {
@@ -420,8 +435,20 @@ function PointInput({
   step?: number
 }) {
   const [local, setLocal] = useState(String(value))
+  // CODE-REVIEW fix: sync the local edit-buffer when the prop changes from
+  // outside (realtime update, another tab's edit). Previously the value
+  // initialised once and stale-locked until the input was focused.
+  // Guard against clobbering the user's mid-edit by only re-syncing when
+  // the input isn't currently focused.
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  useEffect(() => {
+    if (document.activeElement !== inputRef.current) {
+      setLocal(String(value))
+    }
+  }, [value])
   return (
     <Input
+      ref={inputRef}
       type="number"
       inputMode="numeric"
       min={0}

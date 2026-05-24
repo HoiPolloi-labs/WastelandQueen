@@ -320,7 +320,7 @@
     "start_label": "開始 (UTC)",
     "end_label": "終了 (UTC)",
     "optional_hint": "オプション",
-    "no_terms_planner": "NAP条件なし — + Addで最初のものを追加。",
+    "no_terms_planner": "まだ NAP エントリなし — + {{add}} で最初のエントリを追加。",
     "no_terms_default": "記録されたNAP条件なし。",
     "confirm_delete": "{{state}}に対するNAPを削除しますか?",
     "window_range": "{{start}} → {{end}} UTC",

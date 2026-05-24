@@ -320,7 +320,7 @@
     "start_label": "Başlangıç (UTC)",
     "end_label": "Bitiş (UTC)",
     "optional_hint": "Opsiyonel",
-    "no_terms_planner": "Henüz NAP şartı yok — + Add ile ilkini ekle.",
+    "no_terms_planner": "Henüz NAP girişi yok — ilkini + {{add}} ile ekle.",
     "no_terms_default": "Kayıtlı NAP şartı yok.",
     "confirm_delete": "{{state}}'e karşı NAP silinsin mi?",
     "window_range": "{{start}} → {{end}} UTC",

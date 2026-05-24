@@ -320,7 +320,7 @@
     "start_label": "Inicio (UTC)",
     "end_label": "Fin (UTC)",
     "optional_hint": "Opcional",
-    "no_terms_planner": "Aún no hay términos NAP — añade el primero con + Añadir.",
+    "no_terms_planner": "No hay términos NAP aún — añade el primero con + {{add}}.",
     "no_terms_default": "No hay términos NAP registrados.",
     "confirm_delete": "¿Eliminar NAP vs {{state}}?",
     "window_range": "{{start}} → {{end}} UTC",

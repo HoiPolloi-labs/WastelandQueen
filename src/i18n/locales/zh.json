@@ -320,7 +320,7 @@
     "start_label": "开始 (UTC)",
     "end_label": "结束 (UTC)",
     "optional_hint": "可选",
-    "no_terms_planner": "暂无 NAP 条款 — 用 + Add 添加第一个。",
+    "no_terms_planner": "尚无 NAP 条目 — 通过 + {{add}} 添加第一条。",
     "no_terms_default": "未记录 NAP 条款。",
     "confirm_delete": "删除对 {{state}} 的 NAP？",
     "window_range": "{{start}} → {{end}} UTC",

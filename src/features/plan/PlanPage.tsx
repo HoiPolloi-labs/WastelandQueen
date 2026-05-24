@@ -56,7 +56,7 @@ import { EventPicker } from '@/features/event/EventPicker'
 
 export function PlanPage() {
   const { t } = useTranslation()
-  const { eventId } = useParams<{ eventId: string }>()
+  const { eventId, token: plannerToken } = useParams<{ eventId: string; token: string }>()
   const navigate = useNavigate()
   const { event, loading: eventLoading, refresh: refreshEvent } = useEvent(eventId)
   const { signups, refresh: refreshSignups } = useSignups(eventId)
@@ -283,7 +283,7 @@ export function PlanPage() {
             <ExternalLink className="h-3 w-3" />
           </Button>
         </a>
-        <Link to={`/awards/${event.id}/${event.planner_token}`}>
+        <Link to={`/awards/${event.id}/${plannerToken ?? ''}`}>
           <Button variant="secondary" size="sm">
             <Trophy className="h-3.5 w-3.5" />
             {t('plan.awards_button')}

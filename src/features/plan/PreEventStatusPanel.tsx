@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ClipboardCheck, FileText, Check, Send, Loader2, ShieldAlert } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Button } from '@/components/ui/Button'
-import type { Assignment, ChecklistKey, Signup } from '@/types/wk'
+import { CHECKLIST_KEYS, type Assignment, type ChecklistKey, type Signup } from '@/types/wk'
 import {
   computePreEventGaps,
   formatPreEventReminder,
@@ -115,7 +115,7 @@ export function PreEventStatusPanel({ eventId, signups, assignments }: PreEventS
                   <span className="ml-1 text-zinc-500">[{g.signup.alliance_tag}]</span>
                 </span>
                 <span className="flex flex-shrink-0 gap-0.5">
-                  {(['taxis', 'speedups', 'heroes', 'shield'] as ChecklistKey[]).map((k) => {
+                  {CHECKLIST_KEYS.map((k) => {
                     const missing = g.missing.includes(k)
                     const tooltip = `${t(`preevent.item_tooltip_${k}` as 'preevent.item_tooltip_taxis')} — ${
                       missing

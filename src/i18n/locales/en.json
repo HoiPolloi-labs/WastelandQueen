@@ -320,7 +320,7 @@
     "start_label": "Start (UTC)",
     "end_label": "End (UTC)",
     "optional_hint": "Optional",
-    "no_terms_planner": "No NAP terms yet — add the first via + Add.",
+    "no_terms_planner": "No NAP terms yet — add the first via + {{add}}.",
     "no_terms_default": "No NAP terms recorded.",
     "confirm_delete": "Delete NAP vs {{state}}?",
     "window_range": "{{start}} → {{end}} UTC",

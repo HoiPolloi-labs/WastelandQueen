@@ -21,14 +21,12 @@ import {
   parseShiftPref,
   serializeShiftPref,
   type Checklist,
-  type ChecklistKey,
   type ShiftNumber,
   type Signup,
   type TroopTier,
   type TroopType,
+  CHECKLIST_KEYS,
 } from '@/types/wk'
-
-const CHECKLIST_KEYS: ChecklistKey[] = ['taxis', 'speedups', 'heroes', 'shield']
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'withdrawn'
 

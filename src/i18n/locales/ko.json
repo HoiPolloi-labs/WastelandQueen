@@ -320,7 +320,7 @@
     "start_label": "시작 (UTC)",
     "end_label": "종료 (UTC)",
     "optional_hint": "선택사항",
-    "no_terms_planner": "아직 NAP 조건 없음 — + Add로 첫 번째 추가.",
+    "no_terms_planner": "아직 NAP 항목 없음 — + {{add}}로 첫 항목 추가.",
     "no_terms_default": "기록된 NAP 조건 없음.",
     "confirm_delete": "{{state}}에 대한 NAP를 삭제하시겠습니까?",
     "window_range": "{{start}} → {{end}} UTC",

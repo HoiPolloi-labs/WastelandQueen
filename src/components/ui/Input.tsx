@@ -1,13 +1,16 @@
 import { cn } from '@/lib/cn'
-import type { InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
+import type { InputHTMLAttributes, Ref, TextareaHTMLAttributes } from 'react'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
   hint?: string
   error?: string
+  /** React 19 ref-as-prop. Callers that need direct DOM access (focus
+   *  detection, scrollIntoView, etc.) pass a ref through. */
+  ref?: Ref<HTMLInputElement>
 }
 
-export function Input({ label, hint, error, className, id, ...rest }: InputProps) {
+export function Input({ label, hint, error, className, id, ref, ...rest }: InputProps) {
   return (
     <label className="block">
       {label && (
@@ -15,6 +18,7 @@ export function Input({ label, hint, error, className, id, ...rest }: InputProps
       )}
       <input
         id={id}
+        ref={ref}
         {...rest}
         className={cn(
           'w-full rounded border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100 placeholder:text-zinc-600 focus:border-yellow-500 focus:outline-none focus:ring-1 focus:ring-yellow-500',

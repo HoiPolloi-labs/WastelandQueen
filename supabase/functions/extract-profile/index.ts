@@ -188,8 +188,10 @@ Deno.serve(async (req: Request) => {
     }
 
     // Mark the rate-limit row as successful (best-effort, ignore errors).
+    // SECURITY: encodeURIComponent on signup_token so a crafted token can't
+    // inject extra PostgREST query params and corrupt log rows.
     await fetch(
-      `${SUPABASE_URL}/rest/v1/extraction_log?signup_token=eq.${body.signup_token}&order=called_at.desc&limit=1`,
+      `${SUPABASE_URL}/rest/v1/extraction_log?signup_token=eq.${encodeURIComponent(body.signup_token)}&order=called_at.desc&limit=1`,
       {
         method: 'PATCH',
         headers: {
@@ -209,7 +211,10 @@ Deno.serve(async (req: Request) => {
       model: MODEL,
     }, 200)
   } catch (e) {
-    return json({ error: 'exception', message: (e as Error).message }, 500)
+    // SECURITY: log full stack server-side, return sanitized error to client
+    // so we don't leak file paths / internal stack traces.
+    console.error('extract-profile exception:', e)
+    return json({ error: 'exception' }, 500)
   }
 })
 

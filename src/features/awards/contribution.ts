@@ -25,6 +25,9 @@ const W_POINTS_DIVISOR = 100 // 10,000 personal points → 100 score
 function earlySignupBonus(submittedAt: string, startsAtUtc: string): number {
   const submitted = new Date(submittedAt).getTime()
   const starts = new Date(startsAtUtc).getTime()
+  // CODE-REVIEW fix: guard against a bad/missing date (legacy row, manual
+  // edit). Without this NaN propagated into the score and broke the sort.
+  if (Number.isNaN(submitted) || Number.isNaN(starts)) return 0
   const hoursAhead = (starts - submitted) / 36e5
   if (hoursAhead <= 0) return 0
   const days = hoursAhead / 24

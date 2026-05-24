@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { Assignment, ShiftNumber } from '@/types/wk'
 import type { DraftAssignment } from './auto-sort'
@@ -7,15 +7,25 @@ export function useAssignments(eventId: string | undefined) {
   const [assignments, setAssignments] = useState<Assignment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const eventIdRef = useRef(eventId)
+  eventIdRef.current = eventId
 
   const refresh = useCallback(async () => {
     if (!eventId) return
+    const requestedFor = eventId
     const { data, error } = await supabase
       .from('assignments')
       .select('*')
       .eq('event_id', eventId)
       .order('position', { ascending: true })
-    if (error) setError(error.message)
+    // CODE-REVIEW fix: drop late responses from a previous event and keep
+    // prior state on transient errors so the planner doesn't visibly lose
+    // its plaza layout on every realtime burst.
+    if (eventIdRef.current !== requestedFor) return
+    if (error) {
+      setError(error.message)
+      return
+    }
     setAssignments((data ?? []) as Assignment[])
   }, [eventId])
 
@@ -24,8 +34,11 @@ export function useAssignments(eventId: string | undefined) {
       setLoading(false)
       return
     }
+    let cancelled = false
     setLoading(true)
-    refresh().finally(() => setLoading(false))
+    refresh().finally(() => {
+      if (!cancelled) setLoading(false)
+    })
 
     const channel = supabase
       .channel(`assignments:${eventId}`)
@@ -33,12 +46,13 @@ export function useAssignments(eventId: string | undefined) {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'assignments', filter: `event_id=eq.${eventId}` },
         () => {
-          void refresh()
+          if (!cancelled) void refresh()
         },
       )
       .subscribe()
 
     return () => {
+      cancelled = true
       void supabase.removeChannel(channel)
     }
   }, [eventId, refresh])

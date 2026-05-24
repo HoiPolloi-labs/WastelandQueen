@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { NapStatus, NapTerm } from '@/types/wk'
 
@@ -6,15 +6,24 @@ export function useNapTerms(eventId: string | undefined) {
   const [terms, setTerms] = useState<NapTerm[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const eventIdRef = useRef(eventId)
+  eventIdRef.current = eventId
 
   const refresh = useCallback(async () => {
     if (!eventId) return
+    const requestedFor = eventId
     const { data, error } = await supabase
       .from('nap_terms')
       .select('*')
       .eq('event_id', eventId)
       .order('created_at', { ascending: true })
-    if (error) setError(error.message)
+    // CODE-REVIEW fix: discard late responses on event switch + keep prior
+    // state on transient errors instead of flashing an empty NAP list.
+    if (eventIdRef.current !== requestedFor) return
+    if (error) {
+      setError(error.message)
+      return
+    }
     setTerms((data ?? []) as NapTerm[])
   }, [eventId])
 
@@ -23,8 +32,11 @@ export function useNapTerms(eventId: string | undefined) {
       setLoading(false)
       return
     }
+    let cancelled = false
     setLoading(true)
-    refresh().finally(() => setLoading(false))
+    refresh().finally(() => {
+      if (!cancelled) setLoading(false)
+    })
 
     const channel = supabase
       .channel(`nap:${eventId}`)
@@ -32,12 +44,13 @@ export function useNapTerms(eventId: string | undefined) {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'nap_terms', filter: `event_id=eq.${eventId}` },
         () => {
-          void refresh()
+          if (!cancelled) void refresh()
         },
       )
       .subscribe()
 
     return () => {
+      cancelled = true
       void supabase.removeChannel(channel)
     }
   }, [eventId, refresh])

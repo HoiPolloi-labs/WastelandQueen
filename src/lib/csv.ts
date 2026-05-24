@@ -85,13 +85,30 @@ export function parseCSV(input: string): string[][] {
 
 const NEEDS_QUOTING = /[",\r\n]/
 
+/**
+ * SECURITY: Excel / Google Sheets / Numbers treat cells starting with
+ * `=` `+` `-` `@` (and tab/cr) as formulas. A roster row crafted via the
+ * signup form like `ign = '=HYPERLINK("https://evil.tld")'` would fire
+ * the moment the planner opens the export. Prefix a single quote so the
+ * spreadsheet renders the literal text. Per OWASP CSV-Injection guidance.
+ */
+const FORMULA_INJECTION_LEAD = /^[=+\-@\t\r]/
+
+export function escapeFormula(s: string): string {
+  return FORMULA_INJECTION_LEAD.test(s) ? `'${s}` : s
+}
+
 export function stringifyCSV(rows: (string | number | boolean | null | undefined)[][]): string {
   return rows
     .map((row) =>
       row
         .map((cell) => {
           if (cell == null) return ''
-          const s = String(cell)
+          // Numbers + booleans are safe — they can't lead with =/+/-/@.
+          if (typeof cell === 'number' || typeof cell === 'boolean') {
+            return String(cell)
+          }
+          const s = escapeFormula(String(cell))
           if (NEEDS_QUOTING.test(s)) return `"${s.replace(/"/g, '""')}"`
           return s
         })

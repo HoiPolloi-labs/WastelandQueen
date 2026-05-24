@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Download, Upload, Loader2, X, AlertTriangle, Check } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { parseCSV, stringifyCSV } from '@/lib/csv'
+import { parseCSV, stringifyCSV, escapeFormula } from '@/lib/csv'
 import { Button } from '@/components/ui/Button'
 import { signupSchema } from '@/features/signup/signup-schema'
 import type { Signup } from '@/types/wk'
@@ -71,20 +71,26 @@ export function RosterImportExport({
 
   const buildRows = (): (string | number | boolean | null)[][] => {
     const rows: (string | number | boolean | null)[][] = [headers as unknown as string[]]
+    // SECURITY: any free-text field controlled by a signup (ign, alliance_tag,
+    // server, planner_notes) goes through escapeFormula so Excel/Sheets render
+    // a leading =/+/-/@ as literal text instead of executing it as a formula
+    // when the planner opens the export. Numbers + booleans + the enum-like
+    // troop_type don't need it (can't lead with those chars).
+    const safe = (v: string | null) => (v == null ? null : escapeFormula(v))
     for (const s of signups) {
       const base: (string | number | boolean | null)[] = [
-        s.ign,
-        s.alliance_tag,
-        s.server,
+        safe(s.ign),
+        safe(s.alliance_tag),
+        safe(s.server),
         s.tier,
         s.troop_type,
         s.max_solo_lair,
         s.rally_size,
         s.true_might,
         s.willing_captain,
-        s.shift_pref,
+        safe(s.shift_pref),
         s.state_alliance_joined,
-        s.planner_notes,
+        safe(s.planner_notes),
       ]
       if (heroesEnabled) {
         base.push(s.agent_x_frags, s.dr_j_frags, s.nataly_frags)

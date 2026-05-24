@@ -1,5 +1,5 @@
 import { Navigate, useParams, Link } from 'react-router'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 import { LinkIcon, ShieldX } from 'lucide-react'
 
 type Kind = 'plan' | 'signup' | 'board' | 'awards'
@@ -33,12 +33,18 @@ export function LegacyTokenlessURL({ kind }: { kind: Kind }) {
       <h2 className="mb-2 text-lg font-semibold text-zinc-100">
         {t('legacy_url.title', { kind: kindLabel })}
       </h2>
-      <p
-        className="mb-4 text-sm text-zinc-400"
-        dangerouslySetInnerHTML={{
-          __html: t('legacy_url.body', { kind, eventId }),
-        }}
-      />
+      {/* SECURITY: was previously `dangerouslySetInnerHTML` + i18n with
+          `escapeValue:false`, which let a crafted `eventId` URL param land
+          arbitrary HTML/script in the app origin. `<Trans>` interpolates
+          values as React text children (auto-escaped) while still letting
+          the translation embed a `<code>` tag for styling. */}
+      <p className="mb-4 text-sm text-zinc-400">
+        <Trans
+          i18nKey="legacy_url.body"
+          values={{ kind, eventId }}
+          components={{ code: <code className="rounded bg-zinc-900 px-1 py-0.5 font-mono text-[11px] text-yellow-300" /> }}
+        />
+      </p>
       <p className="mb-2 flex items-center justify-center gap-1.5 text-xs text-zinc-500">
         <LinkIcon className="h-3 w-3" />
         {t('legacy_url.ask_planner', { kind: kindLabel })}
