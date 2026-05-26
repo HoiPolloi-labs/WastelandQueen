@@ -296,9 +296,9 @@
     "title": "Atanmamış · Vardiya {{shift}}",
     "search_placeholder": "IGN/Tag ara",
     "filter_all": "Hepsi",
-    "filter_fighter": "Fight",
-    "filter_shooter": "Shoot",
-    "filter_rider": "Ride",
+    "filter_fighter": "Fighter",
+    "filter_shooter": "Shooter",
+    "filter_rider": "Rider",
     "tag_filter_all": "HEPSİ",
     "all_distributed": "Tüm oyuncular dağıtıldı"
   },

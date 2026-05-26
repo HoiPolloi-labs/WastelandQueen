@@ -165,8 +165,9 @@ Suites:
   Mudsit-shield gaps, reminder formats
 - `src/lib/csv.test.ts` — RFC4180 quoting, BOM, trailing-empty-row dropping
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
+- `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
 
-Current total: **133 tests** across 10 suites, full pipeline green
+Current total: **143 tests** across 11 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
@@ -202,6 +203,14 @@ Per-event tokens + JWT-claim RLS. Each event row has three uuid tokens
 JWT via the `token-exchange` Edge Function; `supabase.ts` injects the JWT
 into REST + Realtime via `accessToken()`. RLS policies key off
 `event_id_claim()` and `event_role_claim()` helper functions.
+
+**JWT auto-refresh.** `EventAuthGate` schedules a re-mint 5 minutes before
+`exp` and also re-mints on `visibilitychange` if the last mint was >5min
+ago — Chrome throttles `setTimeout` in background tabs and may not fire it
+at all if the OS suspends the tab. Without this, planner tabs left open
+>24h would silently drift past `exp` and 401 every write while the new
+optimistic-rollback would mask the cause (chip animates to new slot,
+snaps back — pre-fix DnD-broken bug report of 2026-05-26).
 
 - **anon insert** on `events` is allowed (via `create_event` RPC — see below).
 - **planner role**: full CRUD on event + signups + assignments + nap_terms.

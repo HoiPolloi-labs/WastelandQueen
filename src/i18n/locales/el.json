@@ -296,9 +296,9 @@
     "title": "Μη ανατεθειμένοι · Βάρδια {{shift}}",
     "search_placeholder": "Αναζήτηση IGN/Tag",
     "filter_all": "Όλοι",
-    "filter_fighter": "Fight",
-    "filter_shooter": "Shoot",
-    "filter_rider": "Ride",
+    "filter_fighter": "Fighter",
+    "filter_shooter": "Shooter",
+    "filter_rider": "Rider",
     "tag_filter_all": "ΟΛΑ",
     "all_distributed": "Όλοι οι παίκτες ανατέθηκαν"
   },

@@ -296,9 +296,9 @@
     "title": "Не призначено · Зміна {{shift}}",
     "search_placeholder": "Пошук IGN/Tag",
     "filter_all": "Усі",
-    "filter_fighter": "Fight",
-    "filter_shooter": "Shoot",
-    "filter_rider": "Ride",
+    "filter_fighter": "Fighter",
+    "filter_shooter": "Shooter",
+    "filter_rider": "Rider",
     "tag_filter_all": "УСІ",
     "all_distributed": "Усі гравці розподілені"
   },

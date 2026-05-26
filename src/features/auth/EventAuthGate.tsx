@@ -27,6 +27,42 @@ export function useEventAuth(): AuthState {
   return useContext(AuthContext)
 }
 
+/**
+ * Decode the `exp` claim from a JWT without verifying the signature — we only
+ * need to know when to refresh, not whether it's authentic (PostgREST will
+ * reject anything we slip past). Returns ms-since-epoch, or 0 when the
+ * payload is malformed (callers treat 0 as "schedule a safety refresh soon").
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function decodeJwtExpMs(jwt: string): number {
+  try {
+    const parts = jwt.split('.')
+    if (parts.length !== 3) return 0
+    const raw = parts[1]!
+    const padded = raw + '=='.slice((raw.length + 2) % 4)
+    const json = atob(padded.replace(/-/g, '+').replace(/_/g, '/'))
+    const payload = JSON.parse(json) as { exp?: number }
+    return typeof payload.exp === 'number' ? payload.exp * 1000 : 0
+  } catch {
+    return 0
+  }
+}
+
+/**
+ * Compute the ms-delay until we should re-mint the JWT. Lead time is 5min
+ * before exp so writes initiated right before the cutoff still land with the
+ * old token. Floor is 60s — never busy-loop the Edge Function. If exp is
+ * unknown (0) or already past, also fall back to 60s so a stale tab gets a
+ * recovery chance instead of giving up.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function computeRefreshDelayMs(expMs: number, nowMs: number): number {
+  const LEAD_MS = 5 * 60 * 1000
+  const MIN_MS = 60 * 1000
+  if (expMs <= 0) return MIN_MS
+  return Math.max(MIN_MS, expMs - nowMs - LEAD_MS)
+}
+
 interface EventAuthGateProps {
   children: ReactNode
   requiredRole: EventRole | EventRole[]
@@ -39,6 +75,12 @@ interface EventAuthGateProps {
  *
  * The route is responsible for matching `/:eventId/:token` — the gate just
  * reads params. Wrong/missing token → 401 UI; insufficient role → 403 UI.
+ *
+ * Token refresh: the minted JWT lives 24h. A planner tab left open longer
+ * than that started 401-ing on every write (rollback masked the real cause
+ * — see migration of 2026-05-26). We now schedule a re-mint 5min before exp
+ * and also re-mint on tab-visibility-change if the last mint was >5min ago,
+ * since Chrome throttles setTimeout in background tabs hard.
  */
 export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
   const { eventId, token } = useParams<{ eventId: string; token: string }>()
@@ -63,9 +105,20 @@ export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
     }
 
     let cancelled = false
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null
+    let lastMintMs = 0
+    const VISIBILITY_REMINT_COOLDOWN_MS = 5 * 60 * 1000
     setState({ jwt: null, role: null, eventId, loading: true, error: null })
 
-    void (async () => {
+    const scheduleRefresh = (delayMs: number): void => {
+      if (refreshTimer) clearTimeout(refreshTimer)
+      refreshTimer = setTimeout(() => {
+        void mint(true)
+      }, delayMs)
+    }
+
+    const mint = async (isRefresh: boolean): Promise<void> => {
+      lastMintMs = Date.now()
       try {
         const res = await fetch(
           `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/token-exchange`,
@@ -81,6 +134,14 @@ export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
         const body = await res.json().catch(() => ({}))
         if (cancelled) return
         if (!res.ok) {
+          if (isRefresh) {
+            // Transient refresh failure: keep the existing JWT alive until
+            // its real exp, retry sooner. Don't tear the user out of their
+            // workflow over a flaky network blip.
+            console.warn('[EventAuthGate] refresh failed', res.status, body?.error)
+            scheduleRefresh(60_000)
+            return
+          }
           setState({
             jwt: null,
             role: null,
@@ -92,10 +153,16 @@ export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
         }
         const { jwt, role } = body as { jwt: string; role: EventRole }
         setEventSession(jwt)
-        localStorage.setItem(`tok:${role}:${eventId}`, token)
+        if (!isRefresh) localStorage.setItem(`tok:${role}:${eventId}`, token)
         setState({ jwt, role, eventId, loading: false, error: null })
+        scheduleRefresh(computeRefreshDelayMs(decodeJwtExpMs(jwt), Date.now()))
       } catch (e) {
         if (cancelled) return
+        if (isRefresh) {
+          console.warn('[EventAuthGate] refresh exception', (e as Error).message)
+          scheduleRefresh(60_000)
+          return
+        }
         setState({
           jwt: null,
           role: null,
@@ -104,10 +171,23 @@ export function EventAuthGate({ children, requiredRole }: EventAuthGateProps) {
           error: (e as Error).message,
         })
       }
-    })()
+    }
+
+    const onVisible = (): void => {
+      if (document.visibilityState !== 'visible' || cancelled) return
+      // Throttle: don't re-mint more than once per 5min from visibility
+      // changes alone — the scheduled timer is still the primary path.
+      if (Date.now() - lastMintMs < VISIBILITY_REMINT_COOLDOWN_MS) return
+      void mint(true)
+    }
+    document.addEventListener('visibilitychange', onVisible)
+
+    void mint(false)
 
     return () => {
       cancelled = true
+      if (refreshTimer) clearTimeout(refreshTimer)
+      document.removeEventListener('visibilitychange', onVisible)
       clearEventSession()
     }
   }, [eventId, token])

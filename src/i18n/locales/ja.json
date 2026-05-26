@@ -296,9 +296,9 @@
     "title": "未割当 · シフト{{shift}}",
     "search_placeholder": "IGN/Tag検索",
     "filter_all": "すべて",
-    "filter_fighter": "Fight",
-    "filter_shooter": "Shoot",
-    "filter_rider": "Ride",
+    "filter_fighter": "Fighter",
+    "filter_shooter": "Shooter",
+    "filter_rider": "Rider",
     "tag_filter_all": "すべて",
     "all_distributed": "全プレイヤー配置済み"
   },

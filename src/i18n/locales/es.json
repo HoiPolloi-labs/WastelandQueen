@@ -296,9 +296,9 @@
     "title": "Sin asignar · Turno {{shift}}",
     "search_placeholder": "Buscar IGN/Tag",
     "filter_all": "Todos",
-    "filter_fighter": "Fight",
-    "filter_shooter": "Shoot",
-    "filter_rider": "Ride",
+    "filter_fighter": "Fighter",
+    "filter_shooter": "Shooter",
+    "filter_rider": "Rider",
     "tag_filter_all": "TODOS",
     "all_distributed": "Todos los jugadores asignados"
   },
