@@ -154,4 +154,96 @@ describe('healthCheck', () => {
     expect(items[0]!.labelKey).toBe('health.pool_info')
     expect(items[0]!.labelParams).toEqual({ count: 1, shift: 1 })
   })
+
+  // Coverage backfill: previously uncovered ok/info branches
+  it('marks all-turrets-have-captains as ok when each of the 4 turrets has one', () => {
+    // Signal only fires when ALL four turrets (N/S/E/W) have a captain flag.
+    const items = healthCheck(
+      [
+        s({ id: 'hc', type: 'fighter', captain: true }),
+        s({ id: 'fc1', type: 'fighter', captain: true }),
+        s({ id: 'fc2', type: 'fighter', captain: true }),
+        s({ id: 'sc', type: 'shooter', captain: true }),
+        s({ id: 'rc', type: 'rider', captain: true }),
+      ],
+      [
+        a({ signupId: 'hc', building: 'hub', captain: true }),
+        a({ signupId: 'fc1', building: 'turret-n', captain: true }),
+        a({ signupId: 'fc2', building: 'turret-s', captain: true }),
+        a({ signupId: 'sc', building: 'turret-e', captain: true }),
+        a({ signupId: 'rc', building: 'turret-w', captain: true }),
+      ],
+      baseEvent,
+      1,
+    )
+    expect(items.some((i) => i.level === 'ok' && i.labelKey === 'health.all_turrets_have_captains')).toBe(true)
+  })
+
+  it('reports willing captains not yet assigned as info', () => {
+    const items = healthCheck(
+      [
+        s({ id: 'cap', type: 'fighter', captain: true }),
+        s({ id: 'spare', type: 'shooter', captain: true }),
+      ],
+      [a({ signupId: 'cap', building: 'hub', captain: true })],
+      baseEvent,
+      1,
+    )
+    expect(
+      items.some(
+        (i) => i.level === 'info' && i.labelKey === 'health.willing_captains_unassigned',
+      ),
+    ).toBe(true)
+  })
+
+  it('marks hit-squad coverage as ok when foreign targets have squad members', () => {
+    const ev: EventConfig = { ...baseEvent, foreign_targets: ['S850'] }
+    const items = healthCheck(
+      [
+        s({ id: 'cap', captain: true }),
+        s({ id: 'hs', type: 'fighter', captain: true }),
+      ],
+      [
+        a({ signupId: 'cap', building: 'hub', captain: true }),
+        a({ signupId: 'hs', building: 'hit-squad', captain: true }),
+      ],
+      ev,
+      1,
+    )
+    expect(
+      items.some((i) => i.level === 'ok' && i.labelKey === 'health.hit_squad_captains'),
+    ).toBe(true)
+  })
+
+  it('flags hub_defender_target shortfall (info when partial, warn when zero)', () => {
+    const ev: EventConfig = { ...baseEvent, hub_defender_target: 4 }
+    // Hub captain present + 2 defenders → info (partial)
+    const partial = healthCheck(
+      [
+        s({ id: 'cap', captain: true }),
+        s({ id: 'd1' }),
+        s({ id: 'd2' }),
+      ],
+      [
+        a({ signupId: 'cap', building: 'hub', captain: true }),
+        a({ signupId: 'd1', building: 'hub' }),
+        a({ signupId: 'd2', building: 'hub' }),
+      ],
+      ev,
+      1,
+    )
+    const partialItem = partial.find((i) => i.labelKey === 'health.hub_defenders')
+    expect(partialItem?.level).toBe('info')
+    expect(partialItem?.labelParams).toEqual({ count: 2, target: 4 })
+
+    // Hub captain only, 0 defenders → warn
+    const empty = healthCheck(
+      [s({ id: 'cap', captain: true })],
+      [a({ signupId: 'cap', building: 'hub', captain: true })],
+      ev,
+      1,
+    )
+    const emptyItem = empty.find((i) => i.labelKey === 'health.hub_defenders')
+    expect(emptyItem?.level).toBe('warn')
+  })
 })

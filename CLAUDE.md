@@ -168,8 +168,14 @@ Suites:
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 - `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
 
-Current total: **167 tests** across 11 suites, full pipeline green
+Current total: **175 tests** across 11 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
+Coverage (v8, `pnpm test:coverage`): **96.0% statements · 89.3% branches**
+on the pure-function scope. Untested residue is the supabase client
+setup (`src/lib/supabase.ts` — infra wiring, not domain) and a couple
+of by-construction-unreachable defensive branches in auto-sort's
+mixed-4th + mixedBucket spillover path. Pure functions are >94%
+across the board.
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
 (see `.env.example`).

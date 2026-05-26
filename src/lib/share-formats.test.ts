@@ -115,6 +115,22 @@ describe('formatPlazaAsText', () => {
     expect(out).toContain('  IronVeil [WQR] T11 R')
   })
 
+  it('formatRally renders sub-1M (kilo) and small values without crash', () => {
+    // Captain with 750k rally → "750k" in the header
+    const signups = [sig({ id: 'c1', ign: 'KiloCap', tier: 10, rally: 750_000 })]
+    const assignments = [asg({ signupId: 'c1', building: 'hub', captain: true })]
+    const out = formatPlazaAsText(baseEvent, signups, assignments, 1)
+    expect(out).toContain('R 750k')
+  })
+
+  it('renders "(no captain)" when a building has members but no captain', () => {
+    // Defender assigned to turret with no captain-flagged row
+    const signups = [sig({ id: 'def', ign: 'Lonely', tier: 11 })]
+    const assignments = [asg({ signupId: 'def', building: 'turret-n' })]
+    const out = formatPlazaAsText(baseEvent, signups, assignments, 1)
+    expect(out).toContain('N    (no captain)')
+  })
+
   it('annotates hit-squad with foreign targets', () => {
     const ev = { ...baseEvent, foreign_targets: ['S850', 'S612'] }
     const signups = [sig({ id: 'h1', ign: 'WhaleHit', tier: 13 })]

@@ -156,3 +156,17 @@ describe('formatMudsitReminder', () => {
     expect(text).toContain('  Whaler [WQR]')
   })
 })
+
+describe('computePreEventGaps tiebreaker', () => {
+  it('alphabetizes by IGN when missing-checklist counts tie', () => {
+    // All three players missing 2 items each (taxis + speedups) → sort
+    // falls back to alphabetical on IGN.
+    const checklist: Checklist = { taxis: false, speedups: false, heroes: true, shield: true }
+    const gaps = computePreEventGaps([
+      sig({ id: '1', ign: 'Zeta', checklist }),
+      sig({ id: '2', ign: 'Alpha', checklist }),
+      sig({ id: '3', ign: 'Mike', checklist }),
+    ])
+    expect(gaps.map((g) => g.signup.ign)).toEqual(['Alpha', 'Mike', 'Zeta'])
+  })
+})

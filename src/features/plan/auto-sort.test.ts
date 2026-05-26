@@ -523,6 +523,41 @@ describe('autoSort capacity mode', () => {
     expect(hub.filter((x) => !x.is_captain).map((x) => x.signup_id)).toEqual(['d1'])
   })
 
+  it('mixed-4th + capacity: per-type turrets respect their captain caps', () => {
+    // Mixed-4th gives each type its own pure turret (N=fighter, E=shooter,
+    // S=rider) and turret-W as the "captain's choice" overflow. In capacity
+    // mode each typed turret caps at its captain's rally.
+    const hubCap = s({ id: 'hubcap', type: 'fighter', rally: 3_000_000, captain: true })
+    const figCap = s({ id: 'fc', type: 'fighter', rally: 600_000, captain: true })
+    const shoCap = s({ id: 'sc', type: 'shooter', rally: 500_000, captain: true })
+    const ridCap = s({ id: 'rc', type: 'rider', rally: 400_000, captain: true })
+    const f1 = s({ id: 'f1', type: 'fighter', march: 200_000 })
+    const f2 = s({ id: 'f2', type: 'fighter', march: 200_000 })
+    const f3 = s({ id: 'f3', type: 'fighter', march: 200_000 })
+    const f4 = s({ id: 'f4', type: 'fighter', march: 200_000 })
+    const out = autoSort({
+      signups: [hubCap, figCap, shoCap, ridCap, f1, f2, f3, f4],
+      turretMode: 'mixed-4th',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    // Hub captain takes hubCap; same-type Hub defenders fill until 3M cap.
+    // figCap is a willing fighter captain — but might already be claimed
+    // by the turret-N captain assignment (depends on order). Either way,
+    // we want to verify the fighter turret has its captain + ≤ rally/march
+    // worth of defenders, with surplus → reserve.
+    const turretN = ['turret-n']
+      .flatMap((t) => at(out, t, 1))
+      .filter((d) => !d.is_captain)
+      .map((d) => d.signup_id)
+    // turret-N cap 600k → fits at most 3×200=600k worth of f1-f4 defenders
+    expect(turretN.length).toBeLessThanOrEqual(3)
+    // Ensure no f-prefix defender ended up on turret-W (mixed bucket) since
+    // every type has a pure turret in mixed-4th
+    const turretW = at(out, 'turret-w', 1).map((d) => d.signup_id)
+    expect(turretW.filter((id) => id.startsWith('f'))).toEqual([])
+  })
+
   it('Hub-captain with null rally_size in capacity mode admits no defenders', () => {
     // Documented behavior: missing rally → cap=0 → no defenders fit. Planner
     // sees Hub with captain only + same-type players in reserve, and has to
