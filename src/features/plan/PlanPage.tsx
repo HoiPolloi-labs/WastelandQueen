@@ -52,6 +52,7 @@ import { WebhookSettings } from './WebhookSettings'
 import { TokenRotation } from './TokenRotation'
 import { RosterImportExport } from './RosterImportExport'
 import { HeroesSettings } from './HeroesSettings'
+import { HubDefenderSettings } from './HubDefenderSettings'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
@@ -376,6 +377,7 @@ export function PlanPage() {
           <PreEventStatusPanel eventId={event.id} signups={signups} assignments={assignments} />
           <StatsSidebar shift={shift} signups={signups} />
           <NapPanel eventId={event.id} />
+          <HubDefenderSettings event={event} onChange={() => refreshEvent()} />
           <HeroesSettings event={event} onChange={() => refreshEvent()} />
           <WebhookSettings />
           <RosterImportExport
