@@ -499,6 +499,30 @@ describe('autoSort capacity mode', () => {
     expect(out).toHaveLength(2)
   })
 
+  it('captain-less turret in capacity mode rejects defenders to reserve', () => {
+    // Domain intent: a turret without a captain has no rally being run on
+    // it, so parking defenders there is meaningless. Capacity-mode cap=0
+    // for no-captain turrets correctly spills same-type leftovers to
+    // reserve instead. Non-capacity mode (`autoFillToCapacity: false`)
+    // keeps the legacy "fits unbounded" behavior — there the planner's
+    // ConflictBanner flags the captain-less turret separately.
+    //
+    // Setup: only a Hub captain (fighter), no willing-captain for any
+    // turret type. d1 is a same-type fighter that has nowhere to go.
+    const captain = s({ id: 'cap', type: 'fighter', rally: 1_000_000, captain: true })
+    const d1 = s({ id: 'd1', type: 'fighter', march: 200_000 })
+    const out = autoSort({
+      signups: [captain, d1],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    // d1 fits the Hub (200k ≤ 1M cap) so it lands there as defender,
+    // not on a captain-less turret. Verifies the Hub-first preference.
+    const hub = at(out, 'hub', 1)
+    expect(hub.filter((x) => !x.is_captain).map((x) => x.signup_id)).toEqual(['d1'])
+  })
+
   it('Hub-captain with null rally_size in capacity mode admits no defenders', () => {
     // Documented behavior: missing rally → cap=0 → no defenders fit. Planner
     // sees Hub with captain only + same-type players in reserve, and has to

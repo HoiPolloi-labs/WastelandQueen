@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Вмикає інвентар фрагментів у Signup + загальні суми по альянсу в Awards.",
     "heroes_settings_on": "увімкнено",
     "heroes_settings_off": "вимкнено",
-    "fill_mode_section": "Розподіл захисників",
+    "fill_mode_section": "Заповнення Auto-Sort",
     "fill_mode_fixed": "Фікс.",
     "fill_mode_capacity": "Ємність",
     "fill_mode_capacity_hint": "Хаб і кожна турель заповнюються, поки сума маршу приєднаних не сягне ліміту rally капітана. Надлишок → резерв.",

@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Signupでフラグメント在庫を有効化し、Awardsでアライアンス合計を表示します。",
     "heroes_settings_on": "オン",
     "heroes_settings_off": "オフ",
-    "fill_mode_section": "ディフェンダー配分",
+    "fill_mode_section": "Auto-Sort 配分",
     "fill_mode_fixed": "固定",
     "fill_mode_capacity": "容量",
     "fill_mode_capacity_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。",

@@ -258,7 +258,15 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
     const mixedBucket: Signup[] = []
 
     // Pre-compute per-turret capacity tracking (capacity mode only). Captains
-    // already in turretMembers[turret] don't subtract — they host.
+    // already in turretMembers[turret] don't subtract — they host the rally.
+    //
+    // Design intent for the cap=0 case (no captain at all on the turret —
+    // happens when there's no willing-captain of the type, or in mixed-4th
+    // mode where turret-W is captain-less by design): same-type leftovers
+    // get rejected to reserve. That's correct WK domain logic — without a
+    // captain there's no rally on that building to join, so parking a
+    // defender there in capacity mode would be theatre. Planner sees the
+    // gap in the reserve pool + the captain-less turret and decides.
     const turretCap: Record<Turret, number> = {
       'turret-n': 0,
       'turret-s': 0,

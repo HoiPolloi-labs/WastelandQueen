@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Abilita l'inventario frammenti nel Signup + totali alliance negli Awards.",
     "heroes_settings_on": "acceso",
     "heroes_settings_off": "spento",
-    "fill_mode_section": "Distribuzione difensori",
+    "fill_mode_section": "Riempimento Auto-Sort",
     "fill_mode_fixed": "Fissa",
     "fill_mode_capacity": "Capacità",
     "fill_mode_capacity_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva.",

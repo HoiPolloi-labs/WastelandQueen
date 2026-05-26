@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Active l'inventaire de fragments dans Signup + les totaux alliance dans Awards.",
     "heroes_settings_on": "activé",
     "heroes_settings_off": "désactivé",
-    "fill_mode_section": "Répartition défenseurs",
+    "fill_mode_section": "Remplissage Auto-Sort",
     "fill_mode_fixed": "Fixe",
     "fill_mode_capacity": "Capacité",
     "fill_mode_capacity_hint": "Le Hub et chaque tourelle se remplissent jusqu’à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve.",

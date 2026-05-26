@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Signup'ta parça envanterini ve Awards'ta alliance toplamlarını etkinleştirir.",
     "heroes_settings_on": "açık",
     "heroes_settings_off": "kapalı",
-    "fill_mode_section": "Savunmacı dağılımı",
+    "fill_mode_section": "Auto-Sort dolumu",
     "fill_mode_fixed": "Sabit",
     "fill_mode_capacity": "Kapasite",
     "fill_mode_capacity_hint": "Hub ve her kule, katılımcıların yürüyüş toplamı kaptanın rally üst sınırına ulaşana kadar dolar. Fazla → yedek.",

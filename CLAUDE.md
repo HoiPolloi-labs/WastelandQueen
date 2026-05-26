@@ -168,7 +168,7 @@ Suites:
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 - `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
 
-Current total: **166 tests** across 11 suites, full pipeline green
+Current total: **167 tests** across 11 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`

@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Enables fragment inventory in Signup + alliance totals in Awards.",
     "heroes_settings_on": "on",
     "heroes_settings_off": "off",
-    "fill_mode_section": "Defender allocation",
+    "fill_mode_section": "Auto-Sort fill",
     "fill_mode_fixed": "Fixed",
     "fill_mode_capacity": "Capacity",
     "fill_mode_capacity_hint": "Hub & each turret fill until joiners’ march totals reach the captain’s rally cap. Surplus → reserve.",

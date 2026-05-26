@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Включает инвентарь фрагментов в Signup + общие итоги по альянсу в Awards.",
     "heroes_settings_on": "вкл",
     "heroes_settings_off": "выкл",
-    "fill_mode_section": "Распределение защитников",
+    "fill_mode_section": "Заполнение Auto-Sort",
     "fill_mode_fixed": "Фикс.",
     "fill_mode_capacity": "Ёмкость",
     "fill_mode_capacity_hint": "Хаб и каждая турель заполняются, пока сумма марша присоединившихся не достигнет cap rally капитана. Излишки → резерв.",

@@ -35,6 +35,11 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
   const [draft, setDraft] = useState<number>(event.hub_defender_target)
   const [busy, setBusy] = useState(false)
   const [savedNote, setSavedNote] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
+
+  // currentMode is read by handlers below; declared early to make the
+  // dependency clear (closures captured it implicitly before).
+  const currentMode: FillMode = event.auto_fill_to_capacity ? 'capacity' : 'fixed'
 
   useEffect(() => {
     setDraft(event.hub_defender_target)
@@ -44,8 +49,13 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
 
   const persist = async (patch: Partial<EventConfig>) => {
     setBusy(true)
+    setSaveError(null)
     const { error } = await supabase.from('events').update(patch).eq('id', event.id)
-    if (!error) {
+    if (error) {
+      // Common cause: expired JWT (rare now that auto-refresh ships, but
+      // the planner shouldn't be left guessing why the toggle "flips back").
+      setSaveError(error.message)
+    } else {
       await onChange(patch)
       setSavedNote(true)
       setTimeout(() => setSavedNote(false), 1800)
@@ -63,8 +73,6 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
     if (mode === currentMode) return
     void persist({ auto_fill_to_capacity: mode === 'capacity' })
   }
-
-  const currentMode: FillMode = event.auto_fill_to_capacity ? 'capacity' : 'fixed'
 
   return (
     <section className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
@@ -99,6 +107,10 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
         {t('plan.fill_mode_rerun_hint')}
       </p>
 
+      {/* Reserve a stable min-height so the section doesn't visibly jump
+       *  ~50px when the user toggles between modes (slider+input vs hint
+       *  text only). 5.5rem ≈ 88px, matches fixed-mode content height. */}
+      <div className="min-h-[5.5rem]">
       {currentMode === 'fixed' ? (
         <>
           <div className="flex items-center gap-3">
@@ -138,6 +150,15 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
       ) : (
         <p className="text-[11px] text-zinc-400">{t('plan.fill_mode_capacity_hint')}</p>
       )}
+      </div>
+      {saveError ? (
+        <p
+          role="alert"
+          className="mt-2 rounded border border-red-500/40 bg-red-500/10 p-1.5 text-[11px] text-red-300"
+        >
+          {saveError}
+        </p>
+      ) : null}
     </section>
   )
 }

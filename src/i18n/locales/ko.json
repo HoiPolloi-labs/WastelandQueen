@@ -165,7 +165,7 @@
     "heroes_settings_hint": "Signup에서 조각 인벤토리를 활성화하고 Awards에서 연맹 합계를 표시합니다.",
     "heroes_settings_on": "켜짐",
     "heroes_settings_off": "꺼짐",
-    "fill_mode_section": "방어자 배치",
+    "fill_mode_section": "Auto-Sort 채우기",
     "fill_mode_fixed": "고정",
     "fill_mode_capacity": "용량",
     "fill_mode_capacity_hint": "Hub와 각 포탑은 합류자의 행군 합계가 captain의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비.",

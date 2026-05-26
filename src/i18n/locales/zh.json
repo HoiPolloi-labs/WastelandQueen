@@ -165,7 +165,7 @@
     "heroes_settings_hint": "在 Signup 中启用碎片库存 + 在 Awards 中显示联盟总数。",
     "heroes_settings_on": "开",
     "heroes_settings_off": "关",
-    "fill_mode_section": "防御者分配",
+    "fill_mode_section": "Auto-Sort 填充",
     "fill_mode_fixed": "固定",
     "fill_mode_capacity": "容量",
     "fill_mode_capacity_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。",
