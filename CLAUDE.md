@@ -80,6 +80,7 @@ src/
       HealthCheckPanel.tsx       # pre-event readiness signals per shift
       PreEventStatusPanel.tsx    # per-player checklist gaps + Copy/Send reminder + Mudsit-Check
       HeroesSettings.tsx         # planner-side toggle for event.heroes_enabled
+      HubDefenderSettings.tsx    # planner-side fill-mode switch (fixed/capacity) + Hub-defender-count slider
       HeroesContext.tsx          # context carrying heroes_enabled down to PlayerChip
       WebhookSettings.tsx        # Discord webhook URL via set_event_secret RPC
       TokenRotation.tsx          # rotate signup/planner/board tokens via RPC + navigate
@@ -119,7 +120,7 @@ src/
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0034_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0038_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
@@ -167,7 +168,7 @@ Suites:
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 - `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
 
-Current total: **156 tests** across 11 suites, full pipeline green
+Current total: **166 tests** across 11 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
@@ -405,8 +406,8 @@ mixing localized + English terms would be more confusing than helpful.
 Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
 + Awards + CheatSheet + HeroScene + PlayerChip tooltips + heroes feature
 + Discord-reminder buttons + point calculator. All 12 locales (en, de, ru,
-zh, ko, ja, it, tr, fr, uk, el, es) have the full **412-key** schema with
-zero gaps (~414 keys today). CI-style parity check:
+zh, ko, ja, it, tr, fr, uk, el, es) have the full **425-key** schema with
+zero gaps. CI-style parity check:
 
 ```
 node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"

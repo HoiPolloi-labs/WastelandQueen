@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Agent X parçaları",
     "dr_j_frags_label": "Dr. J parçaları",
     "nataly_frags_label": "Nataly parçaları",
-    "march_label": "Yürüyüş büyüklüğü",
+    "march_label": "Yürüyüş büyüklüğü (isteğe bağlı)",
     "march_placeholder": "örn. 350000",
     "march_hint": "Marş başına asker. İsteğe bağlı — kapasite-dolum Auto-Sort kullanır, boşsa rally size’a düşer."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "Savunmacı dağılımı",
     "fill_mode_fixed": "Sabit",
     "fill_mode_capacity": "Kapasite",
-    "fill_mode_capacity_hint": "Hub ve her kule, katılımcıların yürüyüş toplamı kaptanın rally üst sınırına ulaşana kadar dolar. Fazla → yedek."
+    "fill_mode_capacity_hint": "Hub ve her kule, katılımcıların yürüyüş toplamı kaptanın rally üst sınırına ulaşana kadar dolar. Fazla → yedek.",
+    "fill_mode_rerun_hint": "↻ Uygulamak için Auto-Sort yeniden çalıştırın."
   },
   "conflict": {
     "hub_empty": "Hub boş — captain yok",

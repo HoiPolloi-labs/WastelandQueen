@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Θραύσματα Agent X",
     "dr_j_frags_label": "Θραύσματα Dr. J",
     "nataly_frags_label": "Θραύσματα Nataly",
-    "march_label": "Μέγεθος πορείας",
+    "march_label": "Μέγεθος πορείας (προαιρετικό)",
     "march_placeholder": "π.χ. 350000",
     "march_hint": "Στρατεύματα ανά πορεία. Προαιρετικό — χρησιμοποιείται από Auto-Sort χωρητικότητας, επιστρέφει σε rally size αν κενό."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "Κατανομή αμυντικών",
     "fill_mode_fixed": "Σταθερό",
     "fill_mode_capacity": "Χωρητικότητα",
-    "fill_mode_capacity_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία."
+    "fill_mode_capacity_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία.",
+    "fill_mode_rerun_hint": "↻ Επανεκτελέστε το Auto-Sort για εφαρμογή."
   },
   "conflict": {
     "hub_empty": "Hub άδειο — χωρίς captain",

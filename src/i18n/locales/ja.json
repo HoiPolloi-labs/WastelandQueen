@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Agent Xフラグメント",
     "dr_j_frags_label": "Dr. Jフラグメント",
     "nataly_frags_label": "Natalyフラグメント",
-    "march_label": "行軍規模",
+    "march_label": "行軍規模（任意）",
     "march_placeholder": "例: 350000",
     "march_hint": "1回の行軍兵力。任意 — 容量埋め自動配分が使用、空の場合は rally size にフォールバック。"
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "ディフェンダー配分",
     "fill_mode_fixed": "固定",
     "fill_mode_capacity": "容量",
-    "fill_mode_capacity_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。"
+    "fill_mode_capacity_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。",
+    "fill_mode_rerun_hint": "↻ Auto-Sort を再実行して適用してください。"
   },
   "conflict": {
     "hub_empty": "Hub空 — captainなし",

@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Agent X Fragmente",
     "dr_j_frags_label": "Dr. J Fragmente",
     "nataly_frags_label": "Nataly Fragmente",
-    "march_label": "Marsch-Größe",
+    "march_label": "Marsch-Größe (optional)",
     "march_placeholder": "z.B. 350000",
     "march_hint": "Truppen pro Marsch. Optional — wird im Kapazitäts-Auto-Sort verwendet, fällt zurück auf Rally-Size wenn leer."
   },
@@ -165,10 +165,11 @@
     "heroes_settings_hint": "Aktiviert Fragment-Inventar im Signup + Alliance-Summen in den Awards.",
     "heroes_settings_on": "an",
     "heroes_settings_off": "aus",
-    "fill_mode_section": "Defender-Verteilung",
+    "fill_mode_section": "Verteidiger-Verteilung",
     "fill_mode_fixed": "Fest",
     "fill_mode_capacity": "Kapazität",
-    "fill_mode_capacity_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve."
+    "fill_mode_capacity_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve.",
+    "fill_mode_rerun_hint": "↻ Auto-Sort neu ausführen, um anzuwenden."
   },
   "conflict": {
     "hub_empty": "Hub leer — kein Captain",

@@ -349,6 +349,17 @@ describe('defenderContribution', () => {
   it('clamps negative values to 0 (defensive)', () => {
     expect(defenderContribution(s({ id: 'a', march: -50, rally: null }))).toBe(0)
   })
+  it('treats NaN as 0 (would otherwise bypass cap comparisons silently)', () => {
+    const broken = s({ id: 'a', march: null, rally: null })
+    // Bypass the type system to simulate a corrupt DB row / bad import
+    ;(broken as { march_size: number }).march_size = NaN
+    expect(defenderContribution(broken)).toBe(0)
+  })
+  it('treats Infinity as 0 (would otherwise sail past every cap)', () => {
+    const broken = s({ id: 'a', march: null, rally: null })
+    ;(broken as { march_size: number }).march_size = Infinity
+    expect(defenderContribution(broken)).toBe(0)
+  })
 })
 
 describe('fillToCapacity', () => {
@@ -472,5 +483,38 @@ describe('autoSort capacity mode', () => {
     })
     expect(out.filter((x) => x.building === 'hit-squad')).toEqual([])
     expect(out.filter((x) => x.building === 'mud')).toEqual([])
+  })
+
+  it('manual turret_mode dumps everyone to unassigned regardless of capacity flag', () => {
+    const captain = s({ id: 'cap', type: 'fighter', rally: 1_000_000, captain: true })
+    const d1 = s({ id: 'd1', type: 'fighter', march: 200_000 })
+    const out = autoSort({
+      signups: [captain, d1],
+      turretMode: 'manual',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    // Manual mode bails before the capacity branch runs; everyone unassigned
+    expect(out.every((x) => x.building === 'unassigned')).toBe(true)
+    expect(out).toHaveLength(2)
+  })
+
+  it('Hub-captain with null rally_size in capacity mode admits no defenders', () => {
+    // Documented behavior: missing rally → cap=0 → no defenders fit. Planner
+    // sees Hub with captain only + same-type players in reserve, and has to
+    // either fill rally_size on the signup or drag manually.
+    const captain = s({ id: 'cap', type: 'fighter', rally: null, captain: true })
+    const d1 = s({ id: 'd1', type: 'fighter', march: 100_000 })
+    const riderCap = s({ id: 'rc', type: 'rider', rally: 1_000_000, captain: true })
+    const shooterCap = s({ id: 'sc', type: 'shooter', rally: 1_000_000, captain: true })
+    const out = autoSort({
+      signups: [captain, d1, riderCap, shooterCap],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    const hubDefenders = at(out, 'hub', 1).filter((x) => !x.is_captain)
+    expect(hubDefenders).toHaveLength(0)
+    expect(at(out, 'reserve', 1).map((x) => x.signup_id)).toContain('d1')
   })
 })

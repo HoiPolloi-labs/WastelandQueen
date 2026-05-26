@@ -26,13 +26,18 @@ export interface AutoSortInput {
 
 /**
  * WK domain: each defender joining a rally contributes their `march_size`
- * (one march per joiner). Falls back to `rally_size` for signups predating
- * the march_size field — that overestimates contribution (march < rally
- * always) so capacity caps fewer defenders than reality, which is the
- * conservative side. 0 if both are missing.
+ * (one march per joiner). Falls back to `rally_size` when march_size is
+ * missing — march is always ≤ rally, so the fallback overestimates each
+ * defender's footprint and fewer defenders fit (conservative side). 0 if
+ * both are missing or non-finite.
+ *
+ * NaN/Infinity guard: a malformed payload or stray import could surface
+ * `NaN`, which silently bypasses every cap comparison (`x + NaN > cap`
+ * is always false). Force-finite via `Number.isFinite` before clamping.
  */
 export function defenderContribution(s: Signup): number {
-  return Math.max(0, s.march_size ?? s.rally_size ?? 0)
+  const raw = s.march_size ?? s.rally_size ?? 0
+  return Number.isFinite(raw) ? Math.max(0, raw) : 0
 }
 
 /**

@@ -84,7 +84,7 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
 
       <Segmented<FillMode>
         size="sm"
-        className="mb-2"
+        className="mb-1"
         value={currentMode}
         onChange={onModeChange}
         options={[
@@ -92,6 +92,12 @@ export function HubDefenderSettings({ event, onChange }: HubDefenderSettingsProp
           { value: 'capacity', label: t('plan.fill_mode_capacity') },
         ]}
       />
+      {/* Existing assignments aren't reshuffled on mode/count change — needs
+       *  an explicit Auto-Sort re-run. Always-visible hint avoids the
+       *  "toggle doesn't do anything" confusion. */}
+      <p className="mb-2 text-[10px] uppercase tracking-wider text-amber-400/80">
+        {t('plan.fill_mode_rerun_hint')}
+      </p>
 
       {currentMode === 'fixed' ? (
         <>

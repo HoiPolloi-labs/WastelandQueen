@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Agent X 조각",
     "dr_j_frags_label": "Dr. J 조각",
     "nataly_frags_label": "Nataly 조각",
-    "march_label": "행군 규모",
+    "march_label": "행군 규모 (선택)",
     "march_placeholder": "예: 350000",
     "march_hint": "행군 1회 당 병력. 선택 — 용량 채우기 자동 배치에서 사용, 비어 있으면 rally size로 폴백."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "방어자 배치",
     "fill_mode_fixed": "고정",
     "fill_mode_capacity": "용량",
-    "fill_mode_capacity_hint": "Hub와 각 포탑은 합류자의 행군 합계가 측틴의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비."
+    "fill_mode_capacity_hint": "Hub와 각 포탑은 합류자의 행군 합계가 captain의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비.",
+    "fill_mode_rerun_hint": "↻ Auto-Sort를 다시 실행하여 적용하세요."
   },
   "conflict": {
     "hub_empty": "Hub 비어있음 — captain 없음",

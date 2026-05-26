@@ -93,4 +93,33 @@ describe('signupSchema', () => {
     expect(signupSchema.safeParse({ ...baseValid, ign: '   ' }).success).toBe(false)
     expect(signupSchema.safeParse({ ...baseValid, ign: 'a'.repeat(33) }).success).toBe(false)
   })
+
+  // march_size (added 2026-05-26 alongside Auto-Sort capacity mode)
+  describe('march_size', () => {
+    it('omission is OK (optional field)', () => {
+      const r = signupSchema.safeParse(baseValid)
+      expect(r.success).toBe(true)
+      if (r.success) expect(r.data.march_size).toBe(null)
+    })
+    it('explicit null is OK', () => {
+      const r = signupSchema.safeParse({ ...baseValid, march_size: null })
+      expect(r.success).toBe(true)
+    })
+    it('accepts 0 — player who only defends, never marches', () => {
+      const r = signupSchema.safeParse({ ...baseValid, march_size: 0 })
+      expect(r.success).toBe(true)
+    })
+    it('rejects negative march_size', () => {
+      expect(signupSchema.safeParse({ ...baseValid, march_size: -1 }).success).toBe(false)
+    })
+    it('rejects implausibly large march_size (paste-error guard)', () => {
+      expect(
+        signupSchema.safeParse({ ...baseValid, march_size: 500_000_000 }).success,
+      ).toBe(false)
+    })
+    it('accepts plausible values up to 100M', () => {
+      expect(signupSchema.safeParse({ ...baseValid, march_size: 350_000 }).success).toBe(true)
+      expect(signupSchema.safeParse({ ...baseValid, march_size: 100_000_000 }).success).toBe(true)
+    })
+  })
 })

@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Agent X Frags",
     "dr_j_frags_label": "Dr. J Frags",
     "nataly_frags_label": "Nataly Frags",
-    "march_label": "March Size",
+    "march_label": "March Size (optional)",
     "march_placeholder": "e.g. 350000",
     "march_hint": "Troops per single march. Optional — capacity-fill Auto-Sort uses it, falls back to rally size if blank."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "Defender allocation",
     "fill_mode_fixed": "Fixed",
     "fill_mode_capacity": "Capacity",
-    "fill_mode_capacity_hint": "Hub & each turret fill until joiners’ march totals reach the captain’s rally cap. Surplus → reserve."
+    "fill_mode_capacity_hint": "Hub & each turret fill until joiners’ march totals reach the captain’s rally cap. Surplus → reserve.",
+    "fill_mode_rerun_hint": "↻ Re-run Auto-Sort to apply."
   },
   "conflict": {
     "hub_empty": "Hub empty — no captain",

@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Agent X 碎片",
     "dr_j_frags_label": "Dr. J 碎片",
     "nataly_frags_label": "Nataly 碎片",
-    "march_label": "行军规模",
+    "march_label": "行军规模（可选）",
     "march_placeholder": "例如 350000",
     "march_hint": "每次行军兵力。可选 — 容量填充自动分配使用此值，为空时回退到 rally size。"
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "防御者分配",
     "fill_mode_fixed": "固定",
     "fill_mode_capacity": "容量",
-    "fill_mode_capacity_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。"
+    "fill_mode_capacity_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。",
+    "fill_mode_rerun_hint": "↻ 重新运行 Auto-Sort 以应用。"
   },
   "conflict": {
     "hub_empty": "Hub 为空 — 无 captain",

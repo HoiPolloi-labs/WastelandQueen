@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Фрагменти Agent X",
     "dr_j_frags_label": "Фрагменти Dr. J",
     "nataly_frags_label": "Фрагменти Nataly",
-    "march_label": "Розмір маршу",
+    "march_label": "Розмір маршу (необов'язково)",
     "march_placeholder": "напр. 350000",
     "march_hint": "Війська за марш. Необов’язково — використовується в режимі заповнення за ємністю; резерв — rally size."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "Розподіл захисників",
     "fill_mode_fixed": "Фікс.",
     "fill_mode_capacity": "Ємність",
-    "fill_mode_capacity_hint": "Хаб і кожна турель заповнюються, поки сума маршу приєднаних не сягне ліміту rally капітана. Надлишок → резерв."
+    "fill_mode_capacity_hint": "Хаб і кожна турель заповнюються, поки сума маршу приєднаних не сягне ліміту rally капітана. Надлишок → резерв.",
+    "fill_mode_rerun_hint": "↻ Перезапустіть Auto-Sort, щоб застосувати."
   },
   "conflict": {
     "hub_empty": "Hub порожній — немає капітана",

@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Frammenti Agent X",
     "dr_j_frags_label": "Frammenti Dr. J",
     "nataly_frags_label": "Frammenti Nataly",
-    "march_label": "Dimensione marcia",
+    "march_label": "Dimensione marcia (opzionale)",
     "march_placeholder": "es. 350000",
     "march_hint": "Truppe per marcia. Opzionale — usata dal Auto-Sort a capacità, ripiega su rally size se vuoto."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "Distribuzione difensori",
     "fill_mode_fixed": "Fissa",
     "fill_mode_capacity": "Capacità",
-    "fill_mode_capacity_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva."
+    "fill_mode_capacity_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva.",
+    "fill_mode_rerun_hint": "↻ Riavvia Auto-Sort per applicare."
   },
   "conflict": {
     "hub_empty": "Hub vuoto — nessun captain",

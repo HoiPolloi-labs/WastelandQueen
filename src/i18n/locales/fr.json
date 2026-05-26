@@ -101,7 +101,7 @@
     "agent_x_frags_label": "Fragments Agent X",
     "dr_j_frags_label": "Fragments Dr. J",
     "nataly_frags_label": "Fragments Nataly",
-    "march_label": "Taille de marche",
+    "march_label": "Taille de marche (facultatif)",
     "march_placeholder": "ex. 350000",
     "march_hint": "Troupes par marche. Optionnel — utilisé par Auto-Sort capacité, repli sur rally size si vide."
   },
@@ -168,7 +168,8 @@
     "fill_mode_section": "Répartition défenseurs",
     "fill_mode_fixed": "Fixe",
     "fill_mode_capacity": "Capacité",
-    "fill_mode_capacity_hint": "Le Hub et chaque tourelle se remplissent jusqu’à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve."
+    "fill_mode_capacity_hint": "Le Hub et chaque tourelle se remplissent jusqu’à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve.",
+    "fill_mode_rerun_hint": "↻ Relancez Auto-Sort pour appliquer."
   },
   "conflict": {
     "hub_empty": "Hub vide — aucun captain",
