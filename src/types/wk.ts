@@ -95,6 +95,11 @@ export interface EventConfig {
   /** When true, Signup form shows hero-frag inputs and Awards shows totals.
    *  Default off; enable for Gold+ states coordinating Nataly progression. */
   heroes_enabled: boolean
+  /** When true, Auto-Sort fills Hub + each turret with as many same-type
+   *  defenders as the captain's rally_size can hold (estimated march per
+   *  defender summed against rally cap) instead of using the fixed
+   *  hub_defender_target count. Surplus same-type players go to reserve. */
+  auto_fill_to_capacity: boolean
   created_at: string
 }
 
@@ -115,6 +120,10 @@ export interface Signup {
   troop_type: TroopType
   max_solo_lair: number
   rally_size: number | null
+  /** Troops the player can send per march (cap on each rally-join). Optional
+   *  on the form; capacity-fill auto-sort uses it to size defender slots and
+   *  falls back to rally_size when null. */
+  march_size: number | null
   true_might: number | null
   willing_captain: boolean
   shift_pref: ShiftPref

@@ -26,6 +26,7 @@ function s(opts: {
     troop_type: opts.type ?? 'fighter',
     max_solo_lair: 5,
     rally_size: 1_000_000,
+    march_size: null,
     true_might: null,
     willing_captain: opts.captain ?? false,
     shift_pref: opts.shifts ?? '1',
@@ -89,6 +90,7 @@ const baseEvent: EventConfig = {
   coffer_collected_at: null,
   coffer_notes: null,
   heroes_enabled: false,
+  auto_fill_to_capacity: false,
   created_at: '',
 }
 

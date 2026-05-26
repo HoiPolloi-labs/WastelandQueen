@@ -28,6 +28,7 @@ function sig(opts: {
     troop_type: opts.type ?? 'rider',
     max_solo_lair: 5,
     rally_size: opts.rally ?? null,
+    march_size: null,
     true_might: null,
     willing_captain: false,
     shift_pref: '1',
@@ -89,6 +90,7 @@ const baseEvent: EventConfig = {
   coffer_collected_at: null,
   coffer_notes: null,
   heroes_enabled: false,
+  auto_fill_to_capacity: false,
   created_at: '',
 }
 

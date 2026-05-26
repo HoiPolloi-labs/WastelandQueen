@@ -23,6 +23,7 @@ function sig(opts: {
     troop_type: 'rider' as TroopType,
     max_solo_lair: 5,
     rally_size: 1_000_000,
+    march_size: null,
     true_might: null,
     willing_captain: false,
     shift_pref: '1',

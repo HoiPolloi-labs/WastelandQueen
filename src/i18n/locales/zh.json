@@ -100,7 +100,10 @@
     "heroes_hint": "可选 — 帮助 planner 协调谁最接近满级 Nataly / Agent X / Dr. J。",
     "agent_x_frags_label": "Agent X 碎片",
     "dr_j_frags_label": "Dr. J 碎片",
-    "nataly_frags_label": "Nataly 碎片"
+    "nataly_frags_label": "Nataly 碎片",
+    "march_label": "行军规模",
+    "march_placeholder": "例如 350000",
+    "march_hint": "每次行军兵力。可选 — 容量填充自动分配使用此值，为空时回退到 rally size。"
   },
   "board": {
     "event_not_found": "未找到事件",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Heroes 追踪",
     "heroes_settings_hint": "在 Signup 中启用碎片库存 + 在 Awards 中显示联盟总数。",
     "heroes_settings_on": "开",
-    "heroes_settings_off": "关"
+    "heroes_settings_off": "关",
+    "fill_mode_section": "防御者分配",
+    "fill_mode_fixed": "固定",
+    "fill_mode_capacity": "容量",
+    "fill_mode_capacity_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。"
   },
   "conflict": {
     "hub_empty": "Hub 为空 — 无 captain",

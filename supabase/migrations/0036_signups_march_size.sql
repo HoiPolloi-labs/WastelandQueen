@@ -1,0 +1,11 @@
+-- WK domain: in a rally on a building, the captain's `rally_size` = the
+-- building's total capacity, and each joining defender contributes their
+-- own `march_size` (how many troops they send in one go). Adding this as a
+-- new signup field so auto-sort's capacity-fill mode (migration 0035) can
+-- compute "how many defenders fit" without estimating from tier.
+--
+-- Nullable for backward compat: pre-existing signups have NULL → auto-sort
+-- falls back to rally_size (conservative overestimate, fewer defenders fit
+-- than reality, planner can still drag-correct). New signups: form will
+-- expose it as an optional input + Vision-LLM extraction.
+alter table signups add column march_size integer null;

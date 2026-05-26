@@ -51,6 +51,7 @@ export function SignupPage() {
   const [troopType, setTroopType] = useState<TroopType | null>(null)
   const [maxSoloLair, setMaxSoloLair] = useState<number | ''>('')
   const [rallySize, setRallySize] = useState<string>('')
+  const [marchSize, setMarchSize] = useState<string>('')
   const [trueMight, setTrueMight] = useState<string>('')
   const [willingCaptain, setWillingCaptain] = useState(false)
   const [shifts, setShifts] = useState<ShiftNumber[]>([])
@@ -73,6 +74,7 @@ export function SignupPage() {
     setTroopType(s.troop_type)
     setMaxSoloLair(s.max_solo_lair)
     setRallySize(s.rally_size == null ? '' : String(s.rally_size))
+    setMarchSize(s.march_size == null ? '' : String(s.march_size))
     setTrueMight(s.true_might == null ? '' : String(s.true_might))
     setWillingCaptain(s.willing_captain)
     setShifts(parseShiftPref(s.shift_pref))
@@ -171,6 +173,7 @@ export function SignupPage() {
             setTroopType(null)
             setMaxSoloLair('')
             setRallySize('')
+            setMarchSize('')
             setTrueMight('')
             setWillingCaptain(false)
             setShifts([])
@@ -210,6 +213,7 @@ export function SignupPage() {
       troop_type: troopType,
       max_solo_lair: typeof maxSoloLair === 'number' ? maxSoloLair : Number.NaN,
       rally_size: rallySize ? Number(rallySize.replace(/[.\s,]/g, '')) : null,
+      march_size: marchSize ? Number(marchSize.replace(/[.\s,]/g, '')) : null,
       true_might: trueMight ? Number(trueMight.replace(/[.\s,]/g, '')) : null,
       willing_captain: willingCaptain,
       shift_pref: shifts.length > 0 ? serializeShiftPref(shifts) : '',
@@ -443,17 +447,29 @@ export function SignupPage() {
             error={errors.rally_size}
           />
           <Input
-            label={t('signup.might_label')}
+            label={t('signup.march_label')}
             type="number"
             inputMode="numeric"
-            min={0}
-            step={1000000}
-            placeholder={t('signup.might_placeholder')}
-            value={trueMight}
-            onChange={(e) => setTrueMight(e.target.value)}
-            hint={t('signup.might_hint')}
+            min={1}
+            step={10000}
+            placeholder={t('signup.march_placeholder')}
+            value={marchSize}
+            onChange={(e) => setMarchSize(e.target.value)}
+            hint={t('signup.march_hint')}
+            error={errors.march_size}
           />
         </div>
+        <Input
+          label={t('signup.might_label')}
+          type="number"
+          inputMode="numeric"
+          min={0}
+          step={1000000}
+          placeholder={t('signup.might_placeholder')}
+          value={trueMight}
+          onChange={(e) => setTrueMight(e.target.value)}
+          hint={t('signup.might_hint')}
+        />
 
         <Toggle
           checked={willingCaptain}

@@ -24,6 +24,16 @@ export const signupSchema = z.object({
     .number({ invalid_type_error: 'Rally Size ist Pflicht' })
     .int()
     .positive('Rally Size muss > 0 sein'),
+  /** Troops sent per march (each rally-join consumes one). Optional but
+   *  recommended — capacity-fill Auto-Sort uses it; absence falls back to
+   *  rally_size (overestimate, fewer defenders fit). */
+  march_size: z
+    .number()
+    .int()
+    .positive()
+    .nullable()
+    .optional()
+    .transform((v) => (v == null ? null : v)),
   true_might: z
     .number()
     .int()

@@ -100,7 +100,10 @@
     "heroes_hint": "İsteğe bağlı — planner'ın Nataly / Agent X / Dr. J max'a en yakın kim olduğunu koordine etmesine yardımcı olur.",
     "agent_x_frags_label": "Agent X parçaları",
     "dr_j_frags_label": "Dr. J parçaları",
-    "nataly_frags_label": "Nataly parçaları"
+    "nataly_frags_label": "Nataly parçaları",
+    "march_label": "Yürüyüş büyüklüğü",
+    "march_placeholder": "örn. 350000",
+    "march_hint": "Marş başına asker. İsteğe bağlı — kapasite-dolum Auto-Sort kullanır, boşsa rally size’a düşer."
   },
   "board": {
     "event_not_found": "Etkinlik bulunamadı",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Heroes takibi",
     "heroes_settings_hint": "Signup'ta parça envanterini ve Awards'ta alliance toplamlarını etkinleştirir.",
     "heroes_settings_on": "açık",
-    "heroes_settings_off": "kapalı"
+    "heroes_settings_off": "kapalı",
+    "fill_mode_section": "Savunmacı dağılımı",
+    "fill_mode_fixed": "Sabit",
+    "fill_mode_capacity": "Kapasite",
+    "fill_mode_capacity_hint": "Hub ve her kule, katılımcıların yürüyüş toplamı kaptanın rally üst sınırına ulaşana kadar dolar. Fazla → yedek."
   },
   "conflict": {
     "hub_empty": "Hub boş — captain yok",

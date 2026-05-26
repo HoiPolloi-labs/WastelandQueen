@@ -100,7 +100,10 @@
     "heroes_hint": "Optional — hilft dem Planner zu sehen, wer am dichtesten an Nataly / Agent X / Dr. J max ist.",
     "agent_x_frags_label": "Agent X Fragmente",
     "dr_j_frags_label": "Dr. J Fragmente",
-    "nataly_frags_label": "Nataly Fragmente"
+    "nataly_frags_label": "Nataly Fragmente",
+    "march_label": "Marsch-Größe",
+    "march_placeholder": "z.B. 350000",
+    "march_hint": "Truppen pro Marsch. Optional — wird im Kapazitäts-Auto-Sort verwendet, fällt zurück auf Rally-Size wenn leer."
   },
   "board": {
     "event_not_found": "Event nicht gefunden",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Heroes-Tracking",
     "heroes_settings_hint": "Aktiviert Fragment-Inventar im Signup + Alliance-Summen in den Awards.",
     "heroes_settings_on": "an",
-    "heroes_settings_off": "aus"
+    "heroes_settings_off": "aus",
+    "fill_mode_section": "Defender-Verteilung",
+    "fill_mode_fixed": "Fest",
+    "fill_mode_capacity": "Kapazität",
+    "fill_mode_capacity_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve."
   },
   "conflict": {
     "hub_empty": "Hub leer — kein Captain",

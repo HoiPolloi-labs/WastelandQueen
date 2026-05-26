@@ -13,8 +13,58 @@ export interface AutoSortInput {
   turretMode: TurretMode
   shiftCount: 1 | 2 | 3 | 4
   /** Number of defenders to park on the Hub alongside the captain (same
-   *  troop type for Super-Reinforcement synergy). Default 4. */
+   *  troop type for Super-Reinforcement synergy). Default 4. Ignored when
+   *  `autoFillToCapacity` is true — capacity logic supersedes it. */
   hubDefenderTarget?: number
+  /** When true, ignore `hubDefenderTarget` and instead fill Hub + each
+   *  turret with as many same-type defenders as the captain's `rally_size`
+   *  can hold. Each defender contributes their own `rally_size` to the
+   *  building's running total; the captain hosts so doesn't subtract.
+   *  Same-type surplus goes to reserve. */
+  autoFillToCapacity?: boolean
+}
+
+/**
+ * WK domain: each defender joining a rally contributes their `march_size`
+ * (one march per joiner). Falls back to `rally_size` for signups predating
+ * the march_size field — that overestimates contribution (march < rally
+ * always) so capacity caps fewer defenders than reality, which is the
+ * conservative side. 0 if both are missing.
+ */
+export function defenderContribution(s: Signup): number {
+  return Math.max(0, s.march_size ?? s.rally_size ?? 0)
+}
+
+/**
+ * Cap-aware filler used by the Hub and per-turret loops when
+ * `autoFillToCapacity` is on. Walks the candidate pool in pre-sorted
+ * (strongest-first) order, adding each defender whose `march_size`
+ * contribution still fits under the captain's `rally_size` cap. Walks the
+ * full pool — doesn't break on first non-fit — so smaller players can still
+ * slip in after a big one would have overflowed.
+ *
+ * Captain's own slot is treated as zero-cost (they ARE the rally host); the
+ * cap measures joiner contributions. Cap is the captain's `rally_size`; a
+ * missing captain rally falls back to 0 (no defenders fit, manual triage).
+ */
+export function fillToCapacity(
+  candidates: readonly Signup[],
+  captainRally: number,
+  used: Set<string>,
+): Signup[] {
+  // NaN/Infinity guard: `Math.max(0, NaN)` is NaN, and `running + x > NaN`
+  // is always false → would silently admit everyone. Treat non-finite as 0.
+  const cap = Number.isFinite(captainRally) ? Math.max(0, captainRally) : 0
+  let running = 0
+  const out: Signup[] = []
+  for (const s of candidates) {
+    if (used.has(s.id)) continue
+    const contribution = defenderContribution(s)
+    if (running + contribution > cap) continue
+    out.push(s)
+    running += contribution
+  }
+  return out
 }
 
 export type DraftAssignment = Pick<
@@ -146,17 +196,28 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
     const hubCaptain = pool.find((s) => s.willing_captain)
     if (hubCaptain) used.add(hubCaptain.id)
 
-    // Hub-Defender: nächste K Spieler vom Captain-Typ (Super-Reinforcement-Synergy).
-    // Wenn kein Hub-Captain existiert, kein Hub-Defender-Sense — skip.
-    const hubTarget = Math.max(0, input.hubDefenderTarget ?? 4)
-    if (hubCaptain && hubTarget > 0) {
+    // Hub-Defender: same troop type as captain (Super-Reinforcement synergy).
+    // Two modes:
+    //  - capacity: fill until joiners' rally_size sum approaches captain's
+    //    rally cap (WK domain — captain.rally = building capacity)
+    //  - fixed: K next-strongest same-type players (hubDefenderTarget)
+    // Either way: no captain → no Hub defenders.
+    if (hubCaptain) {
       const captainType = hubCaptain.troop_type
-      for (const s of pool) {
-        if (hubDefenders.length >= hubTarget) break
-        if (used.has(s.id)) continue
-        if (s.troop_type !== captainType) continue
-        used.add(s.id)
-        hubDefenders.push(s)
+      const sameType = pool.filter((s) => s.troop_type === captainType && !used.has(s.id))
+      if (input.autoFillToCapacity) {
+        const picked = fillToCapacity(sameType, hubCaptain.rally_size ?? 0, used)
+        for (const s of picked) {
+          used.add(s.id)
+          hubDefenders.push(s)
+        }
+      } else {
+        const hubTarget = Math.max(0, input.hubDefenderTarget ?? 4)
+        for (const s of sameType) {
+          if (hubDefenders.length >= hubTarget) break
+          used.add(s.id)
+          hubDefenders.push(s)
+        }
       }
     }
 
@@ -183,10 +244,46 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
       }
     }
 
-    // Leftover-Verteilung
+    // Leftover-Verteilung. In capacity mode we additionally enforce a
+    // per-turret cap derived from THAT turret's captain.rally_size; surplus
+    // same-type players spill into reserve (or mixed-W for mixed-4th-mode
+    // off-types). In fixed mode there's no cap — same as before.
     const rotateIndex: Record<TroopType, number> = { fighter: 0, shooter: 0, rider: 0 }
     const reserves: Signup[] = []
     const mixedBucket: Signup[] = []
+
+    // Pre-compute per-turret capacity tracking (capacity mode only). Captains
+    // already in turretMembers[turret] don't subtract — they host.
+    const turretCap: Record<Turret, number> = {
+      'turret-n': 0,
+      'turret-s': 0,
+      'turret-e': 0,
+      'turret-w': 0,
+    }
+    const turretUsed: Record<Turret, number> = {
+      'turret-n': 0,
+      'turret-s': 0,
+      'turret-e': 0,
+      'turret-w': 0,
+    }
+    if (input.autoFillToCapacity) {
+      for (const turret of TURRETS) {
+        const captain = turretMembers[turret].find((s) => turretCaptainIds.has(s.id))
+        turretCap[turret] = Math.max(0, captain?.rally_size ?? 0)
+      }
+    }
+
+    const fitsInTurret = (turret: Turret, candidate: Signup): boolean => {
+      if (!input.autoFillToCapacity) return true
+      return turretUsed[turret] + defenderContribution(candidate) <= turretCap[turret]
+    }
+
+    const recordInTurret = (turret: Turret, candidate: Signup): void => {
+      turretMembers[turret].push(candidate)
+      if (input.autoFillToCapacity) {
+        turretUsed[turret] += defenderContribution(candidate)
+      }
+    }
 
     for (const s of pool) {
       if (used.has(s.id)) continue
@@ -195,15 +292,34 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
       if (turrets.length === 0) {
         if (layout.mixedTurret) mixedBucket.push(s)
         else reserves.push(s)
-      } else {
-        const turret = turrets[rotateIndex[s.troop_type] % turrets.length]!
-        rotateIndex[s.troop_type]++
-        turretMembers[turret].push(s)
+        continue
       }
+      // Round-robin BUT skip turrets that are full (capacity mode). If none
+      // fit, the player goes to reserve. We try every turret of this type
+      // starting from the round-robin index — first one that fits wins.
+      let placed = false
+      for (let i = 0; i < turrets.length; i++) {
+        const idx = (rotateIndex[s.troop_type] + i) % turrets.length
+        const turret = turrets[idx]!
+        if (fitsInTurret(turret, s)) {
+          recordInTurret(turret, s)
+          rotateIndex[s.troop_type] = idx + 1
+          placed = true
+          break
+        }
+      }
+      if (!placed) reserves.push(s)
     }
 
     if (layout.mixedTurret) {
-      turretMembers[layout.mixedTurret].push(...mixedBucket)
+      // Mixed-W catches off-type leftovers. Capacity-check it too if active.
+      for (const s of mixedBucket) {
+        if (fitsInTurret(layout.mixedTurret, s)) {
+          recordInTurret(layout.mixedTurret, s)
+        } else {
+          reserves.push(s)
+        }
+      }
     }
 
     // Output: Hub captain + Hub defenders, Turret members, Reserves

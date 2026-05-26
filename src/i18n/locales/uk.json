@@ -100,7 +100,10 @@
     "heroes_hint": "Опціонально — допомагає планувальнику координувати, хто найближче до максу Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Фрагменти Agent X",
     "dr_j_frags_label": "Фрагменти Dr. J",
-    "nataly_frags_label": "Фрагменти Nataly"
+    "nataly_frags_label": "Фрагменти Nataly",
+    "march_label": "Розмір маршу",
+    "march_placeholder": "напр. 350000",
+    "march_hint": "Війська за марш. Необов’язково — використовується в режимі заповнення за ємністю; резерв — rally size."
   },
   "board": {
     "event_not_found": "Подію не знайдено",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Відстеження heroes",
     "heroes_settings_hint": "Вмикає інвентар фрагментів у Signup + загальні суми по альянсу в Awards.",
     "heroes_settings_on": "увімкнено",
-    "heroes_settings_off": "вимкнено"
+    "heroes_settings_off": "вимкнено",
+    "fill_mode_section": "Розподіл захисників",
+    "fill_mode_fixed": "Фікс.",
+    "fill_mode_capacity": "Ємність",
+    "fill_mode_capacity_hint": "Хаб і кожна турель заповнюються, поки сума маршу приєднаних не сягне ліміту rally капітана. Надлишок → резерв."
   },
   "conflict": {
     "hub_empty": "Hub порожній — немає капітана",

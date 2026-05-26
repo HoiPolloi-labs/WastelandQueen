@@ -25,6 +25,7 @@ const baseEvent: EventConfig = {
   coffer_collected_at: null,
   coffer_notes: null,
   heroes_enabled: false,
+  auto_fill_to_capacity: false,
   created_at: EVENT_START,
 }
 
@@ -39,6 +40,7 @@ function makeSignup(overrides: Partial<Signup> = {}): Signup {
     troop_type: 'rider',
     max_solo_lair: 6,
     rally_size: null,
+    march_size: null,
     true_might: null,
     willing_captain: false,
     shift_pref: '1',

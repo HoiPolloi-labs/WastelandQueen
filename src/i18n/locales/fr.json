@@ -100,7 +100,10 @@
     "heroes_hint": "Optionnel — aide le planner à coordonner qui est le plus proche du max sur Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Fragments Agent X",
     "dr_j_frags_label": "Fragments Dr. J",
-    "nataly_frags_label": "Fragments Nataly"
+    "nataly_frags_label": "Fragments Nataly",
+    "march_label": "Taille de marche",
+    "march_placeholder": "ex. 350000",
+    "march_hint": "Troupes par marche. Optionnel — utilisé par Auto-Sort capacité, repli sur rally size si vide."
   },
   "board": {
     "event_not_found": "Évènement introuvable",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Suivi des heroes",
     "heroes_settings_hint": "Active l'inventaire de fragments dans Signup + les totaux alliance dans Awards.",
     "heroes_settings_on": "activé",
-    "heroes_settings_off": "désactivé"
+    "heroes_settings_off": "désactivé",
+    "fill_mode_section": "Répartition défenseurs",
+    "fill_mode_fixed": "Fixe",
+    "fill_mode_capacity": "Capacité",
+    "fill_mode_capacity_hint": "Le Hub et chaque tourelle se remplissent jusqu’à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve."
   },
   "conflict": {
     "hub_empty": "Hub vide — aucun captain",

@@ -20,7 +20,8 @@ export function useEvent(eventId: string | undefined) {
     const { data, error } = await supabase
       .from('events')
       .select(
-        'id, starts_at_utc, shift_count, hub_defender_target, turret_mode, ' +
+        'id, starts_at_utc, shift_count, hub_defender_target, ' +
+        'auto_fill_to_capacity, turret_mode, ' +
         'home_server, notes, state_grade, governor_ign, assessor_ign, ' +
         'negotiator_ign, foreign_targets, heroes_enabled, ' +
         'signup_token, board_token, ' +

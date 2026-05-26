@@ -167,7 +167,7 @@ Suites:
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 - `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
 
-Current total: **143 tests** across 11 suites, full pipeline green
+Current total: **156 tests** across 11 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 
 Requires `.env.local` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`
@@ -347,6 +347,16 @@ conflict-target spec by default.
   mid-event target changes don't cascade-invalidate live rows. Untagged-but-
   targeted rows surface as a separate overflow bucket so legacy data stays
   visible. Auto-sort still skips Hit-Squad entirely.
+- **Capacity-fill Auto-Sort** (migrations 0035 + 0036). `event.auto_fill_to_capacity`
+  flips the algorithm from "fixed N Hub defenders, unbounded turrets" to
+  "fill each building until joiners' `march_size` totals reach the captain's
+  `rally_size` cap" — the in-game mechanic where captain.rally = building
+  capacity and each joiner contributes one march. Per-turret cap is derived
+  from THAT turret's captain rally. `signups.march_size` is the new optional
+  field; null falls back to `rally_size` (conservative overestimate, fewer
+  defenders fit). Surplus same-type players spill to reserve. The
+  `defenderContribution` helper centralizes the march/rally fallback so
+  both Hub and turret loops stay consistent.
 - **Discord pings are now planner-triggerable**, not just signup-event-driven.
   `PreEventStatusPanel` has Copy + Send buttons that POST the formatted
   reminder text to the existing `notify-discord` Edge Function with

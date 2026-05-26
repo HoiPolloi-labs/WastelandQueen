@@ -100,7 +100,10 @@
     "heroes_hint": "オプション — plannerがNataly / Agent X / Dr. Jのマックスに最も近い人を調整するのに役立ちます。",
     "agent_x_frags_label": "Agent Xフラグメント",
     "dr_j_frags_label": "Dr. Jフラグメント",
-    "nataly_frags_label": "Natalyフラグメント"
+    "nataly_frags_label": "Natalyフラグメント",
+    "march_label": "行軍規模",
+    "march_placeholder": "例: 350000",
+    "march_hint": "1回の行軍兵力。任意 — 容量埋め自動配分が使用、空の場合は rally size にフォールバック。"
   },
   "board": {
     "event_not_found": "イベントが見つかりません",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Heroesトラッキング",
     "heroes_settings_hint": "Signupでフラグメント在庫を有効化し、Awardsでアライアンス合計を表示します。",
     "heroes_settings_on": "オン",
-    "heroes_settings_off": "オフ"
+    "heroes_settings_off": "オフ",
+    "fill_mode_section": "ディフェンダー配分",
+    "fill_mode_fixed": "固定",
+    "fill_mode_capacity": "容量",
+    "fill_mode_capacity_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。"
   },
   "conflict": {
     "hub_empty": "Hub空 — captainなし",

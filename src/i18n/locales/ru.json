@@ -100,7 +100,10 @@
     "heroes_hint": "Опционально — помогает планировщику понять, кто ближе всех к максу Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Фрагменты Agent X",
     "dr_j_frags_label": "Фрагменты Dr. J",
-    "nataly_frags_label": "Фрагменты Nataly"
+    "nataly_frags_label": "Фрагменты Nataly",
+    "march_label": "Размер марша",
+    "march_placeholder": "напр. 350000",
+    "march_hint": "Войска за марш. Опционально — используется в режиме заполнения по ёмкости; запасной вариант — rally size."
   },
   "board": {
     "event_not_found": "Событие не найдено",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Отслеживание heroes",
     "heroes_settings_hint": "Включает инвентарь фрагментов в Signup + общие итоги по альянсу в Awards.",
     "heroes_settings_on": "вкл",
-    "heroes_settings_off": "выкл"
+    "heroes_settings_off": "выкл",
+    "fill_mode_section": "Распределение защитников",
+    "fill_mode_fixed": "Фикс.",
+    "fill_mode_capacity": "Ёмкость",
+    "fill_mode_capacity_hint": "Хаб и каждая турель заполняются, пока сумма марша присоединившихся не достигнет cap rally капитана. Излишки → резерв."
   },
   "conflict": {
     "hub_empty": "Hub пустой — нет капитана",

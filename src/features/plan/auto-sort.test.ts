@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { autoSort, captainScore, type DraftAssignment } from './auto-sort'
+import {
+  autoSort,
+  captainScore,
+  defenderContribution,
+  fillToCapacity,
+  type DraftAssignment,
+} from './auto-sort'
 import type { ShiftPref, Signup, TroopTier, TroopType } from '@/types/wk'
 
 function s(opts: {
@@ -8,6 +14,7 @@ function s(opts: {
   tier?: TroopTier
   lair?: number
   rally?: number | null
+  march?: number | null
   captain?: boolean
   shifts?: ShiftPref
 }): Signup {
@@ -21,6 +28,7 @@ function s(opts: {
     troop_type: opts.type ?? 'fighter',
     max_solo_lair: opts.lair ?? 5,
     rally_size: opts.rally ?? null,
+    march_size: opts.march ?? null,
     true_might: null,
     willing_captain: opts.captain ?? false,
     shift_pref: opts.shifts ?? '1',
@@ -325,5 +333,144 @@ describe('autoSort — invariants', () => {
       shiftCount: 2,
     })
     expect(result).toEqual([])
+  })
+})
+
+describe('defenderContribution', () => {
+  it('uses march_size when present', () => {
+    expect(defenderContribution(s({ id: 'a', march: 300_000, rally: 2_000_000 }))).toBe(300_000)
+  })
+  it('falls back to rally_size when march_size is null', () => {
+    expect(defenderContribution(s({ id: 'a', march: null, rally: 2_000_000 }))).toBe(2_000_000)
+  })
+  it('returns 0 when both are null', () => {
+    expect(defenderContribution(s({ id: 'a', march: null, rally: null }))).toBe(0)
+  })
+  it('clamps negative values to 0 (defensive)', () => {
+    expect(defenderContribution(s({ id: 'a', march: -50, rally: null }))).toBe(0)
+  })
+})
+
+describe('fillToCapacity', () => {
+  it('packs defenders until the next would overflow', () => {
+    const candidates = [
+      s({ id: 'a', march: 400_000 }),
+      s({ id: 'b', march: 300_000 }),
+      s({ id: 'c', march: 200_000 }),
+      s({ id: 'd', march: 200_000 }),
+    ]
+    // cap = 1M → a(400)+b(300)+c(200) = 900, d(200) would push to 1.1M → reject
+    const out = fillToCapacity(candidates, 1_000_000, new Set())
+    expect(out.map((x) => x.id)).toEqual(['a', 'b', 'c'])
+  })
+
+  it('continues past a non-fitting candidate to pick smaller ones that still fit', () => {
+    const candidates = [
+      s({ id: 'big', march: 800_000 }),
+      s({ id: 'huge', march: 1_500_000 }),
+      s({ id: 'small', march: 100_000 }),
+    ]
+    // cap = 1M → big(800), huge(would overflow → skip), small(800+100=900 fits)
+    const out = fillToCapacity(candidates, 1_000_000, new Set())
+    expect(out.map((x) => x.id)).toEqual(['big', 'small'])
+  })
+
+  it('skips candidates already in the `used` set', () => {
+    const candidates = [s({ id: 'a', march: 300_000 }), s({ id: 'b', march: 300_000 })]
+    const used = new Set(['a'])
+    expect(fillToCapacity(candidates, 1_000_000, used).map((x) => x.id)).toEqual(['b'])
+  })
+
+  it('cap of 0 admits nothing (defensive)', () => {
+    expect(fillToCapacity([s({ id: 'a', march: 1 })], 0, new Set())).toEqual([])
+  })
+
+  it('null cap falls back to 0 → empty', () => {
+    expect(fillToCapacity([s({ id: 'a', march: 1 })], NaN, new Set())).toEqual([])
+  })
+})
+
+describe('autoSort capacity mode', () => {
+  it('Hub fills with same-type defenders until rally cap reached, surplus → reserve', () => {
+    // Hub captain: 1M rally, fighter
+    // Defenders: 4 fighters @ 300k each → 3 fit (900k), 4th doesn't (1.2M)
+    const captain = s({ id: 'cap', type: 'fighter', rally: 1_000_000, march: 200_000, captain: true })
+    const d1 = s({ id: 'd1', type: 'fighter', march: 300_000 })
+    const d2 = s({ id: 'd2', type: 'fighter', march: 300_000 })
+    const d3 = s({ id: 'd3', type: 'fighter', march: 300_000 })
+    const d4 = s({ id: 'd4', type: 'fighter', march: 300_000 })
+    // Need a turret captain per type so the algorithm has somewhere to put leftovers
+    const shooterCap = s({ id: 'sc', type: 'shooter', rally: 1_000_000, captain: true })
+    const riderCap = s({ id: 'rc', type: 'rider', rally: 1_000_000, captain: true })
+    const out = autoSort({
+      signups: [captain, d1, d2, d3, d4, shooterCap, riderCap],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    const hub = at(out, 'hub', 1)
+    expect(hub.filter((x) => x.is_captain).map((x) => x.signup_id)).toEqual(['cap'])
+    const hubDefenders = hub.filter((x) => !x.is_captain).map((x) => x.signup_id)
+    expect(hubDefenders).toHaveLength(3)
+    // 4th defender lands in reserve, not hub
+    const reserve = at(out, 'reserve', 1).map((x) => x.signup_id)
+    expect(reserve).toContain('d4')
+  })
+
+  it('respects hub_defender_target (fixed mode) when autoFillToCapacity is false', () => {
+    const captain = s({ id: 'cap', type: 'fighter', rally: 4_000_000, captain: true })
+    const d1 = s({ id: 'd1', type: 'fighter' })
+    const d2 = s({ id: 'd2', type: 'fighter' })
+    const d3 = s({ id: 'd3', type: 'fighter' })
+    const out = autoSort({
+      signups: [captain, d1, d2, d3],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      hubDefenderTarget: 2,
+      autoFillToCapacity: false,
+    })
+    const hub = at(out, 'hub', 1).filter((x) => !x.is_captain)
+    expect(hub).toHaveLength(2)
+  })
+
+  it('per-turret cap routes surplus to reserve in capacity mode', () => {
+    // One fighter captain with small (400k) rally on a turret; 5 fighter
+    // defenders @ 200k each. Hub captain is a shooter so fighters go to turret.
+    const hubCap = s({ id: 'hubcap', type: 'shooter', rally: 1_000_000, captain: true })
+    const fightCap = s({ id: 'fc', type: 'fighter', rally: 400_000, captain: true })
+    const fd1 = s({ id: 'f1', type: 'fighter', march: 200_000 })
+    const fd2 = s({ id: 'f2', type: 'fighter', march: 200_000 })
+    const fd3 = s({ id: 'f3', type: 'fighter', march: 200_000 })
+    const fd4 = s({ id: 'f4', type: 'fighter', march: 200_000 })
+    const fd5 = s({ id: 'f5', type: 'fighter', march: 200_000 })
+    const riderCap = s({ id: 'rc', type: 'rider', rally: 1_000_000, captain: true })
+    const out = autoSort({
+      signups: [hubCap, fightCap, fd1, fd2, fd3, fd4, fd5, riderCap],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    // Fighter turret has cap 400k → captain (host, 0) + 2 defenders (400k) fits;
+    // 3rd would push to 600k → goes to reserve.
+    const fighterTurret = ['turret-n', 'turret-s', 'turret-e', 'turret-w']
+      .flatMap((t) => at(out, t, 1).filter((d) => d.signup_id.startsWith('f')))
+    // fc captain + at most 2 defenders → 3 entries total on the fighter turret
+    expect(fighterTurret.length).toBe(3)
+    const reserve = at(out, 'reserve', 1).map((x) => x.signup_id)
+    // Captain (host, 0 cost) + 2 defenders (2×200=400 = cap) fit; 3 overflow.
+    expect(reserve.filter((id) => id.startsWith('f'))).toHaveLength(3)
+  })
+
+  it('never auto-routes to hit-squad or mud (capacity-mode regression guard)', () => {
+    const captain = s({ id: 'cap', type: 'fighter', rally: 1_000_000, captain: true })
+    const d1 = s({ id: 'd1', type: 'fighter', march: 200_000 })
+    const out = autoSort({
+      signups: [captain, d1],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      autoFillToCapacity: true,
+    })
+    expect(out.filter((x) => x.building === 'hit-squad')).toEqual([])
+    expect(out.filter((x) => x.building === 'mud')).toEqual([])
   })
 })

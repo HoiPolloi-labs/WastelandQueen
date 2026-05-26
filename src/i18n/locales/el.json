@@ -100,7 +100,10 @@
     "heroes_hint": "Προαιρετικό — βοηθάει τον planner να συντονίσει ποιος είναι πιο κοντά στο max των Nataly / Agent X / Dr. J.",
     "agent_x_frags_label": "Θραύσματα Agent X",
     "dr_j_frags_label": "Θραύσματα Dr. J",
-    "nataly_frags_label": "Θραύσματα Nataly"
+    "nataly_frags_label": "Θραύσματα Nataly",
+    "march_label": "Μέγεθος πορείας",
+    "march_placeholder": "π.χ. 350000",
+    "march_hint": "Στρατεύματα ανά πορεία. Προαιρετικό — χρησιμοποιείται από Auto-Sort χωρητικότητας, επιστρέφει σε rally size αν κενό."
   },
   "board": {
     "event_not_found": "Το γεγονός δεν βρέθηκε",
@@ -161,7 +164,11 @@
     "heroes_settings_label": "Παρακολούθηση heroes",
     "heroes_settings_hint": "Ενεργοποιεί το inventory θραυσμάτων στο Signup + τα σύνολα alliance στα Awards.",
     "heroes_settings_on": "ενεργό",
-    "heroes_settings_off": "ανενεργό"
+    "heroes_settings_off": "ανενεργό",
+    "fill_mode_section": "Κατανομή αμυντικών",
+    "fill_mode_fixed": "Σταθερό",
+    "fill_mode_capacity": "Χωρητικότητα",
+    "fill_mode_capacity_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία."
   },
   "conflict": {
     "hub_empty": "Hub άδειο — χωρίς captain",
