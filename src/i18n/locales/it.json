@@ -394,7 +394,9 @@
     "success_open_button": "Apri",
     "success_copy_title": "Copia negli appunti",
     "success_copy_short_title": "Copia URL breve (chat-friendly)",
-    "foreign_targets_warning": "Dottrina WK: concentra l'Hit-Squad sullo state nemico più debole. Dividere top-might tra più target diluisce l'attacco sotto la soglia necessaria a prendere qualsiasi Hub — un take fallito costa al tuo Hub home lo shield automatico."
+    "foreign_targets_warning": "Dottrina WK: concentra l'Hit-Squad sullo state nemico più debole. Dividere top-might tra più target diluisce l'attacco sotto la soglia necessaria a prendere qualsiasi Hub — un take fallito costa al tuo Hub home lo shield automatico.",
+    "auto_fill_label": "Auto-Sort: modalità riempimento capacità",
+    "auto_fill_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva. Off = numero fisso di Hub-difensori, torri illimitate."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

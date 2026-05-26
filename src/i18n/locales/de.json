@@ -394,7 +394,9 @@
     "success_open_button": "Öffnen",
     "success_copy_title": "In Zwischenablage kopieren",
     "success_copy_short_title": "Kurze URL kopieren (chat-freundlich)",
-    "foreign_targets_warning": "WK-Doktrin: Hit-Squad auf den schwächsten Gegner-State konzentrieren. Top-Might über mehrere Ziele zu splitten verdünnt den Angriff oft unter die Schwelle die nötig ist um einen Hub zu nehmen — und ein gescheiterter Take kostet deinen Home-Hub das automatische Shield."
+    "foreign_targets_warning": "WK-Doktrin: Hit-Squad auf den schwächsten Gegner-State konzentrieren. Top-Might über mehrere Ziele zu splitten verdünnt den Angriff oft unter die Schwelle die nötig ist um einen Hub zu nehmen — und ein gescheiterter Take kostet deinen Home-Hub das automatische Shield.",
+    "auto_fill_label": "Auto-Sort: Kapazitäts-Modus",
+    "auto_fill_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve. Aus = feste Hub-Defender-Anzahl, unbegrenzte Türme."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

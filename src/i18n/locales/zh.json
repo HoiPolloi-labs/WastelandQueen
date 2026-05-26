@@ -394,7 +394,9 @@
     "success_open_button": "打开",
     "success_copy_title": "复制到剪贴板",
     "success_copy_short_title": "复制短链接 (聊天友好)",
-    "foreign_targets_warning": "WK 战术：Hit-Squad 集中攻击最弱的对方 state。把 top-might 分散到多个目标常常使攻击力低于拿下任何 Hub 所需的门槛 — 一次失败的 take 会让自家 Hub 失去自动护盾。"
+    "foreign_targets_warning": "WK 战术：Hit-Squad 集中攻击最弱的对方 state。把 top-might 分散到多个目标常常使攻击力低于拿下任何 Hub 所需的门槛 — 一次失败的 take 会让自家 Hub 失去自动护盾。",
+    "auto_fill_label": "Auto-Sort：容量填充模式",
+    "auto_fill_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。关闭 = 固定 Hub-防御者数量，炮塔无上限。"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

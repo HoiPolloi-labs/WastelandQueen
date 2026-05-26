@@ -394,7 +394,9 @@
     "success_open_button": "開く",
     "success_copy_title": "クリップボードにコピー",
     "success_copy_short_title": "短縮URLをコピー (チャット用)",
-    "foreign_targets_warning": "WK ドクトリン: Hit-Squad は最弱の敵 state に集中。top-might を複数ターゲットに分散すると、どの Hub も take できない閾値以下に希釈されがち — take 失敗は自国 Hub の自動シールドを失わせる。"
+    "foreign_targets_warning": "WK ドクトリン: Hit-Squad は最弱の敵 state に集中。top-might を複数ターゲットに分散すると、どの Hub も take できない閾値以下に希釈されがち — take 失敗は自国 Hub の自動シールドを失わせる。",
+    "auto_fill_label": "Auto-Sort: 容量埋めモード",
+    "auto_fill_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。オフ = 固定 Hub ディフェンダー数、タレット無制限。"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

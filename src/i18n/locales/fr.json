@@ -394,7 +394,9 @@
     "success_open_button": "Ouvrir",
     "success_copy_title": "Copier dans le presse-papier",
     "success_copy_short_title": "Copier l'URL courte (chat-friendly)",
-    "foreign_targets_warning": "Doctrine WK : concentrer le Hit-Squad sur le state adverse le plus faible. Diviser top-might sur plusieurs cibles dilue souvent l'attaque sous le seuil nécessaire pour prendre un Hub — un take raté coûte à ton Hub home son shield automatique."
+    "foreign_targets_warning": "Doctrine WK : concentrer le Hit-Squad sur le state adverse le plus faible. Diviser top-might sur plusieurs cibles dilue souvent l'attaque sous le seuil nécessaire pour prendre un Hub — un take raté coûte à ton Hub home son shield automatique.",
+    "auto_fill_label": "Auto-Sort : mode remplissage par capacité",
+    "auto_fill_hint": "Le Hub et chaque tourelle se remplissent jusqu'à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve. Off = nombre fixe de Hub-défenseurs, tourelles illimitées."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

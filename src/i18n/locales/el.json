@@ -394,7 +394,9 @@
     "success_open_button": "Άνοιγμα",
     "success_copy_title": "Αντιγραφή στο πρόχειρο",
     "success_copy_short_title": "Αντιγραφή σύντομου URL (chat-friendly)",
-    "foreign_targets_warning": "Δόγμα WK: συγκέντρωσε το Hit-Squad στο πιο αδύναμο εχθρικό state. Ο διαμοιρασμός top-might σε πολλούς στόχους συχνά αραιώνει την επίθεση κάτω από το όριο για κατάληψη οποιουδήποτε Hub — αποτυχημένο take στερεί από το home Hub το αυτόματο shield."
+    "foreign_targets_warning": "Δόγμα WK: συγκέντρωσε το Hit-Squad στο πιο αδύναμο εχθρικό state. Ο διαμοιρασμός top-might σε πολλούς στόχους συχνά αραιώνει την επίθεση κάτω από το όριο για κατάληψη οποιουδήποτε Hub — αποτυχημένο take στερεί από το home Hub το αυτόματο shield.",
+    "auto_fill_label": "Auto-Sort: λειτουργία πλήρωσης χωρητικότητας",
+    "auto_fill_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία. Off = σταθερός αριθμός Hub-αμυντικών, πύργοι χωρίς όριο."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

@@ -394,7 +394,9 @@
     "success_open_button": "열기",
     "success_copy_title": "클립보드에 복사",
     "success_copy_short_title": "짧은 URL 복사 (채팅용)",
-    "foreign_targets_warning": "WK 원칙: Hit-Squad는 가장 약한 상대 state에 집중. 최상위 might를 여러 타겟에 분산하면 어떤 Hub도 take할 수 없는 임계 이하로 희석됨 — 실패한 take는 home Hub의 자동 shield를 잃게 함."
+    "foreign_targets_warning": "WK 원칙: Hit-Squad는 가장 약한 상대 state에 집중. 최상위 might를 여러 타겟에 분산하면 어떤 Hub도 take할 수 없는 임계 이하로 희석됨 — 실패한 take는 home Hub의 자동 shield를 잃게 함.",
+    "auto_fill_label": "Auto-Sort: 용량 채우기 모드",
+    "auto_fill_hint": "Hub와 각 포탑은 합류자의 행군 합계가 캡틴의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비. 꺼짐 = 고정 Hub-방어자 수, 포탑 무제한."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

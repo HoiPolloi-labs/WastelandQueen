@@ -394,7 +394,9 @@
     "success_open_button": "Aç",
     "success_copy_title": "Panoya kopyala",
     "success_copy_short_title": "Kısa URL'yi kopyala (sohbet için)",
-    "foreign_targets_warning": "WK doktrini: Hit-Squad'ı en zayıf rakip state'e yoğunlaştır. Top-might'ı birden fazla hedefe bölmek saldırıyı hiçbir Hub'ı alamayacak eşiğin altına seyreltir — başarısız take, ev Hub'ın otomatik shield'ini kaybettirir."
+    "foreign_targets_warning": "WK doktrini: Hit-Squad'ı en zayıf rakip state'e yoğunlaştır. Top-might'ı birden fazla hedefe bölmek saldırıyı hiçbir Hub'ı alamayacak eşiğin altına seyreltir — başarısız take, ev Hub'ın otomatik shield'ini kaybettirir.",
+    "auto_fill_label": "Auto-Sort: kapasite-dolum modu",
+    "auto_fill_hint": "Hub ve her kule, katılımcıların yürüyüş toplamı kaptanın rally üst sınırına ulaşana kadar dolar. Fazla → yedek. Kapalı = sabit Hub-savunmacı sayısı, kuleler sınırsız."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",

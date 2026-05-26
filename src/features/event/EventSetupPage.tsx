@@ -53,6 +53,7 @@ export function EventSetupPage() {
   const [negotiatorIgn, setNegotiatorIgn] = useState('')
   const [foreignTargets, setForeignTargets] = useState('')
   const [heroesEnabled, setHeroesEnabled] = useState(false)
+  const [autoFillToCapacity, setAutoFillToCapacity] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>('')
   const [clonedFrom, setClonedFrom] = useState<string | null>(null)
@@ -79,6 +80,7 @@ export function EventSetupPage() {
       setNegotiatorIgn(src.negotiator_ign ?? '')
       setForeignTargets((src.foreign_targets ?? []).join(', '))
       setHeroesEnabled(src.heroes_enabled)
+      setAutoFillToCapacity(src.auto_fill_to_capacity)
       // notes carry over — often the same matchup means same NAP/strategy notes.
       // The "Geklont von" banner cues the planner to review before submit.
       setNotes(src.notes ?? '')
@@ -151,6 +153,7 @@ export function EventSetupPage() {
         negotiator_ign: negotiatorIgn.trim() || null,
         foreign_targets: targets.length > 0 ? targets : null,
         heroes_enabled: heroesEnabled,
+        auto_fill_to_capacity: autoFillToCapacity,
       },
     })
     if (error || !data) {
@@ -305,6 +308,23 @@ export function EventSetupPage() {
             </span>
             <span className="mt-0.5 block text-xs text-zinc-400">
               {t('event_setup.heroes_enabled_hint')}
+            </span>
+          </span>
+        </label>
+
+        <label className="flex cursor-pointer items-start gap-3 rounded border border-zinc-800 bg-zinc-900 p-3 transition hover:border-zinc-700">
+          <input
+            type="checkbox"
+            checked={autoFillToCapacity}
+            onChange={(e) => setAutoFillToCapacity(e.target.checked)}
+            className="mt-0.5 h-4 w-4 accent-yellow-500"
+          />
+          <span className="flex-1">
+            <span className="block text-sm font-medium text-zinc-100">
+              {t('event_setup.auto_fill_label')}
+            </span>
+            <span className="mt-0.5 block text-xs text-zinc-400">
+              {t('event_setup.auto_fill_hint')}
             </span>
           </span>
         </label>

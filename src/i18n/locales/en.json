@@ -394,7 +394,9 @@
     "success_open_button": "Open",
     "success_copy_title": "Copy to clipboard",
     "success_copy_short_title": "Copy short URL (chat-friendly)",
-    "foreign_targets_warning": "WK doctrine: concentrate Hit-Squad on the weakest opposing state. Splitting top-might across multiple targets often dilutes the attack below the threshold needed to take any Hub — and a failed take costs your home Hub its automatic shield."
+    "foreign_targets_warning": "WK doctrine: concentrate Hit-Squad on the weakest opposing state. Splitting top-might across multiple targets often dilutes the attack below the threshold needed to take any Hub — and a failed take costs your home Hub its automatic shield.",
+    "auto_fill_label": "Auto-Sort: capacity-fill mode",
+    "auto_fill_hint": "Hub & each turret fill until joiners' march totals reach the captain's rally cap. Surplus → reserve. Off = fixed Hub-defender count, unbounded turrets."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
