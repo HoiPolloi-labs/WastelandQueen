@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Frammenti Agent X",
     "dr_j_frags_label": "Frammenti Dr. J",
     "nataly_frags_label": "Frammenti Nataly",
-    "march_label": "Dimensione marcia (opzionale)",
+    "march_label": "Dimensione marcia",
     "march_placeholder": "es. 350000",
-    "march_hint": "Truppe per marcia. Opzionale — usata dal Auto-Sort a capacità, ripiega su rally size se vuoto."
+    "march_hint": "Truppe inviate per singola march. Usata dall Auto-Sort a capacità per dimensionare ogni building."
   },
   "board": {
     "event_not_found": "Evento non trovato",

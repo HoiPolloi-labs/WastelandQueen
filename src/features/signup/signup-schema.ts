@@ -24,19 +24,17 @@ export const signupSchema = z.object({
     .number({ invalid_type_error: 'Rally Size ist Pflicht' })
     .int()
     .positive('Rally Size muss > 0 sein'),
-  /** Troops sent per march (each rally-join consumes one). Optional but
-   *  recommended — capacity-fill Auto-Sort uses it; absence falls back to
-   *  rally_size (overestimate, fewer defenders fit). 0 is allowed (player
-   *  who only attends defense, never marches). Upper bound 100M is a sanity
-   *  cap to catch paste errors — current game ceilings are well under 1M. */
+  /** Troops sent per single march (each rally-join consumes one). Required —
+   *  capacity-fill Auto-Sort needs the real number; without it the algorithm
+   *  can only fall back to rally_size, which is ~8× too large and wrecks the
+   *  capacity math. Mirrors rally_size: nullable in the DB (legacy rows) but
+   *  mandatory on the form. Upper bound 100M catches paste errors — current
+   *  game ceilings are well under 1M. */
   march_size: z
-    .number()
+    .number({ invalid_type_error: 'March Size ist Pflicht' })
     .int()
-    .nonnegative('March Size darf nicht negativ sein')
-    .max(100_000_000, 'March Size unplausibel hoch — wirklich >100M?')
-    .nullable()
-    .optional()
-    .transform((v) => (v == null ? null : v)),
+    .positive('March Size muss > 0 sein')
+    .max(100_000_000, 'March Size unplausibel hoch — wirklich >100M?'),
   true_might: z
     .number()
     .int()

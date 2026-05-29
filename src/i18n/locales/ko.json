@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Agent X 조각",
     "dr_j_frags_label": "Dr. J 조각",
     "nataly_frags_label": "Nataly 조각",
-    "march_label": "행군 규모 (선택)",
+    "march_label": "행군 규모",
     "march_placeholder": "예: 350000",
-    "march_hint": "행군 1회 당 병력. 선택 — 용량 채우기 자동 배치에서 사용, 비어 있으면 rally size로 폴백."
+    "march_hint": "행군 1회당 보내는 병력. 용량 채우기 Auto-Sort가 각 building 크기 계산에 사용."
   },
   "board": {
     "event_not_found": "이벤트를 찾을 수 없음",

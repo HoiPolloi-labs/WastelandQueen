@@ -9,6 +9,7 @@ const baseValid = {
   troop_type: 'rider' as const,
   max_solo_lair: 7,
   rally_size: 1_500_000,
+  march_size: 200_000,
   true_might: 80_000_000,
   willing_captain: true,
   shift_pref: '1,2',
@@ -94,20 +95,19 @@ describe('signupSchema', () => {
     expect(signupSchema.safeParse({ ...baseValid, ign: 'a'.repeat(33) }).success).toBe(false)
   })
 
-  // march_size (added 2026-05-26 alongside Auto-Sort capacity mode)
+  // march_size: required since capacity-fill mode depends on it (a rally
+  // fallback is ~8× too large and wrecks the capacity math).
   describe('march_size', () => {
-    it('omission is OK (optional field)', () => {
-      const r = signupSchema.safeParse(baseValid)
-      expect(r.success).toBe(true)
-      if (r.success) expect(r.data.march_size).toBe(null)
+    it('rejects omission (required field)', () => {
+      const { march_size: _omit, ...withoutMarch } = baseValid
+      void _omit
+      expect(signupSchema.safeParse(withoutMarch).success).toBe(false)
     })
-    it('explicit null is OK', () => {
-      const r = signupSchema.safeParse({ ...baseValid, march_size: null })
-      expect(r.success).toBe(true)
+    it('rejects null', () => {
+      expect(signupSchema.safeParse({ ...baseValid, march_size: null }).success).toBe(false)
     })
-    it('accepts 0 — player who only defends, never marches', () => {
-      const r = signupSchema.safeParse({ ...baseValid, march_size: 0 })
-      expect(r.success).toBe(true)
+    it('rejects 0 (a defender that sends no troops is meaningless)', () => {
+      expect(signupSchema.safeParse({ ...baseValid, march_size: 0 }).success).toBe(false)
     })
     it('rejects negative march_size', () => {
       expect(signupSchema.safeParse({ ...baseValid, march_size: -1 }).success).toBe(false)

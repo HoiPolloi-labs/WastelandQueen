@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Agent Xフラグメント",
     "dr_j_frags_label": "Dr. Jフラグメント",
     "nataly_frags_label": "Natalyフラグメント",
-    "march_label": "行軍規模（任意）",
+    "march_label": "行軍規模",
     "march_placeholder": "例: 350000",
-    "march_hint": "1回の行軍兵力。任意 — 容量埋め自動配分が使用、空の場合は rally size にフォールバック。"
+    "march_hint": "1回の行軍で送る兵力。容量埋め Auto-Sort が各 building のサイズ計算に使用。"
   },
   "board": {
     "event_not_found": "イベントが見つかりません",

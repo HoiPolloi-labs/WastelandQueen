@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Agent X 碎片",
     "dr_j_frags_label": "Dr. J 碎片",
     "nataly_frags_label": "Nataly 碎片",
-    "march_label": "行军规模（可选）",
+    "march_label": "行军规模",
     "march_placeholder": "例如 350000",
-    "march_hint": "每次行军兵力。可选 — 容量填充自动分配使用此值，为空时回退到 rally size。"
+    "march_hint": "每次行军派出的兵力。容量填充 Auto-Sort 用它来计算每个 building 的容量。"
   },
   "board": {
     "event_not_found": "未找到事件",

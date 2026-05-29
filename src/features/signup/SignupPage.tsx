@@ -456,6 +456,7 @@ export function SignupPage() {
             value={marchSize}
             onChange={(e) => setMarchSize(e.target.value)}
             hint={t('signup.march_hint')}
+            required
             error={errors.march_size}
           />
         </div>

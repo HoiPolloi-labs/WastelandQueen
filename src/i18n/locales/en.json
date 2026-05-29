@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Agent X Frags",
     "dr_j_frags_label": "Dr. J Frags",
     "nataly_frags_label": "Nataly Frags",
-    "march_label": "March Size (optional)",
+    "march_label": "March Size",
     "march_placeholder": "e.g. 350000",
-    "march_hint": "Troops per single march. Optional — capacity-fill Auto-Sort uses it, falls back to rally size if blank."
+    "march_hint": "Troops you send per single march. Used by capacity-fill Auto-Sort to size each building."
   },
   "board": {
     "event_not_found": "Event not found",

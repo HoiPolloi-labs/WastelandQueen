@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Agent X Fragmente",
     "dr_j_frags_label": "Dr. J Fragmente",
     "nataly_frags_label": "Nataly Fragmente",
-    "march_label": "Marsch-Größe (optional)",
+    "march_label": "Marsch-Größe",
     "march_placeholder": "z.B. 350000",
-    "march_hint": "Truppen pro Marsch. Optional — wird im Kapazitäts-Auto-Sort verwendet, fällt zurück auf Rally-Size wenn leer."
+    "march_hint": "Truppen pro einzelnem Marsch. Wird vom Kapazitäts-Auto-Sort genutzt, um jedes Building zu dimensionieren."
   },
   "board": {
     "event_not_found": "Event nicht gefunden",

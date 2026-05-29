@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Фрагменты Agent X",
     "dr_j_frags_label": "Фрагменты Dr. J",
     "nataly_frags_label": "Фрагменты Nataly",
-    "march_label": "Размер марша (необязательно)",
+    "march_label": "Размер марша",
     "march_placeholder": "напр. 350000",
-    "march_hint": "Войска за марш. Опционально — используется в режиме заполнения по ёмкости; запасной вариант — rally size."
+    "march_hint": "Войска за один march. Используется режимом заполнения по ёмкости для размера каждого building."
   },
   "board": {
     "event_not_found": "Событие не найдено",

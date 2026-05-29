@@ -101,9 +101,9 @@
     "agent_x_frags_label": "Θραύσματα Agent X",
     "dr_j_frags_label": "Θραύσματα Dr. J",
     "nataly_frags_label": "Θραύσματα Nataly",
-    "march_label": "Μέγεθος πορείας (προαιρετικό)",
+    "march_label": "Μέγεθος πορείας",
     "march_placeholder": "π.χ. 350000",
-    "march_hint": "Στρατεύματα ανά πορεία. Προαιρετικό — χρησιμοποιείται από Auto-Sort χωρητικότητας, επιστρέφει σε rally size αν κενό."
+    "march_hint": "Στρατεύματα ανά μεμονωμένο march. Χρησιμοποιείται από το Auto-Sort χωρητικότητας για το μέγεθος κάθε building."
   },
   "board": {
     "event_not_found": "Το γεγονός δεν βρέθηκε",
