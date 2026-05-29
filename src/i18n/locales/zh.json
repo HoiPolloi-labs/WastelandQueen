@@ -469,7 +469,75 @@
     "section_loss": "部队损失流程",
     "section_preevent": "事件前清单（F2P）",
     "section_nap": "NAP 短语（常见）",
-    "section_triggers": "触发点"
+    "section_triggers": "触发点",
+    "geometry": {
+      "p1": "Zenith Plaza = 中心，含 Hub + 4 座 turrets（N/S/E/W）。Mud = 周围的棕色环（WK 期间可攻击）。Green = 普通地图，在外州不可攻击。",
+      "p2": "与 Hub 不同 Alliance 的 turrets 会向 Hub 开火 → 永久兵力损失。所以：全员加入同一个临时 State-Alliance。"
+    },
+    "win": {
+      "items": [
+        "连续 8 小时占住 Hub → Instant-Win + 30 分钟 Hub-Shield",
+        "否则：24 小时后 Hub-Occupation 总时长最多者胜",
+        "连续 8 小时优先于总时长。占住外州 Hub 会自动为你的 Home-Hub 上盾。"
+      ]
+    },
+    "captain": {
+      "steps": [
+        "第一个进入 building",
+        "激活 Super Reinforcement",
+        "守住位置",
+        "在 Alliance 聊天里召集 reinforcements"
+      ],
+      "note": "Captain-Rally = Building-Capacity。每支进入的 march 都获得 captain 的兵种属性。最强的可用玩家 captain 住 Hub。"
+    },
+    "scoring": {
+      "kill_title": "Kill Points（Hub/turrets 或 Mud/Foreign-RSS-tiles）",
+      "death_title": "Death Points（仅 Hub 或 turrets — Mud 死亡不计）",
+      "occupation": "Occupation：在 Hub/turret 上累计 120 分钟最多 2,000 分。被打下来不重置。"
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend（前 15）",
+        "Gold+：解锁 Nataly 碎片（每场 event 从 Ruler's-Hand box 获得 5 / 8 / 12 碎片）",
+        "Gold+：只防守会丢 Trophy → 必须主动去抢外州 Hub",
+        "Governor's award boxes（King / Rulers / Loyalty / Contribution）归获胜 Alliance，由 governor 分配",
+        "攻占外州使 box 池翻倍，并带来 Coffer 税收流"
+      ]
+    },
+    "loss": {
+      "intro": "伤亡 → Infirmary → Deep Healing → Alliance Infirmary → 永久",
+      "items": [
+        "无投入：30% 永久。满级 Miraculous Survival：约 18%",
+        "Deep Heal = 免费 Nano Potions（慢）。满了 → Alliance-Infirmary 陷阱",
+        "Alliance-Infirmary 陷阱：离开 State-Alliance 时里面还有兵 → 永久阵亡",
+        "Fast Comeback 赛后：+300% 训练加成，上限为损失 might 的 120%（只有 Hub/turret 死亡计入上限，turret-fire 和 Mud 死亡不计）"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "在 Nova/Research 把 Miraculous Survival 拉满",
+        "装载 First Aid + Instant Heal 指挥官天赋",
+        "囤积 training-speedups + 资源（供 FC 消耗）",
+        "用 T1 taxis 填满 Infirmary（高 tier 死亡直接进 Deep Healing）",
+        "已加入 State-Alliance",
+        "若 mud-sitter：3 天 shield 或 8h+1d 叠加"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — 在 WK 当天 reset 前后生效"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP：当你的 True-Might 前 3 名都超过对手第 1 名，且家里有足够 taxi 储备守 Home-Hub 时，开抢",
+        "劣势就早认输 — 24 小时无意义防守要花数周 retraining",
+        "谨慎触发 FC：囤的 FC-cap 不要超过你 2 周内能消耗的量"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · State 协调",

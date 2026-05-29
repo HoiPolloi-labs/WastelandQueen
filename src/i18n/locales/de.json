@@ -469,7 +469,75 @@
     "section_loss": "Troop-Loss-Flow",
     "section_preevent": "Pre-Event Checklist (F2P)",
     "section_nap": "NAP-Begriffe (typisch)",
-    "section_triggers": "Trigger-Punkte"
+    "section_triggers": "Trigger-Punkte",
+    "geometry": {
+      "p1": "Zenith Plaza = Mitte mit Hub + 4 Türmen (N/S/E/W). Mud = brauner Ring drumrum (angreifbar während WK). Green = normaler Map-Teil, in fremdem State unattackable.",
+      "p2": "Türme die nicht der gleichen Alliance gehören wie der Hub feuern auf den Hub → permanente Truppenverluste. Deshalb: alle in eine temporäre State-Alliance."
+    },
+    "win": {
+      "items": [
+        "8h consecutive Hub-Hold → Instant-Win + 30-min Hub-Shield",
+        "Sonst: meiste Total-Hub-Occupation-Time nach 24h",
+        "Consecutive-8h überschreibt Total-Time. Foreign-Hub-Hold gibt dir automatisches Home-Hub-Shield."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "Als erstes ins Building rein",
+        "Super Reinforcement aktivieren",
+        "Position halten",
+        "Reinforcements im Alliance-Chat callen"
+      ],
+      "note": "Captain-Rally = Building-Capacity. Captain-Truppen-Stats bekommt jede einlaufende March. Stärkster verfügbarer Spieler captained den Hub."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/Türme oder Mud/Foreign-RSS-Tiles)",
+      "death_title": "Death Points (NUR Hub oder Türme — Mud-Deaths zählen NICHT)",
+      "occupation": "Occupation: bis zu 2.000 Punkte für kumulative 120 Min auf Hub/Turm. Kein Reset wenn du runtergeschmissen wirst."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+: Nataly-Frags freigeschaltet (5 / 8 / 12 Frags pro Event aus der Ruler's-Hand-Box)",
+        "Gold+: Trophy-VERLUST wenn nur defended → musst offensiv foreign-Hub stehlen",
+        "Governor's-Award-Boxes (King / Rulers / Loyalty / Contribution) für die winning Alliance, governor verteilt",
+        "Foreign-State-Capture verdoppelt den Box-Pool und gibt Coffer-Tax-Stream"
+      ]
+    },
+    "loss": {
+      "intro": "Casualties → Infirmary → Deep Healing → Alliance Infirmary → PERMANENT",
+      "items": [
+        "Ohne Investment: 30% permanent. Maxed Miraculous Survival: ~18%",
+        "Deep Heal = free Nano Potions (slow). Wenn voll → Alliance-Inf-Trap",
+        "Alliance-Infirmary-Trap: wenn du beim Verlassen der State-Alliance noch Truppen drin hast → die sterben permanent",
+        "Fast Comeback post-event: 300% Training-Boost, capped at 120% of might lost (nur Hub/Turm-Deaths zählen für den Cap, nicht Turret-Fire oder Mud-Deaths)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Miraculous Survival in Nova/Research auf Max",
+        "First Aid + Instant Heal Commander-Talents geladen",
+        "Trainings-Speedups + Ressourcen stockpilen (für FC-Konsum)",
+        "Infirmary mit T1-Taxis vollfüllen (Hi-Tier-Deaths skippen direkt zu Deep Healing)",
+        "State-Alliance beigetreten",
+        "Wenn Mudsitter: 3-Tage-Schild oder 8h+1d-Stack"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — kickt um Reset auf WK-Tag"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP: take, wenn deine Top-3 True-Might je den Top-1 des Gegners übertrifft UND genug Taxi-Reserves zuhause für den Home-Hub",
+        "Konzedier früh wenn overmatched — 24h sinnloses Defend kosten Wochen Retraining",
+        "FC sparsam triggern: nie mehr FC-Cap als du verbrauchen kannst in 2 Wochen"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · State Coordination",

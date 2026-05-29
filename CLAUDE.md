@@ -106,7 +106,7 @@ src/
       contribution.ts            # pure — score-weighting per signup (with NaN-guarded date math)
       use-box-counts.ts          # event-config persistence for box counts
     cheatsheet/
-      CheatSheetPage.tsx         # /cheat-sheet — WK mechanics quick-reference (body content currently DE-only)
+      CheatSheetPage.tsx         # /cheat-sheet — WK mechanics quick-reference (fully i18n'd, 12 locales)
     home/
       HeroScene.tsx              # /  — landing page with animated zeppelins + figure cut-out
   lib/
@@ -412,7 +412,7 @@ mixing localized + English terms would be more confusing than helpful.
 Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
 + Awards + CheatSheet + HeroScene + PlayerChip tooltips + heroes feature
 + Discord-reminder buttons + point calculator. All 12 locales (en, de, ru,
-zh, ko, ja, it, tr, fr, uk, el, es) have the full **425-key** schema with
+zh, ko, ja, it, tr, fr, uk, el, es) have the full **439-key** schema with
 zero gaps. CI-style parity check:
 
 ```

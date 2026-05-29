@@ -18,6 +18,9 @@ import { KILL_POINTS, DEATH_POINTS } from '@/types/wk'
 
 export function CheatSheetPage() {
   const { t } = useTranslation()
+  // i18next returns string[] for these keys (returnObjects). Typed helper so
+  // the .map() calls below stay clean.
+  const list = (key: string): string[] => t(key, { returnObjects: true }) as string[]
   return (
     <div className="mx-auto max-w-3xl">
       <PageHeader
@@ -34,136 +37,71 @@ export function CheatSheetPage() {
 
       <div className="flex flex-col gap-6">
         <Section icon={Map} title={t('cheatsheet.section_geometry')}>
-          <p>
-            <strong>Zenith Plaza</strong> = Mitte mit Hub + 4 Türmen (N/S/E/W).{' '}
-            <strong>Mud</strong> = brauner Ring drumrum (angreifbar während WK).{' '}
-            <strong>Green</strong> = normaler Map-Teil, in fremdem State unattackable.
-          </p>
-          <p className="text-xs text-zinc-400">
-            Türme die nicht der gleichen Alliance gehören wie der Hub <em>feuern auf den
-            Hub</em> → permanente Truppenverluste. Deshalb: alle in <em>eine</em>
-            temporäre State-Alliance.
-          </p>
+          <p>{t('cheatsheet.geometry.p1')}</p>
+          <p className="text-xs text-zinc-400">{t('cheatsheet.geometry.p2')}</p>
         </Section>
 
         <Section icon={Trophy} title={t('cheatsheet.section_win')}>
           <ul className="list-inside list-disc space-y-1">
-            <li>
-              <strong>8h consecutive Hub-Hold</strong> → Instant-Win + 30-min Hub-Shield
-            </li>
-            <li>
-              <strong>Sonst</strong>: meiste Total-Hub-Occupation-Time nach 24h
-            </li>
-            <li>
-              Consecutive-8h überschreibt Total-Time. Foreign-Hub-Hold gibt dir
-              automatisches Home-Hub-Shield.
-            </li>
+            {list('cheatsheet.win.items').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ul>
         </Section>
 
         <Section icon={Crown} title={t('cheatsheet.section_captain')}>
           <ol className="list-inside list-decimal space-y-1">
-            <li>Als erstes ins Building rein</li>
-            <li>Super Reinforcement aktivieren</li>
-            <li>Position halten</li>
-            <li>Reinforcements im Alliance-Chat callen</li>
+            {list('cheatsheet.captain.steps').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ol>
-          <p className="text-xs text-zinc-400">
-            Captain-Rally = Building-Capacity. Captain-Truppen-Stats = jede einlaufende
-            March bekommt sie. Stärkster verfügbarer Spieler captained den Hub.
-          </p>
+          <p className="text-xs text-zinc-400">{t('cheatsheet.captain.note')}</p>
         </Section>
 
         <Section icon={Swords} title={t('cheatsheet.section_scoring')}>
-          <PointTable
-            title="Kill Points (Hub/Türme oder Mud/Foreign-RSS-Tiles)"
-            data={KILL_POINTS}
-          />
-          <PointTable
-            title="Death Points (NUR Hub oder Türme — Mud-Deaths zählen NICHT)"
-            data={DEATH_POINTS}
-          />
-          <p className="text-xs text-zinc-400">
-            <strong>Occupation</strong>: bis zu 2.000 Punkte für kumulative 120 Min auf
-            Hub/Turm. Kein Reset wenn du runtergeschmissen wirst.
-          </p>
+          <PointTable title={t('cheatsheet.scoring.kill_title')} data={KILL_POINTS} />
+          <PointTable title={t('cheatsheet.scoring.death_title')} data={DEATH_POINTS} />
+          <p className="text-xs text-zinc-400">{t('cheatsheet.scoring.occupation')}</p>
         </Section>
 
         <Section icon={Shield} title={t('cheatsheet.section_grades')}>
           <ul className="list-inside list-disc space-y-1">
-            <li>Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)</li>
-            <li>
-              <span className="text-yellow-300">Gold+</span>: Nataly-Frags freigeschaltet
-              (5 / 8 / 12 Frags pro Event aus der Ruler's-Hand-Box)
-            </li>
-            <li>
-              <span className="text-yellow-300">Gold+</span>: Trophy-VERLUST wenn nur
-              defended → musst offensiv foreign-Hub stehlen
-            </li>
-            <li>
-              Governor's-Award-Boxes (King / Rulers / Loyalty / Contribution) für die
-              winning Alliance, governor verteilt
-            </li>
-            <li>
-              Foreign-State-Capture verdoppelt den Box-Pool und gibt Coffer-Tax-Stream
-            </li>
+            {list('cheatsheet.grades.items').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ul>
         </Section>
 
         <Section icon={Skull} title={t('cheatsheet.section_loss')}>
-          <p>
-            Casualties → Infirmary → Deep Healing → Alliance Infirmary →{' '}
-            <strong>PERMANENT</strong>
-          </p>
+          <p>{t('cheatsheet.loss.intro')}</p>
           <ul className="list-inside list-disc space-y-1 text-xs text-zinc-400">
-            <li>Ohne Investment: 30% permanent. Maxed Miraculous Survival: ~18%</li>
-            <li>Deep Heal = free Nano Potions (slow). Wenn voll → Alliance-Inf-Trap</li>
-            <li>
-              <strong>Alliance-Infirmary-Trap</strong>: wenn du beim Verlassen der
-              State-Alliance noch Truppen drin hast → die sterben permanent
-            </li>
-            <li>
-              <strong>Fast Comeback post-event</strong>: 300% Training-Boost, capped at
-              120% of might lost (nur Hub/Turm-Deaths zählen für den Cap, nicht
-              Turret-Fire oder Mud-Deaths)
-            </li>
+            {list('cheatsheet.loss.items').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ul>
         </Section>
 
         <Section icon={Crosshair} title={t('cheatsheet.section_preevent')}>
           <ul className="list-inside list-disc space-y-1">
-            <li>Miraculous Survival in Nova/Research auf Max</li>
-            <li>First Aid + Instant Heal Commander-Talents geladen</li>
-            <li>Trainings-Speedups + Ressourcen stockpilen (für FC-Konsum)</li>
-            <li>Infirmary mit T1-Taxis vollfüllen (Hi-Tier-Deaths skippen direkt zu Deep Healing)</li>
-            <li>State-Alliance beigetreten</li>
-            <li>Wenn Mudsitter: 3-Tage-Schild oder 8h+1d-Stack</li>
+            {list('cheatsheet.preevent.items').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ul>
         </Section>
 
         <Section icon={Zap} title={t('cheatsheet.section_nap')}>
           <ul className="list-inside list-disc space-y-1 font-mono text-xs text-zinc-300">
-            <li>"No T11+ marches into Hub"</li>
-            <li>"No attacking on green"</li>
-            <li>"Mud-sit RSS gathering allowed both directions"</li>
-            <li>"48h statewide NAP" — kickt um Reset auf WK-Tag</li>
+            {list('cheatsheet.nap.items').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ul>
         </Section>
 
         <Section icon={AlertTriangle} title={t('cheatsheet.section_triggers')}>
           <ul className="list-inside list-disc space-y-1">
-            <li>
-              <strong>State-Take vs NAP</strong>: take, wenn deine Top-3 True-Might je den
-              Top-1 des Gegners übertrifft UND genug Taxi-Reserves zuhause für den Home-Hub
-            </li>
-            <li>
-              <strong>Konzedier früh</strong> wenn overmatched — 24h sinnloses Defend kosten
-              Wochen Retraining
-            </li>
-            <li>
-              <strong>FC sparsam triggern</strong>: nie mehr FC-Cap als du verbrauchen kannst
-              in 2 Wochen
-            </li>
+            {list('cheatsheet.triggers.items').map((x, i) => (
+              <li key={i}>{x}</li>
+            ))}
           </ul>
         </Section>
       </div>

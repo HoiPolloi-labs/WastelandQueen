@@ -469,7 +469,75 @@
     "section_loss": "병력 손실 흐름",
     "section_preevent": "이벤트 전 체크리스트 (F2P)",
     "section_nap": "NAP 문구 (일반)",
-    "section_triggers": "트리거 포인트"
+    "section_triggers": "트리거 포인트",
+    "geometry": {
+      "p1": "Zenith Plaza = Hub + 4 turrets(N/S/E/W)가 있는 중앙. Mud = 그 주위의 갈색 링(WK 동안 공격 가능). Green = 일반 맵, 외부 state에서는 공격 불가.",
+      "p2": "Hub와 같은 Alliance가 아닌 turrets는 Hub를 향해 발사 → 영구 병력 손실. 그래서: 모두 하나의 임시 State-Alliance에 가입."
+    },
+    "win": {
+      "items": [
+        "8시간 연속 Hub 점유 → Instant-Win + 30분 Hub-Shield",
+        "그 외: 24시간 후 누적 Hub-Occupation 시간이 가장 많은 쪽",
+        "연속 8시간이 누적 시간보다 우선. 외부 Hub 점유 시 Home-Hub가 자동 실드."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "building에 가장 먼저 진입",
+        "Super Reinforcement 활성화",
+        "위치 사수",
+        "Alliance 채팅에 reinforcements 호출"
+      ],
+      "note": "Captain-Rally = Building-Capacity. 들어오는 모든 march가 captain의 병력 스탯을 받음. 가용한 가장 강한 플레이어가 Hub를 captain."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/turrets 또는 Mud/Foreign-RSS-tiles)",
+      "death_title": "Death Points (오직 Hub 또는 turrets — Mud 사망은 미포함)",
+      "occupation": "Occupation: Hub/turret에서 누적 120분에 최대 2,000점. 밀려나도 리셋 없음."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+: Nataly 조각 해금 (event당 Ruler's-Hand box에서 5 / 8 / 12 조각)",
+        "Gold+: 방어만 하면 Trophy 손실 → 공격적으로 외부 Hub를 빼앗아야 함",
+        "Governor's award boxes (King / Rulers / Loyalty / Contribution)는 승리 Alliance에게, governor가 분배",
+        "외부 state 점령 시 box 풀이 2배가 되고 Coffer 세금 스트림 획득"
+      ]
+    },
+    "loss": {
+      "intro": "사상자 → Infirmary → Deep Healing → Alliance Infirmary → 영구",
+      "items": [
+        "투자 없이: 30% 영구. Miraculous Survival 만렙: ~18%",
+        "Deep Heal = 무료 Nano Potions (느림). 가득 차면 → Alliance-Infirmary 함정",
+        "Alliance-Infirmary 함정: State-Alliance를 떠날 때 병력이 남아 있으면 → 영구 사망",
+        "Fast Comeback 이벤트 후: 훈련 +300%, 손실 might의 120% 상한 (상한에는 Hub/turret 사망만 포함, turret-fire나 Mud 사망 제외)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Nova/Research에서 Miraculous Survival 최대",
+        "First Aid + Instant Heal 사령관 특성 장착",
+        "training-speedups + 자원 비축 (FC 소비용)",
+        "T1 택시로 Infirmary 채우기 (고 tier 사망은 바로 Deep Healing행)",
+        "State-Alliance 가입 완료",
+        "mud-sitter라면: 3일 shield 또는 8h+1d 스택"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — WK 당일 reset 전후로 발효"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP: 당신의 True-Might Top-3가 각각 상대 Top-1을 넘고 Home-Hub용 taxi 예비가 충분하면 점령",
+        "열세면 일찍 인정 — 24시간 무의미한 방어는 수 주의 retraining 비용",
+        "FC는 아껴서 트리거: 2주 안에 소비 가능한 양보다 많은 FC-cap을 쌓지 말 것"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · State 조율",

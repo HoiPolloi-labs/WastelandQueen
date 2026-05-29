@@ -469,7 +469,75 @@
     "section_loss": "Birlik kaybı akışı",
     "section_preevent": "Etkinlik öncesi liste (F2P)",
     "section_nap": "NAP cümleleri (yaygın)",
-    "section_triggers": "Tetik noktaları"
+    "section_triggers": "Tetik noktaları",
+    "geometry": {
+      "p1": "Zenith Plaza = Hub + 4 turret (N/S/E/W) olan merkez. Mud = etrafındaki kahverengi halka (WK sırasında saldırılabilir). Green = normal harita, yabancı state’te saldırılamaz.",
+      "p2": "Hub ile aynı Alliance’da olmayan turret’ler Hub’a ateş eder → kalıcı asker kaybı. Bu yüzden: herkes tek bir geçici State-Alliance’a katılır."
+    },
+    "win": {
+      "items": [
+        "8 saat kesintisiz Hub tutuşu → Instant-Win + 30 dk Hub-Shield",
+        "Aksi halde: 24 saat sonra en fazla toplam Hub-Occupation süresi",
+        "Kesintisiz 8 saat, toplam süreyi geçersiz kılar. Yabancı Hub tutmak Home-Hub’ına otomatik shield verir."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "building’e ilk giren ol",
+        "Super Reinforcement’ı aktive et",
+        "Pozisyonu koru",
+        "Alliance sohbetinde reinforcements çağır"
+      ],
+      "note": "Captain-Rally = Building-Capacity. Gelen her march, captain’ın asker statlarını alır. Mevcut en güçlü oyuncu Hub’a captain olur."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/turret veya Mud/Foreign-RSS-tile)",
+      "death_title": "Death Points (SADECE Hub veya turret — Mud ölümleri SAYILMAZ)",
+      "occupation": "Occupation: Hub/turret’te toplam 120 dk için en fazla 2.000 puan. Düşürülürsen sıfırlanmaz."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+: Nataly parçaları açılır (event başına Ruler's-Hand box’tan 5 / 8 / 12 parça)",
+        "Gold+: Sadece savunursan Trophy KAYBI → saldırarak yabancı Hub çalmalısın",
+        "Governor's award box’ları (King / Rulers / Loyalty / Contribution) kazanan Alliance’a, governor dağıtır",
+        "Yabancı state ele geçirmek box havuzunu ikiye katlar ve Coffer-tax-stream verir"
+      ]
+    },
+    "loss": {
+      "intro": "Kayıplar → Infirmary → Deep Healing → Alliance Infirmary → KALICI",
+      "items": [
+        "Yatırım yoksa: %30 kalıcı. Maxed Miraculous Survival: ~%18",
+        "Deep Heal = ücretsiz Nano Potions (yavaş). Dolunca → Alliance-Infirmary tuzağı",
+        "Alliance-Infirmary tuzağı: State-Alliance’dan çıkarken içinde hâlâ askerin varsa → kalıcı ölürler",
+        "Fast Comeback etkinlik sonrası: %300 training boost, kaybedilen might’ın %120’siyle sınırlı (sınıra sadece Hub/turret ölümleri sayılır, turret-fire veya Mud ölümleri değil)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Nova/Research’te Miraculous Survival maks",
+        "First Aid + Instant Heal komutan yetenekleri yüklü",
+        "training-speedup + kaynak stokla (FC tüketimi için)",
+        "Infirmary’yi T1-taxi ile doldur (yüksek tier ölümleri doğrudan Deep Healing’e gider)",
+        "State-Alliance’a katıldın",
+        "mud-sitter isen: 3 günlük shield veya 8h+1d stack"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — WK gününde reset civarında devreye girer"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP: True-Might Top-3’ünün her biri rakibin Top-1’ini geçiyorsa VE evde Home-Hub için yeterli taxi rezervin varsa al",
+        "Üstün gelinmişse erken pes et — 24 saat anlamsız savunma haftalarca retraining’e mal olur",
+        "FC’yi idareli tetikle: 2 haftada tüketebileceğinden fazla FC-cap biriktirme"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · State Koordinasyonu",

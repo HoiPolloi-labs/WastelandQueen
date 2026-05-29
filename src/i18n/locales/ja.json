@@ -469,7 +469,75 @@
     "section_loss": "兵力損失フロー",
     "section_preevent": "イベント前チェックリスト (F2P)",
     "section_nap": "NAPフレーズ (一般的)",
-    "section_triggers": "トリガーポイント"
+    "section_triggers": "トリガーポイント",
+    "geometry": {
+      "p1": "Zenith Plaza = Hub + 4 turrets（N/S/E/W）のある中央。Mud = その周りの茶色いリング（WK 中は攻撃可能）。Green = 通常マップ、外部 state では攻撃不可。",
+      "p2": "Hub と同じ Alliance でない turrets は Hub を撃つ → 永久兵力損失。だから全員が 1 つの一時 State-Alliance に加入。"
+    },
+    "win": {
+      "items": [
+        "8 時間連続 Hub 確保 → Instant-Win + 30 分 Hub-Shield",
+        "それ以外：24 時間後の累計 Hub-Occupation 時間が最多の側",
+        "連続 8 時間は累計時間より優先。外部 Hub の確保で Home-Hub が自動シールド。"
+      ]
+    },
+    "captain": {
+      "steps": [
+        "最初に building へ進入",
+        "Super Reinforcement を起動",
+        "位置を維持",
+        "Alliance チャットで reinforcements を呼ぶ"
+      ],
+      "note": "Captain-Rally = Building-Capacity。入ってくる march すべてが captain の兵種ステータスを得る。最強の参加可能プレイヤーが Hub を captain。"
+    },
+    "scoring": {
+      "kill_title": "Kill Points（Hub/turrets または Mud/Foreign-RSS-tiles）",
+      "death_title": "Death Points（Hub または turrets のみ — Mud 死亡はカウントなし）",
+      "occupation": "Occupation：Hub/turret で累計 120 分につき最大 2,000 点。落とされてもリセットなし。"
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend（Top 15）",
+        "Gold+：Nataly フラグ解放（event ごとに Ruler's-Hand box から 5 / 8 / 12 フラグ）",
+        "Gold+：防衛のみだと Trophy 喪失 → 攻撃的に外部 Hub を奪う必要あり",
+        "Governor's award boxes（King / Rulers / Loyalty / Contribution）は勝利 Alliance へ、governor が分配",
+        "外部 state の占領で box プールが倍増し Coffer 税収ストリームを獲得"
+      ]
+    },
+    "loss": {
+      "intro": "損耗 → Infirmary → Deep Healing → Alliance Infirmary → 永久",
+      "items": [
+        "投資なし：30% 永久。Miraculous Survival 最大：約 18%",
+        "Deep Heal = 無料 Nano Potions（遅い）。満杯になると → Alliance-Infirmary トラップ",
+        "Alliance-Infirmary トラップ：State-Alliance を抜ける時に兵が残っていると → 永久死亡",
+        "Fast Comeback イベント後：訓練 +300%、失った might の 120% が上限（上限には Hub/turret 死亡のみ算入、turret-fire や Mud 死亡は除く）"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Nova/Research で Miraculous Survival を最大に",
+        "First Aid + Instant Heal の指揮官タレントを装備",
+        "training-speedups + 資源を備蓄（FC 消費用）",
+        "T1 タクシーで Infirmary を満たす（高 tier 死亡は直接 Deep Healing へ）",
+        "State-Alliance に加入済み",
+        "mud-sitter なら：3 日 shield または 8h+1d スタック"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — WK 当日の reset 前後に発効"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP：自分の True-Might Top-3 がそれぞれ相手の Top-1 を上回り、かつ Home-Hub 用の taxi 予備が十分なら奪取",
+        "劣勢なら早めに諦める — 24 時間の無意味な防衛は数週間の retraining コスト",
+        "FC は控えめにトリガー：2 週間で消費できる以上の FC-cap を貯めない"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · State調整",

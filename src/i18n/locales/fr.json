@@ -469,7 +469,75 @@
     "section_loss": "Flux de pertes de troupes",
     "section_preevent": "Checklist pré-évènement (F2P)",
     "section_nap": "Phrases NAP (courantes)",
-    "section_triggers": "Points de déclenchement"
+    "section_triggers": "Points de déclenchement",
+    "geometry": {
+      "p1": "Zenith Plaza = centre avec Hub + 4 turrets (N/S/E/W). Mud = anneau marron autour (attaquable pendant le WK). Green = carte normale, inattaquable dans un state étranger.",
+      "p2": "Les turrets pas dans la même Alliance que le Hub tirent sur le Hub → pertes de troupes permanentes. Donc : tout le monde dans une seule State-Alliance temporaire."
+    },
+    "win": {
+      "items": [
+        "8h de Hub-Hold consécutives → Instant-Win + Hub-Shield de 30 min",
+        "Sinon : le plus de temps total de Hub-Occupation après 24h",
+        "Les 8h consécutives priment sur le temps total. Tenir un Hub étranger protège automatiquement ton Home-Hub."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "Premier dans le building",
+        "Activer Super Reinforcement",
+        "Tenir la position",
+        "Appeler les reinforcements dans le chat d’Alliance"
+      ],
+      "note": "Captain-Rally = Building-Capacity. Chaque march entrante reçoit les stats de troupes du captain. Le joueur le plus fort disponible captain le Hub."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/turrets ou Mud/Foreign-RSS-tiles)",
+      "death_title": "Death Points (SEULEMENT Hub ou turrets — les morts en Mud NE comptent PAS)",
+      "occupation": "Occupation : jusqu’à 2 000 points pour 120 min cumulées sur Hub/turret. Pas de reset si on te déloge."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+ : frags Nataly débloqués (5 / 8 / 12 frags par event depuis la Ruler's-Hand box)",
+        "Gold+ : PERTE de Trophy si tu ne fais que défendre → tu dois voler offensivement un Hub étranger",
+        "Governor's award boxes (King / Rulers / Loyalty / Contribution) pour l’Alliance gagnante, distribuées par le governor",
+        "Capturer un state étranger double le pool de boxes et donne un Coffer-tax-stream"
+      ]
+    },
+    "loss": {
+      "intro": "Pertes → Infirmary → Deep Healing → Alliance Infirmary → PERMANENT",
+      "items": [
+        "Sans investissement : 30% permanent. Miraculous Survival au max : ~18%",
+        "Deep Heal = Nano Potions gratuites (lent). Quand c’est plein → piège Alliance-Infirmary",
+        "Piège Alliance-Infirmary : s’il te reste des troupes dedans en quittant la State-Alliance → elles meurent définitivement",
+        "Fast Comeback après l’event : +300% training, plafonné à 120% du might perdu (seules les morts sur Hub/turret comptent pour le plafond, pas le turret-fire ni les morts en Mud)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Miraculous Survival au max dans Nova/Research",
+        "Talents commander First Aid + Instant Heal chargés",
+        "Stocker training-speedups + ressources (pour la conso FC)",
+        "Remplir l’Infirmary de T1-taxis (les morts high-tier sautent direct au Deep Healing)",
+        "State-Alliance rejointe",
+        "Si mud-sitter : shield de 3 jours ou stack 8h+1d"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — s’active autour du reset le jour du WK"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP : prends si chacun de tes Top-3 en True-Might bat le Top-1 adverse ET que tu as assez de taxi-réserves à la maison pour le Home-Hub",
+        "Concède tôt si surclassé — 24h de défense inutile coûtent des semaines de retraining",
+        "Déclenche FC avec parcimonie : ne stocke jamais plus de FC-cap que ce que tu peux consommer en 2 semaines"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · Coordination de State",

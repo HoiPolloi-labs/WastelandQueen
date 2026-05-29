@@ -469,7 +469,75 @@
     "section_loss": "Troop Loss Flow",
     "section_preevent": "Pre-Event Checklist (F2P)",
     "section_nap": "NAP Phrases (common)",
-    "section_triggers": "Trigger Points"
+    "section_triggers": "Trigger Points",
+    "geometry": {
+      "p1": "Zenith Plaza = center with Hub + 4 turrets (N/S/E/W). Mud = brown ring around it (attackable during WK). Green = normal map, unattackable in a foreign state.",
+      "p2": "Turrets not in the same Alliance as the Hub fire on the Hub → permanent troop loss. So: everyone joins one temporary State-Alliance."
+    },
+    "win": {
+      "items": [
+        "8h consecutive Hub-Hold → Instant-Win + 30-min Hub-Shield",
+        "Otherwise: most total Hub-Occupation-Time after 24h",
+        "Consecutive-8h overrides total time. Holding a foreign Hub auto-shields your Home-Hub."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "First into the building",
+        "Activate Super Reinforcement",
+        "Hold position",
+        "Call reinforcements in Alliance chat"
+      ],
+      "note": "Captain-Rally = Building-Capacity. The captain's troop stats apply to every incoming march. The strongest available player captains the Hub."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/turrets or Mud/Foreign-RSS-tiles)",
+      "death_title": "Death Points (ONLY Hub or turrets — Mud-deaths do NOT count)",
+      "occupation": "Occupation: up to 2,000 points for a cumulative 120 min on Hub/turret. No reset when you get knocked off."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+: Nataly frags unlocked (5 / 8 / 12 frags per event from the Ruler's-Hand box)",
+        "Gold+: Trophy LOSS if you only defend → you must offensively steal a foreign Hub",
+        "Governor's award boxes (King / Rulers / Loyalty / Contribution) for the winning Alliance, distributed by the governor",
+        "Capturing a foreign state doubles the box pool and grants a Coffer tax stream"
+      ]
+    },
+    "loss": {
+      "intro": "Casualties → Infirmary → Deep Healing → Alliance Infirmary → PERMANENT",
+      "items": [
+        "Without investment: 30% permanent. Maxed Miraculous Survival: ~18%",
+        "Deep Heal = free Nano Potions (slow). When full → Alliance-Infirmary trap",
+        "Alliance-Infirmary trap: if you still have troops in it when you leave the State-Alliance → they die permanently",
+        "Fast Comeback post-event: 300% training boost, capped at 120% of might lost (only Hub/turret deaths count toward the cap, not turret-fire or Mud-deaths)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Miraculous Survival maxed in Nova/Research",
+        "First Aid + Instant Heal commander talents loaded",
+        "Stockpile training speedups + resources (for FC consumption)",
+        "Fill the Infirmary with T1 taxis (high-tier deaths skip straight to Deep Healing)",
+        "Joined the State-Alliance",
+        "If mud-sitting: 3-day shield or 8h+1d stack"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — kicks in around reset on WK day"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP: take if each of your Top-3 True-Might beats the opponent's Top-1 AND you have enough taxi reserves at home for the Home-Hub",
+        "Concede early if overmatched — 24h of pointless defending costs weeks of retraining",
+        "Trigger FC sparingly: never bank more FC-cap than you can consume in 2 weeks"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · State Coordination",

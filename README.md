@@ -42,7 +42,7 @@ canon (Hub, turret, mud, NAP, Super Reinforcement, Fast Comeback).
   (project `ecxuvcuvuawxriucarmh` in `eu-central-1`)
 - **Zod** for form validation
 - **react-i18next** + `i18next-browser-languagedetector` — 12 locales
-  (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es), ~425-key parity, locale
+  (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es), ~439-key parity, locale
   bundles lazy-loaded so the main chunk doesn't ship 12× translations
 - **xlsx (SheetJS)** for roster import/export (dynamic-imported chunk)
 - **html-to-image** + **qrcode** for the Board PNG/QR export

@@ -469,7 +469,75 @@
     "section_loss": "Поток потерь войск",
     "section_preevent": "Чек-лист перед событием (F2P)",
     "section_nap": "Фразы NAP (типичные)",
-    "section_triggers": "Триггерные точки"
+    "section_triggers": "Триггерные точки",
+    "geometry": {
+      "p1": "Zenith Plaza = центр с Hub + 4 turrets (N/S/E/W). Mud = коричневое кольцо вокруг (атакуемо во время WK). Green = обычная карта, в чужом state неуязвима.",
+      "p2": "Turrets не в той же Alliance, что и Hub, стреляют по Hub → перманентные потери войск. Поэтому: все в одну временную State-Alliance."
+    },
+    "win": {
+      "items": [
+        "8 ч непрерывного удержания Hub → Instant-Win + 30-мин Hub-Shield",
+        "Иначе: наибольшее суммарное время Hub-Occupation за 24 ч",
+        "Непрерывные 8 ч важнее суммарного времени. Удержание чужого Hub авто-щитит ваш Home-Hub."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "Первым в building",
+        "Активировать Super Reinforcement",
+        "Держать позицию",
+        "Звать reinforcements в Alliance-чат"
+      ],
+      "note": "Captain-Rally = Building-Capacity. Статы войск captain получает каждый входящий march. Сильнейший доступный игрок captain-ит Hub."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/turrets или Mud/Foreign-RSS-tiles)",
+      "death_title": "Death Points (ТОЛЬКО Hub или turrets — Mud-смерти НЕ считаются)",
+      "occupation": "Occupation: до 2 000 очков за суммарные 120 мин на Hub/turret. Без сброса, если вас сбили."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+: открыты Nataly-фраги (5 / 8 / 12 фрагов за event из Ruler's-Hand box)",
+        "Gold+: ПОТЕРЯ Trophy, если только защищаться → нужно наступательно украсть чужой Hub",
+        "Governor's award boxes (King / Rulers / Loyalty / Contribution) для победившей Alliance, раздаёт governor",
+        "Захват чужого state удваивает пул boxes и даёт Coffer-tax-stream"
+      ]
+    },
+    "loss": {
+      "intro": "Потери → Infirmary → Deep Healing → Alliance Infirmary → ПЕРМАНЕНТНО",
+      "items": [
+        "Без вложений: 30% перманентно. Maxed Miraculous Survival: ~18%",
+        "Deep Heal = бесплатные Nano Potions (медленно). Когда полно → ловушка Alliance-Infirmary",
+        "Ловушка Alliance-Infirmary: если при выходе из State-Alliance в ней ещё есть войска → они гибнут перманентно",
+        "Fast Comeback после event: +300% к тренировке, потолок 120% от потерянного might (для потолка считаются только смерти на Hub/turret, не turret-fire и не Mud-смерти)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Miraculous Survival на макс в Nova/Research",
+        "Заряжены commander-таланты First Aid + Instant Heal",
+        "Запас training-speedups + ресурсов (на FC-расход)",
+        "Заполнить Infirmary T1-такси (смерти высоких tier идут сразу в Deep Healing)",
+        "Вступил(а) в State-Alliance",
+        "Если mud-sitter: 3-дневный shield или 8h+1d стек"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — вступает около reset в день WK"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP: бери, если каждый из твоих Top-3 по True-Might превосходит Top-1 врага И дома достаточно taxi-резервов для Home-Hub",
+        "Сдавайся рано, если силы неравны — 24 ч бессмысленной защиты стоят недель retraining",
+        "Триггерь FC экономно: не копи больше FC-cap, чем сможешь потратить за 2 недели"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · Координация State",

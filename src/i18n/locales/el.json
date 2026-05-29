@@ -469,7 +469,75 @@
     "section_loss": "Ροή απώλειας στρατευμάτων",
     "section_preevent": "Λίστα ελέγχου πριν το γεγονός (F2P)",
     "section_nap": "Φράσεις NAP (κοινές)",
-    "section_triggers": "Σημεία trigger"
+    "section_triggers": "Σημεία trigger",
+    "geometry": {
+      "p1": "Zenith Plaza = κέντρο με Hub + 4 turrets (N/S/E/W). Mud = καφέ δαχτυλίδι γύρω (επιτεθήσιμο κατά το WK). Green = κανονικός χάρτης, μη επιτεθήσιμος σε ξένο state.",
+      "p2": "Οι turrets που δεν είναι στην ίδια Alliance με το Hub πυροβολούν το Hub → μόνιμες απώλειες στρατευμάτων. Γι’ αυτό: όλοι σε μία προσωρινή State-Alliance."
+    },
+    "win": {
+      "items": [
+        "8 ώρες συνεχόμενο Hub-Hold → Instant-Win + 30-λεπτο Hub-Shield",
+        "Αλλιώς: ο μεγαλύτερος συνολικός χρόνος Hub-Occupation μετά από 24 ώρες",
+        "Οι συνεχόμενες 8 ώρες υπερισχύουν του συνολικού χρόνου. Το κράτημα ξένου Hub κάνει αυτόματο shield στο Home-Hub σου."
+      ]
+    },
+    "captain": {
+      "steps": [
+        "Πρώτος μέσα στο building",
+        "Ενεργοποίησε το Super Reinforcement",
+        "Κράτα τη θέση",
+        "Κάλεσε reinforcements στο Alliance chat"
+      ],
+      "note": "Captain-Rally = Building-Capacity. Τα stats στρατευμάτων του captain τα παίρνει κάθε εισερχόμενο march. Ο ισχυρότερος διαθέσιμος παίκτης κάνει captain στο Hub."
+    },
+    "scoring": {
+      "kill_title": "Kill Points (Hub/turrets ή Mud/Foreign-RSS-tiles)",
+      "death_title": "Death Points (ΜΟΝΟ Hub ή turrets — οι θάνατοι στο Mud ΔΕΝ μετράνε)",
+      "occupation": "Occupation: έως 2.000 πόντοι για σωρευτικά 120 λεπτά σε Hub/turret. Χωρίς reset αν σε ρίξουν."
+    },
+    "grades": {
+      "items": [
+        "Starter → Bronze → Silver → Gold → Platinum → Diamond → Legend (Top 15)",
+        "Gold+: ξεκλειδώνουν Nataly-frags (5 / 8 / 12 frags ανά event από το Ruler's-Hand box)",
+        "Gold+: ΑΠΩΛΕΙΑ Trophy αν μόνο αμύνεσαι → πρέπει επιθετικά να κλέψεις ξένο Hub",
+        "Governor's award boxes (King / Rulers / Loyalty / Contribution) για τη νικήτρια Alliance, τα μοιράζει ο governor",
+        "Η κατάληψη ξένου state διπλασιάζει το pool των boxes και δίνει Coffer-tax-stream"
+      ]
+    },
+    "loss": {
+      "intro": "Απώλειες → Infirmary → Deep Healing → Alliance Infirmary → ΜΟΝΙΜΑ",
+      "items": [
+        "Χωρίς επένδυση: 30% μόνιμα. Maxed Miraculous Survival: ~18%",
+        "Deep Heal = δωρεάν Nano Potions (αργό). Όταν γεμίσει → παγίδα Alliance-Infirmary",
+        "Παγίδα Alliance-Infirmary: αν έχεις ακόμη στρατεύματα μέσα όταν φεύγεις από τη State-Alliance → πεθαίνουν μόνιμα",
+        "Fast Comeback μετά το event: +300% training, με όριο 120% του χαμένου might (στο όριο μετράνε μόνο θάνατοι σε Hub/turret, όχι turret-fire ή θάνατοι σε Mud)"
+      ]
+    },
+    "preevent": {
+      "items": [
+        "Miraculous Survival στο max σε Nova/Research",
+        "First Aid + Instant Heal commander talents φορτωμένα",
+        "Απόθεμα training-speedups + πόρων (για κατανάλωση FC)",
+        "Γέμισε το Infirmary με T1-taxis (οι high-tier θάνατοι πάνε κατευθείαν σε Deep Healing)",
+        "Έγινες μέλος της State-Alliance",
+        "Αν mud-sitter: 3-ήμερο shield ή stack 8h+1d"
+      ]
+    },
+    "nap": {
+      "items": [
+        "\"No T11+ marches into Hub\"",
+        "\"No attacking on green\"",
+        "\"Mud-sit RSS gathering allowed both directions\"",
+        "\"48h statewide NAP\" — ενεργοποιείται γύρω στο reset την ημέρα του WK"
+      ]
+    },
+    "triggers": {
+      "items": [
+        "State-Take vs NAP: πάρ’ το αν καθένας από τους Top-3 σου σε True-Might ξεπερνά τον Top-1 του αντιπάλου ΚΑΙ έχεις αρκετά taxi-αποθέματα στο σπίτι για το Home-Hub",
+        "Παραδώσου νωρίς αν είσαι σε μειονεκτική θέση — 24 ώρες άσκοπης άμυνας κοστίζουν εβδομάδες retraining",
+        "Τρίγκαρε το FC με φειδώ: μη μαζεύεις περισσότερο FC-cap απ’ όσο μπορείς να καταναλώσεις σε 2 εβδομάδες"
+      ]
+    }
   },
   "home": {
     "eyebrow": "Puzzles & Survival · Συντονισμός State",
