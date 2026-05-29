@@ -2,6 +2,15 @@
 
 [![CI](https://github.com/HoiPolloi-labs/WastelandQueen/actions/workflows/ci.yml/badge.svg)](https://github.com/HoiPolloi-labs/WastelandQueen/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Live](https://img.shields.io/badge/live-waqu.app-eab308)](https://waqu.app)
+
+![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3FCF8E?logo=supabase&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![i18n](https://img.shields.io/badge/i18n-12%20locales-7C3AED)
 
 > Coordination tool for the **Wasteland King (WK)** event in
 > [_Puzzles & Survival_](https://puzzlesandsurvival.com/). Replaces the
@@ -21,6 +30,21 @@ Shift switching, the auto-sorted plaza (Hub + 4 turrets), the Mud / Reserve /
 per-state Hit-Squad buckets, and the capacity-fill control — all live:
 
 ![Planner walkthrough](docs/wq-planner-walkthrough.webp)
+
+---
+
+## ✨ Features
+
+- 🔑 **No accounts, no passwords** — three per-event uuid-token URLs (sign-up / planner / board); nothing to register
+- 📝 **Mobile-first sign-up** in 12 languages, with optional Vision-LLM auto-fill from a profile screenshot
+- 🧲 **Drag-and-drop planner** — `@dnd-kit` with mouse + touch + keyboard sensors, optimistic updates with rollback
+- 🪄 **Auto-sort** — captain scoring + three turret-layout modes, plus a rally-**capacity-fill** mode (march-size aware)
+- 🛡️ **Hub · 4 turrets · Mud · per-state Hit-Squad** buckets with Super-Reinforcement synergy hints
+- 🤝 **NAP terms**, conflict banner, health check, pre-event readiness tracker + one-click Discord pings
+- 📤 **Roster CSV/XLSX** import/export · **PNG + QR** board export for in-game chat sharing
+- 🌍 **12 locales** at full key-parity (CI-guarded), lazy-loaded so the main chunk stays lean
+- 🔒 **Row-level security** keyed off per-event JWT claims; SECURITY DEFINER RPCs; 24h auto-refreshing tokens
+- 🎮 **[Live editable demo](https://waqu.app/demo/wk-2026-06-06-demo/7101240d-07c3-48f0-ad53-f912bf95d303)** — drag and auto-sort for real; persists nothing
 
 ---
 
@@ -58,7 +82,7 @@ canon (Hub, turret, mud, NAP, Super Reinforcement, Fast Comeback).
   bundles lazy-loaded so the main chunk doesn't ship 12× translations
 - **xlsx (SheetJS)** for roster import/export (dynamic-imported chunk)
 - **html-to-image** + **qrcode** for the Board PNG/QR export
-- **Vitest** + **happy-dom** for pure-function tests (170/170 passing)
+- **Vitest** + **happy-dom** for pure-function tests (175/175 passing, ~96% stmts)
 
 ---
 
@@ -106,26 +130,26 @@ Function secrets required (Supabase Dashboard → Functions → Manage secrets):
 
 ---
 
-## Architecture sketch
+## Architecture
 
-```
-   Signup URL          Planner URL          Board URL          Awards URL
-       │                    │                   │                  │
-       ▼                    ▼                   ▼                  ▼
- ┌──────────────────────────────────────────────────────────────────────┐
- │  EventAuthGate — extracts :token, calls token-exchange Edge Function │
- │                  injects JWT into supabase-js (REST + Realtime)      │
- └──────────────────────────────────────────────────────────────────────┘
-       │                    │                   │                  │
-       ▼                    ▼                   ▼                  ▼
- ┌──────────────────────────────────────────────────────────────────────┐
- │  Supabase Postgres                                                   │
- │  ─ events / signups / assignments / nap_terms / event_secrets        │
- │  ─ RLS keyed off event_id_claim() + event_role_claim()               │
- │  ─ Realtime publishes events + signups + assignments + nap_terms     │
- │  ─ SECURITY DEFINER RPCs: create_event, update_signup_self,          │
- │    rotate_event_tokens, set_event_secret, …                          │
- └──────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    S["/signup/:id/:token<br/><i>player</i>"] --> Gate
+    P["/plan/:id/:token<br/><i>organiser</i>"] --> Gate
+    B["/board/:id/:token<br/><i>alliance</i>"] --> Gate
+    A["/awards/:id/:token<br/><i>post-event</i>"] --> Gate
+
+    Gate["<b>EventAuthGate</b><br/>reads :token, mints + auto-refreshes a 24h JWT"]
+    Gate <--> TX["<b>token-exchange</b> Edge Fn<br/>ES256 / HS256"]
+    Gate --> SB["<b>supabase-js</b><br/>JWT injected into REST + Realtime"]
+    SB --> PG[("<b>Supabase Postgres</b>")]
+
+    PG --- RLS["<b>RLS</b> · event_id_claim() + event_role_claim()<br/>events · signups · assignments · nap_terms · event_secrets<br/>SECURITY DEFINER RPCs: create_event, update_signup_self, rotate_event_tokens …"]
+
+    classDef url fill:#1f2937,stroke:#eab308,color:#fff;
+    classDef infra fill:#0f3d2e,stroke:#3FCF8E,color:#fff;
+    class S,P,B,A url;
+    class SB,PG,TX,RLS infra;
 ```
 
 For the deeper engineering context — RLS model, auto-sort algorithm, WK

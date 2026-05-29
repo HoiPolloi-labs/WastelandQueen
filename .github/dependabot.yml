@@ -1,0 +1,21 @@
+version: 2
+updates:
+  # npm deps (pnpm lockfile) — weekly, grouped to keep PR noise down.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      react:
+        patterns: ['react', 'react-dom', 'react-router', 'react-i18next']
+      dev-tooling:
+        patterns: ['eslint*', 'typescript*', 'vite', '@vitejs/*', 'vitest', '@vitest/*', 'prettier']
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  # Keep the CI actions current (silences the periodic runner-Node deprecations).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

@@ -1,7 +1,7 @@
 {
   "name": "wasteland-queen",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "Coordination tool for the Wasteland King event in Puzzles & Survival — public sign-up, an auto-sorting drag-and-drop planner, and a shareable read-only board.",
   "license": "MIT",
