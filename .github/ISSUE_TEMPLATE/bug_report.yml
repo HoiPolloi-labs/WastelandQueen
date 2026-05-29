@@ -1,0 +1,51 @@
+name: Bug report
+description: Something in the sign-up, planner, board, or awards flow isn't working.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! For **security** issues (token leakage, RLS
+        bypass) please use a private advisory instead — see SECURITY.md.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open /plan/:eventId/:token
+        2. Drag a chip to …
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: page
+    attributes:
+      label: Which page?
+      options:
+        - Sign-up form
+        - Planner (plaza / drag-drop / auto-sort)
+        - Board (read-only)
+        - Awards
+        - Event setup (/plan/new)
+        - Demo sandbox (/demo)
+        - Other / not sure
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Browser + OS + language
+      placeholder: e.g. Chrome 148 / Windows 11 / German
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors (if any)
+      description: Open DevTools → Console and paste any red errors.
+      render: text

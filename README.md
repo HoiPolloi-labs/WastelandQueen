@@ -1,5 +1,8 @@
 # Wasteland Queen
 
+[![CI](https://github.com/HoiPolloi-labs/WastelandQueen/actions/workflows/ci.yml/badge.svg)](https://github.com/HoiPolloi-labs/WastelandQueen/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > Coordination tool for the **Wasteland King (WK)** event in
 > [_Puzzles & Survival_](https://puzzlesandsurvival.com/). Replaces the
 > Google-Form → Excel → VBA-macro workflow our state used to slog through
@@ -131,7 +134,16 @@ agent — see [`CLAUDE.md`](CLAUDE.md).
 
 ---
 
+## Contributing
+
+PRs and forks welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md) for setup,
+the local check (typecheck · lint · test · build), and the house rules
+(12-locale i18n parity, migrations-only schema changes, the per-event-token
+auth model). Security issues go through [`SECURITY.md`](SECURITY.md), not
+public issues. Be kind — [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+
 ## License
 
-Internal alliance tool — no open license yet. If you want to fork it for
-your own state, open an issue.
+[MIT](LICENSE) © HoiPolloi-labs. Fork it for your own state — bring your own
+Supabase project (the publishable key is the only key the client ships; all
+real secrets stay in Supabase function secrets).

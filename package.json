@@ -3,7 +3,24 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "description": "Coordination tool for the Wasteland King event in Puzzles & Survival",
+  "description": "Coordination tool for the Wasteland King event in Puzzles & Survival — public sign-up, an auto-sorting drag-and-drop planner, and a shareable read-only board.",
+  "license": "MIT",
+  "homepage": "https://waqu.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HoiPolloi-labs/WastelandQueen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HoiPolloi-labs/WastelandQueen/issues"
+  },
+  "keywords": [
+    "puzzles-and-survival",
+    "wasteland-king",
+    "react",
+    "vite",
+    "supabase",
+    "alliance-tool"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

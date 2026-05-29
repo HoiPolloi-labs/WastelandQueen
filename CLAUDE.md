@@ -436,7 +436,9 @@ Frontend → Vercel (Vite preset, see `vercel.json`):
 2. Set env vars in Vercel project settings:
    - `VITE_SUPABASE_URL` = `https://ecxuvcuvuawxriucarmh.supabase.co`
    - `VITE_SUPABASE_PUBLISHABLE_KEY` = (the `sb_publishable_...` from `.env.local`)
-3. Deploys are static — any push to main rebuilds. No CI/GitHub Actions needed.
+3. Deploys are static — any push to main rebuilds. GitHub Actions CI
+   (`.github/workflows/ci.yml`) runs typecheck + lint + i18n-parity + test +
+   build on every push/PR; it does not deploy (Vercel owns that).
 4. Edge Functions deploy separately via Supabase MCP `deploy_edge_function`.
 
 ## Working agreements with Claude

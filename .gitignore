@@ -19,8 +19,10 @@ Thumbs.db
 *.log
 .vite/
 
-# claude
+# claude — local agent state stays out of the repo; launch.json (dev-server
+# config) is the only .claude file worth sharing.
 .claude/settings.json
+.claude/settings.local.json
 .claude/scheduled_tasks.lock
 
 .vercel

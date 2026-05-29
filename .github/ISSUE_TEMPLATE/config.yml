@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/HoiPolloi-labs/WastelandQueen/security/advisories/new
+    about: Report token leakage / RLS bypass privately — do not open a public issue.
+  - name: WK game mechanics reference
+    url: https://github.com/HoiPolloi-labs/WastelandQueen/blob/main/docs/wasteland-king-guide.md
+    about: Terminology + rules canon before filing rule-related issues.
