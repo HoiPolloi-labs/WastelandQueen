@@ -16,6 +16,13 @@ Three URLs per WK event, each gated by its own random uuid token:
 
 Plus `/plan/new` to create a new event (anon-allowed; success screen returns all 3 URLs).
 
+`/demo/:eventId/:boardToken` renders the **planner UI in a sandbox**: authed
+with a board-role JWT (read-only server-side), with `<PlanPage demoMode />`
+skipping every write client-side. Drag-drop, Auto-Sort, Clear and shift
+switching all feel live but persist nothing — reload resets. Used by the
+landing "Live Demo" link. The seeded demo event `wk-2026-06-06-demo` backs it.
+Double-protected: even a bypassed client can't write (board JWT + RLS).
+
 Full event mechanics in [`docs/wasteland-king-guide.md`](docs/wasteland-king-guide.md) —
 terminology canon (Hub, turret, mud, NAP, Super Reinforcement, Fast Comeback).
 

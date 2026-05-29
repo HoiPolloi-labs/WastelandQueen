@@ -50,7 +50,8 @@ export default function App() {
   const isPublic =
     location.pathname === '/' ||
     location.pathname.startsWith('/signup/') ||
-    location.pathname.startsWith('/board/')
+    location.pathname.startsWith('/board/') ||
+    location.pathname.startsWith('/demo/')
 
   return (
     <div className="flex h-full flex-col">
@@ -139,6 +140,16 @@ export default function App() {
               element={
                 <EventAuthGate requiredRole="planner">
                   <PlanPage />
+                </EventAuthGate>
+              }
+            />
+            {/* Editable sandbox: planner UI driven by a board-role JWT (read-only
+                server-side) with demoMode skipping every write client-side. */}
+            <Route
+              path="/demo/:eventId/:token"
+              element={
+                <EventAuthGate requiredRole={['board', 'planner']}>
+                  <PlanPage demoMode />
                 </EventAuthGate>
               }
             />

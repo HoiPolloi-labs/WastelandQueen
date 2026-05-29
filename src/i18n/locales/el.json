@@ -169,7 +169,9 @@
     "fill_mode_fixed": "Σταθερό",
     "fill_mode_capacity": "Χωρητικότητα",
     "fill_mode_capacity_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία.",
-    "fill_mode_rerun_hint": "↻ Επανεκτελέστε το Auto-Sort για εφαρμογή."
+    "fill_mode_rerun_hint": "↻ Επανεκτελέστε το Auto-Sort για εφαρμογή.",
+    "demo_badge": "Demo",
+    "demo_banner": "Σύρε chips, τρέξε Auto-Sort, άλλαξε shifts — όλα ζωντανά. Τίποτα δεν αποθηκεύεται· κάνε reload για επαναφορά."
   },
   "conflict": {
     "hub_empty": "Hub άδειο — χωρίς captain",

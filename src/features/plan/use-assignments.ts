@@ -3,7 +3,15 @@ import { supabase } from '@/lib/supabase'
 import type { Assignment, ShiftNumber } from '@/types/wk'
 import type { DraftAssignment } from './auto-sort'
 
-export function useAssignments(eventId: string | undefined) {
+/**
+ * @param demoMode when true, this hook reads the event's assignments once but
+ *   makes every mutation local-only: optimistic state sticks, no DB write, no
+ *   rollback, and realtime is skipped (a change-tick would re-fetch and wipe
+ *   the sandbox edits). Powers the public "try the planner" demo — drag,
+ *   Auto-Sort and Clear all feel live but nothing persists; reload resets.
+ *   Backed by a board-role JWT, so even a bypassed client couldn't write.
+ */
+export function useAssignments(eventId: string | undefined, demoMode = false) {
   const [assignments, setAssignments] = useState<Assignment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -40,6 +48,15 @@ export function useAssignments(eventId: string | undefined) {
       if (!cancelled) setLoading(false)
     })
 
+    // Demo sandbox: no realtime. A DB-change tick would call refresh() and
+    // wipe the user's in-memory edits — and there are no writes to listen
+    // for anyway since every mutation is local-only here.
+    if (demoMode) {
+      return () => {
+        cancelled = true
+      }
+    }
+
     const channel = supabase
       .channel(`assignments:${eventId}`)
       .on(
@@ -55,7 +72,7 @@ export function useAssignments(eventId: string | undefined) {
       cancelled = true
       void supabase.removeChannel(channel)
     }
-  }, [eventId, refresh])
+  }, [eventId, refresh, demoMode])
 
   /**
    * Optimistic move: update local first, persist after.
@@ -103,6 +120,8 @@ export function useAssignments(eventId: string | undefined) {
         return next
       })
 
+      if (demoMode) return // sandbox: keep the optimistic move, skip persist
+
       // Use insert + manual conflict handling because PostgREST upsert needs the unique
       // constraint columns in the payload.
       const existing = await supabase
@@ -141,12 +160,33 @@ export function useAssignments(eventId: string | undefined) {
         void refresh()
       }
     },
-    [eventId, refresh],
+    [eventId, refresh, demoMode],
   )
 
   const applyDraft = useCallback(
     async (drafts: DraftAssignment[]) => {
       if (!eventId) return
+
+      // Demo sandbox: apply the draft to local state only, mirroring the
+      // real path's mud/hit-squad preservation (Auto-Sort never emits those).
+      if (demoMode) {
+        setAssignments((prev) => {
+          const kept = prev.filter(
+            (a) => a.building === 'mud' || a.building === 'hit-squad',
+          )
+          const fresh: Assignment[] = drafts.map((d) => ({
+            ...d,
+            id: `demo-${d.signup_id}-${d.shift}-${d.building}`,
+            event_id: eventId,
+            captain_present: null,
+            foreign_target: null,
+            updated_at: new Date().toISOString(),
+          }))
+          return [...kept, ...fresh]
+        })
+        return
+      }
+
       // FUNCTIONAL fix: Auto-Sort never emits `mud` or `hit-squad` rows
       // (both are explicit planner decisions per WK domain). Previously we
       // deleted ALL assignments for the event before insert, which silently
@@ -171,15 +211,16 @@ export function useAssignments(eventId: string | undefined) {
       if (insErr) setError(insErr.message)
       await refresh()
     },
-    [eventId, refresh],
+    [eventId, refresh, demoMode],
   )
 
   const removeAll = useCallback(async () => {
     if (!eventId) return
+    setAssignments([])
+    if (demoMode) return // sandbox: clear locally, nothing to delete server-side
     const { error } = await supabase.from('assignments').delete().eq('event_id', eventId)
     if (error) setError(error.message)
-    setAssignments([])
-  }, [eventId])
+  }, [eventId, demoMode])
 
   /**
    * Move a signup from one shift to another. Deletes the source row and inserts/updates
@@ -221,6 +262,8 @@ export function useAssignments(eventId: string | undefined) {
         next[existingTarget] = { ...next[existingTarget]!, ...targetRow }
         return next
       })
+
+      if (demoMode) return // sandbox: keep the optimistic cross-shift move
 
       // Persist: delete source row, then upsert target.
       const { error: delError } = await supabase
@@ -269,7 +312,7 @@ export function useAssignments(eventId: string | undefined) {
         void refresh()
       }
     },
-    [eventId, refresh],
+    [eventId, refresh, demoMode],
   )
 
   /** Cycle/set the captain-present flag on a single assignment row. */
@@ -282,13 +325,14 @@ export function useAssignments(eventId: string | undefined) {
             : a,
         ),
       )
+      if (demoMode) return // sandbox: local toggle only
       const { error } = await supabase
         .from('assignments')
         .update({ captain_present: present, updated_at: new Date().toISOString() })
         .eq('id', assignmentId)
       if (error) setError(error.message)
     },
-    [],
+    [demoMode],
   )
 
   return {

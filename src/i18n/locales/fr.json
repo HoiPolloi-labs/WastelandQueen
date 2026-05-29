@@ -169,7 +169,9 @@
     "fill_mode_fixed": "Fixe",
     "fill_mode_capacity": "Capacité",
     "fill_mode_capacity_hint": "Le Hub et chaque tourelle se remplissent jusqu’à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve.",
-    "fill_mode_rerun_hint": "↻ Relancez Auto-Sort pour appliquer."
+    "fill_mode_rerun_hint": "↻ Relancez Auto-Sort pour appliquer.",
+    "demo_badge": "Démo",
+    "demo_banner": "Glisse les chips, lance Auto-Sort, change de shift — tout est live. Rien n est sauvegardé ; recharge pour réinitialiser."
   },
   "conflict": {
     "hub_empty": "Hub vide — aucun captain",

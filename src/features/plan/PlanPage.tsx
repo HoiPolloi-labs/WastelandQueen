@@ -57,7 +57,7 @@ import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
 
-export function PlanPage() {
+export function PlanPage({ demoMode = false }: { demoMode?: boolean } = {}) {
   const { t } = useTranslation()
   const { eventId, token: plannerToken } = useParams<{ eventId: string; token: string }>()
   const navigate = useNavigate()
@@ -70,7 +70,7 @@ export function PlanPage() {
     applyDraft,
     removeAll,
     setCaptainPresent,
-  } = useAssignments(eventId)
+  } = useAssignments(eventId, demoMode)
   const [shift, setShift] = useState<ShiftNumber>(1)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -278,38 +278,51 @@ export function PlanPage() {
           </>
         }
       >
-        <EventPicker currentEventId={event.id} />
-        <Button variant="secondary" size="sm" onClick={copySignupUrl} title={shortSignupUrl}>
-          <ClipboardCopy className="h-3.5 w-3.5" />
-          {t('plan.signup_url_button')}
-        </Button>
-        <a href={boardUrl} target="_blank" rel="noreferrer" title={shortBoardUrl}>
-          <Button variant="secondary" size="sm">
-            <Eye className="h-3.5 w-3.5" />
-            {t('plan.board_button')}
-            <ExternalLink className="h-3 w-3" />
-          </Button>
-        </a>
-        <Link to={`/awards/${event.id}/${plannerToken ?? ''}`}>
-          <Button variant="secondary" size="sm">
-            <Trophy className="h-3.5 w-3.5" />
-            {t('plan.awards_button')}
-          </Button>
-        </Link>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            // Pass event row via React Router state so EventSetupPage doesn't
-            // have to re-fetch — anon can't read events anymore (RLS).
-            navigate('/plan/new', { state: { clonedFrom: event } })
-          }}
-          title={t('plan.clone_button_title')}
-        >
-          <Copy className="h-3.5 w-3.5" />
-          {t('plan.clone_button')}
-        </Button>
+        {/* Admin + sharing actions write to the server or expose tokens —
+            hidden in the read-only demo sandbox. */}
+        {!demoMode && (
+          <>
+            <EventPicker currentEventId={event.id} />
+            <Button variant="secondary" size="sm" onClick={copySignupUrl} title={shortSignupUrl}>
+              <ClipboardCopy className="h-3.5 w-3.5" />
+              {t('plan.signup_url_button')}
+            </Button>
+            <a href={boardUrl} target="_blank" rel="noreferrer" title={shortBoardUrl}>
+              <Button variant="secondary" size="sm">
+                <Eye className="h-3.5 w-3.5" />
+                {t('plan.board_button')}
+                <ExternalLink className="h-3 w-3" />
+              </Button>
+            </a>
+            <Link to={`/awards/${event.id}/${plannerToken ?? ''}`}>
+              <Button variant="secondary" size="sm">
+                <Trophy className="h-3.5 w-3.5" />
+                {t('plan.awards_button')}
+              </Button>
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                // Pass event row via React Router state so EventSetupPage doesn't
+                // have to re-fetch — anon can't read events anymore (RLS).
+                navigate('/plan/new', { state: { clonedFrom: event } })
+              }}
+              title={t('plan.clone_button_title')}
+            >
+              <Copy className="h-3.5 w-3.5" />
+              {t('plan.clone_button')}
+            </Button>
+          </>
+        )}
       </PageHeader>
+
+      {demoMode && (
+        <div className="mb-4 rounded-lg border border-yellow-500/40 bg-yellow-500/10 px-4 py-2.5 text-sm text-yellow-200">
+          <span className="font-semibold">{t('plan.demo_badge')}</span>{' '}
+          {t('plan.demo_banner')}
+        </div>
+      )}
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
@@ -375,19 +388,30 @@ export function PlanPage() {
             event={event}
             shift={shift}
           />
-          <PreEventStatusPanel eventId={event.id} signups={signups} assignments={assignments} />
           <StatsSidebar shift={shift} signups={signups} />
-          <NapPanel eventId={event.id} />
-          <HubDefenderSettings event={event} onChange={() => refreshEvent()} />
-          <HeroesSettings event={event} onChange={() => refreshEvent()} />
-          <WebhookSettings />
-          <RosterImportExport
-            eventId={event.id}
-            heroesEnabled={event.heroes_enabled}
-            signups={signups}
-            onRefresh={refreshSignups}
-          />
-          <TokenRotation eventId={event.id} />
+          {/* Settings + admin panels persist to the server / expose tokens —
+              omitted in the demo sandbox. The plaza, Auto-Sort, drag-drop,
+              conflict banner, health check and stats above are all live. */}
+          {!demoMode && (
+            <>
+              <PreEventStatusPanel
+                eventId={event.id}
+                signups={signups}
+                assignments={assignments}
+              />
+              <NapPanel eventId={event.id} />
+              <HubDefenderSettings event={event} onChange={() => refreshEvent()} />
+              <HeroesSettings event={event} onChange={() => refreshEvent()} />
+              <WebhookSettings />
+              <RosterImportExport
+                eventId={event.id}
+                heroesEnabled={event.heroes_enabled}
+                signups={signups}
+                onRefresh={refreshSignups}
+              />
+              <TokenRotation eventId={event.id} />
+            </>
+          )}
         </div>
       </div>
 

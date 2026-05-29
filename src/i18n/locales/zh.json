@@ -169,7 +169,9 @@
     "fill_mode_fixed": "固定",
     "fill_mode_capacity": "容量",
     "fill_mode_capacity_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。",
-    "fill_mode_rerun_hint": "↻ 重新运行 Auto-Sort 以应用。"
+    "fill_mode_rerun_hint": "↻ 重新运行 Auto-Sort 以应用。",
+    "demo_badge": "演示",
+    "demo_banner": "拖动卡片、运行 Auto-Sort、切换 shift — 全部可用。不会保存；刷新即重置。"
   },
   "conflict": {
     "hub_empty": "Hub 为空 — 无 captain",

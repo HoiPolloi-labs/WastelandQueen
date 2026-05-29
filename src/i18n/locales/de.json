@@ -169,7 +169,9 @@
     "fill_mode_fixed": "Fest",
     "fill_mode_capacity": "Kapazität",
     "fill_mode_capacity_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve.",
-    "fill_mode_rerun_hint": "↻ Auto-Sort neu ausführen, um anzuwenden."
+    "fill_mode_rerun_hint": "↻ Auto-Sort neu ausführen, um anzuwenden.",
+    "demo_badge": "Demo",
+    "demo_banner": "Chips ziehen, Auto-Sort starten, Shifts wechseln — alles live. Nichts wird gespeichert; Reload setzt zurück."
   },
   "conflict": {
     "hub_empty": "Hub leer — kein Captain",

@@ -169,7 +169,9 @@
     "fill_mode_fixed": "Sabit",
     "fill_mode_capacity": "Kapasite",
     "fill_mode_capacity_hint": "Hub ve her kule, katılımcıların yürüyüş toplamı kaptanın rally üst sınırına ulaşana kadar dolar. Fazla → yedek.",
-    "fill_mode_rerun_hint": "↻ Uygulamak için Auto-Sort yeniden çalıştırın."
+    "fill_mode_rerun_hint": "↻ Uygulamak için Auto-Sort yeniden çalıştırın.",
+    "demo_badge": "Demo",
+    "demo_banner": "Çipleri sürükle, Auto-Sort çalıştır, shift değiştir — hepsi canlı. Hiçbir şey kaydedilmez; yenileyince sıfırlanır."
   },
   "conflict": {
     "hub_empty": "Hub boş — captain yok",

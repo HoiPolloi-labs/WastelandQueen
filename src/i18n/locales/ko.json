@@ -169,7 +169,9 @@
     "fill_mode_fixed": "고정",
     "fill_mode_capacity": "용량",
     "fill_mode_capacity_hint": "Hub와 각 포탑은 합류자의 행군 합계가 captain의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비.",
-    "fill_mode_rerun_hint": "↻ Auto-Sort를 다시 실행하여 적용하세요."
+    "fill_mode_rerun_hint": "↻ Auto-Sort를 다시 실행하여 적용하세요.",
+    "demo_badge": "데모",
+    "demo_banner": "칩 드래그, Auto-Sort 실행, shift 전환 — 모두 작동합니다. 저장되지 않으며 새로고침하면 초기화됩니다."
   },
   "conflict": {
     "hub_empty": "Hub 비어있음 — captain 없음",

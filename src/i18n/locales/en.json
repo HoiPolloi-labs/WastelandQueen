@@ -169,7 +169,9 @@
     "fill_mode_fixed": "Fixed",
     "fill_mode_capacity": "Capacity",
     "fill_mode_capacity_hint": "Hub & each turret fill until joiners’ march totals reach the captain’s rally cap. Surplus → reserve.",
-    "fill_mode_rerun_hint": "↻ Re-run Auto-Sort to apply."
+    "fill_mode_rerun_hint": "↻ Re-run Auto-Sort to apply.",
+    "demo_badge": "Demo",
+    "demo_banner": "Drag chips, run Auto-Sort, switch shifts — everything is live. Nothing is saved; reload to reset."
   },
   "conflict": {
     "hub_empty": "Hub empty — no captain",

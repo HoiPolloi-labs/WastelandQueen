@@ -169,7 +169,9 @@
     "fill_mode_fixed": "Fissa",
     "fill_mode_capacity": "Capacità",
     "fill_mode_capacity_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva.",
-    "fill_mode_rerun_hint": "↻ Riavvia Auto-Sort per applicare."
+    "fill_mode_rerun_hint": "↻ Riavvia Auto-Sort per applicare.",
+    "demo_badge": "Demo",
+    "demo_banner": "Trascina le chip, lancia Auto-Sort, cambia shift — tutto dal vivo. Niente viene salvato; ricarica per azzerare."
   },
   "conflict": {
     "hub_empty": "Hub vuoto — nessun captain",

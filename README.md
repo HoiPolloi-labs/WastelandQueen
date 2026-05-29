@@ -7,7 +7,8 @@
 > drag-and-drop, and a shareable read-only board.
 
 **Live:** <https://waqu.app> ·
-**Live demo board:** <https://waqu.app/board/wk-2026-06-06-demo/7101240d-07c3-48f0-ad53-f912bf95d303>
+**Try the planner (editable sandbox):** <https://waqu.app/demo/wk-2026-06-06-demo/7101240d-07c3-48f0-ad53-f912bf95d303>
+— drag, Auto-Sort, switch shifts; nothing saves, reload resets.
 
 ![Hero](docs/Gemini_Generated_Image_eq429ieq429ieq42.png)
 
