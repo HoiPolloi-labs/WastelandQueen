@@ -1,11 +1,17 @@
 version: 2
 updates:
   # npm deps (pnpm lockfile) — weekly, grouped to keep PR noise down.
+  # Major bumps are ignored: they tend to need hands-on migration (e.g.
+  # Vite 6 → 8), so we don't want them as auto-PRs. Bump majors manually
+  # when you're ready. Minor/patch updates still flow as safe, mergeable PRs.
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     groups:
       react:
         patterns: ['react', 'react-dom', 'react-router', 'react-i18next']
