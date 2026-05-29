@@ -544,6 +544,7 @@
     "nav_signups": "Inscriptions",
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Mémo",
-    "figure_aria_label": "Chibi Wasteland Queen avec couronne de pièces d'échecs"
+    "figure_aria_label": "Chibi Wasteland Queen avec couronne de pièces d'échecs",
+    "nav_demo": "Démo en direct"
   }
 }

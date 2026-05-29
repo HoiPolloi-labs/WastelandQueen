@@ -67,6 +67,12 @@ export function HeroScene() {
             <Link to="/plan/new">{t('home.nav_signups')}</Link>
             <Link to="/plan">{t('home.nav_planner')}</Link>
             <Link to="/cheat-sheet">{t('home.nav_cheatsheet')}</Link>
+            <Link
+              className="nav-demo"
+              to="/board/wk-2026-06-06-demo/7101240d-07c3-48f0-ad53-f912bf95d303"
+            >
+              {t('home.nav_demo')}
+            </Link>
           </div>
           <hr className="rule" aria-hidden="true" />
         </div>

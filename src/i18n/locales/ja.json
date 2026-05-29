@@ -544,6 +544,7 @@
     "nav_signups": "サインアップ",
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "チートシート",
-    "figure_aria_label": "チェス駒の王冠をかぶったちびWasteland Queen"
+    "figure_aria_label": "チェス駒の王冠をかぶったちびWasteland Queen",
+    "nav_demo": "ライブデモ"
   }
 }

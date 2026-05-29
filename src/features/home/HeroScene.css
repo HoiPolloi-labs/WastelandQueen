@@ -286,6 +286,17 @@
   opacity: 1;
   text-decoration: underline;
 }
+/* "Live Demo" is the try-it CTA — deep amber + bold lifts it above the
+   three plain nav links without breaking the cream-plate legibility
+   (the app's yellow-500 accent is too pale on this cream background). */
+.hero-scene .plate .nav-links a.nav-demo {
+  color: #8a5600;
+  font-weight: 700;
+  opacity: 1;
+}
+.hero-scene .plate .nav-links a.nav-demo::before {
+  content: '▸ ';
+}
 
 /* Narrow viewports: stack everything vertically so links don't wrap into
    broken halves and the rules stay decorative above/below the link group. */

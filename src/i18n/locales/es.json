@@ -544,6 +544,7 @@
     "nav_signups": "Registros",
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Cheat Sheet",
-    "figure_aria_label": "Chibi Wasteland Queen con corona de piezas de ajedrez"
+    "figure_aria_label": "Chibi Wasteland Queen con corona de piezas de ajedrez",
+    "nav_demo": "Demo en vivo"
   }
 }

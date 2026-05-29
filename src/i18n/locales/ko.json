@@ -544,6 +544,7 @@
     "nav_signups": "가입",
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "치트 시트",
-    "figure_aria_label": "체스 말 왕관을 쓴 치비 Wasteland Queen"
+    "figure_aria_label": "체스 말 왕관을 쓴 치비 Wasteland Queen",
+    "nav_demo": "라이브 데모"
   }
 }

@@ -544,6 +544,7 @@
     "nav_signups": "Sign-ups",
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Cheat-Sheet",
-    "figure_aria_label": "Chibi Wasteland Queen with crown of chess pieces"
+    "figure_aria_label": "Chibi Wasteland Queen with crown of chess pieces",
+    "nav_demo": "Live-Demo"
   }
 }

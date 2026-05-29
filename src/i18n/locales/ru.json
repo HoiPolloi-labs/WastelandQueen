@@ -544,6 +544,7 @@
     "nav_signups": "Регистрации",
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Шпаргалка",
-    "figure_aria_label": "Чиби Wasteland Queen с короной из шахматных фигур"
+    "figure_aria_label": "Чиби Wasteland Queen с короной из шахматных фигур",
+    "nav_demo": "Демо"
   }
 }
