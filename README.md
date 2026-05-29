@@ -6,9 +6,17 @@
 > every two weeks with a public sign-up form, an auto-sorting planner with
 > drag-and-drop, and a shareable read-only board.
 
-**Live:** <https://waqu.app>
+**Live:** <https://waqu.app> ·
+**Live demo board:** <https://waqu.app/board/wk-2026-06-06-demo/7101240d-07c3-48f0-ad53-f912bf95d303>
 
 ![Hero](docs/Gemini_Generated_Image_eq429ieq429ieq42.png)
+
+### The planner in action
+
+Shift switching, the auto-sorted plaza (Hub + 4 turrets), the Mud / Reserve /
+per-state Hit-Squad buckets, and the capacity-fill control — all live:
+
+![Planner walkthrough](docs/wq-planner-walkthrough.webp)
 
 ---
 
