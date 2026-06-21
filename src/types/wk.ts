@@ -100,6 +100,12 @@ export interface EventConfig {
    *  defender summed against rally cap) instead of using the fixed
    *  hub_defender_target count. Surplus same-type players go to reserve. */
   auto_fill_to_capacity: boolean
+  /** Per-alliance total member counts the planner enters, keyed by alliance tag
+   *  (e.g. { LOY: 97, WOW: 79 }). Drives the participation % in the alliance
+   *  dashboard; sign-up counts + #-in-towers are derived, not stored. */
+  alliance_sizes: Record<string, number>
+  /** "Minimum line" — alliances below this participation % are flagged. */
+  min_participation_pct: number
   created_at: string
 }
 
@@ -124,8 +130,17 @@ export interface Signup {
    *  on the form; capacity-fill auto-sort uses it to size defender slots and
    *  falls back to rally_size when null. */
   march_size: number | null
+  /** Secondary troop type(s) the player can field (1–3 of fighter/shooter/rider),
+   *  with its highest tier. Display/filter only — never feeds auto-sort or the
+   *  synergy ring (primary troop_type owns those). null = none declared. */
+  secondary_troop_types: TroopType[] | null
+  secondary_tier: TroopTier | null
   true_might: number | null
   willing_captain: boolean
+  /** Available at WLK start to defend the home Hub if it's attacked. */
+  defend_at_start: boolean
+  /** Consents to be placed on the Hit-Squad (take a foreign state's Hub). */
+  willing_foreign_hub: boolean
   shift_pref: ShiftPref
   planner_notes: string | null
   state_alliance_joined: boolean

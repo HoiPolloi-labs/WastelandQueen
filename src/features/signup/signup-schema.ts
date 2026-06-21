@@ -35,6 +35,23 @@ export const signupSchema = z.object({
     .int()
     .positive('March Size muss > 0 sein')
     .max(100_000_000, 'March Size unplausibel hoch — wirklich >100M?'),
+  /** Secondary troop type(s) the player can also field (1–3 of the troop enum)
+   *  + its highest tier. Optional — display/filter only, never feeds auto-sort.
+   *  Empty selection normalizes to null so chip markers/filters see one shape. */
+  secondary_troop_types: z
+    .array(z.enum(['fighter', 'shooter', 'rider']))
+    .max(3)
+    .nullable()
+    .optional()
+    .transform((v) => (v == null || v.length === 0 ? null : v)),
+  secondary_tier: z
+    .number()
+    .int()
+    .min(1)
+    .max(13)
+    .nullable()
+    .optional()
+    .transform((v) => (v == null ? null : v)),
   true_might: z
     .number()
     .int()
@@ -43,6 +60,10 @@ export const signupSchema = z.object({
     .optional()
     .transform((v) => (v == null ? null : v)),
   willing_captain: z.boolean(),
+  /** Available at WLK start to defend the home Hub if attacked. */
+  defend_at_start: z.boolean().default(false),
+  /** Consents to be placed on the Hit-Squad (take a foreign state's Hub). */
+  willing_foreign_hub: z.boolean().default(false),
   shift_pref: z
     .string()
     .regex(/^[1-4](,[1-4]){0,3}$/, 'Mindestens eine Shift wählen'),

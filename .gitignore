@@ -26,3 +26,6 @@ Thumbs.db
 .claude/scheduled_tasks.lock
 
 .vercel
+
+# Reference workflow sheet — contains real player data, never commit
+docs/Event Registration*.xlsx

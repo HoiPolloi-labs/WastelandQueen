@@ -15,6 +15,7 @@ const BASE_HEADERS = [
   'troop_type',
   'max_solo_lair',
   'rally_size',
+  'march_size',
   'true_might',
   'willing_captain',
   'shift_pref',
@@ -24,7 +25,22 @@ const BASE_HEADERS = [
 
 const HEROES_HEADERS = ['agent_x_frags', 'dr_j_frags', 'nataly_frags'] as const
 
-type Header = (typeof BASE_HEADERS)[number] | (typeof HEROES_HEADERS)[number]
+// Always-present tail columns (core sign-up data). Optional on IMPORT so a
+// legacy sheet without them still loads. `secondary_troop_types` is pipe-
+// delimited (never comma — the CSV is comma-separated).
+const EXTRA_HEADERS = [
+  'secondary_troop_types',
+  'secondary_tier',
+  'defend_at_start',
+  'willing_foreign_hub',
+] as const
+
+type Header =
+  | (typeof BASE_HEADERS)[number]
+  | (typeof HEROES_HEADERS)[number]
+  | (typeof EXTRA_HEADERS)[number]
+
+const VALID_TYPES = ['fighter', 'shooter', 'rider']
 
 interface RosterImportExportProps {
   eventId: string
@@ -63,11 +79,12 @@ export function RosterImportExport({
   const [busy, setBusy] = useState(false)
   const [report, setReport] = useState<RowReport[] | null>(null)
 
-  // Heroes columns are tail-appended only when the event has the feature on.
-  // Keeps default sheets clean for the 90% of events that don't track frags.
+  // EXTRA columns always export (core data). Heroes columns are tail-appended
+  // only when the event has the feature on — keeps sheets clean for the 90%
+  // of events that don't track frags.
   const headers: readonly Header[] = heroesEnabled
-    ? [...BASE_HEADERS, ...HEROES_HEADERS]
-    : BASE_HEADERS
+    ? [...BASE_HEADERS, ...EXTRA_HEADERS, ...HEROES_HEADERS]
+    : [...BASE_HEADERS, ...EXTRA_HEADERS]
 
   const buildRows = (): (string | number | boolean | null)[][] => {
     const rows: (string | number | boolean | null)[][] = [headers as unknown as string[]]
@@ -86,11 +103,18 @@ export function RosterImportExport({
         s.troop_type,
         s.max_solo_lair,
         s.rally_size,
+        s.march_size,
         s.true_might,
         s.willing_captain,
         safe(s.shift_pref),
         s.state_alliance_joined,
         safe(s.planner_notes),
+        // EXTRA columns (always present). secondary types are enum values →
+        // no formula-injection risk; pipe-delimited so a comma can't split them.
+        s.secondary_troop_types ? s.secondary_troop_types.join('|') : '',
+        s.secondary_tier,
+        s.defend_at_start,
+        s.willing_foreign_hub,
       ]
       if (heroesEnabled) {
         base.push(s.agent_x_frags, s.dr_j_frags, s.nataly_frags)
@@ -189,6 +213,11 @@ export function RosterImportExport({
       const i = header.indexOf(h)
       if (i !== -1) colIdx[h] = i
     }
+    // EXTRA columns optional on import too — legacy sheets pre-feature lack them.
+    for (const h of EXTRA_HEADERS) {
+      const i = header.indexOf(h)
+      if (i !== -1) colIdx[h] = i
+    }
 
     const reports: RowReport[] = []
     const validRows: { ign: string; payload: Record<string, unknown> }[] = []
@@ -206,6 +235,14 @@ export function RosterImportExport({
         const n = Number(v)
         return Number.isFinite(n) && n >= 0 ? n : 0
       }
+      // Pipe-delimited secondary types → lowercased valid-enum array (or null).
+      const secondaryRaw = cell('secondary_troop_types').trim()
+      const secondaryTypes = secondaryRaw
+        ? secondaryRaw
+            .split('|')
+            .map((x) => x.trim().toLowerCase())
+            .filter((x) => VALID_TYPES.includes(x))
+        : []
       const raw = {
         ign,
         alliance_tag: cell('alliance_tag').trim(),
@@ -214,9 +251,14 @@ export function RosterImportExport({
         troop_type: cell('troop_type').trim().toLowerCase(),
         max_solo_lair: Number(cell('max_solo_lair')),
         rally_size: cell('rally_size').trim() ? Number(cell('rally_size')) : undefined,
+        march_size: cell('march_size').trim() ? Number(cell('march_size')) : undefined,
         true_might: cell('true_might').trim() ? Number(cell('true_might')) : undefined,
         willing_captain: parseBool(cell('willing_captain')),
         shift_pref: cell('shift_pref').trim(),
+        secondary_troop_types: secondaryTypes.length > 0 ? secondaryTypes : null,
+        secondary_tier: cell('secondary_tier').trim() ? Number(cell('secondary_tier')) : null,
+        defend_at_start: parseBool(cell('defend_at_start')),
+        willing_foreign_hub: parseBool(cell('willing_foreign_hub')),
         agent_x_frags: numOrZero('agent_x_frags'),
         dr_j_frags: numOrZero('dr_j_frags'),
         nataly_frags: numOrZero('nataly_frags'),

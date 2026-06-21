@@ -53,6 +53,7 @@ import { TokenRotation } from './TokenRotation'
 import { RosterImportExport } from './RosterImportExport'
 import { HeroesSettings } from './HeroesSettings'
 import { HubDefenderSettings } from './HubDefenderSettings'
+import { AllianceStatsPanel } from './AllianceStatsPanel'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
 import { EventPicker } from '@/features/event/EventPicker'
@@ -400,6 +401,12 @@ export function PlanPage({ demoMode = false }: { demoMode?: boolean } = {}) {
                 assignments={assignments}
               />
               <NapPanel eventId={event.id} />
+              <AllianceStatsPanel
+                event={event}
+                signups={signups}
+                assignments={assignments}
+                onChange={() => refreshEvent()}
+              />
               <HubDefenderSettings event={event} onChange={() => refreshEvent()} />
               <HeroesSettings event={event} onChange={() => refreshEvent()} />
               <WebhookSettings />

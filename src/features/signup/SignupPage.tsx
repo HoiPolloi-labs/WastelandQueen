@@ -35,6 +35,13 @@ const TIER_OPTIONS = Array.from({ length: 13 }, (_, i) => ({
   label: `T${i + 1}`,
 }))
 
+// Game terms stay English (CLAUDE.md i18n rule) — labels are not translated.
+const SECONDARY_TYPE_OPTIONS: { value: TroopType; label: string }[] = [
+  { value: 'fighter', label: 'Fighter' },
+  { value: 'shooter', label: 'Shooter' },
+  { value: 'rider', label: 'Rider' },
+]
+
 export function SignupPage() {
   const { t, i18n } = useTranslation()
   const { eventId } = useParams<{ eventId: string }>()
@@ -52,8 +59,12 @@ export function SignupPage() {
   const [maxSoloLair, setMaxSoloLair] = useState<number | ''>('')
   const [rallySize, setRallySize] = useState<string>('')
   const [marchSize, setMarchSize] = useState<string>('')
+  const [secondaryTypes, setSecondaryTypes] = useState<TroopType[]>([])
+  const [secondaryTier, setSecondaryTier] = useState<TroopTier | null>(null)
   const [trueMight, setTrueMight] = useState<string>('')
   const [willingCaptain, setWillingCaptain] = useState(false)
+  const [defendAtStart, setDefendAtStart] = useState(false)
+  const [willingForeignHub, setWillingForeignHub] = useState(false)
   const [shifts, setShifts] = useState<ShiftNumber[]>([])
   const [stateAllianceJoined, setStateAllianceJoined] = useState(false)
   const [checklist, setChecklist] = useState<Checklist>({})
@@ -75,8 +86,12 @@ export function SignupPage() {
     setMaxSoloLair(s.max_solo_lair)
     setRallySize(s.rally_size == null ? '' : String(s.rally_size))
     setMarchSize(s.march_size == null ? '' : String(s.march_size))
+    setSecondaryTypes(s.secondary_troop_types ?? [])
+    setSecondaryTier(s.secondary_tier)
     setTrueMight(s.true_might == null ? '' : String(s.true_might))
     setWillingCaptain(s.willing_captain)
+    setDefendAtStart(s.defend_at_start)
+    setWillingForeignHub(s.willing_foreign_hub)
     setShifts(parseShiftPref(s.shift_pref))
     setStateAllianceJoined(s.state_alliance_joined)
     setChecklist(s.checklist ?? {})
@@ -174,8 +189,12 @@ export function SignupPage() {
             setMaxSoloLair('')
             setRallySize('')
             setMarchSize('')
+            setSecondaryTypes([])
+            setSecondaryTier(null)
             setTrueMight('')
             setWillingCaptain(false)
+            setDefendAtStart(false)
+            setWillingForeignHub(false)
             setShifts([])
             setStateAllianceJoined(false)
             setChecklist({})
@@ -214,8 +233,12 @@ export function SignupPage() {
       max_solo_lair: typeof maxSoloLair === 'number' ? maxSoloLair : Number.NaN,
       rally_size: rallySize ? Number(rallySize.replace(/[.\s,]/g, '')) : null,
       march_size: marchSize ? Number(marchSize.replace(/[.\s,]/g, '')) : null,
+      secondary_troop_types: secondaryTypes.length > 0 ? secondaryTypes : null,
+      secondary_tier: secondaryTier,
       true_might: trueMight ? Number(trueMight.replace(/[.\s,]/g, '')) : null,
       willing_captain: willingCaptain,
+      defend_at_start: defendAtStart,
+      willing_foreign_hub: willingForeignHub,
       shift_pref: shifts.length > 0 ? serializeShiftPref(shifts) : '',
       agent_x_frags: agentXFrags ? Number(agentXFrags) : 0,
       dr_j_frags: drJFrags ? Number(drJFrags) : 0,
@@ -414,6 +437,51 @@ export function SignupPage() {
           {errors.tier && <p className="mt-1 text-xs text-red-400">{errors.tier}</p>}
         </div>
 
+        <div>
+          <span className="mb-1 block text-sm font-medium text-zinc-300">
+            {t('signup.secondary_type_label')}{' '}
+            <span className="text-zinc-500">{t('signup.optional_suffix')}</span>
+          </span>
+          <p className="mb-2 text-xs text-zinc-400">{t('signup.secondary_type_hint')}</p>
+          <div className="grid grid-cols-3 gap-2">
+            {SECONDARY_TYPE_OPTIONS.map(({ value: v, label }) => {
+              const active = secondaryTypes.includes(v)
+              return (
+                <button
+                  type="button"
+                  key={v}
+                  aria-pressed={active}
+                  onClick={() =>
+                    setSecondaryTypes((prev) =>
+                      prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v],
+                    )
+                  }
+                  className={cn(
+                    'rounded-lg border px-3 py-2 text-sm font-medium transition',
+                    active
+                      ? 'border-yellow-500 bg-yellow-500/15 text-yellow-200'
+                      : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200',
+                  )}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
+          {secondaryTypes.length > 0 && (
+            <div className="mt-2">
+              <span className="mb-1 block text-xs font-medium text-zinc-400">
+                {t('signup.secondary_tier_label')}
+              </span>
+              <Segmented
+                options={TIER_OPTIONS}
+                value={secondaryTier}
+                onChange={(v) => setSecondaryTier(v)}
+              />
+            </div>
+          )}
+        </div>
+
         <Input
           label={t('signup.lair_label')}
           type="number"
@@ -477,6 +545,20 @@ export function SignupPage() {
           onChange={setWillingCaptain}
           label={t('signup.willing_captain_label')}
           hint={t('signup.willing_captain_hint')}
+        />
+
+        <Toggle
+          checked={defendAtStart}
+          onChange={setDefendAtStart}
+          label={t('signup.defend_at_start_label')}
+          hint={t('signup.defend_at_start_hint')}
+        />
+
+        <Toggle
+          checked={willingForeignHub}
+          onChange={setWillingForeignHub}
+          label={t('signup.willing_foreign_hub_label')}
+          hint={t('signup.willing_foreign_hub_hint')}
         />
 
         <Toggle

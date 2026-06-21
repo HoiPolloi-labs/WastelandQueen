@@ -103,7 +103,15 @@
     "nataly_frags_label": "Natalyフラグメント",
     "march_label": "行軍規模",
     "march_placeholder": "例: 350000",
-    "march_hint": "1回の行軍で送る兵力。容量埋め Auto-Sort が各 building のサイズ計算に使用。"
+    "march_hint": "1回の行軍で送る兵力。容量埋め Auto-Sort が各 building のサイズ計算に使用。",
+    "optional_suffix": "（任意）",
+    "secondary_type_label": "副次の兵科",
+    "secondary_type_hint": "他に出せる兵科 — 必要に応じて planner が別の turret に配置できます。",
+    "secondary_tier_label": "副次の最高 tier",
+    "defend_at_start_label": "WLK 開始時に防衛",
+    "defend_at_start_hint": "開始直後からオンラインで、home Hub が攻撃されたら防衛可能。",
+    "willing_foreign_hub_label": "外部 Hub の奪取可",
+    "willing_foreign_hub_hint": "Hit-Squad に加わり、他 state の Hub を奪取する意思あり。"
   },
   "board": {
     "event_not_found": "イベントが見つかりません",
@@ -291,7 +299,9 @@
     "empty": "空",
     "captain_present_tooltip": "Captain在席 — Super Reinforcement有効",
     "captain_absent_tooltip": "Captain不在! Reinforcerは再ターゲットすべき。",
-    "captain_unknown_tooltip": "Captain状態不明。クリックで在席にマーク。"
+    "captain_unknown_tooltip": "Captain状態不明。クリックで在席にマーク。",
+    "remaining_label": "容量",
+    "remaining_tooltip": "rally {{cap}} 中 {{remaining}} 残り"
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "メモを追加",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "外部 Hub の奪取可",
+    "secondary_marker_tooltip": "副次: {{secondary}}",
+    "tooltip_flags_suffix": "\n副次: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "未割当 · シフト{{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "すべて",
-    "all_distributed": "全プレイヤー配置済み"
+    "all_distributed": "全プレイヤー配置済み",
+    "filter_foreign_hub": "foreign-Hub 可"
   },
   "shifts": {
     "move_label": "移動:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "チートシート",
     "figure_aria_label": "チェス駒の王冠をかぶったちびWasteland Queen",
     "nav_demo": "ライブデモ"
+  },
+  "alliance": {
+    "section_title": "アライアンス参加率",
+    "min_line_label": "最低ライン",
+    "empty": "まだ登録がありません。",
+    "col_tag": "アライアンス",
+    "col_signups": "登録",
+    "col_total": "メンバー",
+    "col_pct": "%",
+    "col_towers": "タワー配置",
+    "total_placeholder": "—"
   }
 }

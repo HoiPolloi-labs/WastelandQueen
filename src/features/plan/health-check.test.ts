@@ -27,6 +27,10 @@ function s(opts: {
     max_solo_lair: 5,
     rally_size: 1_000_000,
     march_size: null,
+    secondary_troop_types: null,
+    secondary_tier: null,
+    defend_at_start: false,
+    willing_foreign_hub: false,
     true_might: null,
     willing_captain: opts.captain ?? false,
     shift_pref: opts.shifts ?? '1',
@@ -91,6 +95,8 @@ const baseEvent: EventConfig = {
   coffer_notes: null,
   heroes_enabled: false,
   auto_fill_to_capacity: false,
+  alliance_sizes: {},
+  min_participation_pct: 15,
   created_at: '',
 }
 

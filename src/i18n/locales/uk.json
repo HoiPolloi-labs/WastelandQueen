@@ -103,7 +103,15 @@
     "nataly_frags_label": "Фрагменти Nataly",
     "march_label": "Розмір маршу",
     "march_placeholder": "напр. 350000",
-    "march_hint": "Війська за один march. Використовується режимом заповнення за ємністю для розміру кожного building."
+    "march_hint": "Війська за один march. Використовується режимом заповнення за ємністю для розміру кожного building.",
+    "optional_suffix": "(необов’язково)",
+    "secondary_type_label": "Вторинний тип військ",
+    "secondary_type_hint": "Інші типи, які ти можеш виставити — planner за потреби поставить тебе в іншу turret.",
+    "secondary_tier_label": "Найвищий вторинний tier",
+    "defend_at_start_label": "Захист на старті WLK",
+    "defend_at_start_hint": "Доступний одразу на старті для захисту домашнього Hub, якщо по ньому вдарять.",
+    "willing_foreign_hub_label": "Готовий взяти чужий Hub",
+    "willing_foreign_hub_hint": "Готовий приєднатися до Hit-Squad і захопити Hub іншого state."
   },
   "board": {
     "event_not_found": "Подію не знайдено",
@@ -291,7 +299,9 @@
     "empty": "порожньо",
     "captain_present_tooltip": "Captain на місці — Super Reinforcement активний",
     "captain_absent_tooltip": "Captain відсутній! Reinforcer мають перенацілитися.",
-    "captain_unknown_tooltip": "Статус captain невідомий. Клікни, щоб позначити присутнім."
+    "captain_unknown_tooltip": "Статус captain невідомий. Клікни, щоб позначити присутнім.",
+    "remaining_label": "Ємність",
+    "remaining_tooltip": "{{remaining}} з {{cap}} rally залишилось"
   },
   "chip": {
     "captain_score_tooltip": "Captain-score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "Додати нотатку",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "Готовий взяти чужий Hub",
+    "secondary_marker_tooltip": "Вторинний: {{secondary}}",
+    "tooltip_flags_suffix": "\nВторинний: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "Не призначено · Зміна {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "УСІ",
-    "all_distributed": "Усі гравці розподілені"
+    "all_distributed": "Усі гравці розподілені",
+    "filter_foreign_hub": "Готовий на foreign-Hub"
   },
   "shifts": {
     "move_label": "Перемістити:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "Шпаргалка",
     "figure_aria_label": "Чибі Wasteland Queen з короною з шахових фігур",
     "nav_demo": "Демо"
+  },
+  "alliance": {
+    "section_title": "Участь альянсів",
+    "min_line_label": "Мін. лінія",
+    "empty": "Ще немає реєстрацій.",
+    "col_tag": "Альянс",
+    "col_signups": "Реєстр.",
+    "col_total": "Учасники",
+    "col_pct": "%",
+    "col_towers": "У вежах",
+    "total_placeholder": "—"
   }
 }

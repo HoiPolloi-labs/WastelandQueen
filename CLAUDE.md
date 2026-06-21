@@ -127,7 +127,7 @@ src/
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0038_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0041_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
@@ -175,7 +175,7 @@ Suites:
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 - `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
 
-Current total: **175 tests** across 11 suites, full pipeline green
+Current total: **187 tests** across 13 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
 Coverage (v8, `pnpm test:coverage`): **96.0% statements · 89.3% branches**
 on the pure-function scope. Untested residue is the supabase client
@@ -419,7 +419,7 @@ mixing localized + English terms would be more confusing than helpful.
 Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
 + Awards + CheatSheet + HeroScene + PlayerChip tooltips + heroes feature
 + Discord-reminder buttons + point calculator. All 12 locales (en, de, ru,
-zh, ko, ja, it, tr, fr, uk, el, es) have the full **439-key** schema with
+zh, ko, ja, it, tr, fr, uk, el, es) have the full **465-key** schema with
 zero gaps. CI-style parity check:
 
 ```

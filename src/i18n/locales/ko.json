@@ -103,7 +103,15 @@
     "nataly_frags_label": "Nataly 조각",
     "march_label": "행군 규모",
     "march_placeholder": "예: 350000",
-    "march_hint": "행군 1회당 보내는 병력. 용량 채우기 Auto-Sort가 각 building 크기 계산에 사용."
+    "march_hint": "행군 1회당 보내는 병력. 용량 채우기 Auto-Sort가 각 building 크기 계산에 사용.",
+    "optional_suffix": "(선택)",
+    "secondary_type_label": "보조 병종",
+    "secondary_type_hint": "추가로 낼 수 있는 병종 — 필요 시 planner가 다른 turret에 배치할 수 있습니다.",
+    "secondary_tier_label": "최고 보조 tier",
+    "defend_at_start_label": "WLK 시작 시 방어",
+    "defend_at_start_hint": "시작 즉시 접속해 home Hub가 공격받으면 방어 가능.",
+    "willing_foreign_hub_label": "외부 Hub 점령 의향",
+    "willing_foreign_hub_hint": "Hit-Squad에 합류해 다른 state의 Hub를 점령할 의향이 있음."
   },
   "board": {
     "event_not_found": "이벤트를 찾을 수 없음",
@@ -291,7 +299,9 @@
     "empty": "비어있음",
     "captain_present_tooltip": "Captain 출석 — Super Reinforcement 활성",
     "captain_absent_tooltip": "Captain 부재! Reinforcer는 재타깃해야 함.",
-    "captain_unknown_tooltip": "Captain 상태 불명. 클릭하여 출석으로 표시."
+    "captain_unknown_tooltip": "Captain 상태 불명. 클릭하여 출석으로 표시.",
+    "remaining_label": "용량",
+    "remaining_tooltip": "rally {{cap}} 중 {{remaining}} 남음"
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "메모 추가",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "외부 Hub 점령 의향",
+    "secondary_marker_tooltip": "보조: {{secondary}}",
+    "tooltip_flags_suffix": "\n보조: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "미할당 · 시프트 {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "전체",
-    "all_distributed": "모든 플레이어 할당됨"
+    "all_distributed": "모든 플레이어 할당됨",
+    "filter_foreign_hub": "foreign-Hub 의향"
   },
   "shifts": {
     "move_label": "이동:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "치트 시트",
     "figure_aria_label": "체스 말 왕관을 쓴 치비 Wasteland Queen",
     "nav_demo": "라이브 데모"
+  },
+  "alliance": {
+    "section_title": "연맹 참여도",
+    "min_line_label": "최소선",
+    "empty": "아직 신청 없음.",
+    "col_tag": "연맹",
+    "col_signups": "신청",
+    "col_total": "인원",
+    "col_pct": "%",
+    "col_towers": "타워 배치",
+    "total_placeholder": "—"
   }
 }

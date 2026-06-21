@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import { Crown, Swords, Crosshair, Zap, StickyNote, ShieldOff } from 'lucide-react'
+import { Crown, Swords, Crosshair, Zap, StickyNote, ShieldOff, Target } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/cn'
 import type { ShiftNumber, Signup, TroopType } from '@/types/wk'
@@ -118,6 +118,22 @@ export function PlayerChip({
         })
       : ''
 
+  // Secondary type(s) the player can also field — display/filter only marker.
+  const secondaryTypes = signup.secondary_troop_types ?? []
+  const secondaryLabel =
+    secondaryTypes.length > 0
+      ? secondaryTypes.map((tp) => TYPE_META[tp].label).join('/') +
+        (signup.secondary_tier ? ` T${signup.secondary_tier}` : '')
+      : ''
+  const flagsSuffix =
+    secondaryLabel || signup.defend_at_start || signup.willing_foreign_hub
+      ? t('chip.tooltip_flags_suffix', {
+          secondary: secondaryLabel || '—',
+          defend: signup.defend_at_start ? '✓' : '✗',
+          foreign: signup.willing_foreign_hub ? '✓' : '✗',
+        })
+      : ''
+
   return (
     <div
       ref={setNodeRef}
@@ -132,7 +148,7 @@ export function PlayerChip({
         isDragging && 'opacity-30',
         highlight && 'ring-2 ring-yellow-500',
       )}
-      title={`${summary}${heroesSuffix}${noteSuffix}`}
+      title={`${summary}${flagsSuffix}${heroesSuffix}${noteSuffix}`}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-1.5">
@@ -145,6 +161,12 @@ export function PlayerChip({
             <ShieldOff
               className="h-3 w-3 text-amber-400"
               aria-label={t('chip.not_in_state_alliance')}
+            />
+          )}
+          {signup.willing_foreign_hub && (
+            <Target
+              className="h-3 w-3 text-orange-400"
+              aria-label={t('chip.willing_foreign_hub')}
             />
           )}
           {isCaptain && <Crown className="h-3.5 w-3.5 text-yellow-400" />}
@@ -174,6 +196,14 @@ export function PlayerChip({
           </button>
           <ScoreBadge score={captainScore(signup)} willing={signup.willing_captain} />
           <span className="font-mono">T{signup.tier}</span>
+          {secondaryLabel && (
+            <span
+              className="rounded bg-zinc-800 px-1 py-px font-mono text-[9px] text-zinc-400"
+              title={t('chip.secondary_marker_tooltip', { secondary: secondaryLabel })}
+            >
+              +{secondaryLabel}
+            </span>
+          )}
         </div>
       </div>
       {!compact && (

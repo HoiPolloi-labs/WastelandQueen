@@ -103,7 +103,15 @@
     "nataly_frags_label": "Fragmentos Nataly",
     "march_label": "Tamaño de marcha",
     "march_placeholder": "p.ej. 350000",
-    "march_hint": "Tropas que envías por march. Usada por el Auto-Sort por capacidad para dimensionar cada building."
+    "march_hint": "Tropas que envías por march. Usada por el Auto-Sort por capacidad para dimensionar cada building.",
+    "optional_suffix": "(opcional)",
+    "secondary_type_label": "Tipo(s) de tropa secundario(s)",
+    "secondary_type_hint": "Otros tipos que puedes desplegar — el planner puede ponerte en otra turret si hace falta.",
+    "secondary_tier_label": "Tier secundario más alto",
+    "defend_at_start_label": "Defensa al inicio del WLK",
+    "defend_at_start_hint": "Disponible desde el inicio para defender el Hub local si lo atacan.",
+    "willing_foreign_hub_label": "Dispuesto a tomar un Hub ajeno",
+    "willing_foreign_hub_hint": "Dispuesto a unirte a la Hit-Squad y tomar el Hub de otro state."
   },
   "board": {
     "event_not_found": "Evento no encontrado",
@@ -291,7 +299,9 @@
     "empty": "vacío",
     "captain_present_tooltip": "Captain presente — Super Reinforcement activo",
     "captain_absent_tooltip": "¡Captain ausente! Los reinforcers deberían cambiar de objetivo.",
-    "captain_unknown_tooltip": "Estado del captain desconocido. Haz clic para marcar como presente."
+    "captain_unknown_tooltip": "Estado del captain desconocido. Haz clic para marcar como presente.",
+    "remaining_label": "Capacidad",
+    "remaining_tooltip": "{{remaining}} de {{cap}} de rally restantes"
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "Añadir nota",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "Dispuesto a tomar un Hub ajeno",
+    "secondary_marker_tooltip": "Secundario: {{secondary}}",
+    "tooltip_flags_suffix": "\nSecundario: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "Sin asignar · Turno {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "TODOS",
-    "all_distributed": "Todos los jugadores asignados"
+    "all_distributed": "Todos los jugadores asignados",
+    "filter_foreign_hub": "Disp. foreign-Hub"
   },
   "shifts": {
     "move_label": "Mover a:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "Cheat Sheet",
     "figure_aria_label": "Chibi Wasteland Queen con corona de piezas de ajedrez",
     "nav_demo": "Demo en vivo"
+  },
+  "alliance": {
+    "section_title": "Participación de alianzas",
+    "min_line_label": "Línea mín.",
+    "empty": "Aún no hay inscripciones.",
+    "col_tag": "Alianza",
+    "col_signups": "Inscritos",
+    "col_total": "Miembros",
+    "col_pct": "%",
+    "col_towers": "En torres",
+    "total_placeholder": "—"
   }
 }

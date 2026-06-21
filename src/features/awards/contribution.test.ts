@@ -26,6 +26,8 @@ const baseEvent: EventConfig = {
   coffer_notes: null,
   heroes_enabled: false,
   auto_fill_to_capacity: false,
+  alliance_sizes: {},
+  min_participation_pct: 15,
   created_at: EVENT_START,
 }
 
@@ -41,6 +43,10 @@ function makeSignup(overrides: Partial<Signup> = {}): Signup {
     max_solo_lair: 6,
     rally_size: null,
     march_size: null,
+    secondary_troop_types: null,
+    secondary_tier: null,
+    defend_at_start: false,
+    willing_foreign_hub: false,
     true_might: null,
     willing_captain: false,
     shift_pref: '1',

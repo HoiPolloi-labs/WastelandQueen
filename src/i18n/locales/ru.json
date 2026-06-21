@@ -103,7 +103,15 @@
     "nataly_frags_label": "Фрагменты Nataly",
     "march_label": "Размер марша",
     "march_placeholder": "напр. 350000",
-    "march_hint": "Войска за один march. Используется режимом заполнения по ёмкости для размера каждого building."
+    "march_hint": "Войска за один march. Используется режимом заполнения по ёмкости для размера каждого building.",
+    "optional_suffix": "(необязательно)",
+    "secondary_type_label": "Вторичный тип войск",
+    "secondary_type_hint": "Другие типы, которые ты можешь выставить — planner сможет при необходимости поставить тебя в другую turret.",
+    "secondary_tier_label": "Высший вторичный tier",
+    "defend_at_start_label": "Защита на старте WLK",
+    "defend_at_start_hint": "Доступен сразу на старте для защиты домашнего Hub, если по нему ударят.",
+    "willing_foreign_hub_label": "Готов взять чужой Hub",
+    "willing_foreign_hub_hint": "Готов войти в Hit-Squad и захватить Hub другого state."
   },
   "board": {
     "event_not_found": "Событие не найдено",
@@ -291,7 +299,9 @@
     "empty": "пусто",
     "captain_present_tooltip": "Captain на месте — Super Reinforcement активен",
     "captain_absent_tooltip": "Captain отсутствует! Reinforcer должны перенацелиться.",
-    "captain_unknown_tooltip": "Статус captain неизвестен. Клик, чтобы отметить как присутствующего."
+    "captain_unknown_tooltip": "Статус captain неизвестен. Клик, чтобы отметить как присутствующего.",
+    "remaining_label": "Ёмкость",
+    "remaining_tooltip": "{{remaining}} из {{cap}} rally осталось"
   },
   "chip": {
     "captain_score_tooltip": "Captain-score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "Добавить заметку",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "Готов взять чужой Hub",
+    "secondary_marker_tooltip": "Вторичный: {{secondary}}",
+    "tooltip_flags_suffix": "\nВторичный: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "Не назначено · Смена {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "ВСЕ",
-    "all_distributed": "Все игроки распределены"
+    "all_distributed": "Все игроки распределены",
+    "filter_foreign_hub": "Готов на foreign-Hub"
   },
   "shifts": {
     "move_label": "Переместить:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "Шпаргалка",
     "figure_aria_label": "Чиби Wasteland Queen с короной из шахматных фигур",
     "nav_demo": "Демо"
+  },
+  "alliance": {
+    "section_title": "Участие альянсов",
+    "min_line_label": "Мин. линия",
+    "empty": "Пока нет регистраций.",
+    "col_tag": "Альянс",
+    "col_signups": "Регистр.",
+    "col_total": "Участники",
+    "col_pct": "%",
+    "col_towers": "В башнях",
+    "total_placeholder": "—"
   }
 }

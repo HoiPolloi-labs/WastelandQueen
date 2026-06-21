@@ -103,7 +103,15 @@
     "nataly_frags_label": "Nataly parçaları",
     "march_label": "Yürüyüş büyüklüğü",
     "march_placeholder": "örn. 350000",
-    "march_hint": "Tek bir marşta gönderdiğin asker. Kapasite-dolum Auto-Sort her building boyutu için kullanır."
+    "march_hint": "Tek bir marşta gönderdiğin asker. Kapasite-dolum Auto-Sort her building boyutu için kullanır.",
+    "optional_suffix": "(isteğe bağlı)",
+    "secondary_type_label": "İkincil birlik tür(ler)i",
+    "secondary_type_hint": "Çıkarabileceğin diğer türler — gerekirse planner seni başka bir turret’e koyabilir.",
+    "secondary_tier_label": "En yüksek ikincil tier",
+    "defend_at_start_label": "WLK başında savunma",
+    "defend_at_start_hint": "Başlangıçta hazır; home Hub saldırıya uğrarsa savunmaya katılabilir.",
+    "willing_foreign_hub_label": "Yabancı Hub almaya istekli",
+    "willing_foreign_hub_hint": "Hit-Squad’a katılıp başka bir state’in Hub’ını almaya istekli."
   },
   "board": {
     "event_not_found": "Etkinlik bulunamadı",
@@ -291,7 +299,9 @@
     "empty": "boş",
     "captain_present_tooltip": "Captain mevcut — Super Reinforcement aktif",
     "captain_absent_tooltip": "Captain yok! Reinforcer'lar yeniden hedeflemeli.",
-    "captain_unknown_tooltip": "Captain durumu bilinmiyor. Mevcut olarak işaretlemek için tıkla."
+    "captain_unknown_tooltip": "Captain durumu bilinmiyor. Mevcut olarak işaretlemek için tıkla.",
+    "remaining_label": "Kapasite",
+    "remaining_tooltip": "{{cap}} rally’den {{remaining}} kaldı"
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "Not ekle",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "Yabancı Hub almaya istekli",
+    "secondary_marker_tooltip": "İkincil: {{secondary}}",
+    "tooltip_flags_suffix": "\nİkincil: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "Atanmamış · Vardiya {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "HEPSİ",
-    "all_distributed": "Tüm oyuncular dağıtıldı"
+    "all_distributed": "Tüm oyuncular dağıtıldı",
+    "filter_foreign_hub": "foreign-Hub istekli"
   },
   "shifts": {
     "move_label": "Taşı:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "Kopya Kağıdı",
     "figure_aria_label": "Satranç taşı tacı olan çibi Wasteland Queen",
     "nav_demo": "Canlı Demo"
+  },
+  "alliance": {
+    "section_title": "İttifak katılımı",
+    "min_line_label": "Min. çizgi",
+    "empty": "Henüz kayıt yok.",
+    "col_tag": "İttifak",
+    "col_signups": "Kayıt",
+    "col_total": "Üye",
+    "col_pct": "%",
+    "col_towers": "Kulelerde",
+    "total_placeholder": "—"
   }
 }

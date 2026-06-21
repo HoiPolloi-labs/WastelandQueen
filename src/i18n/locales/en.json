@@ -103,7 +103,15 @@
     "nataly_frags_label": "Nataly Frags",
     "march_label": "March Size",
     "march_placeholder": "e.g. 350000",
-    "march_hint": "Troops you send per single march. Used by capacity-fill Auto-Sort to size each building."
+    "march_hint": "Troops you send per single march. Used by capacity-fill Auto-Sort to size each building.",
+    "optional_suffix": "(optional)",
+    "secondary_type_label": "Secondary troop type(s)",
+    "secondary_type_hint": "Other types you can also field — lets the planner slot you into a different tower if needed.",
+    "secondary_tier_label": "Highest secondary tier",
+    "defend_at_start_label": "Defend at WLK start",
+    "defend_at_start_hint": "Available right at the start to defend the home Hub if it gets attacked.",
+    "willing_foreign_hub_label": "Willing to take a foreign Hub",
+    "willing_foreign_hub_hint": "Open to joining the Hit-Squad and taking another state’s Hub."
   },
   "board": {
     "event_not_found": "Event not found",
@@ -291,7 +299,9 @@
     "empty": "empty",
     "captain_present_tooltip": "Captain present — Super Reinforcement active",
     "captain_absent_tooltip": "Captain absent! Reinforcers should retarget.",
-    "captain_unknown_tooltip": "Captain status unknown. Click to mark as present."
+    "captain_unknown_tooltip": "Captain status unknown. Click to mark as present.",
+    "remaining_label": "Capacity",
+    "remaining_tooltip": "{{remaining}} of {{cap}} rally remaining"
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "Add note",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "Willing to take a foreign Hub",
+    "secondary_marker_tooltip": "Secondary: {{secondary}}",
+    "tooltip_flags_suffix": "\nSecondary: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "Unassigned · Shift {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "ALL",
-    "all_distributed": "All players assigned"
+    "all_distributed": "All players assigned",
+    "filter_foreign_hub": "Foreign-Hub willing"
   },
   "shifts": {
     "move_label": "Move to:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "Cheat Sheet",
     "figure_aria_label": "Chibi Wasteland Queen with crown of chess pieces",
     "nav_demo": "Live Demo"
+  },
+  "alliance": {
+    "section_title": "Alliance participation",
+    "min_line_label": "Min. line",
+    "empty": "No sign-ups yet.",
+    "col_tag": "Alliance",
+    "col_signups": "Sign-ups",
+    "col_total": "Members",
+    "col_pct": "%",
+    "col_towers": "In towers",
+    "total_placeholder": "—"
   }
 }

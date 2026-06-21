@@ -78,11 +78,11 @@ canon (Hub, turret, mud, NAP, Super Reinforcement, Fast Comeback).
   (project `ecxuvcuvuawxriucarmh` in `eu-central-1`)
 - **Zod** for form validation
 - **react-i18next** + `i18next-browser-languagedetector` — 12 locales
-  (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es), ~439-key parity, locale
+  (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es), ~465-key parity, locale
   bundles lazy-loaded so the main chunk doesn't ship 12× translations
 - **xlsx (SheetJS)** for roster import/export (dynamic-imported chunk)
 - **html-to-image** + **qrcode** for the Board PNG/QR export
-- **Vitest** + **happy-dom** for pure-function tests (175/175 passing, ~96% stmts)
+- **Vitest** + **happy-dom** for pure-function tests (187/187 passing, ~96% stmts)
 
 ---
 
@@ -110,7 +110,7 @@ pnpm preview      # http://localhost:4173 — serve the production bundle
 - **Frontend → Vercel.** Push to `main` → static build → auto-deploy.
   Env vars `VITE_SUPABASE_URL` + `VITE_SUPABASE_PUBLISHABLE_KEY` are set in
   the Vercel project settings.
-- **Database → Supabase.** Schema lives in `supabase/migrations/0001..0038_*.sql`.
+- **Database → Supabase.** Schema lives in `supabase/migrations/0001..0041_*.sql`.
   Apply via Supabase MCP `apply_migration` (mirror each into the
   `supabase/migrations/` folder for the repo record).
 - **Edge Functions → Supabase.** Four functions in `supabase/functions/`:

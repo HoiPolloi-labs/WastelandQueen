@@ -103,7 +103,15 @@
     "nataly_frags_label": "Θραύσματα Nataly",
     "march_label": "Μέγεθος πορείας",
     "march_placeholder": "π.χ. 350000",
-    "march_hint": "Στρατεύματα ανά μεμονωμένο march. Χρησιμοποιείται από το Auto-Sort χωρητικότητας για το μέγεθος κάθε building."
+    "march_hint": "Στρατεύματα ανά μεμονωμένο march. Χρησιμοποιείται από το Auto-Sort χωρητικότητας για το μέγεθος κάθε building.",
+    "optional_suffix": "(προαιρετικό)",
+    "secondary_type_label": "Δευτερεύων τύπος στρατού",
+    "secondary_type_hint": "Άλλοι τύποι που μπορείς να βγάλεις — ο planner μπορεί να σε βάλει σε άλλο turret αν χρειαστεί.",
+    "secondary_tier_label": "Υψηλότερο δευτερεύον tier",
+    "defend_at_start_label": "Άμυνα στην έναρξη του WLK",
+    "defend_at_start_hint": "Διαθέσιμος από την αρχή για άμυνα του home Hub αν δεχθεί επίθεση.",
+    "willing_foreign_hub_label": "Πρόθυμος να πάρει ξένο Hub",
+    "willing_foreign_hub_hint": "Πρόθυμος να μπει στη Hit-Squad και να πάρει το Hub άλλου state."
   },
   "board": {
     "event_not_found": "Το γεγονός δεν βρέθηκε",
@@ -291,7 +299,9 @@
     "empty": "άδειο",
     "captain_present_tooltip": "Captain παρών — Super Reinforcement ενεργό",
     "captain_absent_tooltip": "Captain απών! Οι reinforcers πρέπει να αλλάξουν στόχο.",
-    "captain_unknown_tooltip": "Άγνωστη κατάσταση captain. Πάτα για να σημειώσεις ως παρόντα."
+    "captain_unknown_tooltip": "Άγνωστη κατάσταση captain. Πάτα για να σημειώσεις ως παρόντα.",
+    "remaining_label": "Χωρητικότητα",
+    "remaining_tooltip": "{{remaining}} από {{cap}} rally απομένουν"
   },
   "chip": {
     "captain_score_tooltip": "Captain score {{score}} — tier×20 + rally/100k×4 + lair{{suffix}}",
@@ -300,7 +310,10 @@
     "add_note_title": "Προσθήκη σημείωσης",
     "tooltip_summary": "{{ign}} · {{type}} · T{{tier}} · Lair {{lair}} · score {{score}}",
     "tooltip_note_suffix": "\n📝 {{note}}",
-    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}"
+    "tooltip_heroes_suffix": "\n📿 Agent X {{agentX}} · Dr. J {{drJ}} · Nataly {{nataly}}",
+    "willing_foreign_hub": "Πρόθυμος να πάρει ξένο Hub",
+    "secondary_marker_tooltip": "Δευτερεύον: {{secondary}}",
+    "tooltip_flags_suffix": "\nΔευτερεύον: {{secondary}} · Defend-at-start: {{defend}} · Foreign-Hub: {{foreign}}"
   },
   "pool": {
     "title": "Μη ανατεθειμένοι · Βάρδια {{shift}}",
@@ -310,7 +323,8 @@
     "filter_shooter": "Shooter",
     "filter_rider": "Rider",
     "tag_filter_all": "ΟΛΑ",
-    "all_distributed": "Όλοι οι παίκτες ανατέθηκαν"
+    "all_distributed": "Όλοι οι παίκτες ανατέθηκαν",
+    "filter_foreign_hub": "Πρόθυμος foreign-Hub"
   },
   "shifts": {
     "move_label": "Μετακίνηση σε:",
@@ -548,5 +562,16 @@
     "nav_cheatsheet": "Cheat Sheet",
     "figure_aria_label": "Chibi Wasteland Queen με κορώνα από πιόνια σκακιού",
     "nav_demo": "Ζωντανό demo"
+  },
+  "alliance": {
+    "section_title": "Συμμετοχή συμμαχιών",
+    "min_line_label": "Ελάχ. γραμμή",
+    "empty": "Καμία εγγραφή ακόμη.",
+    "col_tag": "Συμμαχία",
+    "col_signups": "Εγγραφές",
+    "col_total": "Μέλη",
+    "col_pct": "%",
+    "col_towers": "Σε πύργους",
+    "total_placeholder": "—"
   }
 }

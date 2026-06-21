@@ -11,6 +11,7 @@ import type {
   TroopType,
 } from '@/types/wk'
 import { PlayerChip } from './PlayerChip'
+import { computeCapacityMeter } from './capacity-meter'
 
 const BUILDING_LABEL_KEYS: Record<BuildingType, string> = {
   hub: 'building.label_hub',
@@ -61,6 +62,42 @@ function pureType(members: Signup[]): TroopType | null {
   if (members.length === 0) return null
   const first = members[0]!.troop_type
   return members.every((m) => m.troop_type === first) ? first : null
+}
+
+/** Compact "Remaining" rally-capacity meter — the running column their old
+ *  Tower-assignment sheet kept. Only shown for buildings whose capacity is a
+ *  captain's rally (Hub + turrets) and only once a captain is placed. */
+function CapacityBar({ members, captainId }: { members: Signup[]; captainId: string | null }) {
+  const { t } = useTranslation()
+  const m = computeCapacityMeter(members, captainId)
+  if (!m.hasCaptain || m.cap === 0) return null
+  const fmt = (n: number) =>
+    n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : `${Math.round(n / 1000)}k`
+  return (
+    <div
+      className="mb-2"
+      title={t('building.remaining_tooltip', {
+        remaining: fmt(Math.max(0, m.cap - m.used)),
+        cap: fmt(m.cap),
+      })}
+    >
+      <div className="mb-0.5 flex items-center justify-between text-[10px]">
+        <span className="text-zinc-500">{t('building.remaining_label')}</span>
+        <span className={cn('font-mono', m.overCap ? 'text-red-400' : 'text-zinc-400')}>
+          {fmt(m.used)} / {fmt(m.cap)}
+        </span>
+      </div>
+      <div className="relative h-1 overflow-hidden rounded bg-zinc-900">
+        <div
+          className={cn(
+            'absolute inset-y-0 left-0 rounded transition-all',
+            m.overCap ? 'bg-red-500' : 'bg-emerald-500/70',
+          )}
+          style={{ width: `${m.pct}%` }}
+        />
+      </div>
+    </div>
+  )
 }
 
 /**
@@ -162,6 +199,9 @@ export function Building({
         </div>
       </header>
       <TierHeat members={members} />
+      {(isHub || building.startsWith('turret-')) && (
+        <CapacityBar members={members} captainId={captainId} />
+      )}
 
       <div
         className={cn(

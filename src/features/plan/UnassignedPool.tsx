@@ -23,6 +23,8 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
   const [filter, setFilter] = useState<Filter>('all')
   const [tagFilter, setTagFilter] = useState<string | null>(null)
   const [serverFilter, setServerFilter] = useState<string | null>(null)
+  // Hit-Squad staffing: narrow to players who consented to take a foreign hub.
+  const [foreignOnly, setForeignOnly] = useState(false)
 
   const assignedIds = useMemo(() => {
     const set = new Set<string>()
@@ -55,13 +57,14 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
       .filter((s) => filter === 'all' || s.troop_type === filter)
       .filter((s) => !tagFilter || s.alliance_tag === tagFilter)
       .filter((s) => !serverFilter || s.server === serverFilter)
+      .filter((s) => !foreignOnly || s.willing_foreign_hub)
       .filter(
         (s) =>
           !q ||
           s.ign.toLowerCase().includes(q) ||
           s.alliance_tag.toLowerCase().includes(q),
       )
-  }, [signups, assignedIds, shift, query, filter, tagFilter, serverFilter])
+  }, [signups, assignedIds, shift, query, filter, tagFilter, serverFilter, foreignOnly])
 
   const { setNodeRef, isOver } = useDroppable({
     id: `drop:unassigned:${shift}`,
@@ -103,6 +106,19 @@ export function UnassignedPool({ shift, signups, assignments }: UnassignedPoolPr
         value={filter}
         onChange={(v: Filter) => setFilter(v)}
       />
+      <button
+        type="button"
+        onClick={() => setForeignOnly((v) => !v)}
+        aria-pressed={foreignOnly}
+        className={cn(
+          'mb-2 self-start rounded border px-2 py-0.5 text-[10px] font-medium transition',
+          foreignOnly
+            ? 'border-orange-500/60 bg-orange-500/15 text-orange-200'
+            : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-100',
+        )}
+      >
+        {t('pool.filter_foreign_hub')}
+      </button>
       {allianceTags.length > 1 && (
         <div className="mb-2 flex flex-wrap gap-1">
           <button

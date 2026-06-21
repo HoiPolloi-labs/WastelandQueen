@@ -6,7 +6,21 @@ uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added — parity with the old Google-Form/Excel workflow
+
+- **Secondary troop type(s) + secondary tier** on sign-up — capture the other
+  types a player can field (display/filter only; primary type still drives
+  auto-sort). Shown as a chip marker, exported in the roster.
+- **Two availability flags**: "defend at WLK start" and "willing to take a
+  foreign Hub" (the latter surfaces a Hit-Squad-staffing filter in the pool).
+- **Per-building capacity meter** — the live rally "Remaining" countdown
+  (captain rally − Σ member marches) the old Tower-assignment sheet tracked,
+  now shown on the Hub + turrets during manual drag-drop.
+- **Per-alliance participation dashboard** — sign-ups, planner-entered member
+  totals, % participation vs a configurable minimum line, and #-in-towers,
+  mirroring the sheet's Statistics tab.
+- `march_size` added to the roster export/import (was missing since it became
+  required).
 
 ## [0.1.0] — 2026-05-29
 
