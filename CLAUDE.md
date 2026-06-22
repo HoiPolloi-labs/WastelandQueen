@@ -73,7 +73,7 @@ src/
       TypeCard.tsx               # Fighter/Shooter/Rider picker
       ProfileScreenshotUpload.tsx # optional Vision-LLM auto-fill from game profile screenshot
       HeroesScreenshotUpload.tsx  # optional Vision-LLM auto-fill for hero frag counts (heroes_enabled)
-      AwardsSelfEntry.tsx        # post-event self-entry (owner-only): attended + kill/death/occ + wk_points, optional 'awards' OCR; submits via update_signup_self → always unverified
+      AwardsSelfEntry.tsx        # post-event self-entry (owner-only): attended + kill/death/occ + wk_points; screenshot OCR optional, or REQUIRED when event.awards_require_screenshot; submits via update_signup_self → always unverified
       edit-token.ts              # localStorage gate for Withdraw button
       notify.ts                  # Discord ping (signup events + planner-triggered reminders)
     plan/
@@ -88,6 +88,7 @@ src/
       HealthCheckPanel.tsx       # pre-event readiness signals per shift
       PreEventStatusPanel.tsx    # per-player checklist gaps + Copy/Send reminder + Mudsit-Check
       HeroesSettings.tsx         # planner-side toggle for event.heroes_enabled
+      AwardsSettings.tsx         # planner-side toggle for event.awards_require_screenshot (self-entry screenshot policy)
       HubDefenderSettings.tsx    # planner-side fill-mode switch (fixed/capacity) + Hub-defender-count slider
       HeroesContext.tsx          # context carrying heroes_enabled down to PlayerChip
       WebhookSettings.tsx        # Discord webhook URL via set_event_secret RPC
@@ -143,7 +144,7 @@ src/
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0044_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0045_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
@@ -443,7 +444,7 @@ Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
 + PlayerChip tooltips + heroes feature + Discord-reminder buttons + point
 calculator + the `/tools` hub (FC / healing / sorting / bingo / tetramino).
 All 12 locales (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es) have the full
-**570-key** schema with zero gaps. CI-style parity check:
+**578-key** schema with zero gaps. CI-style parity check:
 
 ```
 node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"
