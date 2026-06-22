@@ -90,6 +90,7 @@ src/
       HeroesSettings.tsx         # planner-side toggle for event.heroes_enabled
       AwardsSettings.tsx         # planner-side toggle for event.awards_require_screenshot (self-entry screenshot policy)
       HubDefenderSettings.tsx    # planner-side fill-mode switch (fixed/capacity) + Hub-defender-count slider
+      BuildingTypeSettings.tsx   # planner-side per-building troop-type pins (event.building_types) → fixed Auto-Sort layout
       HeroesContext.tsx          # context carrying heroes_enabled down to PlayerChip
       WebhookSettings.tsx        # Discord webhook URL via set_event_secret RPC
       TokenRotation.tsx          # rotate signup/planner/board tokens via RPC + navigate
@@ -144,7 +145,7 @@ src/
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0045_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0046_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
@@ -319,10 +320,19 @@ Pure function in `src/features/plan/auto-sort.ts`. Per shift:
    T13 with 250k rally).
 2. **Hub captain** = strongest willing captain, type-agnostic. Plus N defenders
    of the same type if `event.hub_defender_target > 0`.
-3. **Turret layout** per `event.turret_mode`:
+3. **Turret layout** per `event.turret_mode`, computed **once from the full
+   roster** (event-wide), NOT per shift — so a physical turret keeps the same
+   troop type across every shift (per-shift recompute used to flip e.g. North
+   fighter→shooter between shifts; fixed in `f42de59`):
    - `duplicate-strongest`: dominant type gets turret-N + turret-S; others get one each.
    - `mixed-4th`: 3 turrets type-pure (N=fighter, E=shooter, S=rider), W = leftovers.
    - `manual`: everyone lands in `unassigned`, planner sorts by hand.
+   Then `applyTurretPins()` overlays optional `event.building_types` (per-building
+   troop-type pins): a pinned turret is moved to its type; a pinned Hub restricts
+   the Hub captain to that type (no match → Hub empty); a type left without a
+   turret spills to `reserve`. Absent key = auto. Lets a state reproduce its
+   fixed defensive layout (e.g. Hub=Rider, N=Shooter, E=Fighter, S=Rider,
+   W=Shooter) exactly, identical across shifts.
 4. Per turret: assign captain (highest-scored willing captain of that type),
    then round-robin fill non-captains by type into their turret(s).
 5. Players without a matching turret in their type → `reserve` (or `turret-w`
@@ -444,7 +454,7 @@ Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
 + PlayerChip tooltips + heroes feature + Discord-reminder buttons + point
 calculator + the `/tools` hub (FC / healing / sorting / bingo / tetramino).
 All 12 locales (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es) have the full
-**578-key** schema with zero gaps. CI-style parity check:
+**587-key** schema with zero gaps. CI-style parity check:
 
 ```
 node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"
