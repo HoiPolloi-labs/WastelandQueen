@@ -184,7 +184,16 @@
     "awards_settings_label": "Ödüller: ekran görüntüsü şart",
     "awards_settings_on": "açık",
     "awards_settings_off": "kapalı",
-    "awards_settings_hint": "Oyuncular sonuçlarını göndermeden önce Kişisel Ödül ekranının görüntüsünü yüklemeli (OCR ile okunur, saklanmaz). Kapalı = elle giriş serbest."
+    "awards_settings_hint": "Oyuncular sonuçlarını göndermeden önce Kişisel Ödül ekranının görüntüsünü yüklemeli (OCR ile okunur, saklanmaz). Kapalı = elle giriş serbest.",
+    "building_types_label": "Bina tipleri (Auto-Sort)",
+    "building_types_hint": "Her bina için sabit bir birlik tipi sabitle ki Auto-Sort her vardiyada aynı şekilde doldursun. Auto = taret modu karar verir.",
+    "building_types_hint_on": "Auto-Sort bu binaları tüm vardiyalarda seçilen tipe sabitler; diğer tiplerin fazlası yedeğe gider.",
+    "building_types_auto": "Oto",
+    "building_types_hub": "Hub",
+    "building_types_n": "Kuzey",
+    "building_types_e": "Doğu",
+    "building_types_s": "Güney",
+    "building_types_w": "Batı"
   },
   "conflict": {
     "hub_empty": "Hub boş — captain yok",

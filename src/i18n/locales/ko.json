@@ -184,7 +184,16 @@
     "awards_settings_label": "보상: 스크린샷 필수",
     "awards_settings_on": "켜짐",
     "awards_settings_off": "꺼짐",
-    "awards_settings_hint": "플레이어는 결과 제출 전 개인 보상 화면 스크린샷을 업로드해야 합니다(OCR로 읽고 저장 안 함). 꺼짐 = 수동 입력 허용."
+    "awards_settings_hint": "플레이어는 결과 제출 전 개인 보상 화면 스크린샷을 업로드해야 합니다(OCR로 읽고 저장 안 함). 꺼짐 = 수동 입력 허용.",
+    "building_types_label": "건물 유형 (Auto-Sort)",
+    "building_types_hint": "건물별로 병종을 고정하면 Auto-Sort가 모든 교대에서 동일하게 채웁니다. Auto = 포탑 모드가 결정.",
+    "building_types_hint_on": "Auto-Sort가 모든 교대에서 이 건물들을 선택한 병종으로 고정합니다; 다른 병종의 잉여는 예비로 갑니다.",
+    "building_types_auto": "자동",
+    "building_types_hub": "Hub",
+    "building_types_n": "북",
+    "building_types_e": "동",
+    "building_types_s": "남",
+    "building_types_w": "서"
   },
   "conflict": {
     "hub_empty": "Hub 비어있음 — captain 없음",

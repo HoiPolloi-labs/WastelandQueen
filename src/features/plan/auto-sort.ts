@@ -22,6 +22,11 @@ export interface AutoSortInput {
    *  building's running total; the captain hosts so doesn't subtract.
    *  Same-type surplus goes to reserve. */
   autoFillToCapacity?: boolean
+  /** Optional per-building troop-type pins. A pinned turret only takes that
+   *  type (captain + same-type fill); a pinned Hub picks a captain of that
+   *  type (no matching captain → Hub stays empty). Absent key = auto. Applied
+   *  event-wide, so the layout is identical across shifts. */
+  buildingTypes?: Partial<Record<'hub' | Turret, TroopType>>
 }
 
 /**
@@ -168,6 +173,36 @@ function turretLayout(mode: TurretMode, pool: Signup[]): TurretLayout {
 }
 
 /**
+ * Overlay optional per-turret type pins on a baseline layout. Each pinned
+ * turret is moved to its pinned type (removed from whatever type the baseline
+ * gave it); if the mode's overflow turret (mixed-4th's turret-w) gets pinned it
+ * stops being the overflow bucket. Non-turret / invalid keys are ignored. A
+ * type left with zero turrets after pinning sends its players to reserve — the
+ * correct consequence of the planner's fixed layout. Hub pins are handled in
+ * autoSort (captain selection), not here.
+ */
+function applyTurretPins(
+  layout: TurretLayout,
+  pins: Partial<Record<'hub' | Turret, TroopType>>,
+): TurretLayout {
+  if (!TURRETS.some((t) => pins[t])) return layout
+  const next: Record<TroopType, Turret[]> = {
+    fighter: [...layout.typeToTurrets.fighter],
+    shooter: [...layout.typeToTurrets.shooter],
+    rider: [...layout.typeToTurrets.rider],
+  }
+  for (const turret of TURRETS) {
+    const pin = pins[turret]
+    if (!pin || !(ALL_TYPES as readonly string[]).includes(pin)) continue
+    for (const t of ALL_TYPES) next[t] = next[t].filter((x) => x !== turret)
+    next[pin].push(turret)
+  }
+  const mixedTurret =
+    layout.mixedTurret && pins[layout.mixedTurret] ? null : layout.mixedTurret
+  return { typeToTurrets: next, mixedTurret }
+}
+
+/**
  * Sort signups into a draft assignment list, one entry per (signup × shift).
  * Caller decides whether to upsert.
  */
@@ -186,7 +221,10 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
   // defensive layout across all shifts, so the same type→turret mapping must
   // apply to every shift. (mixed-4th / manual layouts are already shift-stable
   // — their mapping ignores the pool — so this only changes duplicate-strongest.)
-  const layout = turretLayout(input.turretMode, input.signups)
+  const layout = applyTurretPins(
+    turretLayout(input.turretMode, input.signups),
+    input.buildingTypes ?? {},
+  )
 
   for (const shift of shifts) {
     const pool = shiftPoolFor(input.signups, shift).sort(strongestFirst)
@@ -207,8 +245,13 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
     const used = new Set<string>()
     const hubDefenders: Signup[] = []
 
-    // Hub: stärkster willing-captain, typunabhängig
-    const hubCaptain = pool.find((s) => s.willing_captain)
+    // Hub: strongest willing captain. If the Hub is type-pinned, restrict to a
+    // captain of that type (planner's fixed layout) — no match → Hub empty.
+    const hubPin = input.buildingTypes?.hub
+    const hubCaptain =
+      hubPin && (ALL_TYPES as readonly string[]).includes(hubPin)
+        ? pool.find((s) => s.willing_captain && s.troop_type === hubPin)
+        : pool.find((s) => s.willing_captain)
     if (hubCaptain) used.add(hubCaptain.id)
 
     // Hub-Defender: same troop type as captain (Super-Reinforcement synergy).

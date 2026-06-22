@@ -184,7 +184,16 @@
     "awards_settings_label": "Premi: screenshot richiesto",
     "awards_settings_on": "acceso",
     "awards_settings_off": "spento",
-    "awards_settings_hint": "I giocatori devono caricare uno screenshot della Ricompensa Personale (letto via OCR, non salvato) prima di inviare i risultati. Spento = inserimento manuale consentito."
+    "awards_settings_hint": "I giocatori devono caricare uno screenshot della Ricompensa Personale (letto via OCR, non salvato) prima di inviare i risultati. Spento = inserimento manuale consentito.",
+    "building_types_label": "Tipi di edificio (Auto-Sort)",
+    "building_types_hint": "Fissa un tipo di truppa per edificio così Auto-Sort lo riempie allo stesso modo ogni turno. Auto = decide la modalità torrette.",
+    "building_types_hint_on": "Auto-Sort fissa questi edifici al tipo scelto in tutti i turni; il surplus di altri tipi va in riserva.",
+    "building_types_auto": "Auto",
+    "building_types_hub": "Hub",
+    "building_types_n": "Nord",
+    "building_types_e": "Est",
+    "building_types_s": "Sud",
+    "building_types_w": "Ovest"
   },
   "conflict": {
     "hub_empty": "Hub vuoto — nessun captain",

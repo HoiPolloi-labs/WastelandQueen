@@ -54,6 +54,7 @@ import { RosterImportExport } from './RosterImportExport'
 import { HeroesSettings } from './HeroesSettings'
 import { AwardsSettings } from './AwardsSettings'
 import { HubDefenderSettings } from './HubDefenderSettings'
+import { BuildingTypeSettings } from './BuildingTypeSettings'
 import { AllianceStatsPanel } from './AllianceStatsPanel'
 import { NapPanel } from '@/features/nap/NapPanel'
 import { shiftWindowLabel } from '@/features/event/shift-window'
@@ -193,6 +194,7 @@ export function PlanPage({ demoMode = false }: { demoMode?: boolean } = {}) {
       shiftCount: Math.max(1, Math.min(4, event.shift_count)) as 1 | 2 | 3 | 4,
       hubDefenderTarget: event.hub_defender_target,
       autoFillToCapacity: event.auto_fill_to_capacity,
+      buildingTypes: event.building_types,
     })
     await applyDraft(drafts)
     setBusy(false)
@@ -409,6 +411,7 @@ export function PlanPage({ demoMode = false }: { demoMode?: boolean } = {}) {
                 onChange={() => refreshEvent()}
               />
               <HubDefenderSettings event={event} onChange={() => refreshEvent()} />
+              <BuildingTypeSettings event={event} onChange={() => refreshEvent()} />
               <HeroesSettings event={event} onChange={() => refreshEvent()} />
               <AwardsSettings event={event} onChange={() => refreshEvent()} />
               <WebhookSettings />

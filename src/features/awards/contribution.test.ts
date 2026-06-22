@@ -29,6 +29,7 @@ const baseEvent: EventConfig = {
   alliance_sizes: {},
   min_participation_pct: 15,
   awards_require_screenshot: false,
+  building_types: {},
   created_at: EVENT_START,
 }
 

@@ -62,6 +62,12 @@ export function serializeShiftPref(shifts: ShiftNumber[]): string {
 
 export type TurretMode = 'duplicate-strongest' | 'mixed-4th' | 'manual'
 
+/** Optional per-building troop-type pins for Auto-Sort. A pinned building only
+ *  takes that type; an absent key means "auto" (turret_mode layout for turrets,
+ *  strongest-captain-any-type for the Hub). Event-wide so the layout is
+ *  identical across shifts. */
+export type BuildingTypePins = Partial<Record<'hub' | Turret, TroopType>>
+
 export interface EventConfig {
   id: string
   starts_at_utc: string
@@ -110,6 +116,9 @@ export interface EventConfig {
    *  Personal-Reward screenshot (OCR-only, never stored) before they can
    *  submit their WK results. Default off → manual entry allowed. */
   awards_require_screenshot: boolean
+  /** Optional per-building troop-type pins for Auto-Sort (Hub + 4 turrets).
+   *  Empty = fully automatic. See {@link BuildingTypePins}. */
+  building_types: BuildingTypePins
   created_at: string
 }
 

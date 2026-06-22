@@ -184,7 +184,16 @@
     "awards_settings_label": "Награды: нужен скриншот",
     "awards_settings_on": "вкл",
     "awards_settings_off": "выкл",
-    "awards_settings_hint": "Игроки должны загрузить скриншот экрана личной награды (читается OCR, не сохраняется) перед отправкой результатов. Выкл = разрешён ручной ввод."
+    "awards_settings_hint": "Игроки должны загрузить скриншот экрана личной награды (читается OCR, не сохраняется) перед отправкой результатов. Выкл = разрешён ручной ввод.",
+    "building_types_label": "Типы зданий (Auto-Sort)",
+    "building_types_hint": "Закрепи за каждым зданием фиксированный тип войск, чтобы Auto-Sort заполнял его одинаково в каждую смену. Auto = решает режим башен.",
+    "building_types_hint_on": "Auto-Sort закрепляет эти здания за выбранным типом во всех сменах; излишек других типов идёт в резерв.",
+    "building_types_auto": "Авто",
+    "building_types_hub": "Hub",
+    "building_types_n": "Север",
+    "building_types_e": "Восток",
+    "building_types_s": "Юг",
+    "building_types_w": "Запад"
   },
   "conflict": {
     "hub_empty": "Hub пустой — нет капитана",

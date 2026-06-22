@@ -184,7 +184,16 @@
     "awards_settings_label": "Récompenses : capture requise",
     "awards_settings_on": "activé",
     "awards_settings_off": "désactivé",
-    "awards_settings_hint": "Les joueurs doivent téléverser une capture de l'écran Récompense Personnelle (lue par OCR, non stockée) avant d'envoyer leurs résultats. Désactivé = saisie manuelle autorisée."
+    "awards_settings_hint": "Les joueurs doivent téléverser une capture de l'écran Récompense Personnelle (lue par OCR, non stockée) avant d'envoyer leurs résultats. Désactivé = saisie manuelle autorisée.",
+    "building_types_label": "Types de bâtiment (Auto-Sort)",
+    "building_types_hint": "Fixe un type de troupe par bâtiment pour qu'Auto-Sort le remplisse de la même façon à chaque shift. Auto = le mode tourelle décide.",
+    "building_types_hint_on": "Auto-Sort fixe ces bâtiments au type choisi sur tous les shifts ; le surplus des autres types va en réserve.",
+    "building_types_auto": "Auto",
+    "building_types_hub": "Hub",
+    "building_types_n": "Nord",
+    "building_types_e": "Est",
+    "building_types_s": "Sud",
+    "building_types_w": "Ouest"
   },
   "conflict": {
     "hub_empty": "Hub vide — aucun captain",

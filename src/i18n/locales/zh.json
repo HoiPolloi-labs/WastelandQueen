@@ -184,7 +184,16 @@
     "awards_settings_label": "奖励：需要截图",
     "awards_settings_on": "开",
     "awards_settings_off": "关",
-    "awards_settings_hint": "玩家提交成绩前必须上传个人奖励界面截图（OCR 识别，不保存）。关 = 允许手动输入。"
+    "awards_settings_hint": "玩家提交成绩前必须上传个人奖励界面截图（OCR 识别，不保存）。关 = 允许手动输入。",
+    "building_types_label": "建筑类型（Auto-Sort）",
+    "building_types_hint": "为每个建筑固定一种兵种，让 Auto-Sort 每班都以相同方式填充。Auto = 由炮塔模式决定。",
+    "building_types_hint_on": "Auto-Sort 在所有班次将这些建筑固定为所选兵种；其他兵种的多余者进入预备。",
+    "building_types_auto": "自动",
+    "building_types_hub": "Hub",
+    "building_types_n": "北",
+    "building_types_e": "东",
+    "building_types_s": "南",
+    "building_types_w": "西"
   },
   "conflict": {
     "hub_empty": "Hub 为空 — 无 captain",

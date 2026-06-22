@@ -305,6 +305,76 @@ describe('autoSort — multi-shift', () => {
   })
 })
 
+describe('autoSort — building-type pins', () => {
+  it('pins turrets to fixed types, type-pure in both shifts', () => {
+    const roster = [
+      s({ id: 'fc', type: 'fighter', captain: true, shifts: '1,2' }),
+      s({ id: 'f1', type: 'fighter', shifts: '1,2' }),
+      s({ id: 'f2', type: 'fighter', shifts: '1,2' }),
+      s({ id: 'sc', type: 'shooter', captain: true, shifts: '1,2' }),
+      s({ id: 's1', type: 'shooter', shifts: '1,2' }),
+      s({ id: 'rc', type: 'rider', captain: true, shifts: '1,2' }),
+      s({ id: 'r1', type: 'rider', shifts: '1,2' }),
+    ]
+    const typeOf = new Map(roster.map((p) => [p.id, p.troop_type]))
+    const pins = {
+      'turret-n': 'fighter',
+      'turret-e': 'shooter',
+      'turret-s': 'rider',
+      'turret-w': 'shooter',
+    } as const
+    const result = autoSort({
+      signups: roster,
+      turretMode: 'duplicate-strongest',
+      shiftCount: 2,
+      hubDefenderTarget: 0, // keep Hub from absorbing the turret types
+      buildingTypes: pins,
+    })
+    for (const sh of [1, 2]) {
+      for (const [turret, type] of Object.entries(pins)) {
+        const members = at(result, turret, sh).map((d) => typeOf.get(d.signup_id))
+        expect(members.every((t) => t === type)).toBe(true)
+      }
+    }
+    expect(at(result, 'turret-n', 1).length).toBeGreaterThan(0) // not vacuous
+    expect(at(result, 'turret-n', 2).length).toBeGreaterThan(0)
+  })
+
+  it('pins the Hub captain to the chosen type (not the strongest overall)', () => {
+    const result = autoSort({
+      signups: [
+        s({ id: 'fc', type: 'fighter', tier: 13, captain: true, shifts: '1' }),
+        s({ id: 'rc', type: 'rider', tier: 10, captain: true, shifts: '1' }),
+      ],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      buildingTypes: { hub: 'rider' },
+    })
+    const hubCap = result.find((d) => d.building === 'hub' && d.is_captain)
+    expect(hubCap?.signup_id).toBe('rc') // rider Hub, despite the stronger fighter
+  })
+
+  it('sends a type with no pinned turret to reserve', () => {
+    const result = autoSort({
+      signups: [
+        s({ id: 'f1', type: 'fighter', shifts: '1' }),
+        s({ id: 'r1', type: 'rider', shifts: '1' }),
+      ],
+      turretMode: 'duplicate-strongest',
+      shiftCount: 1,
+      hubDefenderTarget: 0,
+      // all turrets fighter/shooter → riders have nowhere to go
+      buildingTypes: {
+        'turret-n': 'fighter',
+        'turret-s': 'fighter',
+        'turret-e': 'shooter',
+        'turret-w': 'shooter',
+      },
+    })
+    expect(result.find((d) => d.signup_id === 'r1')?.building).toBe('reserve')
+  })
+})
+
 describe('autoSort — invariants', () => {
   it('never assigns the same signup twice in one shift', () => {
     const result = autoSort({

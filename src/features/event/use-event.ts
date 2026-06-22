@@ -25,7 +25,7 @@ export function useEvent(eventId: string | undefined) {
         'home_server, notes, state_grade, governor_ign, assessor_ign, ' +
         'negotiator_ign, foreign_targets, heroes_enabled, ' +
         'alliance_sizes, min_participation_pct, awards_require_screenshot, ' +
-        'signup_token, board_token, ' +
+        'building_types, signup_token, board_token, ' +
         'king_sword_recipient_ign, king_sword_grade, coffer_collected_at, ' +
         'coffer_notes, created_at',
       )

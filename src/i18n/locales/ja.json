@@ -184,7 +184,16 @@
     "awards_settings_label": "報酬: スクショ必須",
     "awards_settings_on": "オン",
     "awards_settings_off": "オフ",
-    "awards_settings_hint": "プレイヤーは成績送信前に個人報酬画面のスクリーンショットをアップロードする必要があります（OCRで読み取り、保存しません）。オフ = 手動入力可。"
+    "awards_settings_hint": "プレイヤーは成績送信前に個人報酬画面のスクリーンショットをアップロードする必要があります（OCRで読み取り、保存しません）。オフ = 手動入力可。",
+    "building_types_label": "建物タイプ（Auto-Sort）",
+    "building_types_hint": "建物ごとに兵科を固定すると、Auto-Sort が毎シフト同じように配置します。Auto = タレットモードが決定。",
+    "building_types_hint_on": "Auto-Sort は全シフトでこれらの建物を選んだ兵科に固定します。他兵科の余剰はリザーブへ。",
+    "building_types_auto": "自動",
+    "building_types_hub": "Hub",
+    "building_types_n": "北",
+    "building_types_e": "東",
+    "building_types_s": "南",
+    "building_types_w": "西"
   },
   "conflict": {
     "hub_empty": "Hub空 — captainなし",

@@ -184,7 +184,16 @@
     "awards_settings_label": "Awards: Screenshot-Pflicht",
     "awards_settings_on": "an",
     "awards_settings_off": "aus",
-    "awards_settings_hint": "Spieler müssen vor dem Senden ihrer Ergebnisse einen Persönliche-Belohnung-Screenshot hochladen (per OCR gelesen, nicht gespeichert). Aus = manuelle Eingabe erlaubt."
+    "awards_settings_hint": "Spieler müssen vor dem Senden ihrer Ergebnisse einen Persönliche-Belohnung-Screenshot hochladen (per OCR gelesen, nicht gespeichert). Aus = manuelle Eingabe erlaubt.",
+    "building_types_label": "Gebäude-Typen (Auto-Sort)",
+    "building_types_hint": "Lege pro Gebäude einen festen Truppentyp fest, damit Auto-Sort es in jeder Schicht gleich füllt. Auto = der Turret-Modus entscheidet.",
+    "building_types_hint_on": "Auto-Sort fixiert diese Gebäude über alle Schichten auf den gewählten Typ; Überschuss anderer Typen geht in die Reserve.",
+    "building_types_auto": "Auto",
+    "building_types_hub": "Hub",
+    "building_types_n": "Nord",
+    "building_types_e": "Ost",
+    "building_types_s": "Süd",
+    "building_types_w": "West"
   },
   "conflict": {
     "hub_empty": "Hub leer — kein Captain",
