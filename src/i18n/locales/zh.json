@@ -472,7 +472,16 @@
     "calc_death_header": "按 tier 输入死亡数。仅 Hub/turret 死亡 — mud 死亡不计。",
     "calc_total_label": "Σ 总计",
     "calc_current": "将替换当前值 ({{current}})。",
-    "calc_apply": "应用"
+    "calc_apply": "应用",
+    "table_wk_points": "WK分",
+    "table_wk_points_title": "游戏内个人奖励总分（\"Aktuelle Pkte\"）。设置后将作为排序依据。",
+    "table_verified": "已核实",
+    "verified_badge": "已核实",
+    "unverified_badge": "未核实",
+    "verify_action_title": "将此行数据标记为已核实",
+    "unverify_action_title": "改回未核实",
+    "summary_verified": "{{verified}} 已核实",
+    "confirm_autoassign_verified": "自动分配会覆盖所有宝箱分配。{{skipped}} 名出席玩家未核实，将被跳过——请先核实以纳入。"
   },
   "cheatsheet": {
     "title": "WK 速查表",
@@ -677,5 +686,25 @@
       "place_next": "下一步：将 {{piece}} 放在第 {{row}} 行，第 {{col}} 列。",
       "no_fit": "没有方块能放进这个棋盘。"
     }
+  },
+  "awards_self": {
+    "title": "你的 WK 成绩",
+    "intro": "填写赛后数据。策划会审核并确认——在此之前你的条目保持\"未核实\"。",
+    "attended": "我参加了本次活动",
+    "wk_points_label": "WK 积分（当前积分）",
+    "kill_label": "击杀积分",
+    "death_label": "阵亡积分",
+    "occ_label": "占领积分",
+    "submit": "提交我的成绩",
+    "submitting": "提交中…",
+    "submitted": "已提交——等待策划核实。",
+    "verified_note": "策划已核实你的成绩。",
+    "error": "保存失败：{{msg}}",
+    "err_not_owner": "此报名未与本设备关联。",
+    "upload_button": "从截图自动填充",
+    "upload_desc": "上传你的个人奖励界面——我们读取你的 WK 积分。",
+    "upload_detecting": "识别中…",
+    "upload_success": "识别到 WK 积分：{{points}}",
+    "upload_no_points": "无法识别积分——请手动输入。"
   }
 }

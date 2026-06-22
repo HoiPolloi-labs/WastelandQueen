@@ -12,6 +12,8 @@ import {
   Coins,
   Sparkles,
   Calculator,
+  BadgeCheck,
+  CircleDashed,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
@@ -108,13 +110,28 @@ export function AwardsPage() {
   }
 
   const autoAssign = async () => {
-    if (!confirm(t('awards.confirm_autoassign'))) return
+    // Verified-aware eligibility: once the planner has verified ANY row (i.e.
+    // is using the verification workflow), only verified players get boxes —
+    // boxes shouldn't be auto-awarded on unconfirmed numbers. If no row is
+    // verified (verification unused), fall back to legacy attended-based
+    // eligibility so existing planners' flow is unchanged.
+    const anyVerified = candidates.some((c) => c.signup.awards_verified)
+    const isEligible = (s: Signup) =>
+      s.attended !== false && (!anyVerified || s.awards_verified)
+    const skipped = anyVerified
+      ? candidates.filter((c) => c.signup.attended !== false && !c.signup.awards_verified).length
+      : 0
+    const prompt = skipped > 0
+      ? t('awards.confirm_autoassign_verified', { skipped })
+      : t('awards.confirm_autoassign')
+    if (!confirm(prompt)) return
     setBusy(true)
     try {
       // top-N by score per tier, order king > rulers > loyalty > contribution.
-      // No-shows (attended === false) are never awarded.
-      const eligible = candidates.filter((c) => c.signup.attended !== false)
-      const ineligible = candidates.filter((c) => c.signup.attended === false)
+      // No-shows (attended === false) and (when verification is in use)
+      // unverified rows are never awarded.
+      const eligible = candidates.filter((c) => isEligible(c.signup))
+      const ineligible = candidates.filter((c) => !isEligible(c.signup))
 
       const updates: { id: string; tier: BoxTier | null }[] = [
         ...eligible.map((c) => ({ id: c.signup.id, tier: null as BoxTier | null })),
@@ -162,8 +179,10 @@ export function AwardsPage() {
       if (recipients.length === 0) continue
       lines.push(`## ${BOX_TIER_LABELS[tier]} (${recipients.length}/${counts[tier]})`)
       for (const c of recipients) {
+        const wk = c.signup.wk_points != null ? `WK ${c.signup.wk_points}, ` : ''
+        const verified = c.signup.awards_verified ? ' ✓' : ''
         lines.push(
-          `- **${c.signup.ign}** [${c.signup.alliance_tag}] — score ${c.score} (cap ${c.captainCount}, shifts ${c.shiftCount}, pts ${c.personalPoints})`,
+          `- **${c.signup.ign}** [${c.signup.alliance_tag}]${verified} — ${wk}score ${c.score} (cap ${c.captainCount}, shifts ${c.shiftCount}, pts ${c.personalPoints})`,
         )
       }
       lines.push('')
@@ -239,6 +258,10 @@ export function AwardsPage() {
             attended: candidates.filter((c) => c.signup.attended === true).length,
             distributed: candidates.filter((c) => c.signup.box_tier).length,
           })}
+          {' · '}
+          {t('awards.summary_verified', {
+            verified: candidates.filter((c) => c.signup.awards_verified).length,
+          })}
         </p>
         <div className="flex gap-2">
           <Button variant="ghost" size="sm" onClick={exportMarkdown}>
@@ -262,6 +285,7 @@ export function AwardsPage() {
             <tr>
               <th className="px-2 py-2">#</th>
               <th className="px-2 py-2">IGN</th>
+              <th className="px-2 py-2 text-right" title={t('awards.table_wk_points_title')}>{t('awards.table_wk_points')}</th>
               <th className="px-2 py-2 text-right">{t('awards.table_score')}</th>
               <th className="px-2 py-2 text-center">{t('awards.table_attended')}</th>
               <th className="px-2 py-2 text-center" title={t('awards.table_cap_count_title')}>{t('awards.table_captain')}</th>
@@ -283,6 +307,7 @@ export function AwardsPage() {
                 {t('awards.table_fc_cap')}
               </th>
               <th className="px-2 py-2">{t('awards.table_box')}</th>
+              <th className="px-2 py-2 text-center">{t('awards.table_verified')}</th>
             </tr>
           </thead>
           <tbody>
@@ -296,6 +321,12 @@ export function AwardsPage() {
                     <span className="ml-1 font-mono text-[10px] text-zinc-400">
                       [{s.alliance_tag}]
                     </span>
+                  </td>
+                  <td className="px-2 py-1.5">
+                    <WkPointsInput
+                      value={s.wk_points}
+                      onChange={(v) => updateSignup(s.id, { wk_points: v })}
+                    />
                   </td>
                   <td className="px-2 py-1.5 text-right font-mono font-semibold text-yellow-300">
                     {c.score}
@@ -395,6 +426,32 @@ export function AwardsPage() {
                       ))}
                     </select>
                   </td>
+                  <td className="px-2 py-1.5 text-center">
+                    <button
+                      type="button"
+                      onClick={() => updateSignup(s.id, { awards_verified: !s.awards_verified })}
+                      disabled={busy}
+                      title={s.awards_verified ? t('awards.unverify_action_title') : t('awards.verify_action_title')}
+                      className={cn(
+                        'inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10px] font-medium transition',
+                        s.awards_verified
+                          ? 'border-emerald-500/60 bg-emerald-500/15 text-emerald-200 hover:bg-emerald-500/25'
+                          : 'border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-zinc-500',
+                      )}
+                    >
+                      {s.awards_verified ? (
+                        <>
+                          <BadgeCheck className="h-3 w-3" />
+                          {t('awards.verified_badge')}
+                        </>
+                      ) : (
+                        <>
+                          <CircleDashed className="h-3 w-3" />
+                          {t('awards.unverified_badge')}
+                        </>
+                      )}
+                    </button>
+                  </td>
                 </tr>
               )
             })}
@@ -458,6 +515,45 @@ function PointInput({
       onBlur={() => {
         const n = Number(local) || 0
         if (n !== value) onChange(n)
+      }}
+      className="w-20 px-1 py-0.5 text-right font-mono text-[11px]"
+    />
+  )
+}
+
+/**
+ * Nullable points input for wk_points (the in-game "Aktuelle Pkte" total).
+ * Blank = null (not entered) — distinct from a real 0 — so contribution.ts
+ * only ranks by it when present. Same focus-aware sync as PointInput.
+ */
+function WkPointsInput({
+  value,
+  onChange,
+}: {
+  value: number | null
+  onChange: (v: number | null) => void
+}) {
+  const [local, setLocal] = useState(value == null ? '' : String(value))
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  useEffect(() => {
+    if (document.activeElement !== inputRef.current) {
+      setLocal(value == null ? '' : String(value))
+    }
+  }, [value])
+  return (
+    <Input
+      ref={inputRef}
+      type="number"
+      inputMode="numeric"
+      min={0}
+      step={100}
+      value={local}
+      onChange={(e) => setLocal(e.target.value)}
+      onBlur={() => {
+        const trimmed = local.trim()
+        const next = trimmed === '' ? null : Number(trimmed)
+        const clean = next != null && Number.isFinite(next) && next >= 0 ? next : trimmed === '' ? null : value
+        if (clean !== value) onChange(clean)
       }}
       className="w-20 px-1 py-0.5 text-right font-mono text-[11px]"
     />

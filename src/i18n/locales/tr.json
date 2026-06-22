@@ -472,7 +472,16 @@
     "calc_death_header": "Tier başına death sayısını gir. Sadece Hub/turret — mud-deaths sayılmaz.",
     "calc_total_label": "Σ Toplam",
     "calc_current": "Mevcut değeri ({{current}}) değiştirir.",
-    "calc_apply": "Uygula"
+    "calc_apply": "Uygula",
+    "table_wk_points": "WK Puanı",
+    "table_wk_points_title": "Oyun içi kişisel ödül toplamı (\"Aktuelle Pkte\"). Ayarlandığında tabloyu sıralar.",
+    "table_verified": "Doğrulandı",
+    "verified_badge": "Doğrulandı",
+    "unverified_badge": "Doğrulanmadı",
+    "verify_action_title": "Bu satırın sayılarını doğrulanmış olarak işaretle",
+    "unverify_action_title": "Tekrar doğrulanmadı yap",
+    "summary_verified": "{{verified}} doğrulandı",
+    "confirm_autoassign_verified": "Otomatik atama tüm kutu atamalarının üzerine yazar. Katılan {{skipped}} oyuncu doğrulanmamış ve atlanacak — dahil etmek için önce doğrulayın."
   },
   "cheatsheet": {
     "title": "WK Kopya Kağıdı",
@@ -677,5 +686,25 @@
       "place_next": "Sıradaki: {{piece}} parçasını {{row}}. satır, {{col}}. sütuna koy.",
       "no_fit": "Bu tahtaya sığan parça yok."
     }
+  },
+  "awards_self": {
+    "title": "WK sonuçların",
+    "intro": "Etkinlik sonrası sayılarını gir. Planlayıcı inceleyip onaylar — o zamana kadar kaydın \"doğrulanmadı\" kalır.",
+    "attended": "Bu etkinliğe katıldım",
+    "wk_points_label": "WK puanı (güncel puan)",
+    "kill_label": "Öldürme puanı",
+    "death_label": "Ölüm puanı",
+    "occ_label": "İşgal puanı",
+    "submit": "Sonuçlarımı gönder",
+    "submitting": "Gönderiliyor…",
+    "submitted": "Gönderildi — planlayıcı onayı bekleniyor.",
+    "verified_note": "Planlayıcı sonuçlarını doğruladı.",
+    "error": "Kaydedilemedi: {{msg}}",
+    "err_not_owner": "Bu kayıt bu cihaza bağlı değil.",
+    "upload_button": "Ekran görüntüsünden doldur",
+    "upload_desc": "Kişisel Ödül ekranını yükle — WK puanını okuruz.",
+    "upload_detecting": "Okunuyor…",
+    "upload_success": "WK puanı okundu: {{points}}",
+    "upload_no_points": "Puan okunamadı — elle gir."
   }
 }

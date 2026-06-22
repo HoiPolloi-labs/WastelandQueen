@@ -62,6 +62,8 @@ function makeSignup(overrides: Partial<Signup> = {}): Signup {
     agent_x_frags: 0,
     dr_j_frags: 0,
     nataly_frags: 0,
+    wk_points: null,
+    awards_verified: false,
     edit_token: 't',
     submitted_at: EVENT_START,
     ...overrides,
@@ -196,5 +198,37 @@ describe('computeAwardCandidates', () => {
     const r = computeAwardCandidates([broken], [], baseEvent)
     expect(r[0]!.earlyBonus).toBe(0)
     expect(Number.isFinite(r[0]!.score)).toBe(true)
+  })
+
+  it('ranks a player with recorded wk_points above one without', () => {
+    // The no-wk_points player has a huge composite score; the wk_points one
+    // has a tiny composite — recorded wk_points still wins (authoritative).
+    const recorded = makeSignup({ id: 'rec', attended: false, wk_points: 50 })
+    const highComposite = makeSignup({
+      id: 'comp',
+      attended: true,
+      kill_points: 99999,
+      submitted_at: '2026-05-01T10:00:00Z',
+      wk_points: null,
+    })
+    const r = computeAwardCandidates([highComposite, recorded], [], baseEvent)
+    expect(r[0]!.signup.id).toBe('rec')
+    expect(r[1]!.signup.id).toBe('comp')
+  })
+
+  it('sorts two recorded players by wk_points desc', () => {
+    const lo = makeSignup({ id: 'lo', wk_points: 1000 })
+    const hi = makeSignup({ id: 'hi', wk_points: 5000 })
+    const r = computeAwardCandidates([lo, hi], [], baseEvent)
+    expect(r[0]!.signup.id).toBe('hi')
+    expect(r[1]!.signup.id).toBe('lo')
+  })
+
+  it('falls back to composite score when no one has wk_points', () => {
+    const a = makeSignup({ id: 'a', attended: true, wk_points: null })
+    const b = makeSignup({ id: 'b', attended: false, wk_points: null })
+    const r = computeAwardCandidates([b, a], [], baseEvent)
+    expect(r[0]!.signup.id).toBe('a')
+    expect(r[1]!.signup.id).toBe('b')
   })
 })

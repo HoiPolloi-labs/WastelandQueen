@@ -472,7 +472,16 @@
     "calc_death_header": "Inserisci death per tier. Solo Hub/turret — i mud-deaths non contano.",
     "calc_total_label": "Σ Totale",
     "calc_current": "Sostituisce il valore attuale ({{current}}).",
-    "calc_apply": "Applica"
+    "calc_apply": "Applica",
+    "table_wk_points": "Punti WK",
+    "table_wk_points_title": "Totale ricompensa personale in gioco (\"Aktuelle Pkte\"). Se impostato, ordina la tabella.",
+    "table_verified": "Verificato",
+    "verified_badge": "Verificato",
+    "unverified_badge": "Non verif.",
+    "verify_action_title": "Segna i numeri di questa riga come verificati",
+    "unverify_action_title": "Riporta a non verificato",
+    "summary_verified": "{{verified}} verificati",
+    "confirm_autoassign_verified": "L'assegnazione automatica sovrascrive tutte le assegnazioni delle box. {{skipped}} giocatori presenti non sono verificati e verranno saltati — verificali prima per includerli."
   },
   "cheatsheet": {
     "title": "WK Cheat Sheet",
@@ -677,5 +686,25 @@
       "place_next": "Prossimo: posiziona {{piece}} alla riga {{row}}, colonna {{col}}.",
       "no_fit": "Nessun pezzo entra in questa griglia."
     }
+  },
+  "awards_self": {
+    "title": "I tuoi risultati WK",
+    "intro": "Inserisci i tuoi numeri post-evento. Il planner li controlla e conferma — la voce resta \"non verificata\" fino ad allora.",
+    "attended": "Ho partecipato a questo evento",
+    "wk_points_label": "Punti WK (punti attuali)",
+    "kill_label": "Punti uccisione",
+    "death_label": "Punti morte",
+    "occ_label": "Punti occupazione",
+    "submit": "Invia i miei risultati",
+    "submitting": "Invio…",
+    "submitted": "Inviato — in attesa di verifica del planner.",
+    "verified_note": "Il planner ha verificato i tuoi risultati.",
+    "error": "Impossibile salvare: {{msg}}",
+    "err_not_owner": "Questa iscrizione non è collegata a questo dispositivo.",
+    "upload_button": "Compila da screenshot",
+    "upload_desc": "Carica la schermata Ricompensa Personale — leggiamo i tuoi punti WK.",
+    "upload_detecting": "Lettura…",
+    "upload_success": "Punti WK letti: {{points}}",
+    "upload_no_points": "Impossibile leggere i punti — inseriscili manualmente."
   }
 }

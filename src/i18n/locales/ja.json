@@ -472,7 +472,16 @@
     "calc_death_header": "Tier ごとのデス数を入力。Hub/turret デスのみ — mud-deaths は含まない。",
     "calc_total_label": "Σ 合計",
     "calc_current": "現在の値 ({{current}}) を置き換えます。",
-    "calc_apply": "適用"
+    "calc_apply": "適用",
+    "table_wk_points": "WKポイント",
+    "table_wk_points_title": "ゲーム内の個人報酬合計（\"Aktuelle Pkte\"）。設定すると表がこの値で並びます。",
+    "table_verified": "確認済み",
+    "verified_badge": "確認済み",
+    "unverified_badge": "未確認",
+    "verify_action_title": "この行の数値を確認済みにする",
+    "unverify_action_title": "未確認に戻す",
+    "summary_verified": "{{verified}} 件確認済み",
+    "confirm_autoassign_verified": "自動割り当てはすべての宝箱割り当てを上書きします。参加した {{skipped}} 人が未確認のためスキップされます — 含めるには先に確認してください。"
   },
   "cheatsheet": {
     "title": "WK チートシート",
@@ -677,5 +686,25 @@
       "place_next": "次: {{piece}} を {{row}} 行 {{col}} 列に置く。",
       "no_fit": "このボードに置けるピースがありません。"
     }
+  },
+  "awards_self": {
+    "title": "あなたの WK 成績",
+    "intro": "イベント後の数値を入力してください。プランナーが確認・承認します — それまで項目は「未確認」のままです。",
+    "attended": "このイベントに参加しました",
+    "wk_points_label": "WK ポイント（現在のポイント）",
+    "kill_label": "キルポイント",
+    "death_label": "デスポイント",
+    "occ_label": "占領ポイント",
+    "submit": "成績を送信",
+    "submitting": "送信中…",
+    "submitted": "送信しました — プランナーの確認待ち。",
+    "verified_note": "プランナーが成績を確認しました。",
+    "error": "保存できませんでした: {{msg}}",
+    "err_not_owner": "この申込はこの端末に紐づいていません。",
+    "upload_button": "スクリーンショットから自動入力",
+    "upload_desc": "個人報酬画面をアップロードすると WK ポイントを読み取ります。",
+    "upload_detecting": "読み取り中…",
+    "upload_success": "WK ポイントを認識: {{points}}",
+    "upload_no_points": "ポイントを読み取れませんでした — 手動で入力してください。"
   }
 }

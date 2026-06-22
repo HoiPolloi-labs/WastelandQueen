@@ -35,10 +35,23 @@ const EXTRA_HEADERS = [
   'willing_foreign_hub',
 ] as const
 
+// Post-event award columns. Always exported (round-trip) and optional on
+// import — a legacy sheet without them leaves the existing values untouched.
+// These bypass signupSchema (not sign-up form fields) and are written
+// straight to the payload, like planner_notes / state_alliance_joined.
+const AWARDS_HEADERS = [
+  'attended',
+  'kill_points',
+  'death_points',
+  'occupation_points',
+  'wk_points',
+] as const
+
 type Header =
   | (typeof BASE_HEADERS)[number]
   | (typeof HEROES_HEADERS)[number]
   | (typeof EXTRA_HEADERS)[number]
+  | (typeof AWARDS_HEADERS)[number]
 
 const VALID_TYPES = ['fighter', 'shooter', 'rider']
 
@@ -83,8 +96,8 @@ export function RosterImportExport({
   // only when the event has the feature on — keeps sheets clean for the 90%
   // of events that don't track frags.
   const headers: readonly Header[] = heroesEnabled
-    ? [...BASE_HEADERS, ...EXTRA_HEADERS, ...HEROES_HEADERS]
-    : [...BASE_HEADERS, ...EXTRA_HEADERS]
+    ? [...BASE_HEADERS, ...EXTRA_HEADERS, ...HEROES_HEADERS, ...AWARDS_HEADERS]
+    : [...BASE_HEADERS, ...EXTRA_HEADERS, ...AWARDS_HEADERS]
 
   const buildRows = (): (string | number | boolean | null)[][] => {
     const rows: (string | number | boolean | null)[][] = [headers as unknown as string[]]
@@ -119,6 +132,14 @@ export function RosterImportExport({
       if (heroesEnabled) {
         base.push(s.agent_x_frags, s.dr_j_frags, s.nataly_frags)
       }
+      // Award columns (always present, tail). attended null → empty cell.
+      base.push(
+        s.attended,
+        s.kill_points,
+        s.death_points,
+        s.occupation_points,
+        s.wk_points,
+      )
       rows.push(base)
     }
     return rows
@@ -218,6 +239,11 @@ export function RosterImportExport({
       const i = header.indexOf(h)
       if (i !== -1) colIdx[h] = i
     }
+    // Award columns optional on import — only written when present in the sheet.
+    for (const h of AWARDS_HEADERS) {
+      const i = header.indexOf(h)
+      if (i !== -1) colIdx[h] = i
+    }
 
     const reports: RowReport[] = []
     const validRows: { ign: string; payload: Record<string, unknown> }[] = []
@@ -271,6 +297,21 @@ export function RosterImportExport({
         })
         continue
       }
+      // Award fields bypass signupSchema (post-event, not form fields). Only
+      // write a field when its column is present in the sheet, so a legacy
+      // roster import never clobbers existing post-event numbers with zeros.
+      const awardsPatch: Record<string, unknown> = {}
+      if (colIdx.attended != null) {
+        const v = cell('attended').trim()
+        awardsPatch.attended = v === '' ? null : parseBool(v)
+      }
+      if (colIdx.kill_points != null) awardsPatch.kill_points = numOrZero('kill_points')
+      if (colIdx.death_points != null) awardsPatch.death_points = numOrZero('death_points')
+      if (colIdx.occupation_points != null) awardsPatch.occupation_points = numOrZero('occupation_points')
+      if (colIdx.wk_points != null) {
+        const v = cell('wk_points').trim()
+        awardsPatch.wk_points = v === '' ? null : (Number.isFinite(Number(v)) ? Number(v) : null)
+      }
       validRows.push({
         ign,
         payload: {
@@ -278,6 +319,7 @@ export function RosterImportExport({
           event_id: eventId,
           state_alliance_joined: parseBool(cell('state_alliance_joined')),
           planner_notes: cell('planner_notes').trim() || null,
+          ...awardsPatch,
         },
       })
     }

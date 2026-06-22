@@ -65,12 +65,30 @@ Note: fragments are NOT the same as hero level/stars. We want the SHARD count, u
 Output STRICT JSON with all keys present. No prose, no markdown fences:
 {"agent_x": number|null, "dr_j": number|null, "nataly": number|null}`
 
+const AWARDS_SYSTEM_PROMPT =
+  `You will receive a screenshot from the mobile game "Puzzles & Survival" ` +
+  `showing the Wasteland King event "Personal Reward" screen ` +
+  `(German: "Ödlandkrieg → Persönliche Belohnung"). The display language may ` +
+  `be German, English, Russian, Chinese, Korean, Japanese, or others.
+
+Extract these fields. Return null for any you cannot determine with high confidence.
+
+- wk_points: the player's CURRENT personal points total — the single big number labelled "Current Points" / "Aktuelle Pkte" / "当前积分" (the running score that drives the personal-reward tiers). Return as an absolute integer (strip thousands separators; "12,480" → 12480). This is the most important field.
+- kill_progress: the progress value for the kill/elimination lane (might or count of enemy troops killed), if a per-lane breakdown is shown. Absolute integer or null.
+- death_progress: the progress value for the own-losses / wounded lane, if shown. Absolute integer or null.
+- occupation_minutes: minutes of building occupation credited, if shown (the game may show "120 min" or a duration). Integer minutes or null.
+
+Only wk_points is required; the three lane values are optional context — return null if the screen does not break them out.
+
+Output STRICT JSON with all keys present. No prose, no markdown fences:
+{"wk_points": number|null, "kill_progress": number|null, "death_progress": number|null, "occupation_minutes": number|null}`
+
 interface Body {
   event_id?: string
   signup_token?: string
   image_base64?: string
   media_type?: string
-  kind?: 'profile' | 'heroes'
+  kind?: 'profile' | 'heroes' | 'awards'
 }
 
 interface ProfileExtracted {
@@ -85,6 +103,13 @@ interface HeroesExtracted {
   agent_x: number | null
   dr_j: number | null
   nataly: number | null
+}
+
+interface AwardsExtracted {
+  wk_points: number | null
+  kill_progress: number | null
+  death_progress: number | null
+  occupation_minutes: number | null
 }
 
 Deno.serve(async (req: Request) => {
@@ -109,8 +134,14 @@ Deno.serve(async (req: Request) => {
     if (!/^image\/(jpeg|png|webp|gif)$/.test(media_type)) {
       return json({ error: 'unsupported media_type' }, 400)
     }
-    const kind: 'profile' | 'heroes' = body.kind === 'heroes' ? 'heroes' : 'profile'
-    const systemPrompt = kind === 'heroes' ? HEROES_SYSTEM_PROMPT : PROFILE_SYSTEM_PROMPT
+    const kind: 'profile' | 'heroes' | 'awards' =
+      body.kind === 'heroes' ? 'heroes' : body.kind === 'awards' ? 'awards' : 'profile'
+    const systemPrompt =
+      kind === 'awards'
+        ? AWARDS_SYSTEM_PROMPT
+        : kind === 'heroes'
+          ? HEROES_SYSTEM_PROMPT
+          : PROFILE_SYSTEM_PROMPT
     // base64-encoded image — rough size check (base64 is ~4/3 of binary).
     if (body.image_base64.length * 3 / 4 > MAX_IMAGE_BYTES) {
       return json({ error: 'image too large', limit_bytes: MAX_IMAGE_BYTES }, 413)
@@ -180,9 +211,9 @@ Deno.serve(async (req: Request) => {
 
     // Be lenient with stray code fences just in case.
     const jsonStr = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim()
-    let parsed: ProfileExtracted | HeroesExtracted
+    let parsed: ProfileExtracted | HeroesExtracted | AwardsExtracted
     try {
-      parsed = JSON.parse(jsonStr) as ProfileExtracted | HeroesExtracted
+      parsed = JSON.parse(jsonStr) as ProfileExtracted | HeroesExtracted | AwardsExtracted
     } catch {
       return json({ error: 'parse_failed', raw: raw.slice(0, 300) }, 502)
     }

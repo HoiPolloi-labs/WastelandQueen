@@ -48,6 +48,8 @@ function s(opts: {
     agent_x_frags: 0,
     dr_j_frags: 0,
     nataly_frags: 0,
+    wk_points: null,
+    awards_verified: false,
     edit_token: 't',
     submitted_at: '2026-05-30T10:00:00Z',
   }

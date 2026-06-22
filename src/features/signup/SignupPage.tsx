@@ -17,6 +17,7 @@ import { rememberToken, recallToken, forgetToken } from './edit-token'
 import { notifyDiscord } from './notify'
 import { ProfileScreenshotUpload } from './ProfileScreenshotUpload'
 import { HeroesScreenshotUpload } from './HeroesScreenshotUpload'
+import { AwardsSelfEntry } from './AwardsSelfEntry'
 import {
   parseShiftPref,
   serializeShiftPref,
@@ -732,6 +733,16 @@ export function SignupPage() {
           </p>
         )}
       </form>
+
+      {/* Post-event self-entry — only for the player who owns this signup.
+          Submits via update_signup_self (always lands unverified). */}
+      {existing && isOwner && (
+        <AwardsSelfEntry
+          signup={existing}
+          editToken={recallToken(event.id, existing.ign)}
+          role={role}
+        />
+      )}
     </div>
   )
 }

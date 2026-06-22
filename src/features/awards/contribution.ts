@@ -67,5 +67,20 @@ export function computeAwardCandidates(
         personalPoints,
       }
     })
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => {
+      // wk_points (the in-game "Aktuelle Pkte" total) is the authoritative
+      // ranking when recorded. Players WITH a recorded total always rank above
+      // those without — mixing the two scales (wk_points in the thousands vs.
+      // the composite score in the hundreds) would otherwise be meaningless.
+      // Among recorded players, sort by wk_points desc; everyone else falls
+      // back to the composite score so the page works fine before any
+      // wk_points are entered (and all existing scoring tests still hold).
+      const aw = a.signup.wk_points
+      const bw = b.signup.wk_points
+      const aHas = aw != null
+      const bHas = bw != null
+      if (aHas !== bHas) return aHas ? -1 : 1
+      if (aHas && bHas && aw !== bw) return bw - aw
+      return b.score - a.score
+    })
 }

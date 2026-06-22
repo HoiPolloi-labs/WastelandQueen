@@ -472,7 +472,16 @@
     "calc_death_header": "Tier별 데스 수 입력. Hub/turret 데스만 — mud-deaths는 미포함.",
     "calc_total_label": "Σ 합계",
     "calc_current": "현재 값 ({{current}})을 대체합니다.",
-    "calc_apply": "적용"
+    "calc_apply": "적용",
+    "table_wk_points": "WK점수",
+    "table_wk_points_title": "게임 내 개인 보상 총점(\"Aktuelle Pkte\"). 입력되면 표가 이 값으로 정렬됩니다.",
+    "table_verified": "확인됨",
+    "verified_badge": "확인됨",
+    "unverified_badge": "미확인",
+    "verify_action_title": "이 행의 수치를 확인됨으로 표시",
+    "unverify_action_title": "다시 미확인으로 표시",
+    "summary_verified": "{{verified}}명 확인됨",
+    "confirm_autoassign_verified": "자동 배정은 모든 상자 배정을 덮어씁니다. 참석한 {{skipped}}명이 미확인 상태라 건너뜁니다 — 포함하려면 먼저 확인하세요."
   },
   "cheatsheet": {
     "title": "WK 치트 시트",
@@ -677,5 +686,25 @@
       "place_next": "다음: {{piece}}을(를) {{row}}행, {{col}}열에 놓으세요.",
       "no_fit": "이 보드에 놓을 수 있는 조각이 없습니다."
     }
+  },
+  "awards_self": {
+    "title": "내 WK 결과",
+    "intro": "이벤트 후 수치를 입력하세요. 플래너가 검토하고 확정합니다 — 그 전까지 항목은 \"미확인\" 상태로 유지됩니다.",
+    "attended": "이 이벤트에 참여했습니다",
+    "wk_points_label": "WK 점수 (현재 점수)",
+    "kill_label": "킬 점수",
+    "death_label": "사망 점수",
+    "occ_label": "점령 점수",
+    "submit": "내 결과 제출",
+    "submitting": "제출 중…",
+    "submitted": "제출됨 — 플래너 확인 대기 중.",
+    "verified_note": "플래너가 결과를 확인했습니다.",
+    "error": "저장 실패: {{msg}}",
+    "err_not_owner": "이 신청은 이 기기와 연결되어 있지 않습니다.",
+    "upload_button": "스크린샷에서 자동 입력",
+    "upload_desc": "개인 보상 화면을 업로드하면 WK 점수를 읽어옵니다.",
+    "upload_detecting": "읽는 중…",
+    "upload_success": "WK 점수 인식: {{points}}",
+    "upload_no_points": "점수를 읽지 못했습니다 — 직접 입력하세요."
   }
 }

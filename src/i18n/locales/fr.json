@@ -472,7 +472,16 @@
     "calc_death_header": "Entre les deaths par tier. Hub/turret seulement — les mud-deaths ne comptent pas.",
     "calc_total_label": "Σ Total",
     "calc_current": "Remplace la valeur actuelle ({{current}}).",
-    "calc_apply": "Appliquer"
+    "calc_apply": "Appliquer",
+    "table_wk_points": "Pts WK",
+    "table_wk_points_title": "Total de récompense personnelle en jeu (\"Aktuelle Pkte\"). Trie le tableau quand il est renseigné.",
+    "table_verified": "Vérifié",
+    "verified_badge": "Vérifié",
+    "unverified_badge": "Non vérifié",
+    "verify_action_title": "Marquer les chiffres de cette ligne comme vérifiés",
+    "unverify_action_title": "Repasser en non vérifié",
+    "summary_verified": "{{verified}} vérifié(s)",
+    "confirm_autoassign_verified": "L'attribution automatique écrase toutes les attributions de boîtes. {{skipped}} joueur(s) présent(s) ne sont pas vérifiés et seront ignorés — vérifiez-les d'abord pour les inclure."
   },
   "cheatsheet": {
     "title": "Mémo WK",
@@ -677,5 +686,25 @@
       "place_next": "Suivant : placez {{piece}} à la ligne {{row}}, colonne {{col}}.",
       "no_fit": "Aucune pièce ne tient sur cette grille."
     }
+  },
+  "awards_self": {
+    "title": "Tes résultats WK",
+    "intro": "Saisis tes chiffres post-événement. Le planificateur les vérifie et confirme — ton entrée reste \"non vérifiée\" jusque-là.",
+    "attended": "J'ai participé à cet événement",
+    "wk_points_label": "Points WK (points actuels)",
+    "kill_label": "Points de kills",
+    "death_label": "Points de pertes",
+    "occ_label": "Points d'occupation",
+    "submit": "Envoyer mes résultats",
+    "submitting": "Envoi…",
+    "submitted": "Envoyé — en attente de vérification du planificateur.",
+    "verified_note": "Le planificateur a vérifié tes résultats.",
+    "error": "Échec de l'enregistrement : {{msg}}",
+    "err_not_owner": "Cette inscription n'est pas liée à cet appareil.",
+    "upload_button": "Remplir depuis une capture",
+    "upload_desc": "Téléverse ton écran Récompense Personnelle — on lit tes points WK.",
+    "upload_detecting": "Lecture…",
+    "upload_success": "Points WK lus : {{points}}",
+    "upload_no_points": "Points illisibles — saisis-les manuellement."
   }
 }

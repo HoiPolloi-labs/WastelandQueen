@@ -152,6 +152,14 @@ export interface Signup {
   death_points: number
   occupation_points: number
   might_lost: number
+  /** In-game WK personal-reward total ("Aktuelle Pkte"). null = not entered;
+   *  when present it is the authoritative ranking key on the Awards page
+   *  (contribution.ts ranks wk_points-recorded players above the rest). */
+  wk_points: number | null
+  /** Planner has confirmed this row's post-event numbers. Any player self-write
+   *  via update_signup_self force-resets this to false — players can never
+   *  self-verify, and re-editing a verified row drops it back to unverified. */
+  awards_verified: boolean
   box_tier: BoxTier | null
   /** Hero fragment inventory. Only meaningful when event.heroes_enabled. */
   agent_x_frags: number
