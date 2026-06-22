@@ -106,6 +106,10 @@ export interface EventConfig {
   alliance_sizes: Record<string, number>
   /** "Minimum line" — alliances below this participation % are flagged. */
   min_participation_pct: number
+  /** When true, post-event self-entry requires the player to upload a
+   *  Personal-Reward screenshot (OCR-only, never stored) before they can
+   *  submit their WK results. Default off → manual entry allowed. */
+  awards_require_screenshot: boolean
   created_at: string
 }
 

@@ -172,6 +172,10 @@
     "confirm_clear_all": "Clear all assignments?",
     "heroes_settings_label": "Heroes tracking",
     "heroes_settings_hint": "Enables fragment inventory in Signup + alliance totals in Awards.",
+    "awards_settings_label": "Awards: require screenshot",
+    "awards_settings_on": "on",
+    "awards_settings_off": "off",
+    "awards_settings_hint": "Players must upload a Personal-Reward screenshot (read by OCR, never stored) before submitting their results. Off = manual entry allowed.",
     "heroes_settings_on": "on",
     "heroes_settings_off": "off",
     "fill_mode_section": "Auto-Sort fill",
@@ -399,6 +403,8 @@
     "submit_button": "Create event",
     "heroes_enabled_label": "Track heroes",
     "heroes_enabled_hint": "Show Agent X / Dr. J / Nataly fragment inputs for each player. Worth enabling once you hit Gold+.",
+    "awards_screenshot_label": "Require screenshot for results",
+    "awards_screenshot_hint": "Players must upload their Personal-Reward screen (read by OCR, not stored) before submitting post-event results. Off = manual entry allowed.",
     "invalid_start_date": "Please enter a valid start date.",
     "event_exists": "Event {{id}} already exists — go directly to the Planner.",
     "unknown_error": "unknown error",
@@ -501,7 +507,9 @@
     "upload_desc": "Upload your Personal-Reward screen — we read your WK points.",
     "upload_detecting": "Reading…",
     "upload_success": "Read WK points: {{points}}",
-    "upload_no_points": "Couldn't read the points — enter them manually."
+    "upload_no_points": "Couldn't read the points — enter them manually.",
+    "upload_required": "Required — upload to enable submit",
+    "needs_screenshot": "Upload your screenshot first"
   },
   "cheatsheet": {
     "title": "WK Cheat Sheet",

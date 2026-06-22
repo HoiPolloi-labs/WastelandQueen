@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Hub와 각 포탑은 합류자의 행군 합계가 captain의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비.",
     "fill_mode_rerun_hint": "↻ Auto-Sort를 다시 실행하여 적용하세요.",
     "demo_badge": "데모",
-    "demo_banner": "칩 드래그, Auto-Sort 실행, shift 전환 — 모두 작동합니다. 저장되지 않으며 새로고침하면 초기화됩니다."
+    "demo_banner": "칩 드래그, Auto-Sort 실행, shift 전환 — 모두 작동합니다. 저장되지 않으며 새로고침하면 초기화됩니다.",
+    "awards_settings_label": "보상: 스크린샷 필수",
+    "awards_settings_on": "켜짐",
+    "awards_settings_off": "꺼짐",
+    "awards_settings_hint": "플레이어는 결과 제출 전 개인 보상 화면 스크린샷을 업로드해야 합니다(OCR로 읽고 저장 안 함). 꺼짐 = 수동 입력 허용."
   },
   "conflict": {
     "hub_empty": "Hub 비어있음 — captain 없음",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "짧은 URL 복사 (채팅용)",
     "foreign_targets_warning": "WK 원칙: Hit-Squad는 가장 약한 상대 state에 집중. 최상위 might를 여러 타겟에 분산하면 어떤 Hub도 take할 수 없는 임계 이하로 희석됨 — 실패한 take는 home Hub의 자동 shield를 잃게 함.",
     "auto_fill_label": "Auto-Sort: 용량 채우기 모드",
-    "auto_fill_hint": "Hub와 각 포탑은 합류자의 행군 합계가 캡틴의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비. 꺼짐 = 고정 Hub-방어자 수, 포탑 무제한."
+    "auto_fill_hint": "Hub와 각 포탑은 합류자의 행군 합계가 캡틴의 rally 상한에 도달할 때까지 채워집니다. 초과 → 예비. 꺼짐 = 고정 Hub-방어자 수, 포탑 무제한.",
+    "awards_screenshot_label": "결과 제출에 스크린샷 요구",
+    "awards_screenshot_hint": "플레이어는 이벤트 후 결과를 제출하기 전에 개인 보상 화면을 업로드해야 합니다(OCR로 읽고 저장 안 함). 꺼짐 = 수동 입력 허용."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "개인 보상 화면을 업로드하면 WK 점수를 읽어옵니다.",
     "upload_detecting": "읽는 중…",
     "upload_success": "WK 점수 인식: {{points}}",
-    "upload_no_points": "점수를 읽지 못했습니다 — 직접 입력하세요."
+    "upload_no_points": "점수를 읽지 못했습니다 — 직접 입력하세요.",
+    "upload_required": "필수 — 업로드해야 제출 가능",
+    "needs_screenshot": "먼저 스크린샷을 업로드하세요"
   }
 }

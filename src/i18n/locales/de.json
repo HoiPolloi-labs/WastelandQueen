@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve.",
     "fill_mode_rerun_hint": "↻ Auto-Sort neu ausführen, um anzuwenden.",
     "demo_badge": "Demo",
-    "demo_banner": "Chips ziehen, Auto-Sort starten, Shifts wechseln — alles live. Nichts wird gespeichert; Reload setzt zurück."
+    "demo_banner": "Chips ziehen, Auto-Sort starten, Shifts wechseln — alles live. Nichts wird gespeichert; Reload setzt zurück.",
+    "awards_settings_label": "Awards: Screenshot-Pflicht",
+    "awards_settings_on": "an",
+    "awards_settings_off": "aus",
+    "awards_settings_hint": "Spieler müssen vor dem Senden ihrer Ergebnisse einen Persönliche-Belohnung-Screenshot hochladen (per OCR gelesen, nicht gespeichert). Aus = manuelle Eingabe erlaubt."
   },
   "conflict": {
     "hub_empty": "Hub leer — kein Captain",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "Kurze URL kopieren (chat-freundlich)",
     "foreign_targets_warning": "WK-Doktrin: Hit-Squad auf den schwächsten Gegner-State konzentrieren. Top-Might über mehrere Ziele zu splitten verdünnt den Angriff oft unter die Schwelle die nötig ist um einen Hub zu nehmen — und ein gescheiterter Take kostet deinen Home-Hub das automatische Shield.",
     "auto_fill_label": "Auto-Sort: Kapazitäts-Modus",
-    "auto_fill_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve. Aus = feste Hub-Defender-Anzahl, unbegrenzte Türme."
+    "auto_fill_hint": "Hub & jeder Turm wird aufgefüllt bis die Marsch-Summe der Joiner die Captain-Rally erreicht. Überschuss → Reserve. Aus = feste Hub-Defender-Anzahl, unbegrenzte Türme.",
+    "awards_screenshot_label": "Screenshot für Ergebnisse verlangen",
+    "awards_screenshot_hint": "Spieler müssen ihren Persönliche-Belohnung-Screen hochladen (per OCR gelesen, nicht gespeichert), bevor sie Ergebnisse senden. Aus = manuelle Eingabe erlaubt."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "Lade deinen Persönliche-Belohnung-Screen hoch — wir lesen deine WK-Punkte.",
     "upload_detecting": "Lese…",
     "upload_success": "WK-Punkte erkannt: {{points}}",
-    "upload_no_points": "Punkte nicht erkannt — bitte manuell eingeben."
+    "upload_no_points": "Punkte nicht erkannt — bitte manuell eingeben.",
+    "upload_required": "Erforderlich — hochladen, um senden zu können",
+    "needs_screenshot": "Lade zuerst deinen Screenshot hoch"
   }
 }

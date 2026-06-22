@@ -52,6 +52,7 @@ import { WebhookSettings } from './WebhookSettings'
 import { TokenRotation } from './TokenRotation'
 import { RosterImportExport } from './RosterImportExport'
 import { HeroesSettings } from './HeroesSettings'
+import { AwardsSettings } from './AwardsSettings'
 import { HubDefenderSettings } from './HubDefenderSettings'
 import { AllianceStatsPanel } from './AllianceStatsPanel'
 import { NapPanel } from '@/features/nap/NapPanel'
@@ -409,6 +410,7 @@ export function PlanPage({ demoMode = false }: { demoMode?: boolean } = {}) {
               />
               <HubDefenderSettings event={event} onChange={() => refreshEvent()} />
               <HeroesSettings event={event} onChange={() => refreshEvent()} />
+              <AwardsSettings event={event} onChange={() => refreshEvent()} />
               <WebhookSettings />
               <RosterImportExport
                 eventId={event.id}

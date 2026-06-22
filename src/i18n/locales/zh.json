@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。",
     "fill_mode_rerun_hint": "↻ 重新运行 Auto-Sort 以应用。",
     "demo_badge": "演示",
-    "demo_banner": "拖动卡片、运行 Auto-Sort、切换 shift — 全部可用。不会保存；刷新即重置。"
+    "demo_banner": "拖动卡片、运行 Auto-Sort、切换 shift — 全部可用。不会保存；刷新即重置。",
+    "awards_settings_label": "奖励：需要截图",
+    "awards_settings_on": "开",
+    "awards_settings_off": "关",
+    "awards_settings_hint": "玩家提交成绩前必须上传个人奖励界面截图（OCR 识别，不保存）。关 = 允许手动输入。"
   },
   "conflict": {
     "hub_empty": "Hub 为空 — 无 captain",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "复制短链接 (聊天友好)",
     "foreign_targets_warning": "WK 战术：Hit-Squad 集中攻击最弱的对方 state。把 top-might 分散到多个目标常常使攻击力低于拿下任何 Hub 所需的门槛 — 一次失败的 take 会让自家 Hub 失去自动护盾。",
     "auto_fill_label": "Auto-Sort：容量填充模式",
-    "auto_fill_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。关闭 = 固定 Hub-防御者数量，炮塔无上限。"
+    "auto_fill_hint": "Hub 和每座炮塔填充直到加入者的行军总和达到队长的 rally 上限。多余 → 储备。关闭 = 固定 Hub-防御者数量，炮塔无上限。",
+    "awards_screenshot_label": "提交成绩需要截图",
+    "awards_screenshot_hint": "玩家提交赛后成绩前必须上传个人奖励界面（OCR 识别，不保存）。关 = 允许手动输入。"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "上传你的个人奖励界面——我们读取你的 WK 积分。",
     "upload_detecting": "识别中…",
     "upload_success": "识别到 WK 积分：{{points}}",
-    "upload_no_points": "无法识别积分——请手动输入。"
+    "upload_no_points": "无法识别积分——请手动输入。",
+    "upload_required": "必需 — 上传后才能提交",
+    "needs_screenshot": "请先上传截图"
   }
 }

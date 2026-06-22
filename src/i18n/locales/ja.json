@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。",
     "fill_mode_rerun_hint": "↻ Auto-Sort を再実行して適用してください。",
     "demo_badge": "デモ",
-    "demo_banner": "チップのドラッグ、Auto-Sort、shift 切り替え — すべて動作します。保存されません。リロードでリセット。"
+    "demo_banner": "チップのドラッグ、Auto-Sort、shift 切り替え — すべて動作します。保存されません。リロードでリセット。",
+    "awards_settings_label": "報酬: スクショ必須",
+    "awards_settings_on": "オン",
+    "awards_settings_off": "オフ",
+    "awards_settings_hint": "プレイヤーは成績送信前に個人報酬画面のスクリーンショットをアップロードする必要があります（OCRで読み取り、保存しません）。オフ = 手動入力可。"
   },
   "conflict": {
     "hub_empty": "Hub空 — captainなし",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "短縮URLをコピー (チャット用)",
     "foreign_targets_warning": "WK ドクトリン: Hit-Squad は最弱の敵 state に集中。top-might を複数ターゲットに分散すると、どの Hub も take できない閾値以下に希釈されがち — take 失敗は自国 Hub の自動シールドを失わせる。",
     "auto_fill_label": "Auto-Sort: 容量埋めモード",
-    "auto_fill_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。オフ = 固定 Hub ディフェンダー数、タレット無制限。"
+    "auto_fill_hint": "Hub と各タレットは、参加者の行軍合計がキャプテンの rally 上限に達するまで埋められます。余剰 → リザーブ。オフ = 固定 Hub ディフェンダー数、タレット無制限。",
+    "awards_screenshot_label": "成績にスクリーンショットを必須化",
+    "awards_screenshot_hint": "プレイヤーはイベント後の成績送信前に個人報酬画面をアップロードする必要があります（OCRで読み取り、保存しません）。オフ = 手動入力可。"
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "個人報酬画面をアップロードすると WK ポイントを読み取ります。",
     "upload_detecting": "読み取り中…",
     "upload_success": "WK ポイントを認識: {{points}}",
-    "upload_no_points": "ポイントを読み取れませんでした — 手動で入力してください。"
+    "upload_no_points": "ポイントを読み取れませんでした — 手動で入力してください。",
+    "upload_required": "必須 — アップロードで送信可能に",
+    "needs_screenshot": "先にスクリーンショットをアップロード"
   }
 }

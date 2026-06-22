@@ -14,6 +14,9 @@ interface AwardsSelfEntryProps {
   signup: Signup
   editToken: string | null
   role: string | null
+  /** Event policy: when true the player must upload a Personal-Reward
+   *  screenshot (OCR) before they can submit. Manual-only when false. */
+  requireScreenshot: boolean
 }
 
 /**
@@ -25,7 +28,7 @@ interface AwardsSelfEntryProps {
  * Personal-Reward screen auto-fills the WK-points total via the same
  * rate-limited Vision endpoint as the profile autofill (kind: 'awards').
  */
-export function AwardsSelfEntry({ signup, editToken, role }: AwardsSelfEntryProps) {
+export function AwardsSelfEntry({ signup, editToken, role, requireScreenshot }: AwardsSelfEntryProps) {
   const { t } = useTranslation()
   const { eventId, token } = useParams<{ eventId: string; token: string }>()
   const [attended, setAttended] = useState<boolean>(signup.attended === true)
@@ -40,6 +43,11 @@ export function AwardsSelfEntry({ signup, editToken, role }: AwardsSelfEntryProp
   const fileRef = useRef<HTMLInputElement>(null)
   const [ocrBusy, setOcrBusy] = useState(false)
   const [ocrMsg, setOcrMsg] = useState<{ kind: 'ok' | 'warn' | 'err'; text: string } | null>(null)
+  // Whether a screenshot has been successfully OCR'd this session — gates the
+  // submit when the event requires a screenshot.
+  const [ocrDone, setOcrDone] = useState(false)
+
+  const submitBlocked = requireScreenshot && !ocrDone
 
   const numOrZero = (s: string) => {
     const n = Number(s.trim())
@@ -47,6 +55,7 @@ export function AwardsSelfEntry({ signup, editToken, role }: AwardsSelfEntryProp
   }
 
   const submit = async () => {
+    if (submitBlocked) return
     setStatus('saving')
     setErrorMsg('')
     const wkTrimmed = wkPoints.trim()
@@ -118,6 +127,10 @@ export function AwardsSelfEntry({ signup, editToken, role }: AwardsSelfEntryProp
         setOcrMsg({ kind: 'err', text: String(msg) })
         return
       }
+      // A successful (200) extraction satisfies the screenshot requirement,
+      // even if the model couldn't read the number — the player can still type
+      // it. The image itself is never stored (OCR-only policy).
+      setOcrDone(true)
       const wk = body.extracted?.wk_points as number | null | undefined
       if (wk != null && Number.isFinite(wk)) {
         setWkPoints(String(Math.round(wk)))
@@ -162,7 +175,9 @@ export function AwardsSelfEntry({ signup, editToken, role }: AwardsSelfEntryProp
           {ocrBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
           {ocrBusy ? t('awards_self.upload_detecting') : t('awards_self.upload_button')}
         </button>
-        <span className="text-[10px] text-zinc-500">{t('awards_self.upload_desc')}</span>
+        <span className={cn('text-[10px]', requireScreenshot ? 'text-amber-300' : 'text-zinc-500')}>
+          {requireScreenshot ? t('awards_self.upload_required') : t('awards_self.upload_desc')}
+        </span>
         <input
           ref={fileRef}
           type="file"
@@ -205,10 +220,19 @@ export function AwardsSelfEntry({ signup, editToken, role }: AwardsSelfEntryProp
       </div>
 
       <div className="mt-3 flex items-center gap-3">
-        <Button type="button" variant="primary" size="sm" onClick={submit} disabled={status === 'saving'}>
+        <Button
+          type="button"
+          variant="primary"
+          size="sm"
+          onClick={submit}
+          disabled={status === 'saving' || submitBlocked}
+        >
           {status === 'saving' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trophy className="h-3.5 w-3.5" />}
           {status === 'saving' ? t('awards_self.submitting') : t('awards_self.submit')}
         </Button>
+        {submitBlocked && (
+          <span className="text-[11px] text-amber-300">{t('awards_self.needs_screenshot')}</span>
+        )}
         {status === 'success' && (
           <span className="text-[11px] text-emerald-300">{t('awards_self.submitted')}</span>
         )}

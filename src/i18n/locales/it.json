@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva.",
     "fill_mode_rerun_hint": "↻ Riavvia Auto-Sort per applicare.",
     "demo_badge": "Demo",
-    "demo_banner": "Trascina le chip, lancia Auto-Sort, cambia shift — tutto dal vivo. Niente viene salvato; ricarica per azzerare."
+    "demo_banner": "Trascina le chip, lancia Auto-Sort, cambia shift — tutto dal vivo. Niente viene salvato; ricarica per azzerare.",
+    "awards_settings_label": "Premi: screenshot richiesto",
+    "awards_settings_on": "acceso",
+    "awards_settings_off": "spento",
+    "awards_settings_hint": "I giocatori devono caricare uno screenshot della Ricompensa Personale (letto via OCR, non salvato) prima di inviare i risultati. Spento = inserimento manuale consentito."
   },
   "conflict": {
     "hub_empty": "Hub vuoto — nessun captain",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "Copia URL breve (chat-friendly)",
     "foreign_targets_warning": "Dottrina WK: concentra l'Hit-Squad sullo state nemico più debole. Dividere top-might tra più target diluisce l'attacco sotto la soglia necessaria a prendere qualsiasi Hub — un take fallito costa al tuo Hub home lo shield automatico.",
     "auto_fill_label": "Auto-Sort: modalità riempimento capacità",
-    "auto_fill_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva. Off = numero fisso di Hub-difensori, torri illimitate."
+    "auto_fill_hint": "Hub e ogni torre si riempiono finché la somma delle marce degli aderenti raggiunge il cap rally del capitano. Eccedenza → riserva. Off = numero fisso di Hub-difensori, torri illimitate.",
+    "awards_screenshot_label": "Richiedi screenshot per i risultati",
+    "awards_screenshot_hint": "I giocatori devono caricare la schermata Ricompensa Personale (letta via OCR, non salvata) prima di inviare i risultati post-evento. Spento = inserimento manuale consentito."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "Carica la schermata Ricompensa Personale — leggiamo i tuoi punti WK.",
     "upload_detecting": "Lettura…",
     "upload_success": "Punti WK letti: {{points}}",
-    "upload_no_points": "Impossibile leggere i punti — inseriscili manualmente."
+    "upload_no_points": "Impossibile leggere i punti — inseriscili manualmente.",
+    "upload_required": "Richiesto — carica per poter inviare",
+    "needs_screenshot": "Carica prima il tuo screenshot"
   }
 }

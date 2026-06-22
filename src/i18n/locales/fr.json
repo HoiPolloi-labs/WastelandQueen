@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Le Hub et chaque tourelle se remplissent jusqu’à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve.",
     "fill_mode_rerun_hint": "↻ Relancez Auto-Sort pour appliquer.",
     "demo_badge": "Démo",
-    "demo_banner": "Glisse les chips, lance Auto-Sort, change de shift — tout est live. Rien n est sauvegardé ; recharge pour réinitialiser."
+    "demo_banner": "Glisse les chips, lance Auto-Sort, change de shift — tout est live. Rien n est sauvegardé ; recharge pour réinitialiser.",
+    "awards_settings_label": "Récompenses : capture requise",
+    "awards_settings_on": "activé",
+    "awards_settings_off": "désactivé",
+    "awards_settings_hint": "Les joueurs doivent téléverser une capture de l'écran Récompense Personnelle (lue par OCR, non stockée) avant d'envoyer leurs résultats. Désactivé = saisie manuelle autorisée."
   },
   "conflict": {
     "hub_empty": "Hub vide — aucun captain",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "Copier l'URL courte (chat-friendly)",
     "foreign_targets_warning": "Doctrine WK : concentrer le Hit-Squad sur le state adverse le plus faible. Diviser top-might sur plusieurs cibles dilue souvent l'attaque sous le seuil nécessaire pour prendre un Hub — un take raté coûte à ton Hub home son shield automatique.",
     "auto_fill_label": "Auto-Sort : mode remplissage par capacité",
-    "auto_fill_hint": "Le Hub et chaque tourelle se remplissent jusqu'à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve. Off = nombre fixe de Hub-défenseurs, tourelles illimitées."
+    "auto_fill_hint": "Le Hub et chaque tourelle se remplissent jusqu'à ce que la somme des marches des rejoignants atteigne le plafond de rally du capitaine. Surplus → réserve. Off = nombre fixe de Hub-défenseurs, tourelles illimitées.",
+    "awards_screenshot_label": "Exiger une capture pour les résultats",
+    "awards_screenshot_hint": "Les joueurs doivent téléverser leur écran Récompense Personnelle (lu par OCR, non stocké) avant d'envoyer leurs résultats. Désactivé = saisie manuelle autorisée."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "Téléverse ton écran Récompense Personnelle — on lit tes points WK.",
     "upload_detecting": "Lecture…",
     "upload_success": "Points WK lus : {{points}}",
-    "upload_no_points": "Points illisibles — saisis-les manuellement."
+    "upload_no_points": "Points illisibles — saisis-les manuellement.",
+    "upload_required": "Requis — téléverse pour pouvoir envoyer",
+    "needs_screenshot": "Téléverse d'abord ta capture"
   }
 }

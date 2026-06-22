@@ -741,6 +741,7 @@ export function SignupPage() {
           signup={existing}
           editToken={recallToken(event.id, existing.ign)}
           role={role}
+          requireScreenshot={event.awards_require_screenshot}
         />
       )}
     </div>

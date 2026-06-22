@@ -28,6 +28,7 @@ const baseEvent: EventConfig = {
   auto_fill_to_capacity: false,
   alliance_sizes: {},
   min_participation_pct: 15,
+  awards_require_screenshot: false,
   created_at: EVENT_START,
 }
 

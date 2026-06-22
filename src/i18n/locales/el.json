@@ -180,7 +180,11 @@
     "fill_mode_capacity_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία.",
     "fill_mode_rerun_hint": "↻ Επανεκτελέστε το Auto-Sort για εφαρμογή.",
     "demo_badge": "Demo",
-    "demo_banner": "Σύρε chips, τρέξε Auto-Sort, άλλαξε shifts — όλα ζωντανά. Τίποτα δεν αποθηκεύεται· κάνε reload για επαναφορά."
+    "demo_banner": "Σύρε chips, τρέξε Auto-Sort, άλλαξε shifts — όλα ζωντανά. Τίποτα δεν αποθηκεύεται· κάνε reload για επαναφορά.",
+    "awards_settings_label": "Βραβεία: απαιτείται screenshot",
+    "awards_settings_on": "ενεργό",
+    "awards_settings_off": "ανενεργό",
+    "awards_settings_hint": "Οι παίκτες πρέπει να ανεβάσουν screenshot της οθόνης Προσωπικής Ανταμοιβής (ανάγνωση με OCR, δεν αποθηκεύεται) πριν υποβάλουν τα αποτελέσματα. Ανενεργό = επιτρέπεται χειροκίνητη καταχώριση."
   },
   "conflict": {
     "hub_empty": "Hub άδειο — χωρίς captain",
@@ -414,7 +418,9 @@
     "success_copy_short_title": "Αντιγραφή σύντομου URL (chat-friendly)",
     "foreign_targets_warning": "Δόγμα WK: συγκέντρωσε το Hit-Squad στο πιο αδύναμο εχθρικό state. Ο διαμοιρασμός top-might σε πολλούς στόχους συχνά αραιώνει την επίθεση κάτω από το όριο για κατάληψη οποιουδήποτε Hub — αποτυχημένο take στερεί από το home Hub το αυτόματο shield.",
     "auto_fill_label": "Auto-Sort: λειτουργία πλήρωσης χωρητικότητας",
-    "auto_fill_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία. Off = σταθερός αριθμός Hub-αμυντικών, πύργοι χωρίς όριο."
+    "auto_fill_hint": "Το Hub και κάθε πύργος γεμίζουν μέχρι το άθροισμα πορειών των joiners να φτάσει το cap rally του captain. Πλεόνασμα → εφεδρεία. Off = σταθερός αριθμός Hub-αμυντικών, πύργοι χωρίς όριο.",
+    "awards_screenshot_label": "Απαίτηση screenshot για αποτελέσματα",
+    "awards_screenshot_hint": "Οι παίκτες πρέπει να ανεβάσουν την οθόνη Προσωπικής Ανταμοιβής (ανάγνωση με OCR, δεν αποθηκεύεται) πριν υποβάλουν τα αποτελέσματα. Ανενεργό = επιτρέπεται χειροκίνητη καταχώριση."
   },
   "awards": {
     "title_prefix": "Awards · {{eventId}}",
@@ -705,6 +711,8 @@
     "upload_desc": "Ανέβασε την οθόνη Προσωπικής Ανταμοιβής — διαβάζουμε τους πόντους WK.",
     "upload_detecting": "Ανάγνωση…",
     "upload_success": "Διαβάστηκαν πόντοι WK: {{points}}",
-    "upload_no_points": "Δεν διαβάστηκαν οι πόντοι — βάλ' τους χειροκίνητα."
+    "upload_no_points": "Δεν διαβάστηκαν οι πόντοι — βάλ' τους χειροκίνητα.",
+    "upload_required": "Απαιτείται — ανέβασε για να υποβάλεις",
+    "needs_screenshot": "Ανέβασε πρώτα το screenshot σου"
   }
 }
