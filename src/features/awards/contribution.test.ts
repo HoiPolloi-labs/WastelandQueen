@@ -224,6 +224,15 @@ describe('computeAwardCandidates', () => {
     expect(r[1]!.signup.id).toBe('lo')
   })
 
+  it('breaks a wk_points tie by composite score', () => {
+    // identical recorded totals → fall back to the composite (attendance wins)
+    const attended = makeSignup({ id: 'att', wk_points: 5000, attended: true })
+    const noShow = makeSignup({ id: 'no', wk_points: 5000, attended: false })
+    const r = computeAwardCandidates([noShow, attended], [], baseEvent)
+    expect(r[0]!.signup.id).toBe('att')
+    expect(r[1]!.signup.id).toBe('no')
+  })
+
   it('falls back to composite score when no one has wk_points', () => {
     const a = makeSignup({ id: 'a', attended: true, wk_points: null })
     const b = makeSignup({ id: 'b', attended: false, wk_points: null })

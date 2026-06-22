@@ -312,16 +312,21 @@ export function RosterImportExport({
         const v = cell('wk_points').trim()
         awardsPatch.wk_points = v === '' ? null : (Number.isFinite(Number(v)) ? Number(v) : null)
       }
-      validRows.push({
-        ign,
-        payload: {
-          ...parsed.data,
-          event_id: eventId,
-          state_alliance_joined: parseBool(cell('state_alliance_joined')),
-          planner_notes: cell('planner_notes').trim() || null,
-          ...awardsPatch,
-        },
-      })
+      const payload: Record<string, unknown> = {
+        ...parsed.data,
+        event_id: eventId,
+        state_alliance_joined: parseBool(cell('state_alliance_joined')),
+        planner_notes: cell('planner_notes').trim() || null,
+        ...awardsPatch,
+      }
+      // Hero frags follow the same column-present-only rule as award columns.
+      // signupSchema injects a default 0 (correct for INSERT → DB default), but
+      // on UPDATE that 0 would clobber existing frag counts when re-importing a
+      // legacy sheet that lacks the hero columns — so drop them when absent.
+      if (colIdx.agent_x_frags == null) delete payload.agent_x_frags
+      if (colIdx.dr_j_frags == null) delete payload.dr_j_frags
+      if (colIdx.nataly_frags == null) delete payload.nataly_frags
+      validRows.push({ ign, payload })
     }
 
     // Row-by-row upsert keeps error reports tied to the source row and

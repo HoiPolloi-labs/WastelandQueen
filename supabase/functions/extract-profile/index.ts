@@ -218,6 +218,20 @@ Deno.serve(async (req: Request) => {
       return json({ error: 'parse_failed', raw: raw.slice(0, 300) }, 502)
     }
 
+    // Sanitize award numbers: the model could emit a negative, NaN/Infinity, or
+    // an absurdly large value. Null anything that isn't a finite non-negative
+    // integer within a sane bound (1e15 is far above any real WK total yet well
+    // inside Postgres bigint), so the client + the bigint column never choke.
+    if (kind === 'awards') {
+      const a = parsed as AwardsExtracted
+      const clamp = (n: number | null): number | null =>
+        typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 1e15 ? Math.round(n) : null
+      a.wk_points = clamp(a.wk_points)
+      a.kill_progress = clamp(a.kill_progress)
+      a.death_progress = clamp(a.death_progress)
+      a.occupation_minutes = clamp(a.occupation_minutes)
+    }
+
     // Mark the rate-limit row as successful (best-effort, ignore errors).
     // SECURITY: encodeURIComponent on signup_token so a crafted token can't
     // inject extra PostgREST query params and corrupt log rows.
