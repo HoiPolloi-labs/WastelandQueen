@@ -275,6 +275,34 @@ describe('autoSort — multi-shift', () => {
     const shifts = [...new Set(result.map((d) => d.shift))].sort()
     expect(shifts).toEqual([1, 2, 3])
   })
+
+  it('keeps each turret one fixed troop type across shifts (event-wide layout)', () => {
+    // Shift-1 pool is fighter-heavy, shift-2 pool is shooter-heavy. A per-shift
+    // layout would flip turret-N from fighter (S1) to shooter (S2). The
+    // event-wide layout must keep the same type→turret mapping in both shifts.
+    const roster = [
+      // rider captain is the strongest → takes the (type-agnostic) Hub, so it
+      // doesn't pull the fighters/shooters we assert on into Hub-defense.
+      s({ id: 'rc', type: 'rider', tier: 13, captain: true, shifts: '1,2' }),
+      s({ id: 'fc', type: 'fighter', tier: 11, captain: true, shifts: '1,2' }),
+      s({ id: 'f1', type: 'fighter', shifts: '1' }),
+      s({ id: 'sc', type: 'shooter', tier: 11, captain: true, shifts: '1,2' }),
+      s({ id: 's1', type: 'shooter', shifts: '2' }),
+    ]
+    const typeOf = new Map(roster.map((p) => [p.id, p.troop_type]))
+    const result = autoSort({
+      signups: roster,
+      turretMode: 'duplicate-strongest',
+      shiftCount: 2,
+    })
+    const typesIn = (turret: string, shift: number) =>
+      [...new Set(at(result, turret, shift).map((d) => typeOf.get(d.signup_id)))]
+    // overall roster dominant = fighter → turret-N/S fighter, E shooter, W rider
+    expect(typesIn('turret-n', 1)).toEqual(['fighter'])
+    expect(typesIn('turret-n', 2)).toEqual(['fighter'])
+    expect(typesIn('turret-e', 1)).toEqual(['shooter'])
+    expect(typesIn('turret-e', 2)).toEqual(['shooter'])
+  })
 })
 
 describe('autoSort — invariants', () => {

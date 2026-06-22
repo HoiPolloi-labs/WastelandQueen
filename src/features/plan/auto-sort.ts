@@ -178,6 +178,16 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
     (_, i) => (i + 1) as ShiftNumber,
   )
 
+  // Turret-type layout is an EVENT-level decision, computed ONCE from the full
+  // roster — never per shift. Recomputing per shift let `dominantType` differ
+  // between shifts (each shift has a different player mix), which flipped a
+  // physical turret's troop type from one shift to the next (e.g. North =
+  // fighter in shift 1 but shooter in shift 2). The alliance keeps one fixed
+  // defensive layout across all shifts, so the same type→turret mapping must
+  // apply to every shift. (mixed-4th / manual layouts are already shift-stable
+  // — their mapping ignores the pool — so this only changes duplicate-strongest.)
+  const layout = turretLayout(input.turretMode, input.signups)
+
   for (const shift of shifts) {
     const pool = shiftPoolFor(input.signups, shift).sort(strongestFirst)
 
@@ -226,8 +236,7 @@ export function autoSort(input: AutoSortInput): DraftAssignment[] {
       }
     }
 
-    // Türme: Captain pro Typ, dann Füllung
-    const layout = turretLayout(input.turretMode, pool.filter((s) => !used.has(s.id)))
+    // Türme: Captain pro Typ, dann Füllung (Layout ist event-weit fixiert, s.o.)
     const turretMembers: Record<Turret, Signup[]> = {
       'turret-n': [],
       'turret-s': [],
