@@ -73,6 +73,7 @@ src/
       TypeCard.tsx               # Fighter/Shooter/Rider picker
       ProfileScreenshotUpload.tsx # optional Vision-LLM auto-fill from game profile screenshot
       HeroesScreenshotUpload.tsx  # optional Vision-LLM auto-fill for hero frag counts (heroes_enabled)
+      AwardsSelfEntry.tsx        # post-event self-entry (owner-only): attended + kill/death/occ + wk_points, optional 'awards' OCR; submits via update_signup_self → always unverified
       edit-token.ts              # localStorage gate for Withdraw button
       notify.ts                  # Discord ping (signup events + planner-triggered reminders)
     plan/
@@ -108,14 +109,29 @@ src/
       BoardPage.tsx              # /board/:eventId/:token — read-only + PNG/QR
       Qr.tsx                     # qrcode → data URL
     awards/
-      AwardsPage.tsx             # /awards/:eventId/:token — score table + box assignment + governor cockpit + heroes-panel
+      AwardsPage.tsx             # /awards/:eventId/:token — score table (ranked by wk_points when set) + WK-Pts + verified badge/verify + box assignment + governor cockpit + heroes-panel
       PointCalcModal.tsx         # per-tier kill/death breakdown calculator (optional)
-      contribution.ts            # pure — score-weighting per signup (with NaN-guarded date math)
+      contribution.ts            # pure — wk_points-first ranking, then composite score (NaN-guarded date math)
       use-box-counts.ts          # event-config persistence for box counts
     cheatsheet/
       CheatSheetPage.tsx         # /cheat-sheet — WK mechanics quick-reference (fully i18n'd, 12 locales)
     home/
       HeroScene.tsx              # /  — landing page with animated zeppelins + figure cut-out
+    tools/                       # standalone /tools helpers — NO auth/DB, pure client-side
+      ToolsHubPage.tsx           # /tools — card grid; per-tool `available` flag
+      FastComebackPage.tsx       # /tools/fast-comeback — retraining-cap calc
+      HealingPage.tsx            # /tools/healing — permanent vs. healable loss calc
+      fast-comeback.ts/.test.ts  # pure: FC cap = 120% of might lost
+      healing.ts/.test.ts        # pure: permanent-loss split
+      sorting/                   # /tools/sorting — water-sort (Reagent) solver
+        state.ts · solver.ts     # pure: pour rules + canonical-visited DFS (+ tests)
+        SortingPage.tsx          # paint board → Solve → step-through
+      bingo/                     # /tools/bingo — 5×5 Card-Bingo optimizer (KI is random)
+        board.ts · solver.ts     # pure: 12 lines + EV greedy best-next-flip (+ tests)
+        BingoPage.tsx            # live grid + flips stepper + suggestion
+      tetramino/                 # /tools/tetramino — 9×9 block-packing solver
+        board.ts · solver.ts     # pure: place/clear (row/col/3×3) + beam search (+ tests)
+        TetraminoPage.tsx        # paint + piece picker + clear/rotation toggles + step overlay
   lib/
     supabase.ts                  # createClient + setEventSession (JWT injection via accessToken)
     capture.ts                   # downloadAsPng (html-to-image wrapper)
@@ -127,11 +143,11 @@ src/
   types/
     wk.ts                        # domain types + WK point tables + Checklist + CHECKLIST_KEYS
 supabase/
-  migrations/0001..0041_*.sql    # mirrored from `apply_migration` MCP calls
+  migrations/0001..0044_*.sql    # mirrored from `apply_migration` MCP calls
   functions/
     notify-discord/index.ts      # Webhook poster: signup events + planner-triggered reminders
     token-exchange/index.ts      # mints per-event JWT (ES256 asymmetric or HS256 legacy)
-    extract-profile/index.ts     # Vision-LLM dispatcher: kind='profile' | 'heroes'; rate-limited
+    extract-profile/index.ts     # Vision-LLM dispatcher: kind='profile' | 'heroes' | 'awards'; rate-limited (awards numbers clamped)
     r/index.ts                   # short-URL resolver: /s/:id → signup, /b/:id → board (no JWT)
 docs/                            # WK guide reference (do not edit casually)
 ```
@@ -174,11 +190,17 @@ Suites:
 - `src/lib/csv.test.ts` — RFC4180 quoting, BOM, trailing-empty-row dropping
 - `src/lib/share-formats.test.ts` — Plaza + NAP plain-ASCII serialization
 - `src/features/auth/EventAuthGate.test.ts` — JWT `exp` decoder + refresh-delay math
+- `src/features/plan/capacity-meter.test.ts` — march/rally capacity meter (zero when no captain)
+- `src/features/plan/alliance-stats.test.ts` — alliance-dashboard aggregation
+- `src/features/tools/fast-comeback.test.ts` · `healing.test.ts` — calculator math
+- `src/features/tools/sorting/{state,solver}.test.ts` — water-sort pour rules + DFS
+- `src/features/tools/bingo/{board,solver}.test.ts` — 12 lines + EV best-next-flip
+- `src/features/tools/tetramino/{board,solver}.test.ts` — place/clear + beam-search packing
 
-Current total: **187 tests** across 13 suites, full pipeline green
+Current total: **238 tests** across 21 suites, full pipeline green
 (`pnpm typecheck && pnpm lint && pnpm test:run && pnpm build`).
-Coverage (v8, `pnpm test:coverage`): **96.0% statements · 89.3% branches**
-on the pure-function scope. Untested residue is the supabase client
+Coverage (v8, `pnpm test:coverage`) stays high on the pure-function scope.
+Untested residue is the supabase client
 setup (`src/lib/supabase.ts` — infra wiring, not domain) and a couple
 of by-construction-unreachable defensive branches in auto-sort's
 mixed-4th + mixedBucket spillover path. Pure functions are >94%
@@ -417,10 +439,11 @@ string ALWAYS means:
 mixing localized + English terms would be more confusing than helpful.
 
 Pages translated today: Sign-up + Board (Phase 1+2) + Planner + EventSetup
-+ Awards + CheatSheet + HeroScene + PlayerChip tooltips + heroes feature
-+ Discord-reminder buttons + point calculator. All 12 locales (en, de, ru,
-zh, ko, ja, it, tr, fr, uk, el, es) have the full **465-key** schema with
-zero gaps. CI-style parity check:
++ Awards (incl. WK-Pts / verified / self-entry) + CheatSheet + HeroScene
++ PlayerChip tooltips + heroes feature + Discord-reminder buttons + point
+calculator + the `/tools` hub (FC / healing / sorting / bingo / tetramino).
+All 12 locales (en, de, ru, zh, ko, ja, it, tr, fr, uk, el, es) have the full
+**570-key** schema with zero gaps. CI-style parity check:
 
 ```
 node -e "const fs=require('fs');const flat=(o,p='')=>Object.entries(o).flatMap(([k,v])=>typeof v==='object'?flat(v,p+k+'.'):[p+k]);const en=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json','utf8'))));for(const l of ['de','ru','zh','ko','ja','it','tr','fr','uk','el','es']){const k=new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/'+l+'.json','utf8'))));const m=[...en].filter(x=>!k.has(x));const e=[...k].filter(x=>!en.has(x));console.log(l,m.length?'MISSING '+m.length:'parity',e.length?'EXTRA '+e.length:'')}"
