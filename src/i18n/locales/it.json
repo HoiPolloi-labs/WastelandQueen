@@ -631,6 +631,24 @@
       "healable_label": "Curabili",
       "warn_slow": "Deep Healing è lento — ~1 settimana per 100k truppe senza diamanti.",
       "warn_trap": "Trappola Alliance-Infirmary: lasciare la State Alliance con truppe nella sua infermeria le uccide per sempre."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "Solver per il puzzle di ordinamento delle fiale.",
+      "colors_label": "Colori",
+      "vials_label": "Fiale",
+      "paint_label": "Pennello:",
+      "edit_hint": "Scegli un colore, poi tocca una fiala per aggiungerlo (dal basso). “−” toglie lo strato in cima.",
+      "solve": "Risolvi",
+      "clear": "Svuota",
+      "edit": "Modifica",
+      "remove": "Togli in cima",
+      "overuse_error": "Ogni colore al massimo 4×. Troppi: {{colors}}.",
+      "solved": "Risolto in {{count}} mosse",
+      "unsolvable": "Nessuna soluzione da questo schema.",
+      "too_complex": "Troppo complesso da risolvere in tempo — togli una fiala o semplifica.",
+      "step": "passo {{n}}/{{total}}",
+      "move_desc": "fiala {{from}} → fiala {{to}}"
     }
   }
 }

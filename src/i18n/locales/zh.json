@@ -631,6 +631,24 @@
       "healable_label": "可治疗",
       "warn_slow": "Deep Healing 很慢——无钻石时每 10 万兵约 1 周。",
       "warn_trap": "Alliance-Infirmary 陷阱：离开 State Alliance 时其医院里还有兵 → 永久阵亡。"
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "试管颜色分类谜题求解器。",
+      "colors_label": "颜色",
+      "vials_label": "试管",
+      "paint_label": "画笔：",
+      "edit_hint": "选一个颜色，点试管添加（自下而上）。“−”移除最上层。",
+      "solve": "求解",
+      "clear": "清空",
+      "edit": "编辑",
+      "remove": "移除顶层",
+      "overuse_error": "每种颜色最多 4×。过多：{{colors}}。",
+      "solved": "{{count}} 步解出",
+      "unsolvable": "此布局无解。",
+      "too_complex": "太复杂，无法及时求解——减少试管或简化。",
+      "step": "第 {{n}}/{{total}} 步",
+      "move_desc": "试管 {{from}} → 试管 {{to}}"
     }
   }
 }

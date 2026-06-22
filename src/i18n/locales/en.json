@@ -631,6 +631,24 @@
       "healable_label": "Healable",
       "warn_slow": "Deep Healing is slow — ~1 week per 100k troops without diamonds.",
       "warn_trap": "Alliance-Infirmary trap: leaving the State Alliance with troops still in its infirmary kills them permanently."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "Solver for the vial colour-sort puzzle.",
+      "colors_label": "Colours",
+      "vials_label": "Vials",
+      "paint_label": "Paint:",
+      "edit_hint": "Pick a colour, then tap a vial to add it (bottom→top). “−” removes the top layer.",
+      "solve": "Solve",
+      "clear": "Clear",
+      "edit": "Edit",
+      "remove": "Remove top",
+      "overuse_error": "Each colour can appear at most 4×. Too many: {{colors}}.",
+      "solved": "Solved in {{count}} moves",
+      "unsolvable": "No solution from this layout.",
+      "too_complex": "Too complex to solve in time — remove a vial or simplify.",
+      "step": "step {{n}}/{{total}}",
+      "move_desc": "vial {{from}} → vial {{to}}"
     }
   }
 }

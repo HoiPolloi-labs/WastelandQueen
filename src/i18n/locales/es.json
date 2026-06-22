@@ -631,6 +631,24 @@
       "healable_label": "Curables",
       "warn_slow": "Deep Healing es lento — ~1 semana por 100k tropas sin diamantes.",
       "warn_trap": "Trampa Alliance-Infirmary: salir de la State Alliance con tropas en su enfermería las mata para siempre."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "Solver del puzzle de ordenar viales por color.",
+      "colors_label": "Colores",
+      "vials_label": "Viales",
+      "paint_label": "Pincel:",
+      "edit_hint": "Elige un color y toca un vial para añadirlo (de abajo arriba). “−” quita la capa de arriba.",
+      "solve": "Resolver",
+      "clear": "Vaciar",
+      "edit": "Editar",
+      "remove": "Quitar arriba",
+      "overuse_error": "Cada color como máximo 4×. Demasiados: {{colors}}.",
+      "solved": "Resuelto en {{count}} movimientos",
+      "unsolvable": "No hay solución desde esta disposición.",
+      "too_complex": "Demasiado complejo para resolver a tiempo — quita un vial o simplifica.",
+      "step": "paso {{n}}/{{total}}",
+      "move_desc": "vial {{from}} → vial {{to}}"
     }
   }
 }

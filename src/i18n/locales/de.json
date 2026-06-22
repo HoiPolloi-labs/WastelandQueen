@@ -631,6 +631,24 @@
       "healable_label": "Heilbar",
       "warn_slow": "Deep Healing ist langsam — ~1 Woche pro 100k Truppen ohne Diamanten.",
       "warn_trap": "Alliance-Infirmary-Falle: verlässt du die State Alliance mit Truppen in ihrer Infirmary, sterben die dauerhaft."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "Solver für das Reagenzglas-Farbsortier-Puzzle.",
+      "colors_label": "Farben",
+      "vials_label": "Gläser",
+      "paint_label": "Malen:",
+      "edit_hint": "Farbe wählen, dann auf ein Glas tippen zum Hinzufügen (unten→oben). „−“ entfernt die oberste Schicht.",
+      "solve": "Lösen",
+      "clear": "Leeren",
+      "edit": "Bearbeiten",
+      "remove": "Oberste entfernen",
+      "overuse_error": "Jede Farbe darf höchstens 4× vorkommen. Zu viele: {{colors}}.",
+      "solved": "Gelöst in {{count}} Zügen",
+      "unsolvable": "Keine Lösung aus dieser Aufstellung.",
+      "too_complex": "Zu komplex zum Lösen — entferne ein Glas oder vereinfache.",
+      "step": "Schritt {{n}}/{{total}}",
+      "move_desc": "Glas {{from}} → Glas {{to}}"
     }
   }
 }

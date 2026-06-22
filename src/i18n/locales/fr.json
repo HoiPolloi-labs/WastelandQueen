@@ -631,6 +631,24 @@
       "healable_label": "Soignables",
       "warn_slow": "Deep Healing est lent — ~1 semaine pour 100k troupes sans diamants.",
       "warn_trap": "Piège Alliance-Infirmary : quitter la State Alliance avec des troupes dans son infirmerie les tue définitivement."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "Solveur du puzzle de tri des fioles par couleur.",
+      "colors_label": "Couleurs",
+      "vials_label": "Fioles",
+      "paint_label": "Pinceau :",
+      "edit_hint": "Choisis une couleur, puis touche une fiole pour l’ajouter (de bas en haut). « − » retire la couche du haut.",
+      "solve": "Résoudre",
+      "clear": "Vider",
+      "edit": "Éditer",
+      "remove": "Retirer le haut",
+      "overuse_error": "Chaque couleur 4× au maximum. Trop : {{colors}}.",
+      "solved": "Résolu en {{count}} coups",
+      "unsolvable": "Aucune solution depuis cette disposition.",
+      "too_complex": "Trop complexe à résoudre à temps — retire une fiole ou simplifie.",
+      "step": "étape {{n}}/{{total}}",
+      "move_desc": "fiole {{from}} → fiole {{to}}"
     }
   }
 }

@@ -40,6 +40,9 @@ const FastComebackPage = lazy(() =>
 const HealingPage = lazy(() =>
   import('./features/tools/HealingPage').then((m) => ({ default: m.HealingPage })),
 )
+const SortingPage = lazy(() =>
+  import('./features/tools/sorting/SortingPage').then((m) => ({ default: m.SortingPage })),
+)
 const HeroScene = lazy(() =>
   import('./features/home/HeroScene').then((m) => ({ default: m.HeroScene })),
 )
@@ -208,6 +211,7 @@ export default function App() {
             <Route path="/tools" element={<ToolsHubPage />} />
             <Route path="/tools/fast-comeback" element={<FastComebackPage />} />
             <Route path="/tools/healing" element={<HealingPage />} />
+            <Route path="/tools/sorting" element={<SortingPage />} />
             <Route
               path="*"
               element={

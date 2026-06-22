@@ -631,6 +631,24 @@
       "healable_label": "治療可能",
       "warn_slow": "Deep Healing は遅い — ダイヤなしで10万兵あたり約1週間。",
       "warn_trap": "Alliance-Infirmary の罠: State Alliance を抜ける時に医務室に兵が残っていると永久戦死。"
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "試験管の色分けパズルのソルバー。",
+      "colors_label": "色",
+      "vials_label": "試験管",
+      "paint_label": "ペイント:",
+      "edit_hint": "色を選び、試験管をタップして追加（下→上）。「−」で最上層を削除。",
+      "solve": "解く",
+      "clear": "クリア",
+      "edit": "編集",
+      "remove": "最上層を削除",
+      "overuse_error": "各色は最大4×まで。多すぎ: {{colors}}。",
+      "solved": "{{count}}手で解決",
+      "unsolvable": "この配置では解なし。",
+      "too_complex": "複雑すぎて時間内に解けません — 試験管を減らすか簡略化を。",
+      "step": "{{n}}/{{total}} 手",
+      "move_desc": "試験管 {{from}} → 試験管 {{to}}"
     }
   }
 }

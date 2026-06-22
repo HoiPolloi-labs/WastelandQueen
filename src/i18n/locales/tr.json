@@ -631,6 +631,24 @@
       "healable_label": "İyileştirilebilir",
       "warn_slow": "Deep Healing yavaş — elmassız 100k asker başına ~1 hafta.",
       "warn_trap": "Alliance-Infirmary tuzağı: State Alliance’dan çıkarken revirinde asker kalırsa kalıcı ölür."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "Tüp renk sıralama bulmacası çözücü.",
+      "colors_label": "Renk",
+      "vials_label": "Tüp",
+      "paint_label": "Boya:",
+      "edit_hint": "Bir renk seç, sonra eklemek için tüpe dokun (alttan üste). “−” en üst katmanı kaldırır.",
+      "solve": "Çöz",
+      "clear": "Temizle",
+      "edit": "Düzenle",
+      "remove": "Üstü kaldır",
+      "overuse_error": "Her renk en fazla 4×. Fazla: {{colors}}.",
+      "solved": "{{count}} hamlede çözüldü",
+      "unsolvable": "Bu dizilimden çözüm yok.",
+      "too_complex": "Zamanında çözülemeyecek kadar karmaşık — bir tüp çıkar veya sadeleştir.",
+      "step": "adım {{n}}/{{total}}",
+      "move_desc": "tüp {{from}} → tüp {{to}}"
     }
   }
 }

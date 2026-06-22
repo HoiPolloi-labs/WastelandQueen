@@ -16,7 +16,7 @@ interface ToolMeta {
 const TOOLS: ToolMeta[] = [
   { key: 'fast_comeback', to: '/tools/fast-comeback', Icon: Rocket, available: true },
   { key: 'healing', to: '/tools/healing', Icon: HeartPulse, available: true },
-  { key: 'sorting', to: '/tools/sorting', Icon: FlaskConical, available: false },
+  { key: 'sorting', to: '/tools/sorting', Icon: FlaskConical, available: true },
   { key: 'bingo', to: '/tools/bingo', Icon: Grid3x3, available: false },
   { key: 'tetramino', to: '/tools/tetramino', Icon: Puzzle, available: false },
 ]

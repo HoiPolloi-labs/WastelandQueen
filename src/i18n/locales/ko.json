@@ -631,6 +631,24 @@
       "healable_label": "치료 가능",
       "warn_slow": "Deep Healing은 느립니다 — 다이아 없이 10만 병력당 약 1주.",
       "warn_trap": "Alliance-Infirmary 함정: State Alliance를 떠날 때 그 의무실에 병력이 남아 있으면 영구 사망."
+    },
+    "sorting": {
+      "title": "Reagent Sorting",
+      "subtitle": "시험관 색 정렬 퍼즐 솔버.",
+      "colors_label": "색상",
+      "vials_label": "시험관",
+      "paint_label": "칠하기:",
+      "edit_hint": "색을 고른 뒤 시험관을 탭해 추가(아래→위). “−”는 맨 위 층 제거.",
+      "solve": "풀기",
+      "clear": "비우기",
+      "edit": "편집",
+      "remove": "맨 위 제거",
+      "overuse_error": "각 색은 최대 4×까지. 너무 많음: {{colors}}.",
+      "solved": "{{count}}수 만에 해결",
+      "unsolvable": "이 배치로는 해가 없습니다.",
+      "too_complex": "너무 복잡해 제때 못 풉니다 — 시험관을 줄이거나 단순화하세요.",
+      "step": "{{n}}/{{total}} 단계",
+      "move_desc": "시험관 {{from}} → 시험관 {{to}}"
     }
   }
 }
