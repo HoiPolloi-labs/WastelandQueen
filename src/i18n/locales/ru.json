@@ -3,7 +3,8 @@
     "home": "Главная",
     "new_event": "Новое событие",
     "planner": "Планировщик",
-    "cheat_sheet": "Шпаргалка"
+    "cheat_sheet": "Шпаргалка",
+    "tools": "Инструменты"
   },
   "common": {
     "loading": "Загрузка",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Шпаргалка",
     "figure_aria_label": "Чиби Wasteland Queen с короной из шахматных фигур",
-    "nav_demo": "Демо"
+    "nav_demo": "Демо",
+    "nav_tools": "Инструменты"
   },
   "alliance": {
     "section_title": "Участие альянсов",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "В башнях",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Назад",
+    "soon": "скоро",
+    "hub": {
+      "title": "Инструменты события",
+      "subtitle": "Удобные калькуляторы и солверы для P&S."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Твой лимит переобучения FC из потерянного might."
+      },
+      "healing": {
+        "title": "Лечение и потери",
+        "desc": "Войска навсегда потерянные vs. излечимые."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Солвер для головоломки сортировки колб."
+      },
+      "bingo": {
+        "title": "Карты-бинго",
+        "desc": "Лучшая следующая карта на поле 5×5."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "Оптимальная раскладка для 9×9 блок-пазла."
+      }
+    },
+    "fc": {
+      "title": "Калькулятор Fast Comeback",
+      "subtitle": "Бюджет переобучения после WK.",
+      "input_label": "Потерянный might (смерти на Hub/turret)",
+      "input_placeholder": "напр. 10000000",
+      "input_hint": "Считаются только смерти на Hub или turrets.",
+      "result_label": "Лимит Fast Comeback",
+      "result_explain": "{{boost}}% буст обучения, потолок 120% потерянного might.",
+      "note_consume": "Запаси достаточно training-speedups + ресурсов, чтобы использовать лимит за ~2 недели, иначе пропадёт.",
+      "note_exclude": "Смерти от turret-fire и в mud НЕ учитываются в лимите."
+    },
+    "healing": {
+      "title": "Калькулятор лечения/потерь",
+      "subtitle": "Сколько потерь уходит навсегда.",
+      "input_label": "Потери (войска или might)",
+      "input_placeholder": "напр. 100000",
+      "input_hint": "Раненые идут через Infirmary → Deep Healing.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "Нет (30%)",
+      "ms_maxed": "Макс (~18%)",
+      "ms_custom": "Своё",
+      "custom_suffix": "безвозвратных потерь",
+      "permanent_label": "Безвозвратно",
+      "healable_label": "Излечимо",
+      "warn_slow": "Deep Healing медленный — ~1 неделя на 100k войск без алмазов.",
+      "warn_trap": "Ловушка Alliance-Infirmary: выйдешь из State Alliance с войсками в её лазарете — они погибнут навсегда."
+    }
   }
 }

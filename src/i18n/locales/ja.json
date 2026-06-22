@@ -3,7 +3,8 @@
     "home": "ホーム",
     "new_event": "新しいイベント",
     "planner": "プランナー",
-    "cheat_sheet": "チートシート"
+    "cheat_sheet": "チートシート",
+    "tools": "ツール"
   },
   "common": {
     "loading": "読み込み中",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "チートシート",
     "figure_aria_label": "チェス駒の王冠をかぶったちびWasteland Queen",
-    "nav_demo": "ライブデモ"
+    "nav_demo": "ライブデモ",
+    "nav_tools": "ツール"
   },
   "alliance": {
     "section_title": "アライアンス参加率",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "タワー配置",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "戻る",
+    "soon": "近日",
+    "hub": {
+      "title": "イベントツール",
+      "subtitle": "P&S イベント用の計算機＆ソルバー。"
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "失った might から FC 再訓練上限を計算。"
+      },
+      "healing": {
+        "title": "治療＆損失",
+        "desc": "永久損失 vs. 治療可能な兵力。"
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "試験管の色分けパズルのソルバー。"
+      },
+      "bingo": {
+        "title": "カードビンゴ",
+        "desc": "5×5 報酬ボードで次にめくる最適カード。"
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "9×9 ブロックパズルの最適配置。"
+      }
+    },
+    "fc": {
+      "title": "Fast Comeback 計算機",
+      "subtitle": "WK 後の再訓練バジェット。",
+      "input_label": "失った might（Hub/turret 戦死）",
+      "input_placeholder": "例: 10000000",
+      "input_hint": "Hub または turret での戦死のみ計上。",
+      "result_label": "Fast Comeback 上限",
+      "result_explain": "{{boost}}% 訓練ブースト、失った might の 120% が上限。",
+      "note_consume": "training-speedups + 資源を十分備蓄し約2週間で上限を消費。さもないと無駄に。",
+      "note_exclude": "turret-fire と mud の戦死は上限に計上されません。"
+    },
+    "healing": {
+      "title": "治療/損失 計算機",
+      "subtitle": "どれだけが永久損失か。",
+      "input_label": "損耗（兵力または might）",
+      "input_placeholder": "例: 100000",
+      "input_hint": "負傷兵は Infirmary → Deep Healing 経由。",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "なし (30%)",
+      "ms_maxed": "最大 (~18%)",
+      "ms_custom": "カスタム",
+      "custom_suffix": "永久損失",
+      "permanent_label": "永久損失",
+      "healable_label": "治療可能",
+      "warn_slow": "Deep Healing は遅い — ダイヤなしで10万兵あたり約1週間。",
+      "warn_trap": "Alliance-Infirmary の罠: State Alliance を抜ける時に医務室に兵が残っていると永久戦死。"
+    }
   }
 }

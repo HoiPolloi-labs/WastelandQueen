@@ -3,7 +3,8 @@
     "home": "首页",
     "new_event": "新事件",
     "planner": "规划器",
-    "cheat_sheet": "速查表"
+    "cheat_sheet": "速查表",
+    "tools": "工具"
   },
   "common": {
     "loading": "加载中",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "速查表",
     "figure_aria_label": "戴着棋子王冠的 Q 版 Wasteland Queen",
-    "nav_demo": "在线演示"
+    "nav_demo": "在线演示",
+    "nav_tools": "工具"
   },
   "alliance": {
     "section_title": "联盟参与度",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "在塔中",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "返回",
+    "soon": "即将",
+    "hub": {
+      "title": "活动工具",
+      "subtitle": "P&S 活动的实用计算器与求解器。"
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "根据损失 might 计算 FC 重训上限。"
+      },
+      "healing": {
+        "title": "治疗与损失",
+        "desc": "永久损失 vs. 可治疗的兵力。"
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "试管颜色分类谜题求解器。"
+      },
+      "bingo": {
+        "title": "卡牌宾果",
+        "desc": "5×5 奖励板上最佳的下一张翻牌。"
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "9×9 方块谜题的最优放置。"
+      }
+    },
+    "fc": {
+      "title": "Fast Comeback 计算器",
+      "subtitle": "WK 后的重训预算。",
+      "input_label": "损失 might（Hub/turret 阵亡）",
+      "input_placeholder": "例如 10000000",
+      "input_hint": "只计 Hub 或 turret 上的阵亡。",
+      "result_label": "Fast Comeback 上限",
+      "result_explain": "{{boost}}% 训练加成，上限为损失 might 的 120%。",
+      "note_consume": "囤够 training-speedups + 资源以在约 2 周内用完上限，否则浪费。",
+      "note_exclude": "turret-fire 与 mud 阵亡不计入上限。"
+    },
+    "healing": {
+      "title": "治疗/损失计算器",
+      "subtitle": "有多少损失是永久的。",
+      "input_label": "损失（兵力或 might）",
+      "input_placeholder": "例如 100000",
+      "input_hint": "伤兵经 Infirmary → Deep Healing。",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "无（30%）",
+      "ms_maxed": "满（~18%）",
+      "ms_custom": "自定义",
+      "custom_suffix": "永久损失",
+      "permanent_label": "永久损失",
+      "healable_label": "可治疗",
+      "warn_slow": "Deep Healing 很慢——无钻石时每 10 万兵约 1 周。",
+      "warn_trap": "Alliance-Infirmary 陷阱：离开 State Alliance 时其医院里还有兵 → 永久阵亡。"
+    }
   }
 }

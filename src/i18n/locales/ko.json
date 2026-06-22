@@ -3,7 +3,8 @@
     "home": "홈",
     "new_event": "새 이벤트",
     "planner": "플래너",
-    "cheat_sheet": "치트 시트"
+    "cheat_sheet": "치트 시트",
+    "tools": "도구"
   },
   "common": {
     "loading": "로딩 중",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "치트 시트",
     "figure_aria_label": "체스 말 왕관을 쓴 치비 Wasteland Queen",
-    "nav_demo": "라이브 데모"
+    "nav_demo": "라이브 데모",
+    "nav_tools": "도구"
   },
   "alliance": {
     "section_title": "연맹 참여도",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "타워 배치",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "뒤로",
+    "soon": "곧",
+    "hub": {
+      "title": "이벤트 도구",
+      "subtitle": "P&S 이벤트용 계산기 & 솔버."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "잃은 might로 FC 재훈련 상한 계산."
+      },
+      "healing": {
+        "title": "치료 & 손실",
+        "desc": "영구 손실 vs. 치료 가능 병력."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "시험관 색 정렬 퍼즐 솔버."
+      },
+      "bingo": {
+        "title": "카드 빙고",
+        "desc": "5×5 보상판에서 다음에 뒤집을 최적 카드."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "9×9 블록 퍼즐 최적 배치."
+      }
+    },
+    "fc": {
+      "title": "Fast Comeback 계산기",
+      "subtitle": "WK 이후 재훈련 예산.",
+      "input_label": "잃은 might (Hub/turret 사망)",
+      "input_placeholder": "예: 10000000",
+      "input_hint": "Hub 또는 turret에서의 사망만 계산.",
+      "result_label": "Fast Comeback 상한",
+      "result_explain": "{{boost}}% 훈련 부스트, 잃은 might의 120% 상한.",
+      "note_consume": "training-speedups + 자원을 충분히 비축해 약 2주 내에 상한을 소진하세요. 안 그러면 낭비됩니다.",
+      "note_exclude": "turret-fire 및 mud 사망은 상한에 포함되지 않습니다."
+    },
+    "healing": {
+      "title": "치료/손실 계산기",
+      "subtitle": "얼마가 영구 손실인지.",
+      "input_label": "사상자 (병력 또는 might)",
+      "input_placeholder": "예: 100000",
+      "input_hint": "부상자는 Infirmary → Deep Healing 경로.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "없음 (30%)",
+      "ms_maxed": "최대 (~18%)",
+      "ms_custom": "직접",
+      "custom_suffix": "영구 손실",
+      "permanent_label": "영구 손실",
+      "healable_label": "치료 가능",
+      "warn_slow": "Deep Healing은 느립니다 — 다이아 없이 10만 병력당 약 1주.",
+      "warn_trap": "Alliance-Infirmary 함정: State Alliance를 떠날 때 그 의무실에 병력이 남아 있으면 영구 사망."
+    }
   }
 }

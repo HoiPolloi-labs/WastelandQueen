@@ -3,7 +3,8 @@
     "home": "Accueil",
     "new_event": "Nouvel évènement",
     "planner": "Planificateur",
-    "cheat_sheet": "Mémo"
+    "cheat_sheet": "Mémo",
+    "tools": "Outils"
   },
   "common": {
     "loading": "Chargement",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Mémo",
     "figure_aria_label": "Chibi Wasteland Queen avec couronne de pièces d'échecs",
-    "nav_demo": "Démo en direct"
+    "nav_demo": "Démo en direct",
+    "nav_tools": "Outils"
   },
   "alliance": {
     "section_title": "Participation des alliances",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "Dans les tours",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Retour",
+    "soon": "bientôt",
+    "hub": {
+      "title": "Outils d’événement",
+      "subtitle": "Calculateurs & solveurs pour les événements P&S."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Ton plafond de ré-entraînement FC selon le might perdu."
+      },
+      "healing": {
+        "title": "Soin & pertes",
+        "desc": "Troupes perdues définitivement vs. soignables."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Solveur du puzzle de tri des fioles."
+      },
+      "bingo": {
+        "title": "Cartes Bingo",
+        "desc": "Meilleure carte à retourner sur la grille 5×5."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "Placement optimal pour le puzzle 9×9."
+      }
+    },
+    "fc": {
+      "title": "Calculateur Fast Comeback",
+      "subtitle": "Ton budget de ré-entraînement post-WK.",
+      "input_label": "Might perdu (morts au Hub/tourelle)",
+      "input_placeholder": "p.ex. 10000000",
+      "input_hint": "Seules les morts au Hub ou aux tourelles comptent.",
+      "result_label": "Plafond Fast Comeback",
+      "result_explain": "{{boost}}% de boost d’entraînement, plafonné à 120% du might perdu.",
+      "note_consume": "Stocke assez de training-speedups + ressources pour consommer le plafond en ~2 semaines, sinon il est perdu.",
+      "note_exclude": "Les morts par turret-fire et en mud ne comptent PAS pour le plafond."
+    },
+    "healing": {
+      "title": "Calculateur soin/pertes",
+      "subtitle": "Combien de pertes sont définitives.",
+      "input_label": "Pertes (troupes ou might)",
+      "input_placeholder": "p.ex. 100000",
+      "input_hint": "Les blessés passent par Infirmary → Deep Healing.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "Aucun (30%)",
+      "ms_maxed": "Max (~18%)",
+      "ms_custom": "Perso",
+      "custom_suffix": "perte permanente",
+      "permanent_label": "Perte permanente",
+      "healable_label": "Soignables",
+      "warn_slow": "Deep Healing est lent — ~1 semaine pour 100k troupes sans diamants.",
+      "warn_trap": "Piège Alliance-Infirmary : quitter la State Alliance avec des troupes dans son infirmerie les tue définitivement."
+    }
   }
 }

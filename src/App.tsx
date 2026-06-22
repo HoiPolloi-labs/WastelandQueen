@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { NavLink, Route, Routes, useLocation } from 'react-router'
-import { Crown, Plus, ClipboardList, Loader2, BookOpen } from 'lucide-react'
+import { Crown, Plus, ClipboardList, Loader2, BookOpen, Wrench } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from './lib/cn'
 import { BuildInfo } from './components/ui/BuildInfo'
@@ -30,6 +30,15 @@ const CheatSheetPage = lazy(() =>
   import('./features/cheatsheet/CheatSheetPage').then((m) => ({
     default: m.CheatSheetPage,
   })),
+)
+const ToolsHubPage = lazy(() =>
+  import('./features/tools/ToolsHubPage').then((m) => ({ default: m.ToolsHubPage })),
+)
+const FastComebackPage = lazy(() =>
+  import('./features/tools/FastComebackPage').then((m) => ({ default: m.FastComebackPage })),
+)
+const HealingPage = lazy(() =>
+  import('./features/tools/HealingPage').then((m) => ({ default: m.HealingPage })),
 )
 const HeroScene = lazy(() =>
   import('./features/home/HeroScene').then((m) => ({ default: m.HeroScene })),
@@ -110,6 +119,20 @@ export default function App() {
                 <BookOpen className="h-4 w-4" />
                 <span className="hidden sm:inline">{t('nav.cheat_sheet')}</span>
               </NavLink>
+              <NavLink
+                to="/tools"
+                className={({ isActive }) =>
+                  cn(
+                    'flex items-center gap-2 rounded px-2 py-1.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 sm:px-3',
+                    isActive
+                      ? 'bg-zinc-800 text-zinc-50'
+                      : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100',
+                  )
+                }
+              >
+                <Wrench className="h-4 w-4" />
+                <span className="hidden sm:inline">{t('nav.tools')}</span>
+              </NavLink>
             </nav>
             <div className="ml-auto">
               <LanguageSwitcher />
@@ -182,6 +205,9 @@ export default function App() {
             <Route path="/board/:eventId" element={<LegacyTokenlessURL kind="board" />} />
             <Route path="/awards/:eventId" element={<LegacyTokenlessURL kind="awards" />} />
             <Route path="/cheat-sheet" element={<CheatSheetPage />} />
+            <Route path="/tools" element={<ToolsHubPage />} />
+            <Route path="/tools/fast-comeback" element={<FastComebackPage />} />
+            <Route path="/tools/healing" element={<HealingPage />} />
             <Route
               path="*"
               element={

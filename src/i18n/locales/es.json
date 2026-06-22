@@ -3,7 +3,8 @@
     "home": "Inicio",
     "new_event": "Nuevo evento",
     "planner": "Planificador",
-    "cheat_sheet": "Chuleta"
+    "cheat_sheet": "Chuleta",
+    "tools": "Herramientas"
   },
   "common": {
     "loading": "Cargando",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Cheat Sheet",
     "figure_aria_label": "Chibi Wasteland Queen con corona de piezas de ajedrez",
-    "nav_demo": "Demo en vivo"
+    "nav_demo": "Demo en vivo",
+    "nav_tools": "Herramientas"
   },
   "alliance": {
     "section_title": "Participación de alianzas",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "En torres",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Atrás",
+    "soon": "pronto",
+    "hub": {
+      "title": "Herramientas de evento",
+      "subtitle": "Calculadoras y solvers para eventos de P&S."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Tu tope de reentrenamiento FC según el might perdido."
+      },
+      "healing": {
+        "title": "Curación y pérdidas",
+        "desc": "Tropas perdidas para siempre vs. curables."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Solver del puzzle de ordenar viales."
+      },
+      "bingo": {
+        "title": "Cartas Bingo",
+        "desc": "La mejor carta a voltear en el tablero 5×5."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "Colocación óptima para el puzzle 9×9."
+      }
+    },
+    "fc": {
+      "title": "Calculadora Fast Comeback",
+      "subtitle": "Tu presupuesto de reentrenamiento post-WK.",
+      "input_label": "Might perdido (muertes en Hub/turret)",
+      "input_placeholder": "p.ej. 10000000",
+      "input_hint": "Solo cuentan las muertes en Hub o turrets.",
+      "result_label": "Tope Fast Comeback",
+      "result_explain": "{{boost}}% de boost de entrenamiento, tope del 120% del might perdido.",
+      "note_consume": "Acumula suficientes training-speedups + recursos para consumir el tope en ~2 semanas, o se desperdicia.",
+      "note_exclude": "Las muertes por turret-fire y en mud NO cuentan para el tope."
+    },
+    "healing": {
+      "title": "Calculadora curación/pérdidas",
+      "subtitle": "Cuántas pérdidas son definitivas.",
+      "input_label": "Bajas (tropas o might)",
+      "input_placeholder": "p.ej. 100000",
+      "input_hint": "Los heridos pasan por Infirmary → Deep Healing.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "Ninguna (30%)",
+      "ms_maxed": "Máx (~18%)",
+      "ms_custom": "Personal.",
+      "custom_suffix": "pérdida permanente",
+      "permanent_label": "Pérdida permanente",
+      "healable_label": "Curables",
+      "warn_slow": "Deep Healing es lento — ~1 semana por 100k tropas sin diamantes.",
+      "warn_trap": "Trampa Alliance-Infirmary: salir de la State Alliance con tropas en su enfermería las mata para siempre."
+    }
   }
 }

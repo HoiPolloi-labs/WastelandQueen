@@ -3,7 +3,8 @@
     "home": "Αρχική",
     "new_event": "Νέο γεγονός",
     "planner": "Planner",
-    "cheat_sheet": "Σύντομος οδηγός"
+    "cheat_sheet": "Σύντομος οδηγός",
+    "tools": "Εργαλεία"
   },
   "common": {
     "loading": "Φόρτωση",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Cheat Sheet",
     "figure_aria_label": "Chibi Wasteland Queen με κορώνα από πιόνια σκακιού",
-    "nav_demo": "Ζωντανό demo"
+    "nav_demo": "Ζωντανό demo",
+    "nav_tools": "Εργαλεία"
   },
   "alliance": {
     "section_title": "Συμμετοχή συμμαχιών",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "Σε πύργους",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Πίσω",
+    "soon": "σύντομα",
+    "hub": {
+      "title": "Εργαλεία event",
+      "subtitle": "Χρήσιμοι υπολογιστές & solvers για P&S events."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Το όριο επανεκπαίδευσης FC από το χαμένο might."
+      },
+      "healing": {
+        "title": "Θεραπεία & απώλειες",
+        "desc": "Στρατός χαμένος για πάντα vs. θεραπεύσιμος."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Solver για το παζλ ταξινόμησης φιαλών."
+      },
+      "bingo": {
+        "title": "Κάρτες Bingo",
+        "desc": "Η καλύτερη επόμενη κάρτα στο 5×5 ταμπλό."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "Βέλτιστη τοποθέτηση για το 9×9 παζλ."
+      }
+    },
+    "fc": {
+      "title": "Υπολογιστής Fast Comeback",
+      "subtitle": "Ο προϋπολογισμός επανεκπαίδευσης μετά το WK.",
+      "input_label": "Χαμένο might (θάνατοι σε Hub/turret)",
+      "input_placeholder": "π.χ. 10000000",
+      "input_hint": "Μετράνε μόνο οι θάνατοι σε Hub ή turret.",
+      "result_label": "Όριο Fast Comeback",
+      "result_explain": "{{boost}}% boost εκπαίδευσης, όριο στο 120% του χαμένου might.",
+      "note_consume": "Μάζεψε αρκετά training-speedups + πόρους για να καταναλώσεις το όριο σε ~2 εβδομάδες, αλλιώς χάνεται.",
+      "note_exclude": "Οι θάνατοι από turret-fire και σε mud ΔΕΝ μετράνε στο όριο."
+    },
+    "healing": {
+      "title": "Υπολογιστής θεραπείας/απωλειών",
+      "subtitle": "Πόσες απώλειες είναι μόνιμες.",
+      "input_label": "Απώλειες (στρατός ή might)",
+      "input_placeholder": "π.χ. 100000",
+      "input_hint": "Οι τραυματίες περνούν από Infirmary → Deep Healing.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "Καμία (30%)",
+      "ms_maxed": "Μέγιστο (~18%)",
+      "ms_custom": "Προσαρμ.",
+      "custom_suffix": "μόνιμη απώλεια",
+      "permanent_label": "Μόνιμη απώλεια",
+      "healable_label": "Θεραπεύσιμα",
+      "warn_slow": "Το Deep Healing είναι αργό — ~1 εβδομάδα ανά 100k στρατό χωρίς διαμάντια.",
+      "warn_trap": "Παγίδα Alliance-Infirmary: αν φύγεις από τη State Alliance με στρατό στο αναρρωτήριό της, πεθαίνει μόνιμα."
+    }
   }
 }

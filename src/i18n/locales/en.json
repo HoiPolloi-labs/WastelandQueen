@@ -3,7 +3,8 @@
     "home": "Home",
     "new_event": "New event",
     "planner": "Planner",
-    "cheat_sheet": "Cheat sheet"
+    "cheat_sheet": "Cheat sheet",
+    "tools": "Tools"
   },
   "common": {
     "loading": "Loading",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Cheat Sheet",
     "figure_aria_label": "Chibi Wasteland Queen with crown of chess pieces",
-    "nav_demo": "Live Demo"
+    "nav_demo": "Live Demo",
+    "nav_tools": "Tools"
   },
   "alliance": {
     "section_title": "Alliance participation",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "In towers",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Back",
+    "soon": "soon",
+    "hub": {
+      "title": "Event Tools",
+      "subtitle": "Handy calculators & solvers for P&S events."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Your FC retraining cap from the might you lost."
+      },
+      "healing": {
+        "title": "Healing & Loss",
+        "desc": "Troops you lose for good vs. can still heal."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Solver for the vial colour-sort puzzle."
+      },
+      "bingo": {
+        "title": "Card Bingo",
+        "desc": "Best next card to flip on the 5×5 reward board."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "Optimal placement for the 9×9 block puzzle."
+      }
+    },
+    "fc": {
+      "title": "Fast Comeback Calculator",
+      "subtitle": "Your post-WK retraining budget.",
+      "input_label": "Might lost (Hub/turret deaths)",
+      "input_placeholder": "e.g. 10000000",
+      "input_hint": "Only deaths at the Hub or turrets count.",
+      "result_label": "Fast Comeback cap",
+      "result_explain": "{{boost}}% training boost, capped at 120% of the might you lost.",
+      "note_consume": "Stockpile enough training speedups + resources to consume the cap within ~2 weeks, or it is wasted.",
+      "note_exclude": "Turret-fire deaths and mud deaths do NOT count toward the cap."
+    },
+    "healing": {
+      "title": "Healing & Loss Calculator",
+      "subtitle": "How many casualties you lose for good.",
+      "input_label": "Casualties (troops or might)",
+      "input_placeholder": "e.g. 100000",
+      "input_hint": "Wounded route through Infirmary → Deep Healing.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "None (30%)",
+      "ms_maxed": "Maxed (~18%)",
+      "ms_custom": "Custom",
+      "custom_suffix": "permanent loss",
+      "permanent_label": "Permanent loss",
+      "healable_label": "Healable",
+      "warn_slow": "Deep Healing is slow — ~1 week per 100k troops without diamonds.",
+      "warn_trap": "Alliance-Infirmary trap: leaving the State Alliance with troops still in its infirmary kills them permanently."
+    }
   }
 }

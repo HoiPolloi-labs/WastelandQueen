@@ -3,7 +3,8 @@
     "home": "Ana sayfa",
     "new_event": "Yeni etkinlik",
     "planner": "Planlayıcı",
-    "cheat_sheet": "Kopya kağıdı"
+    "cheat_sheet": "Kopya kağıdı",
+    "tools": "Araçlar"
   },
   "common": {
     "loading": "Yükleniyor",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Kopya Kağıdı",
     "figure_aria_label": "Satranç taşı tacı olan çibi Wasteland Queen",
-    "nav_demo": "Canlı Demo"
+    "nav_demo": "Canlı Demo",
+    "nav_tools": "Araçlar"
   },
   "alliance": {
     "section_title": "İttifak katılımı",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "Kulelerde",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Geri",
+    "soon": "yakında",
+    "hub": {
+      "title": "Etkinlik Araçları",
+      "subtitle": "P&S etkinlikleri için hesaplayıcılar & çözücüler."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Kaybettiğin might’tan FC yeniden eğitim üst sınırı."
+      },
+      "healing": {
+        "title": "İyileştirme & Kayıp",
+        "desc": "Kalıcı kayıp vs. iyileştirilebilir asker."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Tüp renk sıralama bulmacası çözücü."
+      },
+      "bingo": {
+        "title": "Kart Bingo",
+        "desc": "5×5 ödül tahtasında çevrilecek en iyi kart."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "9×9 blok bulmacası için en uygun yerleştirme."
+      }
+    },
+    "fc": {
+      "title": "Fast Comeback Hesaplayıcı",
+      "subtitle": "WK sonrası yeniden eğitim bütçen.",
+      "input_label": "Kaybedilen might (Hub/turret ölümleri)",
+      "input_placeholder": "örn. 10000000",
+      "input_hint": "Sadece Hub veya turret’teki ölümler sayılır.",
+      "result_label": "Fast Comeback üst sınırı",
+      "result_explain": "%{{boost}} eğitim hızı, kaybedilen might’ın %120’si ile sınırlı.",
+      "note_consume": "Üst sınırı ~2 hafta içinde tüketecek kadar training-speedup + kaynak biriktir, yoksa boşa gider.",
+      "note_exclude": "turret-fire ve mud ölümleri üst sınıra SAYILMAZ."
+    },
+    "healing": {
+      "title": "İyileştirme/Kayıp Hesaplayıcı",
+      "subtitle": "Ne kadar kayıp kalıcı.",
+      "input_label": "Kayıplar (asker veya might)",
+      "input_placeholder": "örn. 100000",
+      "input_hint": "Yaralılar Infirmary → Deep Healing üzerinden gider.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "Yok (%30)",
+      "ms_maxed": "Maks (~%18)",
+      "ms_custom": "Özel",
+      "custom_suffix": "kalıcı kayıp",
+      "permanent_label": "Kalıcı kayıp",
+      "healable_label": "İyileştirilebilir",
+      "warn_slow": "Deep Healing yavaş — elmassız 100k asker başına ~1 hafta.",
+      "warn_trap": "Alliance-Infirmary tuzağı: State Alliance’dan çıkarken revirinde asker kalırsa kalıcı ölür."
+    }
   }
 }

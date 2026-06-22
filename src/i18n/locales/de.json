@@ -3,7 +3,8 @@
     "home": "Startseite",
     "new_event": "Neues Event",
     "planner": "Planner",
-    "cheat_sheet": "Cheat-Sheet"
+    "cheat_sheet": "Cheat-Sheet",
+    "tools": "Tools"
   },
   "common": {
     "loading": "Lade",
@@ -561,7 +562,8 @@
     "nav_planner": "Plaza Planner",
     "nav_cheatsheet": "Cheat-Sheet",
     "figure_aria_label": "Chibi Wasteland Queen with crown of chess pieces",
-    "nav_demo": "Live-Demo"
+    "nav_demo": "Live-Demo",
+    "nav_tools": "Tools"
   },
   "alliance": {
     "section_title": "Allianz-Beteiligung",
@@ -573,5 +575,62 @@
     "col_pct": "%",
     "col_towers": "In Türmen",
     "total_placeholder": "—"
+  },
+  "tools": {
+    "back": "Zurück",
+    "soon": "bald",
+    "hub": {
+      "title": "Event-Tools",
+      "subtitle": "Praktische Rechner & Solver für P&S-Events."
+    },
+    "cards": {
+      "fast_comeback": {
+        "title": "Fast Comeback",
+        "desc": "Dein FC-Nachtrainings-Cap aus dem verlorenen Might."
+      },
+      "healing": {
+        "title": "Heilung & Verlust",
+        "desc": "Truppen die dauerhaft weg sind vs. heilbar."
+      },
+      "sorting": {
+        "title": "Reagent Sorting",
+        "desc": "Solver für das Reagenzglas-Farbsortier-Puzzle."
+      },
+      "bingo": {
+        "title": "Karten-Bingo",
+        "desc": "Beste nächste Karte auf dem 5×5-Belohnungsfeld."
+      },
+      "tetramino": {
+        "title": "Tetramino",
+        "desc": "Optimale Platzierung fürs 9×9-Block-Puzzle."
+      }
+    },
+    "fc": {
+      "title": "Fast-Comeback-Rechner",
+      "subtitle": "Dein Nachtrainings-Budget nach WK.",
+      "input_label": "Verlorenes Might (Hub/Turm-Tode)",
+      "input_placeholder": "z.B. 10000000",
+      "input_hint": "Nur Tode am Hub oder an Türmen zählen.",
+      "result_label": "Fast-Comeback-Cap",
+      "result_explain": "{{boost}}% Trainings-Boost, gedeckelt auf 120% des verlorenen Might.",
+      "note_consume": "Genug Trainings-Speedups + Ressourcen horten, um das Cap in ~2 Wochen zu verbrauchen — sonst verfällt es.",
+      "note_exclude": "Turret-Fire- und Mud-Tode zählen NICHT fürs Cap."
+    },
+    "healing": {
+      "title": "Heilungs-/Verlust-Rechner",
+      "subtitle": "Wie viele Verluste dauerhaft weg sind.",
+      "input_label": "Verluste (Truppen oder Might)",
+      "input_placeholder": "z.B. 100000",
+      "input_hint": "Verwundete laufen über Infirmary → Deep Healing.",
+      "ms_label": "Miraculous Survival",
+      "ms_none": "Keine (30%)",
+      "ms_maxed": "Max (~18%)",
+      "ms_custom": "Eigen",
+      "custom_suffix": "dauerhafter Verlust",
+      "permanent_label": "Dauerhafter Verlust",
+      "healable_label": "Heilbar",
+      "warn_slow": "Deep Healing ist langsam — ~1 Woche pro 100k Truppen ohne Diamanten.",
+      "warn_trap": "Alliance-Infirmary-Falle: verlässt du die State Alliance mit Truppen in ihrer Infirmary, sterben die dauerhaft."
+    }
   }
 }
