@@ -649,6 +649,33 @@
       "too_complex": "Demasiado complejo para resolver a tiempo — quita un vial o simplifica.",
       "step": "paso {{n}}/{{total}}",
       "move_desc": "vial {{from}} → vial {{to}}"
+    },
+    "bingo": {
+      "title": "Asistente de Bingo de Cartas",
+      "subtitle": "La mejor carta para voltear en el tablero de recompensas 5×5.",
+      "flips_label": "Volteos restantes",
+      "tap_hint": "Toca cada carta que ya hayas revelado en el juego. La carta resaltada es la mejor para voltear a continuación.",
+      "completed": "Líneas hechas",
+      "reachable": "Alcanzables",
+      "suggestion": "Voltea la carta resaltada — avanza {{count}} línea(s).",
+      "no_suggestion": "Nada que voltear — ajusta tus volteos restantes, o todas las cartas ya están reveladas.",
+      "clear": "Limpiar",
+      "note": "Tras cada carta que volteas, el juego voltea otra al azar, así que apunta a las líneas que puedes completar con menos volteos. Las cartas aleatorias son un extra sobre el número alcanzable."
+    },
+    "tetramino": {
+      "title": "Solucionador Tetramino",
+      "subtitle": "Mejor colocación para el puzle de bloques 9×9.",
+      "boxes_label": "Eliminar también las cajas 3×3 llenas",
+      "rotation_label": "Permitir rotar las piezas",
+      "pieces_label": "Tus piezas ({{n}}/{{max}}) — toca para añadir, toca una pieza elegida para quitarla",
+      "edit_hint": "Toca el tablero para marcar las celdas ya llenas, luego elige tus piezas y resuelve.",
+      "step_hint": "Recorre las colocaciones — las celdas resaltadas muestran dónde va la siguiente pieza.",
+      "solve": "Resolver",
+      "clear": "Limpiar",
+      "edit": "Editar",
+      "result": "Colocadas {{placed}} pieza(s), eliminadas {{cleared}} línea(s).",
+      "place_next": "Siguiente: coloca {{piece}} en la fila {{row}}, columna {{col}}.",
+      "no_fit": "Ninguna pieza cabe en este tablero."
     }
   }
 }

@@ -649,6 +649,33 @@
       "too_complex": "Zu komplex zum Lösen — entferne ein Glas oder vereinfache.",
       "step": "Schritt {{n}}/{{total}}",
       "move_desc": "Glas {{from}} → Glas {{to}}"
+    },
+    "bingo": {
+      "title": "Karten-Bingo Helfer",
+      "subtitle": "Beste nächste Karte auf dem 5×5-Belohnungsfeld.",
+      "flips_label": "Deine Aufdeckungen übrig",
+      "tap_hint": "Tippe jede Karte an, die du im Spiel bereits aufgedeckt hast. Die hervorgehobene Karte ist als Nächstes am besten.",
+      "completed": "Linien fertig",
+      "reachable": "Erreichbar",
+      "suggestion": "Decke die hervorgehobene Karte auf — bringt {{count}} Linie(n) voran.",
+      "no_suggestion": "Nichts aufzudecken — lege deine restlichen Aufdeckungen fest oder alle Karten sind schon offen.",
+      "clear": "Leeren",
+      "note": "Nach jeder Karte deckt das Spiel eine weitere zufällig auf, daher zielt dies auf die Linien, die du mit den wenigsten Aufdeckungen vollenden kannst. Zufallskarten sind ein Bonus zur erreichbaren Anzahl."
+    },
+    "tetramino": {
+      "title": "Tetramino-Löser",
+      "subtitle": "Beste Platzierung für das 9×9-Blockpuzzle.",
+      "boxes_label": "Auch volle 3×3-Boxen leeren",
+      "rotation_label": "Teile drehen erlauben",
+      "pieces_label": "Deine Teile ({{n}}/{{max}}) — tippen zum Hinzufügen, gewähltes Teil tippen zum Entfernen",
+      "edit_hint": "Tippe das Feld an, um belegte Zellen zu markieren, wähle dann deine Teile und löse.",
+      "step_hint": "Gehe die Platzierungen durch — die hervorgehobenen Zellen zeigen, wohin das nächste Teil kommt.",
+      "solve": "Lösen",
+      "clear": "Leeren",
+      "edit": "Bearbeiten",
+      "result": "{{placed}} Teil(e) platziert, {{cleared}} Linie(n) geleert.",
+      "place_next": "Als Nächstes: {{piece}} bei Reihe {{row}}, Spalte {{col}}.",
+      "no_fit": "Kein Teil passt auf dieses Feld."
     }
   }
 }

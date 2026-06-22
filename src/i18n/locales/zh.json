@@ -649,6 +649,33 @@
       "too_complex": "太复杂，无法及时求解——减少试管或简化。",
       "step": "第 {{n}}/{{total}} 步",
       "move_desc": "试管 {{from}} → 试管 {{to}}"
+    },
+    "bingo": {
+      "title": "卡牌宾果助手",
+      "subtitle": "5×5 奖励板上最佳的下一张翻牌。",
+      "flips_label": "剩余翻牌次数",
+      "tap_hint": "点击你在游戏中已翻开的每张牌。高亮的牌是下一步最佳选择。",
+      "completed": "已完成线",
+      "reachable": "可达成",
+      "suggestion": "翻开高亮的牌 — 可推进 {{count}} 条线。",
+      "no_suggestion": "无牌可翻 — 设置剩余翻牌次数，或所有牌均已翻开。",
+      "clear": "清空",
+      "note": "你每翻一张牌，游戏会随机再翻一张，因此助手会瞄准用最少翻牌即可完成的线。随机翻牌是可达成数之外的额外收益。"
+    },
+    "tetramino": {
+      "title": "Tetramino 求解器",
+      "subtitle": "9×9 方块拼图的最佳放置。",
+      "boxes_label": "同时消除填满的 3×3 宫格",
+      "rotation_label": "允许旋转方块",
+      "pieces_label": "你的方块（{{n}}/{{max}}）— 点击添加，点击已选方块移除",
+      "edit_hint": "点击棋盘标记已填充的格子，然后选择方块并求解。",
+      "step_hint": "逐步查看放置 — 高亮的格子显示下一块的位置。",
+      "solve": "求解",
+      "clear": "清空",
+      "edit": "编辑",
+      "result": "放置了 {{placed}} 块，消除了 {{cleared}} 条线。",
+      "place_next": "下一步：将 {{piece}} 放在第 {{row}} 行，第 {{col}} 列。",
+      "no_fit": "没有方块能放进这个棋盘。"
     }
   }
 }

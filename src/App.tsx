@@ -43,6 +43,12 @@ const HealingPage = lazy(() =>
 const SortingPage = lazy(() =>
   import('./features/tools/sorting/SortingPage').then((m) => ({ default: m.SortingPage })),
 )
+const BingoPage = lazy(() =>
+  import('./features/tools/bingo/BingoPage').then((m) => ({ default: m.BingoPage })),
+)
+const TetraminoPage = lazy(() =>
+  import('./features/tools/tetramino/TetraminoPage').then((m) => ({ default: m.TetraminoPage })),
+)
 const HeroScene = lazy(() =>
   import('./features/home/HeroScene').then((m) => ({ default: m.HeroScene })),
 )
@@ -212,6 +218,8 @@ export default function App() {
             <Route path="/tools/fast-comeback" element={<FastComebackPage />} />
             <Route path="/tools/healing" element={<HealingPage />} />
             <Route path="/tools/sorting" element={<SortingPage />} />
+            <Route path="/tools/bingo" element={<BingoPage />} />
+            <Route path="/tools/tetramino" element={<TetraminoPage />} />
             <Route
               path="*"
               element={

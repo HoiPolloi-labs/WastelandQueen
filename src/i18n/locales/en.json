@@ -649,6 +649,33 @@
       "too_complex": "Too complex to solve in time — remove a vial or simplify.",
       "step": "step {{n}}/{{total}}",
       "move_desc": "vial {{from}} → vial {{to}}"
+    },
+    "bingo": {
+      "title": "Card Bingo Helper",
+      "subtitle": "Best next card to flip on the 5×5 reward board.",
+      "flips_label": "Your flips left",
+      "tap_hint": "Tap each card you have already revealed in-game. The highlighted card is the best one to flip next.",
+      "completed": "Lines done",
+      "reachable": "Reachable",
+      "suggestion": "Flip the highlighted card — advances {{count}} line(s).",
+      "no_suggestion": "Nothing to flip — set your remaining flips, or every card is already revealed.",
+      "clear": "Clear",
+      "note": "After each card you flip, the game flips one more at random, so this targets the lines you can complete with the fewest flips. Random flips are bonus on top of the reachable count."
+    },
+    "tetramino": {
+      "title": "Tetramino Solver",
+      "subtitle": "Best placement for the 9×9 block puzzle.",
+      "boxes_label": "Clear full 3×3 boxes too",
+      "rotation_label": "Allow rotating pieces",
+      "pieces_label": "Your pieces ({{n}}/{{max}}) — tap to add, tap a picked piece to remove",
+      "edit_hint": "Tap the board to mark cells already filled, then pick your pieces and Solve.",
+      "step_hint": "Step through the placements — the highlighted cells show where the next piece goes.",
+      "solve": "Solve",
+      "clear": "Clear",
+      "edit": "Edit",
+      "result": "Placed {{placed}} piece(s), cleared {{cleared}} line(s).",
+      "place_next": "Next: place {{piece}} at row {{row}}, col {{col}}.",
+      "no_fit": "No piece fits on this board."
     }
   }
 }

@@ -649,6 +649,33 @@
       "too_complex": "Zamanında çözülemeyecek kadar karmaşık — bir tüp çıkar veya sadeleştir.",
       "step": "adım {{n}}/{{total}}",
       "move_desc": "tüp {{from}} → tüp {{to}}"
+    },
+    "bingo": {
+      "title": "Kart Bingo Yardımcısı",
+      "subtitle": "5×5 ödül tahtasında çevrilecek en iyi sonraki kart.",
+      "flips_label": "Kalan çevirme",
+      "tap_hint": "Oyunda zaten açtığın her karta dokun. Vurgulanan kart, çevirmek için en iyi sonraki karttır.",
+      "completed": "Biten hatlar",
+      "reachable": "Ulaşılabilir",
+      "suggestion": "Vurgulanan kartı çevir — {{count}} hattı ilerletir.",
+      "no_suggestion": "Çevrilecek bir şey yok — kalan çevirmeni ayarla ya da tüm kartlar zaten açık.",
+      "clear": "Temizle",
+      "note": "Her kartından sonra oyun rastgele bir kart daha çevirir, bu yüzden en az çevirmeyle tamamlanabilecek hatları hedefler. Rastgele çevirmeler, ulaşılabilir sayının üstüne bonustur."
+    },
+    "tetramino": {
+      "title": "Tetramino Çözücü",
+      "subtitle": "9×9 blok bulmacası için en iyi yerleştirme.",
+      "boxes_label": "Dolu 3×3 kutuları da temizle",
+      "rotation_label": "Parçaların döndürülmesine izin ver",
+      "pieces_label": "Parçaların ({{n}}/{{max}}) — eklemek için dokun, seçili parçayı kaldırmak için dokun",
+      "edit_hint": "Dolu hücreleri işaretlemek için tahtaya dokun, sonra parçalarını seç ve çöz.",
+      "step_hint": "Yerleştirmeleri adım adım izle — vurgulanan hücreler sonraki parçanın yerini gösterir.",
+      "solve": "Çöz",
+      "clear": "Temizle",
+      "edit": "Düzenle",
+      "result": "{{placed}} parça yerleştirildi, {{cleared}} hat temizlendi.",
+      "place_next": "Sıradaki: {{piece}} parçasını {{row}}. satır, {{col}}. sütuna koy.",
+      "no_fit": "Bu tahtaya sığan parça yok."
     }
   }
 }

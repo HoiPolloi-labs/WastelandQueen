@@ -649,6 +649,33 @@
       "too_complex": "Troppo complesso da risolvere in tempo — togli una fiala o semplifica.",
       "step": "passo {{n}}/{{total}}",
       "move_desc": "fiala {{from}} → fiala {{to}}"
+    },
+    "bingo": {
+      "title": "Aiuto Bingo a Carte",
+      "subtitle": "La migliore carta da girare sulla griglia premi 5×5.",
+      "flips_label": "Giocate rimaste",
+      "tap_hint": "Tocca ogni carta che hai già scoperto nel gioco. La carta evidenziata è la migliore da girare ora.",
+      "completed": "Linee fatte",
+      "reachable": "Raggiungibili",
+      "suggestion": "Gira la carta evidenziata — avanza {{count}} linea/e.",
+      "no_suggestion": "Niente da girare — imposta le giocate rimaste, oppure tutte le carte sono già scoperte.",
+      "clear": "Pulisci",
+      "note": "Dopo ogni tua carta il gioco ne gira un'altra a caso, quindi punta alle linee completabili col minor numero di giocate. Le carte casuali sono un bonus oltre al numero raggiungibile."
+    },
+    "tetramino": {
+      "title": "Risolutore Tetramino",
+      "subtitle": "Posizionamento ottimale per il puzzle a blocchi 9×9.",
+      "boxes_label": "Cancella anche i box 3×3 pieni",
+      "rotation_label": "Consenti la rotazione dei pezzi",
+      "pieces_label": "I tuoi pezzi ({{n}}/{{max}}) — tocca per aggiungere, tocca un pezzo scelto per rimuoverlo",
+      "edit_hint": "Tocca la griglia per segnare le celle già piene, poi scegli i pezzi e risolvi.",
+      "step_hint": "Scorri i posizionamenti — le celle evidenziate mostrano dove va il prossimo pezzo.",
+      "solve": "Risolvi",
+      "clear": "Pulisci",
+      "edit": "Modifica",
+      "result": "Posizionati {{placed}} pezzo/i, cancellate {{cleared}} linea/e.",
+      "place_next": "Prossimo: posiziona {{piece}} alla riga {{row}}, colonna {{col}}.",
+      "no_fit": "Nessun pezzo entra in questa griglia."
     }
   }
 }

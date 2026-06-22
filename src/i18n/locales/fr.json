@@ -649,6 +649,33 @@
       "too_complex": "Trop complexe à résoudre à temps — retire une fiole ou simplifie.",
       "step": "étape {{n}}/{{total}}",
       "move_desc": "fiole {{from}} → fiole {{to}}"
+    },
+    "bingo": {
+      "title": "Assistant Bingo de Cartes",
+      "subtitle": "La meilleure carte à retourner sur la grille de récompenses 5×5.",
+      "flips_label": "Retournements restants",
+      "tap_hint": "Touchez chaque carte que vous avez déjà révélée en jeu. La carte surlignée est la meilleure à retourner ensuite.",
+      "completed": "Lignes faites",
+      "reachable": "Atteignables",
+      "suggestion": "Retournez la carte surlignée — fait progresser {{count}} ligne(s).",
+      "no_suggestion": "Rien à retourner — réglez vos retournements restants, ou toutes les cartes sont déjà révélées.",
+      "clear": "Effacer",
+      "note": "Après chaque carte que vous retournez, le jeu en retourne une autre au hasard ; l'assistant vise donc les lignes réalisables avec le moins de retournements. Les cartes aléatoires sont un bonus en plus du nombre atteignable."
+    },
+    "tetramino": {
+      "title": "Solveur Tetramino",
+      "subtitle": "Meilleur placement pour le puzzle de blocs 9×9.",
+      "boxes_label": "Effacer aussi les carrés 3×3 pleins",
+      "rotation_label": "Autoriser la rotation des pièces",
+      "pieces_label": "Vos pièces ({{n}}/{{max}}) — touchez pour ajouter, touchez une pièce choisie pour la retirer",
+      "edit_hint": "Touchez la grille pour marquer les cases déjà remplies, puis choisissez vos pièces et résolvez.",
+      "step_hint": "Parcourez les placements — les cases surlignées montrent où va la prochaine pièce.",
+      "solve": "Résoudre",
+      "clear": "Effacer",
+      "edit": "Modifier",
+      "result": "{{placed}} pièce(s) placée(s), {{cleared}} ligne(s) effacée(s).",
+      "place_next": "Suivant : placez {{piece}} à la ligne {{row}}, colonne {{col}}.",
+      "no_fit": "Aucune pièce ne tient sur cette grille."
     }
   }
 }
